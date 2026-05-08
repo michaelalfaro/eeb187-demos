@@ -208,37 +208,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="data-files">Data files</h3>
 <p>All data files are in the <code>data/</code> folder. Students should set their working directory to this demo folder:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"path/to/demo-labrid-pcm-week8"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The key files:</p>
+<p>The key files (click to download):</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 31%">
-<col style="width: 68%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>File</th>
 <th>Description</th>
+<th>Download</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>data/frederich/acanthuridae-tree.tree</code></td>
-<td>65-tip time-calibrated phylogeny (NEXUS)</td>
+<td>Acanthuridae phylogeny</td>
+<td>65-tip time-calibrated tree (NEXUS)</td>
+<td><a href="data/frederich/acanthuridae-tree.tree">acanthuridae-tree.tree</a></td>
 </tr>
 <tr class="even">
-<td><code>data/frederich/acanthuridae-color-patterns.csv</code></td>
-<td>83 species × 59 color pattern traits</td>
+<td>Color pattern traits</td>
+<td>83 species × 59 pattern traits (CSV)</td>
+<td><a href="data/frederich/acanthuridae-color-patterns.csv">acanthuridae-color-patterns.csv</a></td>
 </tr>
 <tr class="odd">
-<td><code>scripts/walkthrough-part1.R</code></td>
-<td>R script version of the worksheet (for copy-paste)</td>
+<td>R walkthrough script</td>
+<td>Copy-paste-able R script</td>
+<td><a href="scripts/walkthrough-part1.R">walkthrough-part1.R</a></td>
 </tr>
 </tbody>
 </table>
 </section>
+<section id="how-to-download-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-download-the-data">How to download the data</h3>
+<p><strong>Option 1 (easiest):</strong> Right-click each download link above → “Save Link As…”</p>
+<p><strong>Option 2 (all at once in R):</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this in R to download everything you need:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"data/frederich"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://michaelalfaro.github.io/eeb187-demos/data/frederich/acanthuridae-tree.tree"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"data/frederich/acanthuridae-tree.tree"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://michaelalfaro.github.io/eeb187-demos/data/frederich/acanthuridae-color-patterns.csv"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">"data/frederich/acanthuridae-color-patterns.csv"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://michaelalfaro.github.io/eeb187-demos/scripts/walkthrough-part1.R"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"walkthrough-part1.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="r-packages-needed" class="level3">
 <h3 class="anchored" data-anchor-id="r-packages-needed">R packages needed</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ape"</span>, <span class="st">"phytools"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ape"</span>, <span class="st">"phytools"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="setup-checklist-day-before" class="level2">
