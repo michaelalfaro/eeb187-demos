@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dryad-readme – Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Demo 7 — Mapping Color Patterns onto a Phylogeny</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../demo7-worksheet.html"> 
+<span class="menu-text">Student Worksheet</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../demo7-ta-guide-web.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides/demo7-intro-slides.pptx"> 
+<span class="menu-text">Intro Slides</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#phylogenomics-establishes-an-early-miocene-reconstruction-of-reef-vertebrate-diversity" id="toc-phylogenomics-establishes-an-early-miocene-reconstruction-of-reef-vertebrate-diversity" class="nav-link active" data-scroll-target="#phylogenomics-establishes-an-early-miocene-reconstruction-of-reef-vertebrate-diversity">Phylogenomics establishes an Early Miocene reconstruction of reef vertebrate diversity</a>
+  <ul class="collapse">
+  <li><a href="#description-of-the-data-and-file-structure" id="toc-description-of-the-data-and-file-structure" class="nav-link" data-scroll-target="#description-of-the-data-and-file-structure">Description of the data and file structure</a></li>
+  <li><a href="#codesoftware" id="toc-codesoftware" class="nav-link" data-scroll-target="#codesoftware">Code/software</a></li>
+  <li><a href="#access-information" id="toc-access-information" class="nav-link" data-scroll-target="#access-information">Access information</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="phylogenomics-establishes-an-early-miocene-reconstruction-of-reef-vertebrate-diversity" class="level1">
+<h1>Phylogenomics establishes an Early Miocene reconstruction of reef vertebrate diversity</h1>
+<p><a href="https://doi.org/10.5061/dryad.f7m0cfz5x">https://doi.org/10.5061/dryad.f7m0cfz5x</a></p>
+<section id="description-of-the-data-and-file-structure" class="level2">
+<h2 class="anchored" data-anchor-id="description-of-the-data-and-file-structure">Description of the data and file structure</h2>
+<p>Molecular data was collected via sequencing of UCEs. Morphological data was collected from the published literature.&nbsp;</p>
+<section id="files-and-variables" class="level3">
+<h3 class="anchored" data-anchor-id="files-and-variables">Files and variables</h3>
+<section id="file-astral_data_s1.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-astral_data_s1.zip">File: Astral_Data_S1.zip</h4>
+<p><strong>Description:</strong>&nbsp;ASTRAL directory with output ASTRAL multispecies coalescent tree.&nbsp;</p>
+<p>ASTRAL_TREE.tree #output ASTRAL-III species tree</p>
+<p>ASTRAL_TREE.tree.pdf # ASTRAL-III species tree PDF plot</p>
+<p>labrid.trees #input gene trees</p>
+</section>
+<section id="file-iq-tree_data_s2.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-iq-tree_data_s2.zip">File: IQ-TREE_Data_S2.zip</h4>
+<p><strong>Description:</strong>&nbsp;Gene trees, single and multiple partition concatenated maximum likelihood trees, and concordance factor output from analyses in IQ-TREE2.</p>
+<p>iqtree_concat #concatenated single partition run</p>
+<p>-labrid_cialign_concat_19_12_23.bionj #bionj output</p>
+<p>-labrid_cialign_concat_19_12_23.ckp.gz #ckp output</p>
+<p>-labrid_cialign_concat_19_12_23.contree #consensus tree topology</p>
+<p>-labrid_cialign_concat_19_12_23.iqtree #iqtree file output</p>
+<p>-labrid_cialign_concat_19_12_23.log #log file</p>
+<p>-labrid_cialign_concat_19_12_23.mldist #maximum likelihood pairwise distances between sequences</p>
+<p>-labrid_cialign_concat_19_12_23.model.gz #model fit output</p>
+<p>-labrid_cialign_concat_19_12_23.splits.nex #splits file</p>
+<p>-labrid_cialign_concat_19_12_23.treefile #maximum likelihood concatenated single partition tree</p>
+<p>iqtree_concordance_factors&nbsp;#concordance factors run</p>
+<p>-concordance_data.csv #csv file containing concordance factors and branch lengths for easy reading into R</p>
+<p>-concordance_factors_11_1_2023.cf.branch #branch file output&nbsp;</p>
+<p>-concordance_factors_11_1_2023.cf.stat #statistics, including concordance factors</p>
+<p>-concordance_factors_11_1_2023.cf.tree #concordance factors annotated on the tree</p>
+<p>-concordance_factors_11_1_2023.cf.tree.nex #concordance factors annotated on the tree, nexus format</p>
+<p>-concordance_factors_11_1_2023.log #log file</p>
+<p>Partitioned_tree&nbsp;#concatenated multiple partition run</p>
+<p>-IQTree_shrunk_partitioned_7Nov2023.tree #multiple partitions tree file</p>
+<p>shrunk_iqtree_gene_trees&nbsp;#trees generated for each UCE locus, labeled by locus and in .tree format&nbsp;</p>
+</section>
+<section id="file-time_calibration_data_s3.tgz" class="level4">
+<h4 class="anchored" data-anchor-id="file-time_calibration_data_s3.tgz">File: Time_Calibration_Data_S3.tgz</h4>
+<p><strong>Description:</strong>&nbsp;Input and output files from Bayesian tip and node dating analyses in BEAST2.</p>
+<p>BEAST_target.tree #target tree file</p>
+<p>Individuals_for_BEAST copy.xlsx #list of individual sequences used in BEAST and analyses</p>
+<p>Output_GTR_node #GTR model node-dating output, including output log and tree files, combined posterior tree sets, and summary tree</p>
+<p>Output_GTR_tip&nbsp;#GTR model tip-dating output, including output log and tree files, combined posterior tree sets, and summary tree</p>
+<p>Output_HKY_node&nbsp;#HKY model node-dating output, including output log and tree files, combined posterior tree sets, and summary tree</p>
+<p>Output_HKY_tip&nbsp;#HKY model tip-dating output, including output log and tree files, combined posterior tree sets, and summary tree</p>
+<p>xml_GTR_node&nbsp;#GTR node-dating input XML files to be read into BEAST</p>
+<p>xml_GTR_tip&nbsp;#GTR tip-dating input XML files&nbsp;to be read into BEAST</p>
+<p>xml_HKY_node&nbsp;#HKY node-dating input XML files&nbsp;to be read into BEAST</p>
+<p>xml_HKY_tip&nbsp;#HKY tip-dating input XML files&nbsp;to be read into BEAST</p>
+</section>
+<section id="file-bamm_data_s4.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-bamm_data_s4.zip">File: BAMM_Data_S4.zip</h4>
+<p><strong>Description:</strong>&nbsp;BAMM analysis directory outputs.</p>
+<p>BAMM_Folder_GTR #containing BAMM input + output for node-dated phylogeny using the GTR model</p>
+<p>-chain_swap.txt #chain swap output file</p>
+<p>-control_file.txt&nbsp;#input control file</p>
+<p>-event_data.txt&nbsp;#event data output file</p>
+<p>-Labrid_Ultra_Min.tree&nbsp;#input ultrametric tree</p>
+<p>-mcmc_out.txt&nbsp;#output MCMC files</p>
+<p>-myPriors.txt&nbsp;#Prior block generated using BAMMTools&nbsp;</p>
+<p>-run_info.txt #run info</p>
+<p>BAMM_Folder_HKY&nbsp;#containing BAMM input + output for node-dated phylogeny using the HKY model</p>
+<p>-chain_swap.txt #chain swap output file</p>
+<p>-control_file.txt&nbsp;#input control file</p>
+<p>-event_data.txt&nbsp;#event data output file</p>
+<p>-Labrid_Ultra_Min.tree&nbsp;#input ultrametric tree</p>
+<p>-mcmc_out.txt&nbsp;#output MCMC files</p>
+<p>-myPriors.txt&nbsp;#Prior block generated using BAMMTools&nbsp;</p>
+<p>-run_info.txt #run info</p>
+</section>
+<section id="file-tess_data_s5.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-tess_data_s5.zip">File: TESS_Data_S5.zip</h4>
+<p><strong>Description:</strong>&nbsp;TESS analysis directory outputs.</p>
+<p>tess_analysis_GTR_one_shift #input and output for GTR node-dated phylogeny run with one prior shift</p>
+<p>tess_analysis_GTR_three_shift&nbsp;#input and output for GTR node-dated phylogeny run with 3 prior shifts</p>
+<p>tess_analysis_GTR_two_shift&nbsp;#input and output for GTR node-dated phylogeny run with 2 prior shifts</p>
+<p>tess_analysis_HKY_one_shift&nbsp;#input and output for HKY node-dated phylogeny run with one prior shift</p>
+<p>tess_analysis_HKY_three_Shifts&nbsp;#input and output for HKY node-dated phylogeny run with 3 prior shifts</p>
+<p>tess_analysis_HKY_two_shifts&nbsp;#input and output for HKY node-dated phylogeny run with 2 prior shifts</p>
+</section>
+<section id="file-biogeobears_data_s6.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-biogeobears_data_s6.zip">File: BioGeoBears_Data_S6.zip</h4>
+<p><strong>Description:</strong>&nbsp;Input and output files from ancestral region reconstructions using BioGeoBears in R.&nbsp;</p>
+<p>BioGeoBears_GTR #run using GTR node-dated phylogeny</p>
+<p>-Plots #PDF plots of historical biogeographic reconstructions made using all 6 models, including pie chart plots showing probabilities at nodes</p>
+<p>-ana_subsetXYZ.csv #csv file containing anagenetic events from&nbsp;stochastic mapping</p>
+<p>-BSM #directory containing other output files from stochastic mapping</p>
+<p>-Labrid BAYAREALIKE&nbsp;#BAYAREALIKE model output</p>
+<p>-model_comparisons #directory containing output tables with summary statistics for model fit comparisons</p>
+<p>-Labrid BAYAREALIKE+j #BAYAREALIKE + j model output</p>
+<p>-Labrid DIVALIKE+j #DIVALIKE+j model output</p>
+<p>-Labrid DIVALIKE #DIVALIKE model output</p>
+<p>-Labrid DEC+j #DEC+j model output</p>
+<p>-Labrid_DEC #DEC model output</p>
+<p>-labrid_node_date_minBL.newick #tree with minimum branch lengths &gt;0 enforced&nbsp;</p>
+<p>-labrid_node_date.newick #newick converted tree</p>
+<p>-Labrid_geography_BSM.txt #geography binary file for biogeographic stochastic mapping</p>
+<p>-Labrid_geography.txt #geography binary file for BioGeoBears runs</p>
+<p>BioGeoBears_HKY #run using HKY node-dated phylogeny</p>
+<p>-Plots #PDF plots of historical biogeographic reconstructions made using all 6 models, including pie chart plots showing probabilities at nodes</p>
+<p>-ana_subsetXYZ.csv #csv file containing anagenetic events from&nbsp;stochastic mapping</p>
+<p>-BSM #directory containing other output files from stochastic mapping</p>
+<p>-Labrid BAYAREALIKE&nbsp;#BAYAREALIKE model output</p>
+<p>-model_comparisons #directory containing output tables with summary statistics for model fit comparisons</p>
+<p>-Labrid BAYAREALIKE+j #BAYAREALIKE + j model output</p>
+<p>-Labrid DIVALIKE+j #DIVALIKE+j model output</p>
+<p>-Labrid DIVALIKE #DIVALIKE model output</p>
+<p>-Labrid DEC+j #DEC+j model output</p>
+<p>-Labrid_DEC #DEC model output</p>
+<p>-labrid_node_date_minBL.newick #tree with minimum branch lengths &gt;0 enforced&nbsp;</p>
+<p>-labrid_node_date.newick #newick converted tree</p>
+<p>-Labrid_geography.txt #geography binary file for BioGeoBears runs</p>
+</section>
+<section id="file-categorical_traits_data_s7.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-categorical_traits_data_s7.zip">File: Categorical_Traits_Data_S7.zip</h4>
+<p><strong>Description:</strong>&nbsp;Input and output files from analyses of discrete characters, including SSE input and output and ancestral state reconstruction input and output plots.</p>
+<p>biting.csv #input csv file containing biting trait presence data</p>
+<p>Cleaning.csv&nbsp;#input csv file containing cleaning trait presence data</p>
+<p>GTR_Node_SUM.tree&nbsp;#input tree file</p>
+<p>Plots_Ancestral_State_recons&nbsp;#output ancestral state reconstruction plots</p>
+<p>Reef_association.csv&nbsp;#input csv file containing reef association trait presence data</p>
+<p>SSE_Model_Fit.csv&nbsp;#csv file containing ancestral state reconstruction model fit comparisons for each trait</p>
+<p>trait_data.csv&nbsp;#input csv file containing trait presence data for the traits examined by Burress and Wainwright (2019), Evolution.&nbsp;</p>
+</section>
+<section id="file-hisse_data_s8.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-hisse_data_s8.zip">File: HiSSE_Data_S8.zip</h4>
+<p><strong>Description:</strong> Output files from analyses using the R package HiSSE. Each directory contains an xlsx file including model fit comparisons for analyses of each trait, Rdata files for the four models studied in each case, and a csv file containing the solution data.&nbsp;</p>
+<p>Biting_Suction_Both #biting trait</p>
+<p>Coalesced_Premaxillary_Teeth #coalesced premaxillary teeth trait</p>
+<p>IMJ #intramandibular joint trait</p>
+<p>Phyllodont_dentition #phyllodont dentition trait</p>
+<p>PJA #parrotfish pharyngeal jaw trait</p>
+<p>Recurved_Oral_Teeth #recurved oral teeth trait</p>
+<p>Reef_association #reef association trait</p>
+</section>
+<section id="file-continuous_traits_data_s9.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-continuous_traits_data_s9.zip">File: Continuous_Traits_Data_S9.zip</h4>
+<p><strong>Description:</strong>&nbsp;Input and output files from analyses of continuous characters, including phylomorphospace and disparity through time plots.</p>
+<p>NH_Plots #directory containing node height test plots for each examined trait</p>
+<p>GTR_Node_SUM.tree #input tree</p>
+<p>Size_and_SkullTraits.csv #input csv file containing continuous trait data for body size and skull traits</p>
+<p>Table_S2_Geiger.xlsx #output Geiger model fit and node height test output from R; also see Supplementary Table 2</p>
+<p>Fin_Aspect.csv #input csv file containing fin aspect ration continuous data</p>
+<p>Protrusion_Resid_Vec.Rdata #R data file, protrusion trait</p>
+<p>AdductorMand_Resid_Vec.Rdata #R data file, <em>M. adductor mandibulae</em> trait</p>
+<p>Levator_Resid_Vec.Rdata #R data file, <em>M. levator</em> trait</p>
+<p>Sterno_Resid_Vec.Rdata #R data file. <em>M. sternohyoideus</em>&nbsp;</p>
+<p>Gape_Resid_Vec.Rdata #R data file, Gape trait</p>
+<p>Table_S3_pca_Loadings.csv #PCA loadings from principal components analysis of the size and skull traits</p>
+<p>DTT_Plots #directory containing disparity through time plots&nbsp;</p>
+</section>
+<section id="file-bayou_data_s10.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-bayou_data_s10.zip">File: Bayou_Data_S10.zip</h4>
+<p><strong>Description:</strong> Output files from analyses using the R package bayou, including R data files and plots of trees annotated with shift probabilities for each trait.</p>
+<p>AdductorMandibulae</p>
+<p>FinAspect_NotCorrected</p>
+<p>Gape</p>
+<p>Hyoid_KT_NotCorrected</p>
+<p>JawClosing_NotCorrected</p>
+<p>JawKT_NotCorrected</p>
+<p>JawOpening_NotCorrected</p>
+<p>LevatorPosterior</p>
+<p>Mass</p>
+<p>Protrusion</p>
+<p>SL</p>
+<p>Sternohyoides</p>
+<p>Optima_Shifts_through_time.csv #csv file containing the counted number of shifts and ages of nodes where shifts occur, across labrids and analyzed traits.&nbsp;</p>
+</section>
+<section id="file-pbdb_data_data_s11.zip" class="level4">
+<h4 class="anchored" data-anchor-id="file-pbdb_data_data_s11.zip">File: PBDB_data_Data_S11.zip</h4>
+<p><strong>Description:</strong>&nbsp;Cleaned PBDB list of fossil labrid and acanthomorph occurrences.&nbsp;</p>
+<p>pbdb_data_clean.csv #acanthomorphs</p>
+<p>pbdb_labrid_clean.csv #labrids</p>
+<p>plots #curves showing differences when maximum vs minimum labrid fossil ages are used</p>
+</section>
+</section>
+</section>
+<section id="codesoftware" class="level2">
+<h2 class="anchored" data-anchor-id="codesoftware">Code/software</h2>
+<p>LabridScript.R contains all code used in the analyses presented in this paper. The XML files contained in the “Time_Calibration_Data_S3” file include all specifiers for the BEAST2 analyses and can be directly analyzed in BEAST2.</p>
+</section>
+<section id="access-information" class="level2">
+<h2 class="anchored" data-anchor-id="access-information">Access information</h2>
+<p>Other publicly accessible locations of the data:</p>
+<ul>
+<li>NCBI Genbank Repository will include all sequences used in this manuscript</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>EEB 187 · Ecology and Evolution of Color · UCLA · Spring 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
