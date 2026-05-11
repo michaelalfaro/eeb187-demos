@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>brownstein-tree-handoff – Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Demo 7 — Mapping Color Patterns onto a Phylogeny</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./demo7-worksheet.html"> 
+<span class="menu-text">Student Worksheet</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./demo7-ta-guide-web.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides/demo7-intro-slides.pptx"> 
+<span class="menu-text">Intro Slides</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#brownstein-labrid-tree-handoff-for-fishview-image-agent" id="toc-brownstein-labrid-tree-handoff-for-fishview-image-agent" class="nav-link active" data-scroll-target="#brownstein-labrid-tree-handoff-for-fishview-image-agent">Brownstein Labrid Tree — Handoff for FishView Image Agent</a>
+  <ul class="collapse">
+  <li><a href="#the-tree" id="toc-the-tree" class="nav-link" data-scroll-target="#the-tree">The tree</a></li>
+  <li><a href="#the-4-labrid-project-groups" id="toc-the-4-labrid-project-groups" class="nav-link" data-scroll-target="#the-4-labrid-project-groups">The 4 labrid project groups</a></li>
+  <li><a href="#tip-label-format" id="toc-tip-label-format" class="nav-link" data-scroll-target="#tip-label-format">Tip label format</a></li>
+  <li><a href="#what-the-image-agent-needs-to-produce-per-family" id="toc-what-the-image-agent-needs-to-produce-per-family" class="nav-link" data-scroll-target="#what-the-image-agent-needs-to-produce-per-family">What the image agent needs to produce per family</a></li>
+  <li><a href="#files-in-this-directory" id="toc-files-in-this-directory" class="nav-link" data-scroll-target="#files-in-this-directory">Files in this directory</a></li>
+  <li><a href="#todo-for-the-image-agent" id="toc-todo-for-the-image-agent" class="nav-link" data-scroll-target="#todo-for-the-image-agent">TODO for the image agent</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="brownstein-labrid-tree-handoff-for-fishview-image-agent" class="level1">
+<h1>Brownstein Labrid Tree — Handoff for FishView Image Agent</h1>
+<p><strong>Purpose:</strong> The FishView image server agent needs to populate family image directories for the 4 labrid project groups. Each group needs lateral-view photographs matched to species in the Brownstein et al.&nbsp;(2025) phylogeny. This handoff provides the tree, the species lists, and the matching rules.</p>
+<hr>
+<section id="the-tree" class="level2">
+<h2 class="anchored" data-anchor-id="the-tree">The tree</h2>
+<p><strong>Citation:</strong> Brownstein, C. D., et al.&nbsp;(2025). Phylogenomics establishes an Early Miocene reconstruction of reef vertebrate diversity. <em>Science Advances</em>, 11, eadu6149. https://doi.org/10.1126/sciadv.adu6149</p>
+<p><strong>Dryad:</strong> https://doi.org/10.5061/dryad.f7m0cfz5x</p>
+<p><strong>File:</strong> <code>labs/demo-labrid-pcm-week8/data/labrid-time-calibrated-tree.tre</code> (NEXUS format)</p>
+<p><strong>Stats:</strong> 415 tips, time-calibrated (GTR + node-dating, 13 fossil calibrations), root age 70.2 Ma. Covers all major labrid subfamilies + outgroups.</p>
+<hr>
+</section>
+<section id="the-4-labrid-project-groups" class="level2">
+<h2 class="anchored" data-anchor-id="the-4-labrid-project-groups">The 4 labrid project groups</h2>
+<p>These 4 of the 7 class project groups use subclades of the Brownstein tree. The other 3 groups (Balistoidea, Pomacanthidae, Acanthuridae) use family-specific trees from other sources.</p>
+<section id="group-3-scarinae-parrotfishes" class="level3">
+<h3 class="anchored" data-anchor-id="group-3-scarinae-parrotfishes">Group 3 — Scarinae (parrotfishes)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Students</td>
+<td>Aghasi, Flo, Paul</td>
+</tr>
+<tr class="even">
+<td>Tips in tree</td>
+<td>79</td>
+</tr>
+<tr class="odd">
+<td>MRCA age</td>
+<td>23.7 Ma</td>
+</tr>
+<tr class="even">
+<td>Genera</td>
+<td>Scarus (37), Chlorurus (12), Sparisoma (13), Bolbometopon (1), Calotomus (3), Cetoscarus (2), Cryptotomus (1), Hipposcarus (1), Leptoscarus (1), Nicholsina (1)</td>
+</tr>
+<tr class="odd">
+<td>Pruned tree file</td>
+<td><code>data/clades/scarinae-tree.tre</code></td>
+</tr>
+<tr class="even">
+<td>Tip label CSV</td>
+<td><code>data/clades/scarinae-tip-labels.csv</code></td>
+</tr>
+<tr class="odd">
+<td>Color story</td>
+<td>Extreme sexual dichromatism (initial phase → terminal phase). Terminal males vivid blue-green. Pharyngeal jaw innovation.</td>
+</tr>
+<tr class="even">
+<td>FishView priority</td>
+<td>Need IP (initial phase) and TP (terminal phase) images per species</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-4-cirrhilabrini-fairy-wrasses-flasher-wrasses" class="level3">
+<h3 class="anchored" data-anchor-id="group-4-cirrhilabrini-fairy-wrasses-flasher-wrasses">Group 4 — Cirrhilabrini (fairy wrasses + flasher wrasses)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Students</td>
+<td>Nancy, Alyssa, Leewon</td>
+</tr>
+<tr class="even">
+<td>Tips in tree</td>
+<td>58</td>
+</tr>
+<tr class="odd">
+<td>MRCA age</td>
+<td>10.8 Ma</td>
+</tr>
+<tr class="even">
+<td>Genera</td>
+<td>Cirrhilabrus (51), Paracheilinus (5), Conniella (1), Clepticus (1)</td>
+</tr>
+<tr class="odd">
+<td>Pruned tree file</td>
+<td><code>data/clades/cirrhilabrinae-tree.tre</code></td>
+</tr>
+<tr class="even">
+<td>Tip label CSV</td>
+<td><code>data/clades/cirrhilabrini-tip-labels.csv</code></td>
+</tr>
+<tr class="odd">
+<td>Color story</td>
+<td>Most chromatically diverse labrid clade. Extreme sexual dichromatism. Males flash iridescent displays during courtship. Recent rapid radiation (~10.8 Ma).</td>
+</tr>
+<tr class="even">
+<td>FishView priority</td>
+<td>Male display coloration is the primary signal of interest. Many species described in last 20 years — images may be scarce for rare species.</td>
+</tr>
+<tr class="odd">
+<td>Note</td>
+<td>The tree has duplicate tips for some species with different voucher codes (e.g., <code>Cirrhilabrus_cyanopleuraQF180</code> and <code>Cirrhilabrus_cyanopleuraF614KB16b</code>). Image matching should use genus + species only.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-6-hypsigenyinae-sheephead-wrasses-hogfishes" class="level3">
+<h3 class="anchored" data-anchor-id="group-6-hypsigenyinae-sheephead-wrasses-hogfishes">Group 6 — Hypsigenyinae (sheephead wrasses + hogfishes)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Students</td>
+<td>Edward, Hooman</td>
+</tr>
+<tr class="even">
+<td>Tips in tree</td>
+<td>38</td>
+</tr>
+<tr class="odd">
+<td>MRCA age</td>
+<td>39.9 Ma</td>
+</tr>
+<tr class="even">
+<td>Genera</td>
+<td>Bodianus (18), Choerodon (15), Semicossyphus (2), Achoerodus (1), Lachnolaimus (1)</td>
+</tr>
+<tr class="odd">
+<td>Pruned tree file</td>
+<td><code>data/clades/hypsigenyinae-tree.tre</code> (needs to be generated — run prune-clades.R with Hypsigenyinae genera)</td>
+</tr>
+<tr class="even">
+<td>Tip label CSV</td>
+<td><code>data/clades/hypsigenyinae-tip-labels.csv</code></td>
+</tr>
+<tr class="odd">
+<td>Color story</td>
+<td>Large-bodied wrasses with bold color blocks. Strong ontogenetic and sex-based color change.</td>
+</tr>
+<tr class="even">
+<td>FishView priority</td>
+<td>Smaller clade — should be straightforward. ~20 unique species with images needed.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-7-halichoerine-halichoeres-coris-relatives" class="level3">
+<h3 class="anchored" data-anchor-id="group-7-halichoerine-halichoeres-coris-relatives">Group 7 — Halichoerine (<em>Halichoeres</em> + <em>Coris</em> + relatives)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Students</td>
+<td>Sophia, Jordyn</td>
+</tr>
+<tr class="even">
+<td>Tips in tree</td>
+<td>140</td>
+</tr>
+<tr class="odd">
+<td>MRCA age</td>
+<td>27.3 Ma</td>
+</tr>
+<tr class="even">
+<td>Genera</td>
+<td>Halichoeres (48), Coris (17), Thalassoma (13), Anampses (11), Stethojulis (6), Macropharyngodon (9), Hologymnosus (3), Hemigymnus (2), Pseudojuloides (3), Pseudocoris (2), Leptojulis (1), Ophthalmolepis (1), Suezichthys (3)</td>
+</tr>
+<tr class="odd">
+<td>Pruned tree file</td>
+<td><code>data/clades/halichoerine-tree.tre</code> (needs to be generated)</td>
+</tr>
+<tr class="even">
+<td>Tip label CSV</td>
+<td><code>data/clades/halichoerine-tip-labels.csv</code></td>
+</tr>
+<tr class="odd">
+<td>Color story</td>
+<td>Largest monophyletic labrid clade. Extreme ontogenetic and sexual color change. If the fish is green, predict mixed mechanism (iridophore + xanthophore).</td>
+</tr>
+<tr class="even">
+<td>FishView priority</td>
+<td>LARGEST image need (~140 species). Prioritize: 10 Halichoeres, 5 Thalassoma, 5 Coris, 3 Anampses, 2 Macropharyngodon for initial set.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="tip-label-format" class="level2">
+<h2 class="anchored" data-anchor-id="tip-label-format">Tip label format</h2>
+<p>Tree tip labels have the format: <code>Genus_speciesVOUCHER</code></p>
+<p>Examples:</p>
+<pre><code>Scarus_ghobbanF204
+Cirrhilabrus_scottorumF628KB9
+Halichoeres_melanotisF72
+Bodianus_rufus_F112</code></pre>
+<p><strong>To match images to tree tips:</strong> 1. Extract genus + species: <code>sub("([A-Z][a-z]+_[a-z]+).*", "\\1", tip_label)</code> 2. This gives <code>Scarus_ghobban</code>, <code>Cirrhilabrus_scottorum</code>, etc. 3. Match to image filename: <code>genus-species.jpg</code> (lowercase, hyphenated) on FishView</p>
+<p><strong>Beware:</strong> - Some species have multiple tips (different specimens/vouchers). The image agent should provide ONE image per species — the R script will handle deduplication. - Some tip labels have underscores in unexpected places (e.g., <code>Bodianus_rufus_F112</code> — the species is <code>rufus</code>, not <code>rufus_F112</code>). The regex above handles this.</p>
+<hr>
+</section>
+<section id="what-the-image-agent-needs-to-produce-per-family" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-image-agent-needs-to-produce-per-family">What the image agent needs to produce per family</h2>
+<p>For each of the 4 labrid family directories on FishView:</p>
+<pre><code>~/fishview-data/families/&lt;family&gt;/
+├── images_fishwise/     ← FishWise lateral views (preferred)
+├── images_fishbase/     ← FishBase photos
+├── images_inaturalist/  ← iNaturalist CC photos
+└── segmented/           ← alpha-masked PNGs (post-processing)</code></pre>
+<p><strong>Minimum viable set for Demo 7 Part 2:</strong> 10 species per group, spanning genera. The tip label CSVs list every species in the tree — the agent should prioritize species that are: 1. In the tree (required) 2. Visually distinctive (good for color analysis) 3. Spread across genera (not all one genus)</p>
+<p><strong>Suggested 10-species starter sets:</strong></p>
+<section id="scarinae-group-3" class="level3">
+<h3 class="anchored" data-anchor-id="scarinae-group-3">Scarinae (Group 3)</h3>
+<pre><code>Scarus_ghobban, Scarus_coeruleus, Scarus_vetula, Scarus_rubroviolaceus,
+Chlorurus_spilurus, Chlorurus_microrhinos, Sparisoma_viride, Sparisoma_aurofrenatum,
+Bolbometopon_muricatum, Cetoscarus_bicolor</code></pre>
+</section>
+<section id="cirrhilabrini-group-4" class="level3">
+<h3 class="anchored" data-anchor-id="cirrhilabrini-group-4">Cirrhilabrini (Group 4)</h3>
+<pre><code>Cirrhilabrus_scottorum, Cirrhilabrus_jordani, Cirrhilabrus_solorensis,
+Cirrhilabrus_exquisitus, Cirrhilabrus_lubbocki, Cirrhilabrus_punctatus,
+Cirrhilabrus_rubrimarginatus, Cirrhilabrus_cyanopleura,
+Paracheilinus_mccoskeri, Paracheilinus_carpenteri</code></pre>
+</section>
+<section id="hypsigenyinae-group-6" class="level3">
+<h3 class="anchored" data-anchor-id="hypsigenyinae-group-6">Hypsigenyinae (Group 6)</h3>
+<pre><code>Bodianus_rufus, Bodianus_diana, Bodianus_axillaris, Bodianus_pulchellus,
+Bodianus_mesothorax, Choerodon_fasciatus, Choerodon_schoenleinii,
+Semicossyphus_pulcher, Semicossyphus_darwini, Lachnolaimus_maximus</code></pre>
+</section>
+<section id="halichoerine-group-7" class="level3">
+<h3 class="anchored" data-anchor-id="halichoerine-group-7">Halichoerine (Group 7)</h3>
+<pre><code>Halichoeres_bivittatum, Halichoeres_garnoti, Halichoeres_radiatus,
+Halichoeres_hortulanus, Halichoeres_chrysus, Coris_gaimard, Coris_julis,
+Thalassoma_lunare, Thalassoma_bifasciatum, Anampses_meleagrides</code></pre>
+<hr>
+</section>
+</section>
+<section id="files-in-this-directory" class="level2">
+<h2 class="anchored" data-anchor-id="files-in-this-directory">Files in this directory</h2>
+<pre><code>labs/demo-labrid-pcm-week8/
+├── data/
+│   ├── labrid-time-calibrated-tree.tre    ← full 415-tip tree (NEXUS)
+│   ├── continuous-traits.csv              ← Brownstein morphological traits
+│   ├── discrete-traits.csv                ← Brownstein discrete traits
+│   ├── fin-aspect.csv                     ← fin aspect ratio
+│   └── clades/
+│       ├── scarinae-tree.tre              ← 79 tips (Newick)
+│       ├── scarinae-tip-labels.csv        ← tree_tip, species, genus
+│       ├── cirrhilabrinae-tree.tre        ← 58 tips
+│       ├── cirrhilabrini-tip-labels.csv
+│       ├── hypsigenyinae-tip-labels.csv   ← 38 tips (tree not yet pruned)
+│       └── halichoerine-tip-labels.csv    ← 140 tips (tree not yet pruned)
+├── scripts/
+│   ├── prune-clades.R                     ← generates clade subsets
+│   └── walkthrough-part1.R                ← student-facing demo (being rebuilt for Acanthuridae)
+└── brownstein-tree-handoff.md             ← THIS FILE</code></pre>
+<hr>
+</section>
+<section id="todo-for-the-image-agent" class="level2">
+<h2 class="anchored" data-anchor-id="todo-for-the-image-agent">TODO for the image agent</h2>
+<ol type="1">
+<li><strong>Create family directories</strong> on FishView for: <code>scarinae/</code>, <code>cirrhilabrini/</code>, <code>hypsigenyinae/</code>, <code>halichoerine/</code></li>
+<li><strong>Canvas images</strong> for the 10-species starter set per family (FishWise preferred, then FishBase, then iNaturalist)</li>
+<li><strong>Run segmentation</strong> on downloaded images</li>
+<li><strong>Verify name matching</strong> — ensure image filenames can be mapped to tree tip labels via the <code>species</code> column in the tip-labels CSVs</li>
+<li><strong>Prune trees</strong> for Hypsigenyinae and Halichoerine (Scarinae and Cirrhilabrini already done)</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>EEB 187 · Ecology and Evolution of Color · UCLA · Spring 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

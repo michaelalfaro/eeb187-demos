@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -71,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -125,11 +128,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="./demo7-worksheet.html"> 
-<span class="menu-text">Student Worksheet</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./demo7-ta-guide-web.html"> 
-<span class="menu-text">TA Guide</span></a>
+<span class="menu-text">Worksheet</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./slides/demo7-intro-slides.pptx"> 
@@ -153,7 +152,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a></li>
-  <li><a href="#setup-checklist-day-before" id="toc-setup-checklist-day-before" class="nav-link" data-scroll-target="#setup-checklist-day-before">Setup checklist (day before)</a></li>
   <li><a href="#what-students-turn-in" id="toc-what-students-turn-in" class="nav-link" data-scroll-target="#what-students-turn-in">What students turn in</a></li>
   <li><a href="#next-week-demo-8" id="toc-next-week-demo-8" class="nav-link" data-scroll-target="#next-week-demo-8">Next week (Demo 8)</a></li>
   </ul>
@@ -191,23 +189,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="materials" class="level2">
 <h2 class="anchored" data-anchor-id="materials">Materials</h2>
-<section id="for-students" class="level3">
-<h3 class="anchored" data-anchor-id="for-students">For students</h3>
 <ul>
 <li><strong><a href="demo7-worksheet.html">Student Worksheet</a></strong> — the step-by-step guide you’ll work through in class. Open this in your browser and follow along in RStudio.</li>
+<li><strong><a href="slides/demo7-intro-slides.html">Intro Slides</a></strong> — 10-slide overview of what we’re doing today (<a href="slides/demo7-intro-slides.pptx">PowerPoint version</a>)</li>
 </ul>
-</section>
-<section id="for-the-ta-instructor" class="level3">
-<h3 class="anchored" data-anchor-id="for-the-ta-instructor">For the TA / instructor</h3>
-<ul>
-<li><strong><a href="demo7-ta-guide-web.html">TA Guide</a></strong> — timeline, troubleshooting, answer key, pacing notes</li>
-<li><strong><a href="slides/demo7-intro-slides.pptx">Intro Slides (PowerPoint)</a></strong> — 10-slide overview to present before students start coding (<a href="slides/demo7-intro-slides.html">HTML version</a>)</li>
-</ul>
-</section>
 <section id="data-files" class="level3">
 <h3 class="anchored" data-anchor-id="data-files">Data files</h3>
 <p>All data files are in the <code>data/</code> folder. Students should set their working directory to this demo folder:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"path/to/demo-labrid-pcm-week8"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"path/to/demo-labrid-pcm-week8"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The key files (click to download):</p>
 <table class="caption-top table">
 <thead>
@@ -228,11 +217,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>83 species × 59 pattern traits (CSV)</td>
 <td><a href="data/frederich/acanthuridae-color-patterns.csv">acanthuridae-color-patterns.csv</a></td>
 </tr>
-<tr class="odd">
-<td>R walkthrough script</td>
-<td>Copy-paste-able R script</td>
-<td><a href="scripts/walkthrough-part1.R">walkthrough-part1.R</a></td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -240,31 +224,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="how-to-download-the-data">How to download the data</h3>
 <p><strong>Option 1 (easiest):</strong> Right-click each download link above → “Save Link As…”</p>
 <p><strong>Option 2 (all at once in R):</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this in R to download everything you need:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run this in R to download everything you need:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"data/frederich"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://michaelalfaro.github.io/eeb187-demos/data/frederich/acanthuridae-tree.tree"</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"data/frederich/acanthuridae-tree.tree"</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://michaelalfaro.github.io/eeb187-demos/data/frederich/acanthuridae-color-patterns.csv"</span>,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">"data/frederich/acanthuridae-color-patterns.csv"</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://michaelalfaro.github.io/eeb187-demos/scripts/walkthrough-part1.R"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"walkthrough-part1.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"walkthrough-part1.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="r-packages-needed" class="level3">
 <h3 class="anchored" data-anchor-id="r-packages-needed">R packages needed</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ape"</span>, <span class="st">"phytools"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ape"</span>, <span class="st">"phytools"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-<section id="setup-checklist-day-before" class="level2">
-<h2 class="anchored" data-anchor-id="setup-checklist-day-before">Setup checklist (day before)</h2>
-<ul class="task-list">
-<li><label><input type="checkbox">R and RStudio installed on all lab machines</label></li>
-<li><label><input type="checkbox"><code>ape</code> and <code>phytools</code> packages installed</label></li>
-<li><label><input type="checkbox">This folder copied to each machine (or a shared network drive)</label></li>
-<li><label><input type="checkbox">Test: open RStudio, run <code>library(ape); library(phytools)</code> — no errors</label></li>
-<li><label><input type="checkbox">Test: render <code>demo7-worksheet.qmd</code> — produces HTML with all plots</label></li>
-<li><label><input type="checkbox">Print 2-3 copies of the worksheet for students without laptops</label></li>
-<li><label><input type="checkbox">Projector working, slides loaded</label></li>
-</ul>
 </section>
 <section id="what-students-turn-in" class="level2">
 <h2 class="anchored" data-anchor-id="what-students-turn-in">What students turn in</h2>
@@ -335,13 +307,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

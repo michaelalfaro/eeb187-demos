@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Demo 7 — TA Guide – Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Demo 7 — Mapping Color Patterns onto a Phylogeny</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./demo7-worksheet.html"> 
+<span class="menu-text">Student Worksheet</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./demo7-ta-guide-web.html" aria-current="page"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides/demo7-intro-slides.pptx"> 
+<span class="menu-text">Intro Slides</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#demo-7-ta-guide-mapping-color-patterns-onto-a-phylogeny" id="toc-demo-7-ta-guide-mapping-color-patterns-onto-a-phylogeny" class="nav-link active" data-scroll-target="#demo-7-ta-guide-mapping-color-patterns-onto-a-phylogeny">Demo 7 — TA Guide: Mapping Color Patterns onto a Phylogeny</a>
+  <ul class="collapse">
+  <li><a href="#day-before-checklist" id="toc-day-before-checklist" class="nav-link" data-scroll-target="#day-before-checklist">Day-Before Checklist</a></li>
+  <li><a href="#timeline-75-minutes" id="toc-timeline-75-minutes" class="nav-link" data-scroll-target="#timeline-75-minutes">Timeline (75 minutes)</a></li>
+  <li><a href="#common-student-issues-and-solutions" id="toc-common-student-issues-and-solutions" class="nav-link" data-scroll-target="#common-student-issues-and-solutions">Common Student Issues and Solutions</a></li>
+  <li><a href="#key-teaching-moments" id="toc-key-teaching-moments" class="nav-link" data-scroll-target="#key-teaching-moments">Key Teaching Moments</a></li>
+  <li><a href="#expected-results-by-section" id="toc-expected-results-by-section" class="nav-link" data-scroll-target="#expected-results-by-section">Expected Results by Section</a></li>
+  <li><a href="#your-turn-expected-results-for-common-trait-choices" id="toc-your-turn-expected-results-for-common-trait-choices" class="nav-link" data-scroll-target="#your-turn-expected-results-for-common-trait-choices">“Your Turn” — Expected Results for Common Trait Choices</a></li>
+  <li><a href="#notes-for-part-2-next-week" id="toc-notes-for-part-2-next-week" class="nav-link" data-scroll-target="#notes-for-part-2-next-week">Notes for Part 2 (Next Week)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Demo 7 — TA Guide</h1>
+<p class="subtitle lead">Instructor &amp; TA reference (not for students)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="demo-7-ta-guide-mapping-color-patterns-onto-a-phylogeny" class="level1">
+<h1>Demo 7 — TA Guide: Mapping Color Patterns onto a Phylogeny</h1>
+<p><strong>EEB 187: Ecology and Evolution of Color</strong> <strong>Week 8, Wednesday May 20, 2026</strong> <strong>Duration: 75 minutes</strong></p>
+<hr>
+<section id="day-before-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="day-before-checklist">Day-Before Checklist</h2>
+<ul class="task-list">
+<li><p><label><input type="checkbox"><strong>R packages installed</strong> on all lab machines: <code>ape</code>, <code>phytools</code>. Test with <code>library(ape); library(phytools)</code> — no errors.</label></p></li>
+<li><p><label><input type="checkbox"><strong>Data files in place</strong> on all machines or on the shared drive. The folder structure should be:</label></p>
+<pre><code>demo7/
+  data/
+    frederich/
+      acanthuridae-tree.tree    (NEXUS format, 65 tips)
+      acanthuridae-color-patterns.csv   (83 species, 59 columns)
+  demo7-worksheet.qmd</code></pre></li>
+<li><p><label><input type="checkbox"><strong>Test-render the QMD</strong> on at least one machine: <code>quarto render demo7-worksheet.qmd --to html</code>. Confirm that all chunks execute, especially the <code>contMap</code> and <code>phylosig</code> calls (these take a few seconds each).</label></p></li>
+<li><p><label><input type="checkbox"><strong>Print 5–6 paper copies</strong> of the QMD (or have the HTML open on the podium) for students who prefer to follow along on paper.</label></p></li>
+<li><p><label><input type="checkbox"><strong>Projector works</strong> with RStudio visible. You will want to live-code Sections 1–3 while students follow along.</label></p></li>
+<li><p><label><input type="checkbox"><strong>setwd() paths</strong>: Students will need to change the <code>setwd()</code> path. Have the correct path for the lab machines written on the board or in a pinned Slack message before class starts. Something like: <code>setwd("C:/Users/student/Desktop/demo7/")</code> or <code>setwd("~/Desktop/demo7/")</code>.</label></p></li>
+</ul>
+<hr>
+</section>
+<section id="timeline-75-minutes" class="level2">
+<h2 class="anchored" data-anchor-id="timeline-75-minutes">Timeline (75 minutes)</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Time</th>
+<th>Duration</th>
+<th>Activity</th>
+<th>Sections</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0:00–0:10</td>
+<td>10 min</td>
+<td><strong>Instructor intro</strong>: What is a phylogeny? What is phylogenetic signal? Why do we care? Use slides if available. Key message: “We’re asking whether evolutionary history predicts color patterns.”</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>0:10–0:15</td>
+<td>5 min</td>
+<td><strong>Students open RStudio</strong>, load packages, set working directory. Walk around and troubleshoot <code>setwd()</code> issues.</td>
+<td>Setup</td>
+</tr>
+<tr class="odd">
+<td>0:15–0:30</td>
+<td>15 min</td>
+<td><strong>Guided walkthrough (together)</strong>: Load tree, plot it, load trait data, match tree to data. Do this at the front while students follow along. Pause after the matching step to emphasize the golden rule.</td>
+<td>1, 2, 3</td>
+</tr>
+<tr class="even">
+<td>0:30–0:45</td>
+<td>15 min</td>
+<td><strong>Guided walkthrough (together)</strong>: Create complexity score, histogram, genus comparison. Then contMap and phylogenetic signal tests. Let students run each chunk, then discuss results as a class.</td>
+<td>4, 5, 6</td>
+</tr>
+<tr class="odd">
+<td>0:45–0:55</td>
+<td>10 min</td>
+<td><strong>Discrete trait mapping</strong>: Trunk marbling. Brief discussion about Turing patterns connecting back to Lecture 12.</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>0:55–1:05</td>
+<td>10 min</td>
+<td><strong>Independent work</strong>: Students choose a trait and repeat the analysis. TAs circulate and help.</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>1:05–1:15</td>
+<td>10 min</td>
+<td><strong>Wrap-up discussion</strong>: Call on 2–3 students to share their trait results. Remind about the deliverable. Preview Part 2 (next week: their own clade with pavo data).</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<section id="pacing-notes" class="level3">
+<h3 class="anchored" data-anchor-id="pacing-notes">Pacing notes</h3>
+<ul>
+<li>The first 30 minutes (Setup through Section 3) tend to take longer than expected because of <code>setwd()</code> problems and package installation issues. Budget extra time here.</li>
+<li>contMap rendering (Section 5) takes 5–15 seconds depending on the machine. Warn students it is not frozen.</li>
+<li>If you are running behind, Section 7 (trunk marbling) can be shortened to just showing the plot without discussion. Do NOT cut Section 8 — the independent work is where the learning sticks.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="common-student-issues-and-solutions" class="level2">
+<h2 class="anchored" data-anchor-id="common-student-issues-and-solutions">Common Student Issues and Solutions</h2>
+<section id="my-tree-wont-load-error-in-filefile-r" class="level3">
+<h3 class="anchored" data-anchor-id="my-tree-wont-load-error-in-filefile-r">“My tree won’t load” / “Error in file(file, ‘r’)”</h3>
+<p><strong>Cause:</strong> <code>setwd()</code> path is wrong, or the data folder is not where they expect. <strong>Fix:</strong> Have them run <code>getwd()</code> to see where R thinks they are. Then check <code>list.files("data/frederich/")</code> to see if the files are visible. Most common issue: they are one directory level off.</p>
+</section>
+<section id="contmap-is-blank-error-names-of-x-are-not-in-tree" class="level3">
+<h3 class="anchored" data-anchor-id="contmap-is-blank-error-names-of-x-are-not-in-tree">“contMap is blank” / “Error: names of x are not in tree”</h3>
+<p><strong>Cause:</strong> The names on the trait vector don’t match the tree tip labels. <strong>Fix:</strong> Have them check <code>head(names(pc))</code> and <code>head(tree_matched$tip.label)</code>. The names must match exactly. Most common cause: they forgot <code>names(pc) &lt;- tr$species</code> or used the unmatched data frame instead of <code>tr</code>.</p>
+</section>
+<section id="k-is-na-or-error-in-phylosig" class="level3">
+<h3 class="anchored" data-anchor-id="k-is-na-or-error-in-phylosig">“K is NA” or “Error in phylosig”</h3>
+<p><strong>Cause:</strong> Missing data (NA values) in the trait vector. <strong>Fix:</strong> Make sure they used <code>na.rm = TRUE</code> in the <code>rowSums()</code> call for pattern complexity. For individual traits, NAs should not be an issue since they are 0/1, but double-check with <code>sum(is.na(my_trait))</code>.</p>
+</section>
+<section id="what-does-k-1-mean-is-that-no-signal" class="level3">
+<h3 class="anchored" data-anchor-id="what-does-k-1-mean-is-that-no-signal">“What does K &lt; 1 mean? Is that no signal?”</h3>
+<p><strong>Cause:</strong> Confusion between significant signal and strong signal. <strong>Fix:</strong> K &lt; 1 with p &lt; 0.05 means there IS significant signal, but it is <em>weaker</em> than what you’d expect under pure Brownian motion. The tree predicts trait similarity, just not as strongly as a random-drift model would suggest. This is actually the most common result in nature — it means something like natural selection or convergence is partially overriding phylogenetic inertia.</p>
+</section>
+<section id="my-k-value-is-different-from-my-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="my-k-value-is-different-from-my-neighbors">“My K value is different from my neighbor’s”</h3>
+<p><strong>Cause:</strong> The randomization test involves random permutations, so p-values will vary slightly between runs. <strong>Fix:</strong> This is expected. K itself should be identical (it is deterministic). Only the p-value changes. If they set a seed (<code>set.seed(42)</code>) before running, they will get identical results.</p>
+</section>
+<section id="install.packages-doesnt-work-permission-denied" class="level3">
+<h3 class="anchored" data-anchor-id="install.packages-doesnt-work-permission-denied">“install.packages doesn’t work” / “permission denied”</h3>
+<p><strong>Cause:</strong> Lab machines sometimes have restricted write access. <strong>Fix:</strong> Try <code>install.packages("phytools", lib = "~/R/library")</code> and then <code>library(phytools, lib.loc = "~/R/library")</code>. Or install to a temp directory.</p>
+<hr>
+</section>
+</section>
+<section id="key-teaching-moments" class="level2">
+<h2 class="anchored" data-anchor-id="key-teaching-moments">Key Teaching Moments</h2>
+<ol type="1">
+<li><p><strong>The golden rule (Section 3):</strong> This is the most important concept for their final projects. Emphasize that <em>every</em> comparative analysis starts with matching tree tips to data. Students who skip this step in Part 2 will get cryptic errors. Spend time on this even if it feels tedious.</p></li>
+<li><p><strong>K &lt; 1 does not mean “no signal” (Section 6):</strong> This is the most common misinterpretation. Draw a quick diagram on the board: K = 0 (no signal, random with respect to tree) vs.&nbsp;K &lt; 1 (some signal, weaker than BM) vs.&nbsp;K = 1 (matches BM exactly) vs.&nbsp;K &gt; 1 (hyper-conserved). The p-value tells you whether signal is real; K tells you how strong it is.</p></li>
+<li><p><strong>contMap is an estimate, not data (Section 5):</strong> The colors along internal branches are <em>inferred</em> ancestral values, not observed data. We only have data at the tips. Students sometimes treat the internal colors as facts. Remind them that ancestral state estimation involves assumptions (especially the BM model).</p></li>
+<li><p><strong>Connection to Turing patterns (Section 7):</strong> The trunk marbling trait is a great bridge to Lecture 12. If marbling clusters in certain clades, it suggests the developmental toolkit for Turing patterns may be phylogenetically inherited, even if the specific pattern varies.</p></li>
+<li><p><strong>“Phylogenetically conserved” requires nuance (Deliverable):</strong> Push students to avoid black-and-white answers. The correct answer to “Is color pattern diversity conserved?” is “It depends on the trait and the scale.” Pattern complexity shows weak but significant signal. Some individual traits may show strong signal. Others may show none. That’s biology.</p></li>
+</ol>
+<hr>
+</section>
+<section id="expected-results-by-section" class="level2">
+<h2 class="anchored" data-anchor-id="expected-results-by-section">Expected Results by Section</h2>
+<section id="section-1-tree" class="level3">
+<h3 class="anchored" data-anchor-id="section-1-tree">Section 1: Tree</h3>
+<ul>
+<li>65 tips, root age ~65.3 Ma</li>
+<li>Genera: Acanthurus, Ctenochaetus, Naso, Zebrasoma, Paracanthurus, Prionurus</li>
+</ul>
+</section>
+<section id="section-3-matching" class="level3">
+<h3 class="anchored" data-anchor-id="section-3-matching">Section 3: Matching</h3>
+<ul>
+<li>62 species in common</li>
+<li>3 in tree but not in data</li>
+<li>21 in data but not in tree</li>
+</ul>
+</section>
+<section id="section-4-complexity" class="level3">
+<h3 class="anchored" data-anchor-id="section-4-complexity">Section 4: Complexity</h3>
+<ul>
+<li>Range: 4–19 pattern elements</li>
+<li>Most complex: Acanthurus_bariene (19)</li>
+<li>Simplest: Zebrasoma_rostratum (4)</li>
+<li>Average by genus (approximate):
+<ul>
+<li>Acanthurus: n=26, mean ~10.2</li>
+<li>Ctenochaetus: n=6, mean ~9.5</li>
+<li>Naso: n=19, mean ~8.2</li>
+<li>Zebrasoma: n=7, mean ~7.3</li>
+<li>Paracanthurus: n=1 (single species)</li>
+<li>Prionurus: n=3, mean ~6.7</li>
+</ul></li>
+</ul>
+</section>
+<section id="section-5-contmap" class="level3">
+<h3 class="anchored" data-anchor-id="section-5-contmap">Section 5: contMap</h3>
+<ul>
+<li>The fan tree should show warm (red) colors concentrated in the Acanthurus clade, with cooler (blue) colors in Zebrasoma and Prionurus. Naso is mixed. There should be visible shifts along some branches.</li>
+</ul>
+</section>
+<section id="section-6-phylogenetic-signal" class="level3">
+<h3 class="anchored" data-anchor-id="section-6-phylogenetic-signal">Section 6: Phylogenetic signal</h3>
+<ul>
+<li><strong>Blomberg’s K = ~0.163, p = ~0.039</strong> (significant)</li>
+<li><strong>Pagel’s lambda = ~0.294, p = ~0.019</strong> (significant)</li>
+<li>Both indicate weak but statistically significant phylogenetic signal. K well below 1 means the tree predicts complexity, but much less strongly than Brownian motion would predict.</li>
+</ul>
+</section>
+<section id="section-7-trunk-marbling" class="level3">
+<h3 class="anchored" data-anchor-id="section-7-trunk-marbling">Section 7: Trunk marbling</h3>
+<ul>
+<li>17 of 62 species have trunk marbling</li>
+<li>Concentrated in Acanthurus (11 of 26 species) and Ctenochaetus (3 of 6)</li>
+<li>Absent in Zebrasoma (0/7), Prionurus (0/3), and Paracanthurus (0/1)</li>
+<li>Visually clusters on the tree — not randomly distributed</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="your-turn-expected-results-for-common-trait-choices" class="level2">
+<h2 class="anchored" data-anchor-id="your-turn-expected-results-for-common-trait-choices">“Your Turn” — Expected Results for Common Trait Choices</h2>
+<section id="h_marbling-head-marbling" class="level3">
+<h3 class="anchored" data-anchor-id="h_marbling-head-marbling">H_marbling (head marbling)</h3>
+<ul>
+<li>Present in ~12 species</li>
+<li>Largely overlaps with trunk marbling (same Turing-pattern mechanism)</li>
+<li>Moderate K, likely significant</li>
+<li>Clusters in Acanthurus and Ctenochaetus</li>
+</ul>
+</section>
+<section id="ta_saddle-tail-saddle-marking" class="level3">
+<h3 class="anchored" data-anchor-id="ta_saddle-tail-saddle-marking">Ta_saddle (tail saddle marking)</h3>
+<ul>
+<li>Present in ~5–8 species</li>
+<li>Scattered across clades — may NOT show strong signal</li>
+<li>K likely non-significant (p &gt; 0.05)</li>
+<li>Good example of a trait that evolved independently multiple times</li>
+</ul>
+</section>
+<section id="h_1_v_strip-single-vertical-head-stripe" class="level3">
+<h3 class="anchored" data-anchor-id="h_1_v_strip-single-vertical-head-stripe">H_1_v_strip (single vertical head stripe)</h3>
+<ul>
+<li>Present in ~10–15 species</li>
+<li>The classic “eye bar” — common across multiple genera</li>
+<li>May show moderate signal</li>
+<li>Good for discussing anti-predator function (eye camouflage)</li>
+</ul>
+</section>
+<section id="ta_colored_scalpel-colored-caudal-spine" class="level3">
+<h3 class="anchored" data-anchor-id="ta_colored_scalpel-colored-caudal-spine">Ta_colored_scalpel (colored caudal spine)</h3>
+<ul>
+<li>Present in ~10 species</li>
+<li>The surgeonfish weapon — potentially an aposematic signal</li>
+<li>Worth discussing: why would you advertise your weapon with color?</li>
+<li>Signal strength variable</li>
+</ul>
+</section>
+<section id="ta_eyespot-tail-eyespot" class="level3">
+<h3 class="anchored" data-anchor-id="ta_eyespot-tail-eyespot">Ta_eyespot (tail eyespot)</h3>
+<ul>
+<li>Rare — present in only ~3–5 species</li>
+<li>Low sample size makes signal tests unreliable</li>
+<li>Good teaching moment about statistical power with rare traits</li>
+</ul>
+</section>
+<section id="tr_1_h_strip-single-horizontal-trunk-stripe" class="level3">
+<h3 class="anchored" data-anchor-id="tr_1_h_strip-single-horizontal-trunk-stripe">Tr_1_h_strip (single horizontal trunk stripe)</h3>
+<ul>
+<li>Present in ~12–18 species</li>
+<li>Common in Acanthurus</li>
+<li>Likely shows significant signal</li>
+<li>Classic “lateral stripe” — discuss camouflage function (breaking up body outline)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="notes-for-part-2-next-week" class="level2">
+<h2 class="anchored" data-anchor-id="notes-for-part-2-next-week">Notes for Part 2 (Next Week)</h2>
+<p>Remind students at the end of class:</p>
+<ul>
+<li>Next week they will apply these same methods to their group’s fish clade</li>
+<li>They will use color metrics extracted from images via pavo (not binary presence/absence like today)</li>
+<li>The tree will come from the Brownstein et al.&nbsp;(2025) labrid phylogeny</li>
+<li>Groups should make sure their pavo image analysis from Demo 5 is complete</li>
+<li>The question shifts from “Is this trait conserved in surgeonfishes?” to “Is color diversity conserved in MY clade?”</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>EEB 187 · Ecology and Evolution of Color · UCLA · Spring 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
