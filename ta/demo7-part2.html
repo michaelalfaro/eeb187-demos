@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Demo 7 — Part 2: Build Your Own Exemplar Bundle – Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Demo 7 — Mapping Color Patterns onto a Phylogeny</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./demo7-prep.html"> 
+<span class="menu-text">Prep</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./demo7-worksheet.html"> 
+<span class="menu-text">Worksheet (Part 1)</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./demo7-part2.html" aria-current="page"> 
+<span class="menu-text">Part 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./demo7-ta-guide-web.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides/demo7-intro-slides.pptx"> 
+<span class="menu-text">Intro Slides</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#step-1-log-in" id="toc-step-1-log-in" class="nav-link" data-scroll-target="#step-1-log-in">Step 1 — Log in</a></li>
+  <li><a href="#step-2-pick-exemplar-images" id="toc-step-2-pick-exemplar-images" class="nav-link" data-scroll-target="#step-2-pick-exemplar-images">Step 2 — Pick exemplar images</a></li>
+  <li><a href="#step-3-export-the-part-2-bundle" id="toc-step-3-export-the-part-2-bundle" class="nav-link" data-scroll-target="#step-3-export-the-part-2-bundle">Step 3 — Export the Part 2 bundle</a></li>
+  <li><a href="#step-4-run-the-part-2-r-analysis" id="toc-step-4-run-the-part-2-r-analysis" class="nav-link" data-scroll-target="#step-4-run-the-part-2-r-analysis">Step 4 — Run the Part 2 R analysis</a></li>
+  <li><a href="#what-to-bring-to-part-3" id="toc-what-to-bring-to-part-3" class="nav-link" data-scroll-target="#what-to-bring-to-part-3">What to bring to Part 3</a></li>
+  <li><a href="#if-something-goes-wrong" id="toc-if-something-goes-wrong" class="nav-link" data-scroll-target="#if-something-goes-wrong">If something goes wrong</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Demo 7 — Part 2: Build Your Own Exemplar Bundle</h1>
+<p class="subtitle lead">EEB 187 · Week 8 · Wednesday May 20, 2026</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>Starting from your group’s family tree and per-species image library on the FishView server, you’ll produce one <strong>exemplar image per species</strong> and download a bundle that pairs those images with the tree. The bundle is the input for the R analysis at the end of class.</p>
+<p>This is the in-class group-work half of Demo 7. <strong>No R coding yet</strong> — that comes once the bundle is in your hands.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Background reading
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Frédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., &amp; Laudet, V. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. <em>BMC Biology</em>, <em>24</em>(1). <a href="https://doi.org/10.1186/s12915-026-02544-4" class="uri">https://doi.org/10.1186/s12915-026-02544-4</a></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Network requirement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The FishView server lives at <strong><a href="http://164.67.78.200:5052/" class="uri">http://164.67.78.200:5052/</a></strong> and is only reachable from <strong>UCLA campus WiFi or UCLA Bruin Secure VPN</strong>. From off-campus with no VPN you’ll get a connection-refused error.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-1-log-in" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-log-in">Step 1 — Log in</h2>
+<ol type="1">
+<li>Open <a href="http://164.67.78.200:5052/" class="uri">http://164.67.78.200:5052/</a></li>
+<li>Enter your <strong>group code</strong> and your <strong>first name</strong>:</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Family</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Balistoidea (triggerfishes)</td>
+<td><code>trigger-2026</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Pomacanthidae (angelfishes)</td>
+<td><code>angel-2026</code></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Scarinae (parrotfishes)</td>
+<td><code>parrot-2026</code></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Cirrhilabrini (fairy wrasses)</td>
+<td><code>fairy-2026</code></td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Acanthuridae (surgeonfishes)</td>
+<td><code>tang-2026</code></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Hypsigenyinae (hogfishes)</td>
+<td><code>hog-2026</code></td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Halichoerine (Coris-allies wrasses)</td>
+<td><code>coris-2026</code></td>
+</tr>
+</tbody>
+</table>
+<ol start="3" type="1">
+<li>You land on your family’s <strong>student dashboard</strong>.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fishview/dashboard.png" class="img-fluid figure-img" style="width:100.0%" alt="Cirrhilabrini dashboard showing species table with tree-chip indicators and Export Part 2 Bundle button"></p>
+<figcaption>FishView student dashboard — green left-border + 🌳 chip mark species that appear in your family’s phylogeny.</figcaption>
+</figure>
+</div>
+<p>What to notice on the dashboard:</p>
+<ul>
+<li>The <strong>🌳 Only species in the tree</strong> toggle (top of the controls row) hides species that aren’t in your phylogeny — turn it on so Part 2 only shows species you can use.</li>
+<li>The <strong>green Export Part 2 Bundle (N ★ exemplars + tree)</strong> button is your final step; it’s disabled until you’ve starred at least one species.</li>
+<li>The <strong>Exemplar</strong> column shows ★ once you’ve picked an image for that species, with a ↺ reset icon if you want to backtrack.</li>
+</ul>
+<hr>
+</section>
+<section id="step-2-pick-exemplar-images" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-pick-exemplar-images">Step 2 — Pick exemplar images</h2>
+<p>Click into a species → review page. You’ll see one card per available image.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fishview/review-page.png" class="img-fluid figure-img" style="width:100.0%" alt="Review page for Cirrhilabrus adornatus showing 4 image cards with action radios"></p>
+<figcaption>Per-species review page. Each image card has Include/Exclude radios, a ★ Exemplar selector, and a Reorient button.</figcaption>
+</figure>
+</div>
+<p><strong>On each image card:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>★ Exemplar</strong></td>
+<td>The single best image for that species. Click this on exactly one card per species.</td>
+</tr>
+<tr class="even">
+<td><strong>Keep</strong></td>
+<td>Image is fine but not your top pick.</td>
+</tr>
+<tr class="odd">
+<td><strong>Exclude</strong></td>
+<td>Image is bad for your purposes (back-facing fish, juvenile, wrong species, etc.)</td>
+</tr>
+<tr class="even">
+<td><strong>Reorient</strong></td>
+<td>The fish isn’t facing left — open the digitize modal (see Step 2a).</td>
+</tr>
+<tr class="odd">
+<td><strong>Alt Morph</strong>, <strong>Resegment</strong>, <strong>Color Fix</strong></td>
+<td>Flag for later review; doesn’t affect Part 2 export.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>How many to pick?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pick <strong>at least 3 species from at least 2 different genera</strong>. More is fine — the export will ship every exemplar you’ve starred, no cap. The R analysis at the end of class will work with whatever count you bring back.</p>
+</div>
+</div>
+<section id="step-2a-reorient-if-the-fish-isnt-facing-left" class="level3">
+<h3 class="anchored" data-anchor-id="step-2a-reorient-if-the-fish-isnt-facing-left">Step 2a — Reorient if the fish isn’t facing left</h3>
+<p>If the fish in the photo is tilted or facing the wrong way, click <strong>Reorient</strong> on that image card. The Digitize Orientation modal opens:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fishview/reorient-modal.png" class="img-fluid figure-img" style="width:100.0%" alt="Reorient modal showing fish image with Mouth/Tail/Angle readout, Flip horizontal/Flip vertical checkboxes, and Apply &amp; Save button"></p>
+<figcaption>Reorient modal. Click MOUTH first, then BASE OF TAIL. The fish will be rotated so it faces left. Flip horizontal / Flip vertical handle mirror cases. Apply &amp; Save writes the rotated PNG to the server.</figcaption>
+</figure>
+</div>
+<ol type="1">
+<li>Click on the fish’s <strong>mouth</strong> first (or just in front of it).</li>
+<li>Click on the <strong>base of the tail</strong> (caudal peduncle).</li>
+<li>The Mouth / Tail / Angle readout fills in.</li>
+<li>If the fish is also mirrored relative to a left-facing view, tick <strong>Flip horizontal</strong> and/or <strong>Flip vertical</strong>. The checkboxes persist — if you re-open the modal for an image you’ve previously flipped, the checkboxes come back already ticked.</li>
+<li>Click <strong>Apply &amp; Save</strong> (the green button).</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Important:</strong> Clicking the mouth and tail points alone does NOT save the rotation — you have to click <strong>Apply &amp; Save</strong> for the server to write the rotated PNG. The bundle download will use the rotated image once that save succeeds.</p>
+</div>
+</div>
+</section>
+<section id="step-2b-backtracking-with-reset" class="level3">
+<h3 class="anchored" data-anchor-id="step-2b-backtracking-with-reset">Step 2b — Backtracking with ↺ reset</h3>
+<p>The dashboard has small <strong>↺</strong> icons in two places:</p>
+<ul>
+<li>Next to a row’s ★ → <strong>clears</strong> that species’ exemplar so you can pick a different one.</li>
+<li>Next to a “Reviewed” badge → <strong>un-marks</strong> the species back to in-progress.</li>
+</ul>
+<p>Same controls show up on the review page as <strong>↺ Clear ★</strong> and <strong>↺ Unmark</strong> buttons. Both prompt for confirmation. The saved Gestalt-k value survives an unmark — only the status flips.</p>
+<p>Use these freely. Second-guessing your exemplar choice is normal.</p>
+<hr>
+</section>
+</section>
+<section id="step-3-export-the-part-2-bundle" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-export-the-part-2-bundle">Step 3 — Export the Part 2 bundle</h2>
+<p>Once you’ve starred all the species you want:</p>
+<ol type="1">
+<li>Go back to the dashboard.</li>
+<li>Click the green <strong>Export Part 2 Bundle (N ★ exemplars + tree)</strong> button. N is your current count.</li>
+<li>Your browser downloads <code>&lt;family&gt;-part2-bundle.zip</code> containing:</li>
+</ol>
+<pre><code>&lt;family&gt;-part2-bundle.zip
+├── images/
+│   ├── Genus_species_1.png       (oriented if you reoriented; segmented otherwise)
+│   ├── Genus_species_2.png
+│   └── …                          (one per ★ exemplar — every species you starred)
+├── &lt;family&gt;-tree.tre              (the family's phylogeny, NEXUS or Newick)
+├── picked_species.txt             (the species names, one per line)
+├── picked_tip_labels.txt          (exact tree-tip labels, for ape::keep.tip())
+└── README.txt                     (contents summary + any image substitutions)</code></pre>
+<ol start="4" type="1">
+<li>Unzip it into your demo working folder under <code>data/my-fish/</code> (so the folder tree above sits <em>inside</em> <code>data/my-fish/</code>).</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Substitution notes in README.txt:</strong> If one of your starred images doesn’t have a segmented PNG on disk yet, the bundle falls back to a <em>different</em> segmented PNG of the same species and notes the substitution. Open <code>README.txt</code> if you want to see what was swapped — you can re-pick that species on the dashboard and re-export.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-4-run-the-part-2-r-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-run-the-part-2-r-analysis">Step 4 — Run the Part 2 R analysis</h2>
+<p>Back in RStudio, you’ll plot the <strong>pruned tree with your exemplar images at the tips</strong>. The R script you’ll use lives at:</p>
+<ul>
+<li><a href="scripts/part2-tree-with-images.R">scripts/part2-tree-with-images.R</a> (one-time download via the worksheet)</li>
+</ul>
+<p>The worksheet’s Part 2 section walks you through:</p>
+<ol type="1">
+<li>Unzipping the bundle into <code>data/my-fish/</code>.</li>
+<li>Sourcing <code>scripts/part2-tree-with-images.R</code> (it’s downloaded for you automatically by the worksheet’s first chunk).</li>
+<li>Calling <code>plot_part2(family = "&lt;your family&gt;", bundle_dir = "data/my-fish", out_pdf = "results/part2-tree-with-images.pdf")</code>.</li>
+</ol>
+<p>The output is a single PDF showing your group’s exemplar species pinned to the tips of the pruned family tree. Use it as the figure for your Part 2 writeup.</p>
+<p><strong>Continue to</strong> → <a href="demo7-worksheet.html">demo7-worksheet.html</a> (scroll to the Part 2 section).</p>
+<hr>
+</section>
+<section id="what-to-bring-to-part-3" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-bring-to-part-3">What to bring to Part 3</h2>
+<p>For the writeup, you’ll need three things from this session:</p>
+<ol type="1">
+<li>The downloaded <code>&lt;family&gt;-part2-bundle.zip</code> (keep it — Part 3 reads from it too).</li>
+<li>The rendered PDF <code>results/part2-tree-with-images.pdf</code>.</li>
+<li>One short paragraph (2–3 sentences) answering: <em>Do your three species’ color patterns appear conserved within your family’s phylogeny, or do they look randomly distributed? Use what you see in your figure as evidence.</em></li>
+</ol>
+<hr>
+</section>
+<section id="if-something-goes-wrong" class="level2">
+<h2 class="anchored" data-anchor-id="if-something-goes-wrong">If something goes wrong</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Connection refused” when you open the server URL</td>
+<td>Connect to UCLA Bruin Secure VPN, then refresh.</td>
+</tr>
+<tr class="even">
+<td>Dashboard shows no 🌳 chips</td>
+<td>Your group’s tree may not be loaded yet — flag to a TA.</td>
+</tr>
+<tr class="odd">
+<td>Export button stays grey</td>
+<td>You haven’t ★-starred any species yet. Click into a species, pick its best image, hit ★ Exemplar, then go back to the dashboard.</td>
+</tr>
+<tr class="even">
+<td>Reorient looks rotated in the modal but the dashboard image isn’t updated</td>
+<td>You clicked the landmarks but forgot <strong>Apply &amp; Save</strong>. Open the modal again and finish it.</td>
+</tr>
+<tr class="odd">
+<td>Bundle ZIP arrives but <code>picked_tip_labels.txt</code> has fewer lines than your ★ count</td>
+<td>One or more of your picks isn’t on the phylogeny — re-pick from species with a 🌳 chip.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Citation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Frédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., &amp; Laudet, V. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. <em>BMC Biology</em>, <em>24</em>(1). <a href="https://doi.org/10.1186/s12915-026-02544-4" class="uri">https://doi.org/10.1186/s12915-026-02544-4</a></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>EEB 187 · Ecology and Evolution of Color · UCLA · Spring 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -249,40 +249,169 @@ Week 8 Demo Section
 </div>
 </div></div>
 </section>
-<section id="what-are-we-mapping-onto-the-tree" class="slide level2">
-<h2>What are we mapping onto the tree?</h2>
-<p><strong>Color pattern traits</strong> — coded by Frederich et al.&nbsp;for each species:</p>
+<section id="where-the-data-comes-from-frederich-et-al.-2026" class="slide level2">
+<h2>Where the data comes from — Frederich et al.&nbsp;2026</h2>
+<div style="font-size: 0.95em;">
+<blockquote>
+<p><strong>Rapid and repeated evolution of the pigmentation patterns in reef fishes</strong> Frederich, Mittelheiser, Gillet, Hodge &amp; Laudet · <em>BMC Biology</em> 2026</p>
+</blockquote>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>What they did</strong></p>
+<ul>
+<li>Scored <strong>6 reef-fish families</strong> (Acanthuridae, Chaetodontidae, Lutjanidae, Mullidae, Pomacanthidae, Pomacentridae)</li>
+<li>For every species: <strong>57 binary characters</strong> describing the pigmentation pattern (1 = present, 0 = absent)</li>
+<li>Computed Gower distance → PCoA → quantified pattern diversity through time and across regions</li>
+<li>Asked: how fast and how often do these patterns evolve?</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><strong>Today: the Acanthuridae sub-dataset</strong></p>
+<ul>
+<li><strong>65 surgeonfish species</strong> on a time-calibrated tree</li>
+<li><strong>59 columns</strong> per species (57 motif characters + species name + row index)</li>
+<li>You’ll test for <strong>phylogenetic signal</strong> on each character (and on a composite “pattern complexity” score)</li>
+</ul>
+<div style="margin-top: 1em; font-size: 0.85em; color: #d4a853;">
+<p><em>Their punchline: pigmentation patterns evolve rapidly and convergently — same motifs reappear repeatedly across distant lineages.</em></p>
+</div>
+</div></div>
+</section>
+<section id="how-they-coded-color-body-regions-motif-vocabulary" class="slide level2">
+<h2>How they coded color — body regions × motif vocabulary</h2>
 <div class="columns">
 <div class="column" style="text-align: center;">
-<p><strong>HEAD (H_)</strong></p>
-<ul>
-<li>Colors</li>
-<li>Horizontal stripes</li>
-<li>Vertical stripes</li>
-<li>Eyespots</li>
-<li>Marbling</li>
-</ul>
-</div><div class="column" style="text-align: center;">
-<p><strong>TRUNK (Tr_)</strong></p>
-<ul>
-<li>Colors</li>
-<li>Horizontal stripes</li>
-<li>Vertical stripes</li>
-<li>Spots/points</li>
-<li>Marbling</li>
-</ul>
-</div><div class="column" style="text-align: center;">
-<p><strong>TAIL (Ta_)</strong></p>
-<ul>
-<li>Colors</li>
-<li>Stripes</li>
-<li>Eyespots</li>
-<li>Saddle marks</li>
-<li>Colored scalpel</li>
-</ul>
+<svg width="900" height="380" viewbox="0 0 900 380" role="img" aria-label="Tang silhouette with head, trunk, and tail zones annotated">
+</svg><p><defs> <lineargradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="0%"> <stop offset="0%" stop-color="#e07a5f" stop-opacity="0.35"> <stop offset="25%" stop-color="#e07a5f" stop-opacity="0.35"> <stop offset="28%" stop-color="#d4a853" stop-opacity="0.35"> <stop offset="78%" stop-color="#d4a853" stop-opacity="0.35"> <stop offset="80%" stop-color="#81b29a" stop-opacity="0.35"> <stop offset="100%" stop-color="#81b29a" stop-opacity="0.35"> </stop></stop></stop></stop></stop></stop></lineargradient> </defs></p>
+<!-- Tang body silhouette -->
+<p><path d="M 80 195
+           C 100 95, 200 60, 320 60
+           L 580 60
+           C 640 60, 680 90, 700 130
+           L 760 80
+           L 800 100
+           L 800 290
+           L 760 310
+           L 700 260
+           C 680 300, 640 330, 580 330
+           L 320 330
+           C 200 330, 100 295, 80 195 Z" fill="url(#bodyGrad)" stroke="#f4e5d0" stroke-width="2.5"></path></p>
+<!-- Eye -->
+<p><circle cx="170" cy="180" r="10" fill="#1a1d2e"> <circle cx="173" cy="177" r="3" fill="#f4e5d0"></circle></circle></p>
+<!-- Mouth -->
+<p><path d="M 95 220 L 115 210" stroke="#1a1d2e" stroke-width="2" fill="none"></path></p>
+<!-- Scalpel (Acanthuridae-defining trait) -->
+<p><path d="M 660 215 L 695 195 L 695 235 Z" fill="#e07a5f" stroke="#1a1d2e" stroke-width="1.5"></path></p>
+<!-- Zone divider lines -->
+<p><line x1="240" y1="40" x2="240" y2="350" stroke="#e07a5f" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"> <line x1="680" y1="40" x2="680" y2="350" stroke="#81b29a" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"></line></line></p>
+<!-- Labels -->
+<p><text x="155" y="32" text-anchor="middle" fill="#e07a5f" font-size="22" font-weight="700">HEAD</text> <text x="155" y="58" text-anchor="middle" fill="#e07a5f" font-size="14" font-style="italic">H_ (22 chars)</text></p>
+<p><text x="460" y="32" text-anchor="middle" fill="#d4a853" font-size="22" font-weight="700">TRUNK</text> <text x="460" y="58" text-anchor="middle" fill="#d4a853" font-size="14" font-style="italic">Tr_ (14 chars)</text></p>
+<p><text x="745" y="32" text-anchor="middle" fill="#81b29a" font-size="22" font-weight="700">TAIL</text> <text x="745" y="58" text-anchor="middle" fill="#81b29a" font-size="14" font-style="italic">Ta_ (17 chars)</text></p>
+<!-- Bottom caption -->
+<text x="450" y="370" text-anchor="middle" fill="#f4e5d0" font-size="14" font-style="italic"> Every species is described by 57 binary characters spread across these three zones </text>
+
+</div><div class="column" style="width:42%;">
+<p><strong>Motif vocabulary</strong> <em>(scored in each zone)</em></p>
+<div style="font-size: 0.82em; line-height: 1.55;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Icon</th>
+<th>Motif</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">▬</td>
+<td><strong>h-stripe</strong></td>
+<td>horizontal lines along body axis</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">▮</td>
+<td><strong>v-stripe</strong></td>
+<td>vertical bars perpendicular to body</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">╲</td>
+<td><strong>o-stripe</strong></td>
+<td>oblique stripes (head only)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">⬤</td>
+<td><strong>stain</strong></td>
+<td>large irregular patch</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">●</td>
+<td><strong>point</strong></td>
+<td>small spot</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">⊙</td>
+<td><strong>eyespot</strong></td>
+<td>concentric ring (often false eye)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">※</td>
+<td><strong>marbling</strong></td>
+<td>reticulate / vermiculate pattern</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">⬡</td>
+<td><strong>beehive</strong></td>
+<td>honeycomb / hexagonal grid</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">⌒</td>
+<td><strong>saddle</strong></td>
+<td>curved tail band <em>(tail only)</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="margin-top: 0.6em; font-size: 0.78em; color: #d4a853;">
+<p>Coded as <strong>1 = present, 0 = absent</strong>, plus “1 vs 2+” splits for stripes/stains/points (e.g., <code>H_2_h_strips_+</code> means <em>2 or more</em> horizontal stripes on the head).</p>
+</div>
 </div></div>
-<div style="text-align: center; margin-top: 1em; color: #d4a853;">
-<p><strong>52 binary traits</strong> (present/absent) across 3 body regions = a detailed color pattern fingerprint for each species</p>
+</section>
+<section id="how-to-read-a-coded-species-three-worked-examples" class="slide level2">
+<h2>How to read a coded species — three worked examples</h2>
+<div class="columns">
+<div class="column" style="text-align: center;">
+<p><img data-src="images/Zebrasoma_flavescens.png" height="220"></p>
+<p><strong><em>Zebrasoma flavescens</em></strong> <em>(yellow tang)</em></p>
+<div style="font-size: 0.7em; text-align: left; margin-top: 0.4em; line-height: 1.5; color: #f4e5d0;">
+<p><strong>8 motifs active</strong></p>
+<p><code>CIP</code>, <code>WI</code>, <code>CP</code><br> <code>H_1_color</code><br> <code>Tr_1_color</code><br> <code>Tr_2_v_strips_+</code><br> <code>Ta_1_color</code><br> <code>Ta_colored_scalpel</code></p>
+</div>
+<div style="font-size: 0.78em; color: #81b29a; margin-top: 0.3em;">
+<p>Mostly one color + scalpel. Minimal pattern.</p>
+</div>
+</div><div class="column" style="text-align: center;">
+<p><img data-src="images/Acanthurus_lineatus.png" height="220"></p>
+<p><strong><em>Acanthurus lineatus</em></strong> <em>(lined surgeonfish)</em></p>
+<div style="font-size: 0.7em; text-align: left; margin-top: 0.4em; line-height: 1.5; color: #f4e5d0;">
+<p><strong>13 motifs active</strong></p>
+<p><code>CIP</code>, <code>WI</code>, <code>CP</code><br> <code>H_2_colors_+</code>, <code>H_2_h_strips_+</code><br> <code>H_2_o_strips_+</code>, <code>H_1_stain</code><br> <code>Tr_2_colors_+</code>, <code>Tr_2_h_strips_+</code><br> <code>Ta_2_color_+</code>, <code>Ta_2_strips_h_+</code><br> <code>Ta_2_strips_v_+</code>, <code>Ta_border_fin</code></p>
+</div>
+<div style="font-size: 0.78em; color: #d4a853; margin-top: 0.3em;">
+<p>Striped, colorful — the “stripe signature” is <code>2_h_strips_+</code> on head + trunk + tail.</p>
+</div>
+</div><div class="column" style="text-align: center;">
+<p><img data-src="images/Naso_lituratus.png" height="220"></p>
+<p><strong><em>Naso lituratus</em></strong> <em>(orange-spine unicornfish)</em></p>
+<div style="font-size: 0.7em; text-align: left; margin-top: 0.4em; line-height: 1.5; color: #f4e5d0;">
+<p><strong>18 motifs active</strong> <em>(most complex)</em></p>
+<p><code>H_2_colors_+</code>, <code>H_colorful_mouth</code><br> <code>H_2_o_strips_+</code>, <code>H_2_stains_+</code><br> <code>H_h_strip_eye</code>, <code>H_marbling</code><br> <code>H_edge_operculum</code>, <code>Tr_marbling</code><br> <code>Ta_colored_scalpel</code>, <code>Ta_stain_scalpel</code><br> <em>…plus 8 more</em></p>
+</div>
+<div style="font-size: 0.78em; color: #e07a5f; margin-top: 0.3em;">
+<p>Ornate face (marbling + colorful mouth) + colored scalpel + saddle. Maximally encoded.</p>
+</div>
+</div></div>
+<div style="text-align: center; margin-top: 0.6em; font-size: 0.9em; color: #f4e5d0;">
+<p><strong>Pattern complexity = <code>rowSums(motifs)</code> per species</strong> — the headline number you’ll map onto the tree today.</p>
 </div>
 </section>
 <section id="what-is-phylogenetic-signal" class="slide level2">
