@@ -1,217 +1,225 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Week 8 Demo Section">
+<meta name="dcterms.date" content="2026-05-20">
+
+<title>Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.37">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
-  <meta name="author" content="Week 8 Demo Section">
-  <meta name="dcterms.date" content="2026-05-20">
-  <title>Demo 7 — Mapping Color Patterns onto a Phylogeny</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
-  <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
-    }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #f8f8f2;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #f8f8f2; } /* Normal */
-    code span.al { color: #f07178; } /* Alert */
-    code span.an { color: #d4d0ab; } /* Annotation */
-    code span.at { color: #00e0e0; } /* Attribute */
-    code span.bn { color: #d4d0ab; } /* BaseN */
-    code span.bu { color: #abe338; } /* BuiltIn */
-    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #abe338; } /* Char */
-    code span.cn { color: #ffd700; } /* Constant */
-    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
-    code span.cv { color: #ffd700; } /* CommentVar */
-    code span.do { color: #f8f8f2; } /* Documentation */
-    code span.dt { color: #ffa07a; } /* DataType */
-    code span.dv { color: #d4d0ab; } /* DecVal */
-    code span.er { color: #f07178; text-decoration: underline; } /* Error */
-    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
-    code span.fl { color: #d4d0ab; } /* Float */
-    code span.fu { color: #ffa07a; } /* Function */
-    code span.im { color: #abe338; } /* Import */
-    code span.in { color: #d4d0ab; } /* Information */
-    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
-    code span.op { color: #ffa07a; } /* Operator */
-    code span.ot { color: #00e0e0; } /* Other */
-    code span.pp { color: #dcc6e0; } /* Preprocessor */
-    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
-    code span.sc { color: #abe338; } /* SpecialChar */
-    code span.ss { color: #abe338; } /* SpecialString */
-    code span.st { color: #abe338; } /* String */
-    code span.va { color: #00e0e0; } /* Variable */
-    code span.vs { color: #abe338; } /* VerbatimString */
-    code span.wa { color: #dcc6e0; } /* Warning */
-  </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-4df01d85d5cf19cc6202400f4f043f84.css">
-  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
+
 </head>
-<body class="quarto-dark">
-  <div class="reveal">
-    <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Demo 7 — Mapping Color Patterns onto a Phylogeny</h1>
-  <p class="subtitle">EEB 187: Ecology and Evolution of Color</p>
+<body class="nav-fixed quarto-light">
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Week 8 Demo Section 
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Demo 7 — Mapping Color Patterns onto a Phylogeny</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../demo7-prep.html"> 
+<span class="menu-text">Prep</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../demo7-worksheet.html"> 
+<span class="menu-text">Worksheet (Part 1)</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../demo7-part2.html"> 
+<span class="menu-text">Part 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../demo7-ta-guide-web.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides/demo7-intro-slides.pptx"> 
+<span class="menu-text">Intro Slides</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
 </div>
-</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#todays-big-question" id="toc-todays-big-question" class="nav-link active" data-scroll-target="#todays-big-question">Today’s big question</a></li>
+  <li><a href="#what-is-a-phylogeny" id="toc-what-is-a-phylogeny" class="nav-link" data-scroll-target="#what-is-a-phylogeny">What is a phylogeny?</a></li>
+  <li><a href="#frédérich-et-al.-2026-the-paper-at-a-glance" id="toc-frédérich-et-al.-2026-the-paper-at-a-glance" class="nav-link" data-scroll-target="#frédérich-et-al.-2026-the-paper-at-a-glance">Frédérich et al.&nbsp;2026 — the paper at a glance</a></li>
+  <li><a href="#how-they-coded-color-body-regions-motifs" id="toc-how-they-coded-color-body-regions-motifs" class="nav-link" data-scroll-target="#how-they-coded-color-body-regions-motifs">How they coded color — body regions × motifs</a></li>
+  <li><a href="#three-species-coded-the-intuition" id="toc-three-species-coded-the-intuition" class="nav-link" data-scroll-target="#three-species-coded-the-intuition">Three species, coded — the intuition</a></li>
+  <li><a href="#five-species-all-57-characters-the-formal-view" id="toc-five-species-all-57-characters-the-formal-view" class="nav-link" data-scroll-target="#five-species-all-57-characters-the-formal-view">Five species, all 57 characters — the formal view</a></li>
+  <li><a href="#pattern-complexity-varies-across-the-family" id="toc-pattern-complexity-varies-across-the-family" class="nav-link" data-scroll-target="#pattern-complexity-varies-across-the-family">Pattern complexity varies across the family</a></li>
+  <li><a href="#result-1-motif-richness-tracks-species-richness" id="toc-result-1-motif-richness-tracks-species-richness" class="nav-link" data-scroll-target="#result-1-motif-richness-tracks-species-richness">Result 1 — motif richness tracks species richness</a></li>
+  <li><a href="#result-2-pattern-evolution-is-rapid-and-bounded" id="toc-result-2-pattern-evolution-is-rapid-and-bounded" class="nav-link" data-scroll-target="#result-2-pattern-evolution-is-rapid-and-bounded">Result 2 — pattern evolution is rapid AND bounded</a></li>
+  <li><a href="#what-is-phylogenetic-signal" id="toc-what-is-phylogenetic-signal" class="nav-link" data-scroll-target="#what-is-phylogenetic-signal">What is phylogenetic signal?</a></li>
+  <li><a href="#blombergs-k-what-the-number-means" id="toc-blombergs-k-what-the-number-means" class="nav-link" data-scroll-target="#blombergs-k-what-the-number-means">Blomberg’s K — what the number means</a></li>
+  <li><a href="#contmap-painting-traits-on-the-tree" id="toc-contmap-painting-traits-on-the-tree" class="nav-link" data-scroll-target="#contmap-painting-traits-on-the-tree">contMap — painting traits on the tree</a></li>
+  <li><a href="#discrete-traits-mapping-presenceabsence" id="toc-discrete-traits-mapping-presenceabsence" class="nav-link" data-scroll-target="#discrete-traits-mapping-presenceabsence">Discrete traits — mapping presence/absence</a></li>
+  <li><a href="#the-workflow-what-youll-do-today" id="toc-the-workflow-what-youll-do-today" class="nav-link" data-scroll-target="#the-workflow-what-youll-do-today">The workflow — what you’ll do today</a></li>
+  <li><a href="#what-youll-turn-in" id="toc-what-youll-turn-in" class="nav-link" data-scroll-target="#what-youll-turn-in">What you’ll turn in</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting started</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="demo7-intro-slides.pptx"><i class="bi bi-file-slides"></i>Powerpoint</a></li><li><a href="demo7-intro-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Demo 7 — Mapping Color Patterns onto a Phylogeny</h1>
+<p class="subtitle lead">EEB 187: Ecology and Evolution of Color</p>
 </div>
 
-  <p class="date">2026-05-20</p>
-</section>
-<section id="todays-big-question" class="slide level2">
-<h2>Today’s big question</h2>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Week 8 Demo Section </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 20, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="todays-big-question" class="level2">
+<h2 class="anchored" data-anchor-id="todays-big-question">Today’s big question</h2>
 <div style="font-size: 1.4em; text-align: center; margin-top: 2em;">
 <p><strong>Do closely related fish species have similar color patterns?</strong></p>
 </div>
@@ -221,9 +229,10 @@ Week 8 Demo Section
 <div style="font-size: 0.9em; text-align: center; margin-top: 2em; color: #8888a0;">
 <p>We’ll answer this with data, a phylogeny, and two statistical tests.</p>
 </div>
+<hr>
 </section>
-<section id="what-is-a-phylogeny" class="slide level2">
-<h2>What is a phylogeny?</h2>
+<section id="what-is-a-phylogeny" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-phylogeny">What is a phylogeny?</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <ul>
@@ -247,175 +256,266 @@ Week 8 Demo Section
 <div style="font-size: 0.8em; color: #8888a0;">
 <p>(simplified — the real tree has 65 tips)</p>
 </div>
-</div></div>
-</section>
-<section id="where-the-data-comes-from-frederich-et-al.-2026" class="slide level2">
-<h2>Where the data comes from — Frederich et al.&nbsp;2026</h2>
-<div style="font-size: 0.95em;">
-<blockquote>
-<p><strong>Rapid and repeated evolution of the pigmentation patterns in reef fishes</strong> Frederich, Mittelheiser, Gillet, Hodge &amp; Laudet · <em>BMC Biology</em> 2026</p>
-</blockquote>
 </div>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p><strong>What they did</strong></p>
-<ul>
-<li>Scored <strong>6 reef-fish families</strong> (Acanthuridae, Chaetodontidae, Lutjanidae, Mullidae, Pomacanthidae, Pomacentridae)</li>
-<li>For every species: <strong>57 binary characters</strong> describing the pigmentation pattern (1 = present, 0 = absent)</li>
-<li>Computed Gower distance → PCoA → quantified pattern diversity through time and across regions</li>
-<li>Asked: how fast and how often do these patterns evolve?</li>
-</ul>
-</div><div class="column" style="width:45%;">
-<p><strong>Today: the Acanthuridae sub-dataset</strong></p>
-<ul>
-<li><strong>65 surgeonfish species</strong> on a time-calibrated tree</li>
-<li><strong>59 columns</strong> per species (57 motif characters + species name + row index)</li>
-<li>You’ll test for <strong>phylogenetic signal</strong> on each character (and on a composite “pattern complexity” score)</li>
-</ul>
-<div style="margin-top: 1em; font-size: 0.85em; color: #d4a853;">
-<p><em>Their punchline: pigmentation patterns evolve rapidly and convergently — same motifs reappear repeatedly across distant lineages.</em></p>
 </div>
-</div></div>
+<hr>
 </section>
-<section id="how-they-coded-color-body-regions-motif-vocabulary" class="slide level2">
-<h2>How they coded color — body regions × motif vocabulary</h2>
+<section id="frédérich-et-al.-2026-the-paper-at-a-glance" class="level2">
+<h2 class="anchored" data-anchor-id="frédérich-et-al.-2026-the-paper-at-a-glance">Frédérich et al.&nbsp;2026 — the paper at a glance</h2>
+<div style="font-size: 0.88em; padding: 0.5em 1em; background: rgba(255,255,255,0.06); border-left: 3px solid #d4a853;">
+<p><strong>Rapid and repeated evolution of pigmentation patterns in reef fishes.</strong> Frédérich, Mittelheiser, Gillet, Hodge, Laudet &amp; Dornburg. <em>BMC Biology</em> (2026) 24:46. <a href="https://doi.org/10.1186/s12915-026-02544-4" class="uri">https://doi.org/10.1186/s12915-026-02544-4</a></p>
+</div>
+<div style="margin-top: 0.6em; text-align: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/frederich/workflow.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%"></p>
+</figure>
+</div>
+</div>
+<div class="columns" style="margin-top: 0.4em;">
+<div class="column" style="width:34%;">
+<p><strong>The scope</strong></p>
+<ul>
+<li><strong>6 reef-fish families</strong></li>
+<li><strong>918 species</strong> total</li>
+<li><strong>75%+</strong> of extant diversity in every family</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<p><strong>The coding</strong></p>
+<ul>
+<li><strong>30 motifs</strong> (stripes, spots, eyespots, marbling, beehive, saddle, …)</li>
+<li>× <strong>3 body regions</strong> (head, trunk, tail)</li>
+<li>= a per-species binary fingerprint</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<p><strong>The analyses</strong></p>
+<ul>
+<li>Gower distance → PCoA</li>
+<li>Disparity-through-time (DTT)</li>
+<li>Blomberg’s K, OU vs BM vs AC</li>
+<li>Motif richness ↔︎ species richness</li>
+</ul>
+</div>
+</div>
+<div style="text-align: center; margin-top: 0.5em; font-size: 0.95em; color: #d4a853;">
+<p>Today: the <strong>Acanthuridae</strong> sub-dataset → 83 species × 57 columns (the 30 motifs expand to 57 binary columns with “1 vs 2+” splits, eye-overlap variants, and 5 whole-body indices).</p>
+</div>
+<hr>
+</section>
+<section id="how-they-coded-color-body-regions-motifs" class="level2">
+<h2 class="anchored" data-anchor-id="how-they-coded-color-body-regions-motifs">How they coded color — body regions × motifs</h2>
 <div class="columns">
 <div class="column" style="text-align: center;">
 <svg width="900" height="380" viewbox="0 0 900 380" role="img" aria-label="Tang silhouette with head, trunk, and tail zones annotated">
 </svg><p><defs> <lineargradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="0%"> <stop offset="0%" stop-color="#e07a5f" stop-opacity="0.35"> <stop offset="25%" stop-color="#e07a5f" stop-opacity="0.35"> <stop offset="28%" stop-color="#d4a853" stop-opacity="0.35"> <stop offset="78%" stop-color="#d4a853" stop-opacity="0.35"> <stop offset="80%" stop-color="#81b29a" stop-opacity="0.35"> <stop offset="100%" stop-color="#81b29a" stop-opacity="0.35"> </stop></stop></stop></stop></stop></stop></lineargradient> </defs></p>
-<!-- Tang body silhouette -->
-<p><path d="M 80 195
-           C 100 95, 200 60, 320 60
-           L 580 60
-           C 640 60, 680 90, 700 130
-           L 760 80
-           L 800 100
-           L 800 290
-           L 760 310
-           L 700 260
-           C 680 300, 640 330, 580 330
-           L 320 330
-           C 200 330, 100 295, 80 195 Z" fill="url(#bodyGrad)" stroke="#f4e5d0" stroke-width="2.5"></path></p>
-<!-- Eye -->
-<p><circle cx="170" cy="180" r="10" fill="#1a1d2e"> <circle cx="173" cy="177" r="3" fill="#f4e5d0"></circle></circle></p>
-<!-- Mouth -->
-<p><path d="M 95 220 L 115 210" stroke="#1a1d2e" stroke-width="2" fill="none"></path></p>
-<!-- Scalpel (Acanthuridae-defining trait) -->
-<p><path d="M 660 215 L 695 195 L 695 235 Z" fill="#e07a5f" stroke="#1a1d2e" stroke-width="1.5"></path></p>
-<!-- Zone divider lines -->
-<p><line x1="240" y1="40" x2="240" y2="350" stroke="#e07a5f" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"> <line x1="680" y1="40" x2="680" y2="350" stroke="#81b29a" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"></line></line></p>
-<!-- Labels -->
-<p><text x="155" y="32" text-anchor="middle" fill="#e07a5f" font-size="22" font-weight="700">HEAD</text> <text x="155" y="58" text-anchor="middle" fill="#e07a5f" font-size="14" font-style="italic">H_ (22 chars)</text></p>
-<p><text x="460" y="32" text-anchor="middle" fill="#d4a853" font-size="22" font-weight="700">TRUNK</text> <text x="460" y="58" text-anchor="middle" fill="#d4a853" font-size="14" font-style="italic">Tr_ (14 chars)</text></p>
-<p><text x="745" y="32" text-anchor="middle" fill="#81b29a" font-size="22" font-weight="700">TAIL</text> <text x="745" y="58" text-anchor="middle" fill="#81b29a" font-size="14" font-style="italic">Ta_ (17 chars)</text></p>
-<!-- Bottom caption -->
-<text x="450" y="370" text-anchor="middle" fill="#f4e5d0" font-size="14" font-style="italic"> Every species is described by 57 binary characters spread across these three zones </text>
+<p><path d="M 80 195 C 100 95, 200 60, 320 60 L 580 60 C 640 60, 680 90, 700 130 L 760 80 L 800 100 L 800 290 L 760 310 L 700 260 C 680 300, 640 330, 580 330 L 320 330 C 200 330, 100 295, 80 195 Z" fill="url(#bodyGrad)" stroke="#f4e5d0" stroke-width="2.5"> <circle cx="170" cy="180" r="10" fill="#1a1d2e"> <circle cx="173" cy="177" r="3" fill="#f4e5d0"> <path d="M 95 220 L 115 210" stroke="#1a1d2e" stroke-width="2" fill="none"> <path d="M 660 215 L 695 195 L 695 235 Z" fill="#e07a5f" stroke="#1a1d2e" stroke-width="1.5"> <line x1="240" y1="40" x2="240" y2="350" stroke="#e07a5f" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"> <line x1="680" y1="40" x2="680" y2="350" stroke="#81b29a" stroke-width="2" stroke-dasharray="6,4" opacity="0.7"></line></line></path></path></circle></circle></path></p>
+<p><text x="155" y="32" text-anchor="middle" fill="#e07a5f" font-size="22" font-weight="700">HEAD</text> <text x="155" y="58" text-anchor="middle" fill="#e07a5f" font-size="14" font-style="italic">22 chars</text> <text x="460" y="32" text-anchor="middle" fill="#d4a853" font-size="22" font-weight="700">TRUNK</text> <text x="460" y="58" text-anchor="middle" fill="#d4a853" font-size="14" font-style="italic">14 chars</text> <text x="745" y="32" text-anchor="middle" fill="#81b29a" font-size="22" font-weight="700">TAIL</text> <text x="745" y="58" text-anchor="middle" fill="#81b29a" font-size="14" font-style="italic">17 chars</text></p>
+<text x="450" y="370" text-anchor="middle" fill="#f4e5d0" font-size="14" font-style="italic"> Every species = a row of 57 binary characters across these three zones </text>
 
 </div><div class="column" style="width:42%;">
-<p><strong>Motif vocabulary</strong> <em>(scored in each zone)</em></p>
-<div style="font-size: 0.82em; line-height: 1.55;">
-<table class="caption-top">
+<p><strong>Motif vocabulary</strong> <em>(scored in each region)</em></p>
+<div style="font-size: 0.78em; line-height: 1.55;">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Icon</th>
 <th>Motif</th>
-<th>Examples</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">▬</td>
-<td><strong>h-stripe</strong></td>
-<td>horizontal lines along body axis</td>
+<td><strong>h-stripe</strong> / <strong>v-stripe</strong> / <strong>o-stripe</strong></td>
+<td>horizontal / vertical / oblique lines (oblique = head only)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">▮</td>
-<td><strong>v-stripe</strong></td>
-<td>vertical bars perpendicular to body</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">╲</td>
-<td><strong>o-stripe</strong></td>
-<td>oblique stripes (head only)</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">⬤</td>
 <td><strong>stain</strong></td>
 <td>large irregular patch</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">●</td>
 <td><strong>point</strong></td>
 <td>small spot</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">⊙</td>
 <td><strong>eyespot</strong></td>
-<td>concentric ring (often false eye)</td>
+<td>concentric ring (often a false eye)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">※</td>
-<td><strong>marbling</strong></td>
-<td>reticulate / vermiculate pattern</td>
+<td><strong>stripe/stain through eye</strong></td>
+<td>motif that overlaps the eye region</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">⬡</td>
-<td><strong>beehive</strong></td>
-<td>honeycomb / hexagonal grid</td>
+<td><strong>marbling</strong></td>
+<td>reticulate / vermiculate</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">⌒</td>
+<td><strong>beehive</strong></td>
+<td>honeycomb / hexagonal</td>
+</tr>
+<tr class="even">
 <td><strong>saddle</strong></td>
-<td>curved tail band <em>(tail only)</em></td>
+<td>curved band across tail</td>
+</tr>
+<tr class="odd">
+<td><strong>colored / stained scalpel</strong></td>
+<td>the Acanthuridae spine pigment</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div style="margin-top: 0.6em; font-size: 0.78em; color: #d4a853;">
-<p>Coded as <strong>1 = present, 0 = absent</strong>, plus “1 vs 2+” splits for stripes/stains/points (e.g., <code>H_2_h_strips_+</code> means <em>2 or more</em> horizontal stripes on the head).</p>
+<div style="margin-top: 0.4em; font-size: 0.72em; color: #d4a853;">
+<p>Each scored as <strong>1 = present, 0 = absent</strong>, with extra splits for <strong>1 vs 2+</strong> occurrences (e.g., <code>H_2_h_strips_+</code> means <em>2 or more</em> horizontal stripes on the head).</p>
 </div>
-</div></div>
+</div>
+</div>
+<hr>
 </section>
-<section id="how-to-read-a-coded-species-three-worked-examples" class="slide level2">
-<h2>How to read a coded species — three worked examples</h2>
+<section id="three-species-coded-the-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="three-species-coded-the-intuition">Three species, coded — the intuition</h2>
 <div class="columns">
 <div class="column" style="text-align: center;">
-<p><img data-src="images/Zebrasoma_flavescens.png" height="220"></p>
-<p><strong><em>Zebrasoma flavescens</em></strong> <em>(yellow tang)</em></p>
-<div style="font-size: 0.7em; text-align: left; margin-top: 0.4em; line-height: 1.5; color: #f4e5d0;">
-<p><strong>8 motifs active</strong></p>
-<p><code>CIP</code>, <code>WI</code>, <code>CP</code><br> <code>H_1_color</code><br> <code>Tr_1_color</code><br> <code>Tr_2_v_strips_+</code><br> <code>Ta_1_color</code><br> <code>Ta_colored_scalpel</code></p>
-</div>
+<p><img src="images/Zebrasoma_flavescens.png" height="200"></p>
+<p><strong><em>Zebrasoma flavescens</em></strong></p>
 <div style="font-size: 0.78em; color: #81b29a; margin-top: 0.3em;">
-<p>Mostly one color + scalpel. Minimal pattern.</p>
+<p><strong>8 active motifs</strong><br> <em>Mostly one color + scalpel</em></p>
 </div>
 </div><div class="column" style="text-align: center;">
-<p><img data-src="images/Acanthurus_lineatus.png" height="220"></p>
-<p><strong><em>Acanthurus lineatus</em></strong> <em>(lined surgeonfish)</em></p>
-<div style="font-size: 0.7em; text-align: left; margin-top: 0.4em; line-height: 1.5; color: #f4e5d0;">
-<p><strong>13 motifs active</strong></p>
-<p><code>CIP</code>, <code>WI</code>, <code>CP</code><br> <code>H_2_colors_+</code>, <code>H_2_h_strips_+</code><br> <code>H_2_o_strips_+</code>, <code>H_1_stain</code><br> <code>Tr_2_colors_+</code>, <code>Tr_2_h_strips_+</code><br> <code>Ta_2_color_+</code>, <code>Ta_2_strips_h_+</code><br> <code>Ta_2_strips_v_+</code>, <code>Ta_border_fin</code></p>
-</div>
+<p><img src="images/Acanthurus_lineatus.png" height="200"></p>
+<p><strong><em>Acanthurus lineatus</em></strong></p>
 <div style="font-size: 0.78em; color: #d4a853; margin-top: 0.3em;">
-<p>Striped, colorful — the “stripe signature” is <code>2_h_strips_+</code> on head + trunk + tail.</p>
+<p><strong>13 active motifs</strong><br> <em>Stripe signature on head, trunk, tail</em></p>
 </div>
 </div><div class="column" style="text-align: center;">
-<p><img data-src="images/Naso_lituratus.png" height="220"></p>
-<p><strong><em>Naso lituratus</em></strong> <em>(orange-spine unicornfish)</em></p>
-<div style="font-size: 0.7em; text-align: left; margin-top: 0.4em; line-height: 1.5; color: #f4e5d0;">
-<p><strong>18 motifs active</strong> <em>(most complex)</em></p>
-<p><code>H_2_colors_+</code>, <code>H_colorful_mouth</code><br> <code>H_2_o_strips_+</code>, <code>H_2_stains_+</code><br> <code>H_h_strip_eye</code>, <code>H_marbling</code><br> <code>H_edge_operculum</code>, <code>Tr_marbling</code><br> <code>Ta_colored_scalpel</code>, <code>Ta_stain_scalpel</code><br> <em>…plus 8 more</em></p>
-</div>
+<p><img src="images/Naso_lituratus.png" height="200"></p>
+<p><strong><em>Naso lituratus</em></strong></p>
 <div style="font-size: 0.78em; color: #e07a5f; margin-top: 0.3em;">
-<p>Ornate face (marbling + colorful mouth) + colored scalpel + saddle. Maximally encoded.</p>
+<p><strong>18 active motifs</strong><br> <em>Marbled face + colored scalpel + saddle</em></p>
 </div>
-</div></div>
-<div style="text-align: center; margin-top: 0.6em; font-size: 0.9em; color: #f4e5d0;">
-<p><strong>Pattern complexity = <code>rowSums(motifs)</code> per species</strong> — the headline number you’ll map onto the tree today.</p>
+</div>
+</div>
+<div style="margin-top: 0.6em; text-align: center; color: #f4e5d0;">
+<p>The <strong>pattern complexity</strong> score is just <code>rowSums(motifs)</code> — the headline number you’ll map onto the tree today.</p>
+</div>
+<hr>
+</section>
+<section id="five-species-all-57-characters-the-formal-view" class="level2">
+<h2 class="anchored" data-anchor-id="five-species-all-57-characters-the-formal-view">Five species, all 57 characters — the formal view</h2>
+<div style="text-align: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/frederich/coding-matrix.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+<div style="margin-top: 0.4em; font-size: 0.92em;">
+<ul>
+<li><strong>Each row = a species</strong>; each column = one of the 57 binary characters.</li>
+<li><strong>Green = motif present (1); red = absent (0).</strong></li>
+<li>Top bands label the body region: <span style="color:#9e9e9e"><strong>INDEX</strong></span> · <span style="color:#e07a5f"><strong>HEAD</strong></span> · <span style="color:#d4a853"><strong>TRUNK</strong></span> · <span style="color:#81b29a"><strong>TAIL</strong></span>.</li>
+<li>Range from <strong>6 active motifs</strong> (<em>Zebrasoma rostratum</em>) to <strong>22</strong> (<em>Acanthurus bariene</em>) across the family.</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="pattern-complexity-varies-across-the-family" class="level2">
+<h2 class="anchored" data-anchor-id="pattern-complexity-varies-across-the-family">Pattern complexity varies across the family</h2>
+<div style="text-align: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/frederich/complexity-histogram.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:78.0%"></p>
+</figure>
+</div>
+</div>
+<div style="margin-top: 0.4em; font-size: 0.95em; text-align: center; color: #f4e5d0;">
+<p>Distribution of motif counts across 83 Acanthuridae species. <strong>Median = 12. Min = 6 (Zebrasoma rostratum). Max = 22 (Acanthurus bariene).</strong></p>
+</div>
+<div style="margin-top: 0.5em; font-size: 0.9em; color: #d4a853; text-align: center;">
+<p>This <strong>single number per species</strong> is what you’ll run through <code>contMap</code>, Blomberg’s K, and Pagel’s λ in the worksheet.</p>
+</div>
+<hr>
+</section>
+<section id="result-1-motif-richness-tracks-species-richness" class="level2">
+<h2 class="anchored" data-anchor-id="result-1-motif-richness-tracks-species-richness">Result 1 — motif richness tracks species richness</h2>
+<div style="text-align: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/frederich/fig1-frederich.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+<div style="margin-top: 0.4em; font-size: 0.85em;">
+<ul>
+<li><strong>Fig 1 from Frédérich et al.&nbsp;2026.</strong> Each panel = one family × 5 biogeographic regions. <em>Top row</em> = full dataset, <em>bottom row</em> = re-sampled to avoid widespread-species inflation.</li>
+<li><strong>Every family × every sampling regime: R &gt; 0.96, p &lt; 0.01.</strong> More species in a region → more motif diversity.</li>
+<li><strong>Implication:</strong> speciation events drive pattern divergence — pattern diversity scales linearly with the species pool, not with the latitude/longitude of the reef.</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="result-2-pattern-evolution-is-rapid-and-bounded" class="level2">
+<h2 class="anchored" data-anchor-id="result-2-pattern-evolution-is-rapid-and-bounded">Result 2 — pattern evolution is rapid AND bounded</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/frederich/fig2-frederich.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:38%;">
+<p><strong>Phylogenetic signal is weak in every family</strong> (multivariate Blomberg’s K, all p &lt; 0.01):</p>
+<div style="font-size: 0.82em;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>K_mult</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Acanthuridae</strong></td>
+<td><strong>0.11</strong></td>
+</tr>
+<tr class="even">
+<td>Chaetodontidae</td>
+<td>0.10</td>
+</tr>
+<tr class="odd">
+<td>Lutjanidae</td>
+<td>0.22</td>
+</tr>
+<tr class="even">
+<td>Mullidae</td>
+<td>0.08</td>
+</tr>
+<tr class="odd">
+<td>Pomacanthidae</td>
+<td>0.05</td>
+</tr>
+<tr class="even">
+<td>Pomacentridae</td>
+<td>0.06</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="margin-top: 0.5em; font-size: 0.85em;">
+<ul>
+<li>Best-fit evolutionary model: <strong>OU1</strong> (single optimum, bounded morphospace) + <strong>AC</strong> (accelerating rate).</li>
+<li><strong>Phylogenetic half-life ≈ 1.5 Myr</strong> vs ~37.5 Myr for other fish morphological traits.</li>
+</ul>
+</div>
+<div style="margin-top: 0.5em; font-size: 0.85em; color: #d4a853;">
+<p><strong>Punchline:</strong> patterns evolve fast within a constrained set of motifs → strong convergence + recurring labyrinths, stripes, spots across distantly related lineages.</p>
+</div>
+</div>
 </div>
 </section>
-<section id="what-is-phylogenetic-signal" class="slide level2">
-<h2>What is phylogenetic signal?</h2>
+<section id="what-is-phylogenetic-signal" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-phylogenetic-signal">What is phylogenetic signal?</h2>
 <div style="font-size: 1.1em;">
 <p>The tendency for <strong>closely related species to resemble each other</strong> more than distantly related species.</p>
 </div>
@@ -432,14 +532,16 @@ Week 8 Demo Section
 <div style="color: #e07a5f;">
 <p><em>Pattern evolves independently of relatedness</em></p>
 </div>
-</div></div>
+</div>
+</div>
 <div style="text-align: center; margin-top: 1.5em; font-size: 1.1em;">
 <p>We measure this with two statistics: <strong>Blomberg’s K</strong> and <strong>Pagel’s λ</strong></p>
 </div>
+<hr>
 </section>
-<section id="blombergs-k-what-the-number-means" class="slide level2">
-<h2>Blomberg’s K — what the number means</h2>
-<table class="caption-top">
+<section id="blombergs-k-what-the-number-means" class="level2">
+<h2 class="anchored" data-anchor-id="blombergs-k-what-the-number-means">Blomberg’s K — what the number means</h2>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 36%">
 <col style="width: 64%">
@@ -479,9 +581,10 @@ Week 8 Demo Section
 <div style="text-align: center; margin-top: 1em; color: #d4a853;">
 <p><strong>K = 0.16 with p = 0.04</strong> → “there IS signal, but it’s modest — color patterns show some phylogenetic conservatism but also a lot of independent change”</p>
 </div>
+<hr>
 </section>
-<section id="contmap-painting-traits-on-the-tree" class="slide level2">
-<h2>contMap — painting traits on the tree</h2>
+<section id="contmap-painting-traits-on-the-tree" class="level2">
+<h2 class="anchored" data-anchor-id="contmap-painting-traits-on-the-tree">contMap — painting traits on the tree</h2>
 <p><strong>contMap</strong> reconstructs ancestral trait values and paints them along every branch.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -497,10 +600,12 @@ Week 8 Demo Section
 <p>The most complex species? <strong><em>Acanthurus bariene</em></strong> — 19 pattern elements!</p>
 <p>The simplest? <strong><em>Zebrasoma rostratum</em></strong> — only 4 elements.</p>
 </div>
-</div></div>
+</div>
+</div>
+<hr>
 </section>
-<section id="discrete-traits-mapping-presenceabsence" class="slide level2">
-<h2>Discrete traits — mapping presence/absence</h2>
+<section id="discrete-traits-mapping-presenceabsence" class="level2">
+<h2 class="anchored" data-anchor-id="discrete-traits-mapping-presenceabsence">Discrete traits — mapping presence/absence</h2>
 <p>Not all traits are continuous. Some are <strong>binary</strong>: the species either has it or doesn’t.</p>
 <p><strong>Example: trunk marbling</strong> (irregular worm-like markings)</p>
 <div class="columns">
@@ -516,14 +621,16 @@ Week 8 Demo Section
 <p>Is marbling a Turing pattern?</p>
 <p>Think back to Lecture 12 — reaction-diffusion produces labyrinthine patterns that look a lot like “marbling.”</p>
 </div>
-</div></div>
+</div>
+</div>
 <div style="text-align: center; margin-top: 1em;">
 <p>You’ll color tree tips by marbling presence and ask: how many times did it evolve?</p>
 </div>
+<hr>
 </section>
-<section id="the-workflow-what-youll-do-today" class="slide level2">
-<h2>The workflow — what you’ll do today</h2>
-<table class="caption-top">
+<section id="the-workflow-what-youll-do-today" class="level2">
+<h2 class="anchored" data-anchor-id="the-workflow-what-youll-do-today">The workflow — what you’ll do today</h2>
+<table class="caption-top table">
 <colgroup>
 <col style="width: 13%">
 <col style="width: 20%">
@@ -592,9 +699,10 @@ Week 8 Demo Section
 <div style="text-align: center; margin-top: 0.5em; color: #d4a853;">
 <p><strong>~60 minutes of guided work, then 15 minutes on your own</strong></p>
 </div>
+<hr>
 </section>
-<section id="what-youll-turn-in" class="slide level2">
-<h2>What you’ll turn in</h2>
+<section id="what-youll-turn-in" class="level2">
+<h2 class="anchored" data-anchor-id="what-youll-turn-in">What you’ll turn in</h2>
 <div style="font-size: 1.1em;">
 <ol type="1">
 <li><p><strong>Screenshot</strong> of your contMap (pattern complexity on the tree)</p></li>
@@ -606,14 +714,15 @@ Week 8 Demo Section
 <div style="text-align: center; margin-top: 1.5em; color: #81b29a; font-size: 1em;">
 <p>There is no single “right answer” — we want a <strong>nuanced</strong> interpretation backed by your data.</p>
 </div>
+<hr>
 </section>
-<section id="getting-started" class="slide level2">
-<h2>Getting started</h2>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
 <div style="font-size: 1.2em;">
 <ol type="1">
 <li><p>Open <strong>RStudio</strong></p></li>
 <li><p>Set your working directory:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">setwd</span>(<span class="st">"path/to/demo-labrid-pcm-week8"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"path/to/demo-labrid-pcm-week8"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Open the worksheet: <code>demo7-worksheet.qmd</code> (or the HTML version in your browser)</p></li>
 <li><p>Work through it <strong>section by section</strong> — don’t skip ahead</p></li>
 <li><p><strong>Talk to your neighbor.</strong> If you’re stuck, ask. If you’re not stuck, explain what you’re seeing.</p></li>
@@ -625,389 +734,424 @@ Week 8 Demo Section
 
 
 </section>
-    </div>
-  <div class="quarto-auto-generated-content" style="display: none;">
-<div class="footer footer-default">
 
-</div>
-</div></div>
-
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': false,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
- 
-        // Display controls in the bottom right corner
-        controls: false,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: 'c/t',
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1920,
-
-        height: 1080,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
-    </script>
-    <script id="quarto-html-after-body" type="application/javascript">
-      window.document.addEventListener("DOMContentLoaded", function (event) {
-        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-        tabsets.forEach(function(tabset) {
-          const tabby = new Tabby('#' + tabset.id);
-        });
-        const isCodeAnnotation = (el) => {
-          for (const clz of el.classList) {
-            if (clz.startsWith('code-annotation-')) {                     
-              return true;
-            }
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
-          return false;
         }
-        const onCopySuccess = function(e) {
-          // button target
-          const button = e.trigger;
-          // don't keep focus
-          button.blur();
-          // flash "checked"
-          button.classList.add('code-copy-button-checked');
-          var currentTitle = button.getAttribute("title");
-          button.setAttribute("title", "Copied!");
-          let tooltip;
-          if (window.bootstrap) {
-            button.setAttribute("data-bs-toggle", "tooltip");
-            button.setAttribute("data-bs-placement", "left");
-            button.setAttribute("data-bs-title", "Copied!");
-            tooltip = new bootstrap.Tooltip(button, 
-              { trigger: "manual", 
-                customClass: "code-copy-button-tooltip",
-                offset: [0, -8]});
-            tooltip.show();    
-          }
-          setTimeout(function() {
-            if (tooltip) {
-              tooltip.hide();
-              button.removeAttribute("data-bs-title");
-              button.removeAttribute("data-bs-toggle");
-              button.removeAttribute("data-bs-placement");
-            }
-            button.setAttribute("title", currentTitle);
-            button.classList.remove('code-copy-button-checked');
-          }, 1000);
-          // clear code selection
-          e.clearSelection();
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        const getTextToCopy = function(trigger) {
-          const outerScaffold = trigger.parentElement.cloneNode(true);
-          const codeEl = outerScaffold.querySelector('code');
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
-          return codeEl.innerText;
         }
-        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-          text: getTextToCopy
-        });
-        clipboard.on('success', onCopySuccess);
-        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-            text: getTextToCopy,
-            container: window.document.getElementById('quarto-embedded-source-code-modal')
-          });
-          clipboardModal.on('success', onCopySuccess);
-        }
-          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-          var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
-          var isInternal = (href) => {
-              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-          }
-          // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-          for (var i=0; i<links.length; i++) {
-            const link = links[i];
-            if (!isInternal(link.href)) {
-              // undo the damage that might have been done by quarto-nav.js in the case of
-              // links that we want to consider external
-              if (link.dataset.originalHref !== undefined) {
-                link.href = link.dataset.originalHref;
-              }
-            }
-          }
-        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-          const config = {
-            allowHTML: true,
-            maxWidth: 500,
-            delay: 100,
-            arrow: false,
-            appendTo: function(el) {
-                return el.closest('section.slide') || el.parentElement;
-            },
-            interactive: true,
-            interactiveBorder: 10,
-            theme: 'light-border',
-            placement: 'bottom-start',
-          };
-          if (contentFn) {
-            config.content = contentFn;
-          }
-          if (onTriggerFn) {
-            config.onTrigger = onTriggerFn;
-          }
-          if (onUntriggerFn) {
-            config.onUntrigger = onUntriggerFn;
-          }
-            config['offset'] = [0,0];
-            config['maxWidth'] = 700;
-          window.tippy(el, config); 
-        }
-        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-        for (var i=0; i<noterefs.length; i++) {
-          const ref = noterefs[i];
-          tippyHover(ref, function() {
-            // use id or data attribute instead here
-            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-            try { href = new URL(href).hash; } catch {}
-            const id = href.replace(/^#\/?/, "");
-            const note = window.document.getElementById(id);
-            if (note) {
-              return note.innerHTML;
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
             } else {
-              return "";
+              container.appendChild(child.cloneNode(true));
+              break;
             }
-          });
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        const findCites = (el) => {
-          const parentEl = el.parentElement;
-          if (parentEl) {
-            const cites = parentEl.dataset.cites;
-            if (cites) {
-              return {
-                el,
-                cites: cites.split(' ')
-              };
-            } else {
-              return findCites(el.parentElement)
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
             }
           } else {
-            return undefined;
-          }
-        };
-        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-        for (var i=0; i<bibliorefs.length; i++) {
-          const ref = bibliorefs[i];
-          const citeInfo = findCites(ref);
-          if (citeInfo) {
-            tippyHover(citeInfo.el, function() {
-              var popup = window.document.createElement('div');
-              citeInfo.cites.forEach(function(cite) {
-                var citeDiv = window.document.createElement('div');
-                citeDiv.classList.add('hanging-indent');
-                citeDiv.classList.add('csl-entry');
-                var biblioDiv = window.document.getElementById('ref-' + cite);
-                if (biblioDiv) {
-                  citeDiv.innerHTML = biblioDiv.innerHTML;
-                }
-                popup.appendChild(citeDiv);
-              });
-              return popup.innerHTML;
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
             });
           }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
         }
+      }, function(instance) {
       });
-      </script>
-    
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>EEB 187 · Ecology and Evolution of Color · UCLA · Spring 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
 
 </body></html>
