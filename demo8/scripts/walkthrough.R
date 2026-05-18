@@ -119,6 +119,7 @@ summary(fit_1)$r.squared
 fit_2 <- lm(m_c ~ m_r, data = traits)
 summary(fit_2)$coefficients
 summary(fit_2)$r.squared
+confint(fit_2)["m_r", ]  # interesting null for fit_2 is slope=1, not slope=0
 
 
 # ---- 1.8 Save outputs for Parts 2 & 3 ------------------------------
@@ -239,7 +240,30 @@ saveRDS(compare, "results/part2-compare-lm-pgls.rds")
 # Part 3 — Measurement-error propagation
 # ============================================================
 
-# ---- 3.1 Run pavo on the 5-image stack -----------------------------
+# ---- 3.1 Reload Parts 1 + 2 if you've restarted R ------------------
+if (!exists("traits"))         traits         <- readRDS("results/part1-traits.rds")
+if (!exists("species_to_tip")) species_to_tip <- readRDS("results/part1-species-to-tip.rds")
+if (!exists("signal"))         signal         <- readRDS("results/part2-signal.rds")
+if (!exists("pgls_1") || !exists("pgls_2")) {
+  .pgls_list <- readRDS("results/part2-pgls.rds")
+  pgls_1 <- .pgls_list$pgls_1; pgls_2 <- .pgls_list$pgls_2
+}
+if (!exists("tree")) {
+  tree <- ape::read.tree(file.path(bundle, "chaetodontidae-mini-tree.tre"))
+  rownames(traits) <- species_to_tip[rownames(traits)]
+  tree   <- ape::keep.tip(tree, rownames(traits))
+  traits <- traits[tree$tip.label, ]
+}
+
+# Parse error-species name from README (re-parsed so Part 3 stands alone).
+readme <- readLines(file.path(bundle, "README.txt"))
+err_line <- grep("^Error-species", readme, value = TRUE)[1]
+error_species <- if (is.na(err_line) || grepl("NONE", err_line)) NA_character_ else
+                 trimws(sub("\\s*\\(.*", "", sub(".*?:\\s*", "", err_line)))
+stopifnot(!is.na(error_species))
+
+
+# ---- 3.1b Run pavo on the 5-image stack ----------------------------
 source("scripts/measurement-error.R")
 
 err <- pavo_error_stats(bundle, error_species, n_images = 5)
@@ -264,10 +288,10 @@ ggplot(long, aes(variable, value)) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
 
 
-# ---- 3.4 Monte Carlo (slow: ~3-5 min) ------------------------------
+# ---- 3.4 Monte Carlo (n_iter=100 ~ 1.5-2 min; 200 ~ 3-5 min) -------
 source("scripts/error-aware-analyses.R")
 
-mc <- mc_redo_analyses(traits, tree, err$sd, n_iter = 200, seed = 2026)
+mc <- mc_redo_analyses(traits, tree, err$sd, n_iter = 100, seed = 2026)
 
 
 # ---- 3.5 K distributions vs observed -------------------------------
