@@ -263,6 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     ├── picked_species.txt
     ├── picked_tip_labels.txt
     ├── species_metadata.csv
+    ├── species_traits.csv               &lt;-- 4 FishBase traits (used in §1.8 and §2.8)
     ├── images/
     │   ├── Chaetodon_lunula/exemplar.png
     │   ├── Chaetodon_auriga/exemplar.png
@@ -929,86 +930,87 @@ Note
 <span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── picked_species.txt</span></span>
 <span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── picked_tip_labels.txt</span></span>
 <span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── species_metadata.csv</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── images/</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_lunula/exemplar.png</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_auriga/exemplar.png</span></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── … (more single-exemplar species) …</span></span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="in">    │   └── Heniochus_acuminatus/        &lt;-- the error-species</span></span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-1.png</span></span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-2.png</span></span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-3.png</span></span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-4.png</span></span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="in">    │       └── img-5.png</span></span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>**Your own family follows the same shape.** When you switch to your group's bundle in the "Your Turn" sections, the path is just <span class="in">`&lt;your-family&gt;-mini-bundle/`</span> (e.g. <span class="in">`acanthuridae-mini-bundle/`</span> for the surgeonfish group) — same <span class="in">`images/`</span>, same <span class="in">`README.txt`</span>, same five files inside.</span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 4 — Readiness check</span></span>
-<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>Run this short script in the Console — it confirms the tree loads, the species list matches the tree tips, and pavo can read one of the bundle images:</span>
-<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape); <span class="fu">library</span>(pavo)</span>
-<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="st">"chaetodontidae-mini-bundle"</span></span>
-<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(bundle, <span class="st">"chaetodontidae-mini-tree.tre"</span>))</span>
-<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>picked_species <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_species.txt"</span>))</span>
-<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>picked_tips    <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_tip_labels.txt"</span>))</span>
-<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity: every directory in images/ matches a picked species; every tip is on the tree</span></span>
-<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>species_dirs <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="fu">file.path</span>(bundle, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">basename</span>(species_dirs), picked_species))</span>
-<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(picked_tips <span class="sc">%in%</span> tree<span class="sc">$</span>tip.label))</span>
-<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a><span class="co"># pavo can read at least one image</span></span>
-<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a>first_sp_dir <span class="ot">&lt;-</span> species_dirs[<span class="dv">1</span>]</span>
-<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>first_png    <span class="ot">&lt;-</span> <span class="fu">list.files</span>(first_sp_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
-<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>img1 <span class="ot">&lt;-</span> <span class="fu">getimg</span>(first_png)</span>
-<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">is.null</span>(img1))</span>
-<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"READINESS CHECK PASSED — bundle has"</span>,</span>
-<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(picked_species), <span class="st">"species,"</span>,</span>
-<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Ntip</span>(tree), <span class="st">"tips on tree, pavo reads images.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a><span class="fu">plotTree</span>(ape<span class="sc">::</span><span class="fu">keep.tip</span>(tree, picked_tips), <span class="at">type =</span> <span class="st">"fan"</span>, <span class="at">fsize =</span> <span class="fl">0.7</span>)</span>
-<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a>You should see "READINESS CHECK PASSED" and a fan tree of just the species in your bundle. If you see anything else, re-download the bundle or email your TA.</span>
-<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 5 — FishView mini-bundle login check (your own family)</span></span>
-<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a>The bundle in Step 3 is **Chaetodontidae** — the example we'll all walk through in class. But your group will also run the same workflow on **your own family** from Demo 7. Confirm tonight that you can reach your group's mini-bundle on FishView:</span>
-<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>From UCLA campus WiFi or UCLA Bruin Secure VPN, open <span class="ot">&lt;http://164.67.78.200:5052/&gt;</span></span>
-<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Enter your **mini-bundle code** (same code prefix as Demo 7, but ends with <span class="in">`-mini`</span>):</span>
-<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group <span class="pp">|</span> Mini-bundle code <span class="pp">|</span></span>
-<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------|------------------|</span></span>
-<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="in">`trigger-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> <span class="in">`angel-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="in">`parrot-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="in">`fairy-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> <span class="in">`tang-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> <span class="in">`hog-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 7 <span class="pp">|</span> <span class="in">`coris-mini`</span> <span class="pp">|</span></span>
-<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>You should land on a dashboard showing **20 starred species** and **1 error-species** (badge: "5-image stack"). If you see that, you're ready.</span>
-<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Don't export the bundle yet** — the lecturer locks in final picks Tuesday night. The dashboard is just a confirmation that your group's data is live.</span>
-<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Off-campus?</span></span>
-<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a>The FishView server is only reachable from UCLA's network. Connect to **UCLA Bruin Secure VPN** first.</span>
-<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## If something breaks</span></span>
-<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Package install fails on `pavo` or `caper`:** likely a system-library issue. On macOS try <span class="in">`brew install gdal`</span> first, then re-install. On Windows try the binary build via <span class="in">`install.packages("pavo", type = "binary")`</span>.</span>
-<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`read.tree()` errors with "incorrect string constant":** the tree file didn't fully download. Re-run Step 3.</span>
-<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`getimg()` errors with "PNG read failed":** an image in the bundle is malformed. List the bad path with <span class="in">`list.files("chaetodontidae-mini-bundle/images")`</span> and email your TA.</span>
-<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mini-bundle code returns "unknown group":** the FishView entry might not be fully provisioned yet. Email your TA — your group's mini-bundle gets locked in by 6 PM Tuesday.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── species_traits.csv               &lt;-- 4 FishBase traits (used in §1.8 and §2.8)</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── images/</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_lunula/exemplar.png</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_auriga/exemplar.png</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── … (more single-exemplar species) …</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="in">    │   └── Heniochus_acuminatus/        &lt;-- the error-species</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-1.png</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-2.png</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-3.png</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-4.png</span></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="in">    │       └── img-5.png</span></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>**Your own family follows the same shape.** When you switch to your group's bundle in the "Your Turn" sections, the path is just <span class="in">`&lt;your-family&gt;-mini-bundle/`</span> (e.g. <span class="in">`acanthuridae-mini-bundle/`</span> for the surgeonfish group) — same <span class="in">`images/`</span>, same <span class="in">`README.txt`</span>, same five files inside.</span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 4 — Readiness check</span></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>Run this short script in the Console — it confirms the tree loads, the species list matches the tree tips, and pavo can read one of the bundle images:</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape); <span class="fu">library</span>(pavo)</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="st">"chaetodontidae-mini-bundle"</span></span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(bundle, <span class="st">"chaetodontidae-mini-tree.tre"</span>))</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>picked_species <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_species.txt"</span>))</span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>picked_tips    <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_tip_labels.txt"</span>))</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity: every directory in images/ matches a picked species; every tip is on the tree</span></span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>species_dirs <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="fu">file.path</span>(bundle, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">basename</span>(species_dirs), picked_species))</span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(picked_tips <span class="sc">%in%</span> tree<span class="sc">$</span>tip.label))</span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a><span class="co"># pavo can read at least one image</span></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>first_sp_dir <span class="ot">&lt;-</span> species_dirs[<span class="dv">1</span>]</span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>first_png    <span class="ot">&lt;-</span> <span class="fu">list.files</span>(first_sp_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>img1 <span class="ot">&lt;-</span> <span class="fu">getimg</span>(first_png)</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">is.null</span>(img1))</span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"READINESS CHECK PASSED — bundle has"</span>,</span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(picked_species), <span class="st">"species,"</span>,</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Ntip</span>(tree), <span class="st">"tips on tree, pavo reads images.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="fu">plotTree</span>(ape<span class="sc">::</span><span class="fu">keep.tip</span>(tree, picked_tips), <span class="at">type =</span> <span class="st">"fan"</span>, <span class="at">fsize =</span> <span class="fl">0.7</span>)</span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a>You should see "READINESS CHECK PASSED" and a fan tree of just the species in your bundle. If you see anything else, re-download the bundle or email your TA.</span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 5 — FishView mini-bundle login check (your own family)</span></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a>The bundle in Step 3 is **Chaetodontidae** — the example we'll all walk through in class. But your group will also run the same workflow on **your own family** from Demo 7. Confirm tonight that you can reach your group's mini-bundle on FishView:</span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>From UCLA campus WiFi or UCLA Bruin Secure VPN, open <span class="ot">&lt;http://164.67.78.200:5052/&gt;</span></span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Enter your **mini-bundle code** (same code prefix as Demo 7, but ends with <span class="in">`-mini`</span>):</span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group <span class="pp">|</span> Mini-bundle code <span class="pp">|</span></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------|------------------|</span></span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> <span class="in">`trigger-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> <span class="in">`angel-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> <span class="in">`parrot-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> <span class="in">`fairy-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> <span class="in">`tang-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> <span class="in">`hog-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 7 <span class="pp">|</span> <span class="in">`coris-mini`</span> <span class="pp">|</span></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>You should land on a dashboard showing **20 starred species** and **1 error-species** (badge: "5-image stack"). If you see that, you're ready.</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Don't export the bundle yet** — the lecturer locks in final picks Tuesday night. The dashboard is just a confirmation that your group's data is live.</span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## Off-campus?</span></span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a>The FishView server is only reachable from UCLA's network. Connect to **UCLA Bruin Secure VPN** first.</span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a><span class="fu">## If something breaks</span></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Package install fails on `pavo` or `caper`:** likely a system-library issue. On macOS try <span class="in">`brew install gdal`</span> first, then re-install. On Windows try the binary build via <span class="in">`install.packages("pavo", type = "binary")`</span>.</span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`read.tree()` errors with "incorrect string constant":** the tree file didn't fully download. Re-run Step 3.</span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`getimg()` errors with "PNG read failed":** an image in the bundle is malformed. List the bad path with <span class="in">`list.files("chaetodontidae-mini-bundle/images")`</span> and email your TA.</span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mini-bundle code returns "unknown group":** the FishView entry might not be fully provisioned yet. Email your TA — your group's mini-bundle gets locked in by 6 PM Tuesday.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

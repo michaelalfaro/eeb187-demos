@@ -122,12 +122,42 @@ summary(fit_2)$r.squared
 confint(fit_2)["m_r", ]  # interesting null for fit_2 is slope=1, not slope=0
 
 
-# ---- 1.8 Save outputs for Parts 2 & 3 ------------------------------
+# ---- 1.8 Ecology — pavo patterns vs how the fish lives -------------
+eco <- read.csv(file.path(bundle, "species_traits.csv"))
+
+combined <- merge(
+  data.frame(species = rownames(traits), traits),
+  eco, by = "species", all.x = TRUE
+)
+combined$log_depth  <- log10(combined$DepthRangeDeep)
+combined$log_length <- log10(combined$Length)
+rownames(combined)  <- combined$species
+
+fit_eco_1 <- lm(m ~ Troph, data = combined)
+fit_eco_2 <- lm(A ~ log_depth, data = combined)
+summary(fit_eco_1)$coefficients
+summary(fit_eco_2)$coefficients
+
+par(mfrow = c(1, 2))
+plot(m ~ Troph, data = combined, pch = 19, col = "#0a66c2")
+abline(fit_eco_1, col = "#d4a853", lwd = 2)
+plot(A ~ log_depth, data = combined, pch = 19, col = "#0a66c2")
+abline(fit_eco_2, col = "#d4a853", lwd = 2)
+par(mfrow = c(1, 1))
+
+pc_scores <- pc$x[combined$species, "PC1"]
+ecology_cor <- sapply(c("Troph", "log_depth", "log_length", "Vulnerability"),
+                     function(v) cor(pc_scores, combined[, v], use = "complete.obs"))
+round(ecology_cor, 3)
+
+
+# ---- 1.9 Save outputs for Parts 2 & 3 ------------------------------
 dir.create("results", showWarnings = FALSE)
 saveRDS(traits,         "results/part1-traits.rds")
 saveRDS(pc,             "results/part1-pca.rds")
 saveRDS(cor_mat,        "results/part1-cor.rds")
 saveRDS(species_to_tip, "results/part1-species-to-tip.rds")
+saveRDS(combined,       "results/part1-combined.rds")
 
 
 # ============================================================
@@ -228,12 +258,58 @@ ggplot(signal, aes(reorder(variable, K), K, fill = K_p < 0.05)) +
   theme_minimal()
 
 
-# ---- 2.8 Save outputs ----------------------------------------------
+# ---- 2.8 Ecology after phylogenetic correction ---------------------
+if (!exists("combined")) combined <- readRDS("results/part1-combined.rds")
+combined$species <- species_to_tip[combined$species]
+combined <- combined[match(tree$tip.label, combined$species), ]
+
+cd_eco <- comparative.data(phy = tree, data = combined,
+                           names.col = "species", vcv = TRUE, na.omit = FALSE)
+pgls_eco_1 <- pgls(m ~ Troph,     data = cd_eco, lambda = "ML")
+pgls_eco_2 <- pgls(A ~ log_depth, data = cd_eco, lambda = "ML")
+summary(pgls_eco_1)
+summary(pgls_eco_2)
+
+eco_vars <- c("Troph", "log_depth", "log_length", "Vulnerability")
+signal_eco <- t(sapply(eco_vars, function(v) {
+  x <- setNames(combined[, v], combined$species)
+  x <- x[!is.na(x)]
+  k_res <- phytools::phylosig(ape::keep.tip(tree, names(x)), x,
+                              method = "K", test = TRUE, nsim = 999)
+  l_res <- phytools::phylosig(ape::keep.tip(tree, names(x)), x,
+                              method = "lambda", test = TRUE)
+  c(K = k_res$K, K_p = k_res$P,
+    lambda = as.numeric(l_res$lambda), lambda_p = l_res$P)
+}))
+signal_eco <- as.data.frame(signal_eco)
+round(signal_eco, 3)
+
+# Side-by-side K bar: color patterns vs ecology
+signal$kind     <- "color pattern"
+signal$variable <- rownames(signal)
+signal_eco$kind <- "ecology"
+signal_eco$variable <- rownames(signal_eco)
+side_by_side <- rbind(
+  signal[,     c("variable", "K", "K_p", "kind")],
+  signal_eco[, c("variable", "K", "K_p", "kind")]
+)
+ggplot(side_by_side, aes(reorder(variable, K), K, fill = kind)) +
+  geom_col() +
+  geom_hline(yintercept = 1, linetype = "dotted", color = "grey40") +
+  scale_fill_manual(values = c(`color pattern` = "#0a66c2",
+                               `ecology`       = "#d4a853")) +
+  coord_flip() + theme_minimal() +
+  labs(x = NULL, y = "Blomberg's K")
+
+
+# ---- 2.9 Save outputs ----------------------------------------------
 saveRDS(phy_pc,  "results/part2-phylopca.rds")
 saveRDS(signal,  "results/part2-signal.rds")
-saveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2),
+saveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2,
+             pgls_eco_1 = pgls_eco_1, pgls_eco_2 = pgls_eco_2),
         "results/part2-pgls.rds")
-saveRDS(compare, "results/part2-compare-lm-pgls.rds")
+saveRDS(compare,    "results/part2-compare-lm-pgls.rds")
+saveRDS(signal_eco, "results/part2-signal-ecology.rds")
 
 
 # ============================================================
