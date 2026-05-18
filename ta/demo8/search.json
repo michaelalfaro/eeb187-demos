@@ -1,0 +1,303 @@
+[
+  {
+    "objectID": "demo8-worksheet.html",
+    "href": "demo8-worksheet.html",
+    "title": "Demo 8 — Worksheet",
+    "section": "",
+    "text": "Working directory: Open this Quarto project (or set setwd()) so that the unzipped bundle folder chaetodontidae-mini-bundle/ sits directly inside your working dir. Every chunk below uses relative paths.\nYou can paste chunks one at a time into the RStudio Console. The companion R script scripts/walkthrough.R is the same chunks without prose, if you’d rather stay out of the rendered HTML."
+  },
+  {
+    "objectID": "demo8-worksheet.html#before-you-start",
+    "href": "demo8-worksheet.html#before-you-start",
+    "title": "Demo 8 — Worksheet",
+    "section": "",
+    "text": "Working directory: Open this Quarto project (or set setwd()) so that the unzipped bundle folder chaetodontidae-mini-bundle/ sits directly inside your working dir. Every chunk below uses relative paths.\nYou can paste chunks one at a time into the RStudio Console. The companion R script scripts/walkthrough.R is the same chunks without prose, if you’d rather stay out of the rendered HTML."
+  },
+  {
+    "objectID": "demo8-worksheet.html#the-big-question",
+    "href": "demo8-worksheet.html#the-big-question",
+    "title": "Demo 8 — Worksheet",
+    "section": "The big question",
+    "text": "The big question\nFrédérich et al. 2026 told us surgeonfish color patterns have weak phylogenetic signal — color changes much faster than expected under Brownian motion, and convergent patterns crop up across distantly related lineages. The paper coded patterns as binary motif presence/absence. Today you’ll ask the same question with continuous pattern statistics from pavo, on your own family, and you’ll also ask whether your answer survives realistic measurement noise.\nThree parts, building on each other:\n\nPart 1 (this section, ~25 min): Pretend the tree doesn’t exist. Just describe the standing diversity of pattern statistics across 20 species.\nPart 2 (~25 min): Bring the tree back. Do the same statistics with phylogenetic correction. Compare.\nPart 3 (~25 min): Stop pretending one image is the truth. Estimate measurement error from a 5-image stack of one species, then re-do Parts 1 & 2 200 times with that noise injected. Which conclusions survive?"
+  },
+  {
+    "objectID": "demo8-worksheet.html#setup",
+    "href": "demo8-worksheet.html#setup",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.1 Setup",
+    "text": "1.1 Setup\n\nlibrary(pavo)\nlibrary(ape)\nlibrary(ggplot2)\n\nset.seed(2026)        # makes classify() reproducible\nbundle &lt;- \"chaetodontidae-mini-bundle\"   # your own family: e.g. \"acanthuridae-mini-bundle\"\n\npavo does the color + pattern stats. ape handles the tree (we won’t use it until Part 2 — but we’ll load it now so we know it loads). set.seed() matters because pavo::classify() is k-means under the hood, and k-means is non-deterministic."
+  },
+  {
+    "objectID": "demo8-worksheet.html#inventory-the-bundle",
+    "href": "demo8-worksheet.html#inventory-the-bundle",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.2 Inventory the bundle",
+    "text": "1.2 Inventory the bundle\n\ntree &lt;- read.tree(file.path(bundle, \"chaetodontidae-mini-tree.tre\"))\n\n# The picker ships two manifests:\n#   picked_species.txt    — directory names under images/  (Genus_species)\n#   picked_tip_labels.txt — matching tree-tip labels       (e.g. Chaetodon_auriga2)\n# The files may not be parallel, and a species may not have a tip on the tree —\n# so we build the map by name-prefix matching and drop any species without a tip.\npicked_species &lt;- readLines(file.path(bundle, \"picked_species.txt\"))\npicked_tips    &lt;- readLines(file.path(bundle, \"picked_tip_labels.txt\"))\n\nmatch_tip &lt;- function(sp, tips) {\n  hits &lt;- grep(paste0(\"^\", sp, \"(?:[_0-9]|$)\"), tips, value = TRUE, perl = TRUE)\n  if (length(hits) == 0) NA_character_ else hits[1]\n}\nspecies_to_tip &lt;- vapply(picked_species, match_tip, character(1), tips = picked_tips)\n\nunmatched &lt;- picked_species[is.na(species_to_tip)]\nif (length(unmatched)) {\n  message(\"Dropping \", length(unmatched), \" species with no tree tip: \",\n          paste(unmatched, collapse = \", \"))\n}\nspecies &lt;- picked_species[!is.na(species_to_tip)]\nspecies_to_tip &lt;- species_to_tip[!is.na(species_to_tip)]\n\n# Sanity: every kept species has an image dir + a matching tree tip\nstopifnot(all(file.exists(file.path(bundle, \"images\", species))))\nstopifnot(all(species_to_tip %in% tree$tip.label))\n\nlength(species)\n\n[1] 19\n\nhead(species_to_tip)\n\n         Amphichaetodon_howensis            Chaetodon_adiergastos \n  \"Amphichaetodon_howensis_M967\"    \"Chaetodon_adiergastos_CHD01\" \n                Chaetodon_auriga                Chaetodon_collare \n             \"Chaetodon_auriga2\"       \"Chaetodon_collare_PW3054\" \n             Chaetodon_guentheri                Chaetodon_kleinii \n\"Chaetodon_guentheri_FMNH128374\"       \"Chaetodon_kleinii_PW4831\" \n\n# README names the error-species (the species with 5 images) — read it now\nreadLines(file.path(bundle, \"README.txt\"), n = 25)\n\n [1] \"Demo 8 mini-bundle — chaetodontidae\"                                                                                                             \n [2] \"Generated: 2026-05-18T14:38:50\"                                                                                                                  \n [3] \"Saved by: Admin\"                                                                                                                                 \n [4] \"\"                                                                                                                                                \n [5] \"Species selected in picker: 20\"                                                                                                                  \n [6] \"Species actually shipped:   20\"                                                                                                                  \n [7] \"Species SKIPPED (no image): 0\"                                                                                                                   \n [8] \"Genera shipped:             5\"                                                                                                                   \n [9] \"Error-species (5-image stack): Heniochus_acuminatus\"                                                                                             \n[10] \"\"                                                                                                                                                \n[11] \"Image sources: families/chaetodontidae/analysis/{oriented,segmented}/&lt;Species&gt;/&lt;file&gt;.png\"                                                       \n[12] \"Tree source: chronogram.tre (full tree; use picked_tip_labels.txt + ape::keep.tip() to prune)\"                                                   \n[13] \"\"                                                                                                                                                \n[14] \"Worksheet expectations:\"                                                                                                                         \n[15] \"  bundle &lt;- \\\"data/chaetodontidae\\\"\"                                                                                                             \n[16] \"  error_species &lt;- \\\"Heniochus_acuminatus\\\"\"                                                                                                     \n[17] \"\"                                                                                                                                                \n[18] \"Image-selection policy: this bundle ONLY ships images the admin\"                                                                                 \n[19] \"explicitly picked (via 🖼️ Pick images on the mini-bundle picker)\"                                                                                 \n[20] \"or starred (via ★ on a species review page). No alphabetical\"                                                                                    \n[21] \"fallback — some images are low-quality and should not auto-ship.\"                                                                                \n[22] \"\"                                                                                                                                                \n[23] \"Notes:\"                                                                                                                                          \n[24] \"  Chaetodon auriga: shipped images[0]=Chaetodon_auriga_FishWise_006157F000009W000037.png; 2 other pick(s) recorded in YAML for future bootstrap.\"\n\n\nThe README names one species — call it the error-species — that has a stack of 5 images instead of 1. We’ll parse the name out of the README in the next chunk so the rest of the worksheet doesn’t depend on a hard-coded string."
+  },
+  {
+    "objectID": "demo8-worksheet.html#run-pavo-on-each-species-the-slow-chunk",
+    "href": "demo8-worksheet.html#run-pavo-on-each-species-the-slow-chunk",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.3 Run pavo on each species (the slow chunk)",
+    "text": "1.3 Run pavo on each species (the slow chunk)\nWe’ll use one image per species — images/&lt;species&gt;/exemplar.png — and for the error-species we’ll just grab img-1.png and treat it like the rest. For each image we classify the pixels into 4 pattern classes (k-means in CIELab space), then run adjacent to get pattern statistics from pixel-adjacency counts.\n\n# Pull the error-species name out of the README so the worksheet stays valid\n# across rebuilds of the bundle.\nreadme &lt;- readLines(file.path(bundle, \"README.txt\"))\nerr_line &lt;- grep(\"^Error-species\", readme, value = TRUE)[1]\nerror_species &lt;- if (is.na(err_line) || grepl(\"NONE\", err_line)) NA_character_ else\n                 trimws(sub(\"\\\\s*\\\\(.*\", \"\",\n                            sub(\".*?:\\\\s*\", \"\", err_line)))\ncat(\"Error-species in this bundle:\",\n    if (is.na(error_species)) \"NONE\" else error_species, \"\\n\")\n\nError-species in this bundle: Heniochus_acuminatus \n\npick_image &lt;- function(sp) {\n  if (!is.na(error_species) && sp == error_species) {\n    file.path(bundle, \"images\", sp, \"img-1.png\")\n  } else {\n    file.path(bundle, \"images\", sp, \"exemplar.png\")\n  }\n}\n\nrun_one &lt;- function(sp) {\n  img      &lt;- getimg(pick_image(sp))\n  classed  &lt;- classify(img, kcols = 4, plotnew = FALSE)\n  adj      &lt;- adjacent(classed, xpts = 50, xscale = 1)\n  adj$species &lt;- sp\n  adj\n}\n\n# This takes ~30-60s for 20 species\nresults &lt;- lapply(species, run_one)\nadj_df  &lt;- do.call(rbind, results)\n\ndim(adj_df)\n\n[1] 19 50\n\ncolnames(adj_df)\n\n [1] \"k\"       \"N\"       \"n_off\"   \"p_1\"     \"p_2\"     \"p_3\"     \"p_4\"    \n [8] \"q_1_1\"   \"q_1_2\"   \"q_2_2\"   \"q_1_3\"   \"q_2_3\"   \"q_3_3\"   \"q_1_4\"  \n[15] \"q_2_4\"   \"q_3_4\"   \"q_4_4\"   \"t_1_2\"   \"t_1_3\"   \"t_2_3\"   \"t_1_4\"  \n[22] \"t_2_4\"   \"t_3_4\"   \"m\"       \"m_r\"     \"m_c\"     \"A\"       \"Sc\"     \n[29] \"St\"      \"Jc\"      \"Jt\"      \"B\"       \"Rt\"      \"Rab\"     \"m_dS\"   \n[36] \"s_dS\"    \"cv_dS\"   \"m_dL\"    \"s_dL\"    \"cv_dL\"   \"m_hue\"   \"s_hue\"  \n[43] \"var_hue\" \"m_sat\"   \"s_sat\"   \"cv_sat\"  \"m_lum\"   \"s_lum\"   \"cv_lum\" \n[50] \"species\"\n\n\nadjacent() returns a lot of columns. The ones you’ll use today are:\n\n\n\n\n\n\n\nColumn\nWhat it means\n\n\n\n\np_1, p_2, p_3, p_4\nFraction of the image in each of the 4 color classes (sums to 1).\n\n\nSc\nSimpson’s diversity of class proportions: 1 - sum(p_i^2). Higher = more even pattern.\n\n\nm\nPattern “complexity”: probability that two adjacent pixels belong to different classes. 0 = solid color, 1 = maximally busy.\n\n\nm_r, m_c\nSame as m, but only for horizontal (m_r) or vertical (m_c) neighbors. The ratio tells you about pattern orientation.\n\n\nA\nDirectional pattern asymmetry: m_r / m_c. A = 1 is isotropic; A &gt; 1 means more horizontal transitions (think vertical bars); A &lt; 1 means more vertical transitions (think horizontal stripes)."
+  },
+  {
+    "objectID": "demo8-worksheet.html#build-the-species-pattern-stat-matrix",
+    "href": "demo8-worksheet.html#build-the-species-pattern-stat-matrix",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.4 Build the species × pattern-stat matrix",
+    "text": "1.4 Build the species × pattern-stat matrix\n\nkeep &lt;- c(\"p_1\", \"p_2\", \"p_3\", \"p_4\", \"Sc\", \"m\", \"m_r\", \"m_c\", \"A\")\ntraits &lt;- adj_df[, c(\"species\", keep)]\nrownames(traits) &lt;- traits$species\ntraits$species   &lt;- NULL\n\nhead(traits, 4)\n\n                              p_1       p_2        p_3        p_4       Sc\nAmphichaetodon_howensis 0.4609091 0.2804545 0.22409091 0.03454545 2.919690\nChaetodon_adiergastos   0.6878571 0.1321429 0.08857143 0.09142857 1.973113\nChaetodon_auriga        0.2274286 0.1028571 0.31942857 0.35028571 3.483859\nChaetodon_collare       0.1265000 0.2230000 0.45650000 0.19400000 3.207601\n                                m       m_r       m_c         A\nAmphichaetodon_howensis  7.282177  9.000000  5.564354 1.6174383\nChaetodon_adiergastos    5.898571  5.857143  5.940000 0.9860510\nChaetodon_auriga        17.301671 16.400000 18.203342 0.9009335\nChaetodon_collare       15.298490 15.025000 15.571980 0.9648741\n\n\nNine pattern variables, 20 species. Save this matrix — Parts 2 and 3 will both read it."
+  },
+  {
+    "objectID": "demo8-worksheet.html#principal-component-analysis",
+    "href": "demo8-worksheet.html#principal-component-analysis",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.5 Principal component analysis",
+    "text": "1.5 Principal component analysis\nPCA on a centered + scaled matrix because our variables are on very different units (proportions vs. probabilities vs. asymmetry).\n\npc &lt;- prcomp(traits, scale. = TRUE)\nsummary(pc)\n\nImportance of components:\n                         PC1    PC2    PC3    PC4     PC5     PC6     PC7\nStandard deviation     2.044 1.2454 1.1842 0.9730 0.77572 0.56318 0.06968\nProportion of Variance 0.464 0.1723 0.1558 0.1052 0.06686 0.03524 0.00054\nCumulative Proportion  0.464 0.6363 0.7922 0.8974 0.96422 0.99946 1.00000\n                             PC8       PC9\nStandard deviation     2.648e-16 1.452e-16\nProportion of Variance 0.000e+00 0.000e+00\nCumulative Proportion  1.000e+00 1.000e+00\n\n\nLook at the Proportion of Variance row. If PC1 + PC2 together explain ≥ 60 %, two axes are a usable summary of the standing diversity.\n\nplot(pc, type = \"l\", main = \"Scree: how much variance per axis?\")\n\n\n\n\n\n\n\n\n\nbiplot(pc, cex = 0.75, main = \"Chaetodontidae pattern PCA (no tree)\")\n\n\n\n\n\n\n\n\nThe arrows show which pavo variables drive each axis. Long arrows = high contribution. Arrows pointing the same direction = correlated variables (we’ll quantify that in 1.6).\n\npc_df &lt;- as.data.frame(pc$x[, 1:2])\npc_df$species &lt;- rownames(pc_df)\n\nggplot(pc_df, aes(PC1, PC2, label = species)) +\n  geom_point(size = 3, alpha = 0.7, color = \"#0a66c2\") +\n  geom_text(vjust = -0.8, size = 3) +\n  labs(title = \"Where each species sits on the first two pattern axes\",\n       x = sprintf(\"PC1 (%.1f%%)\", summary(pc)$importance[2, 1] * 100),\n       y = sprintf(\"PC2 (%.1f%%)\", summary(pc)$importance[2, 2] * 100)) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nRead this plot: Each dot is one species in pattern-statistic space. Two species close together have similar pavo stats — they don’t have to be closely related (we haven’t told the plot anything about the tree). Two species far apart have different pattern statistics."
+  },
+  {
+    "objectID": "demo8-worksheet.html#bivariate-relationships-among-pavo-variables",
+    "href": "demo8-worksheet.html#bivariate-relationships-among-pavo-variables",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.6 Bivariate relationships among pavo variables",
+    "text": "1.6 Bivariate relationships among pavo variables\nAre any pavo variables strongly correlated? If yes, the PCA above is partly redundant — we have fewer truly independent pattern axes than we have variables.\n\ncor_mat &lt;- cor(traits)\nround(cor_mat, 2)\n\n      p_1   p_2   p_3   p_4    Sc     m   m_r   m_c     A\np_1  1.00 -0.47 -0.35 -0.26 -0.22 -0.20 -0.20 -0.19  0.00\np_2 -0.47  1.00 -0.32 -0.26 -0.14 -0.22 -0.21 -0.22  0.19\np_3 -0.35 -0.32  1.00 -0.32  0.31  0.43  0.46  0.40  0.04\np_4 -0.26 -0.26 -0.32  1.00  0.09  0.01 -0.02  0.04 -0.27\nSc  -0.22 -0.14  0.31  0.09  1.00  0.76  0.75  0.75 -0.32\nm   -0.20 -0.22  0.43  0.01  0.76  1.00  0.99  0.99 -0.44\nm_r -0.20 -0.21  0.46 -0.02  0.75  0.99  1.00  0.96 -0.31\nm_c -0.19 -0.22  0.40  0.04  0.75  0.99  0.96  1.00 -0.54\nA    0.00  0.19  0.04 -0.27 -0.32 -0.44 -0.31 -0.54  1.00\n\n\nVisualize with a quick pairs plot for the variables most likely to be linked:\n\npairs(traits[, c(\"Sc\", \"m\", \"m_r\", \"m_c\", \"A\")],\n      lower.panel = panel.smooth, pch = 19, cex = 0.7)\n\n\n\n\n\n\n\n\nAnd run a couple of named bivariate tests so the class can talk about them:\n\n# Does directional pattern asymmetry track overall pattern complexity?\nfit_1 &lt;- lm(A ~ m, data = traits)\nsummary(fit_1)$coefficients\n\n               Estimate  Std. Error   t value     Pr(&gt;|t|)\n(Intercept)  1.30237615 0.112859538 11.539797 1.825915e-09\nm           -0.01917481 0.009482316 -2.022165 5.918565e-02\n\nsummary(fit_1)$r.squared\n\n[1] 0.1938983\n\n# Are horizontal and vertical transition densities the same?\nfit_2 &lt;- lm(m_c ~ m_r, data = traits)\nsummary(fit_2)$coefficients\n\n             Estimate Std. Error   t value     Pr(&gt;|t|)\n(Intercept) -1.288251 0.88819245 -1.450419 1.651426e-01\nm_r          1.080773 0.07409433 14.586441 4.820915e-11\n\nsummary(fit_2)$r.squared\n\n[1] 0.9260111\n\n\nfit_2 is a sneaky one — if the slope is significantly different from 1, your family’s patterns are systematically more stripe-y in one direction than the other."
+  },
+  {
+    "objectID": "demo8-worksheet.html#what-does-this-tell-us-so-far",
+    "href": "demo8-worksheet.html#what-does-this-tell-us-so-far",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.7 What does this tell us so far?",
+    "text": "1.7 What does this tell us so far?\nYou’ve described the standing diversity of pattern statistics in Chaetodontidae. The PCA, correlation matrix, and bivariate fits are doing the work of saying:\n\nhow many pattern axes the family actually varies along (PCA),\nwhich pavo variables co-vary (correlation, pairs()), and\nwhether any pair of pavo measurements has a meaningful relationship (lm()).\n\nWhat this analysis cannot tell you yet is whether any of these relationships are real biology or whether they’re artifacts of phylogeny — closely related species sharing pattern statistics for the same reason they share genes. That’s Part 2."
+  },
+  {
+    "objectID": "demo8-worksheet.html#save-part-1-outputs",
+    "href": "demo8-worksheet.html#save-part-1-outputs",
+    "title": "Demo 8 — Worksheet",
+    "section": "1.8 Save Part 1 outputs",
+    "text": "1.8 Save Part 1 outputs\nParts 2 and 3 will both want the trait matrix:\n\ndir.create(\"results\", showWarnings = FALSE)\nsaveRDS(traits,         \"results/part1-traits.rds\")\nsaveRDS(pc,             \"results/part1-pca.rds\")\nsaveRDS(cor_mat,        \"results/part1-cor.rds\")\nsaveRDS(species_to_tip, \"results/part1-species-to-tip.rds\")"
+  },
+  {
+    "objectID": "demo8-worksheet.html#your-turn-your-own-family",
+    "href": "demo8-worksheet.html#your-turn-your-own-family",
+    "title": "Demo 8 — Worksheet",
+    "section": "Your Turn — your own family",
+    "text": "Your Turn — your own family\nSwitch to your group’s bundle. On the FishView mini-bundle dashboard, hit Export to download &lt;family&gt;-mini-bundle.zip, drop it into the same working directory you used above, then:\nunzip(\"&lt;family&gt;-mini-bundle.zip\")   # creates &lt;family&gt;-mini-bundle/\nbundle &lt;- \"&lt;family&gt;-mini-bundle\"    # e.g. \"acanthuridae-mini-bundle\"\nThen re-run everything from 1.2 onward — the chunks only depend on bundle, so no other edits are needed.\nYou’ll want 20 species spanning ≥5 genera in your bundle. The lecturer has pre-selected those; if you see fewer than 20 species or fewer than 5 genera in your bundle, flag a TA."
+  },
+  {
+    "objectID": "demo8-worksheet.html#match-the-trait-matrix-to-the-tree",
+    "href": "demo8-worksheet.html#match-the-trait-matrix-to-the-tree",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.1 Match the trait matrix to the tree",
+    "text": "2.1 Match the trait matrix to the tree\n\nlibrary(phytools)\nlibrary(caper)\n\n# These should already be in memory from Part 1; re-load if you've restarted R.\nif (!exists(\"traits\"))         traits         &lt;- readRDS(\"results/part1-traits.rds\")\nif (!exists(\"species_to_tip\")) species_to_tip &lt;- readRDS(\"results/part1-species-to-tip.rds\")\nif (!exists(\"tree\"))           tree           &lt;- read.tree(file.path(bundle, \"chaetodontidae-mini-tree.tre\"))\n\n# Re-key the trait matrix from directory names to tree-tip labels.\n# (e.g. row \"Chaetodon_auriga\" -&gt; \"Chaetodon_auriga2\"; the picker built this map.)\nrownames(traits) &lt;- species_to_tip[rownames(traits)]\n\n# Keep only tips that have data; reorder data rows to tree-tip order\ntree   &lt;- keep.tip(tree, rownames(traits))\ntraits &lt;- traits[tree$tip.label, ]\n\nstopifnot(all(rownames(traits) == tree$tip.label))\nlength(tree$tip.label)\n\n[1] 19\n\n\nstopifnot is the assertion-gate: if rows and tips are out of order, the rest of Part 2 silently gives nonsense answers. Better to crash here than to publish a wrong K."
+  },
+  {
+    "objectID": "demo8-worksheet.html#phylogenetic-pca",
+    "href": "demo8-worksheet.html#phylogenetic-pca",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.2 Phylogenetic PCA",
+    "text": "2.2 Phylogenetic PCA\nphytools::phyl.pca fits the same kind of PCA you ran in Part 1, but the centering and covariance step uses the tree’s expected variance-covariance under Brownian motion (optionally with λ-scaling).\n\n# Two of our 9 pavo variables are algebraically determined by the others:\n#   - Σ p_i = 1  ⇒  p_4 is fixed once p_1..p_3 are known\n#   - A = m_r / m_c  ⇒  m_c is fixed once m_r and A are known\n# Ordinary prcomp (Part 1) tolerated this — it just gave us zero-variance PCs at\n# the end. phyl.pca needs to invert the trait covariance, which is now singular,\n# so we drop the two redundant columns first.\ntraits_phy &lt;- traits[, setdiff(colnames(traits), c(\"p_4\", \"m_c\"))]\nncol(traits_phy)\n\n[1] 7\n\nphy_pc &lt;- phyl.pca(tree, traits_phy, method = \"lambda\", mode = \"corr\")\nsummary(phy_pc)\n\nImportance of components:\n                             PC1       PC2       PC3        PC4        PC5\nStandard deviation     1.7976627 1.2295593 1.0435377 0.80934084 0.56517164\nProportion of Variance 0.4616559 0.2159737 0.1555673 0.09357609 0.04563128\nCumulative Proportion  0.4616559 0.6776296 0.8331969 0.92677300 0.97240428\n                              PC6          PC7\nStandard deviation     0.43800738 0.0363257556\nProportion of Variance 0.02740721 0.0001885086\nCumulative Proportion  0.99981149 1.0000000000\n\n\nRead the new Proportion of Variance row alongside Part 1’s. If the percentages shift, the tree was structuring the original axes.\n\nbiplot(phy_pc, main = \"Chaetodontidae pattern phylo-PCA\")"
+  },
+  {
+    "objectID": "demo8-worksheet.html#how-did-the-loadings-change",
+    "href": "demo8-worksheet.html#how-did-the-loadings-change",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.3 How did the loadings change?",
+    "text": "2.3 How did the loadings change?\nThe most direct comparison: each pavo variable’s contribution to PC1, with and without the tree.\n\nahist_pc &lt;- readRDS(\"results/part1-pca.rds\")\n\ncommon_vars &lt;- intersect(rownames(ahist_pc$rotation), rownames(phy_pc$L))\nload_df &lt;- data.frame(\n  variable        = common_vars,\n  ahistorical_PC1 = ahist_pc$rotation[common_vars, \"PC1\"],\n  phyloPCA_PC1    = phy_pc$L[common_vars, 1]\n)\nprint(round(load_df[, -1], 3))\n\n    ahistorical_PC1 phyloPCA_PC1\np_1          -0.129        0.286\np_2          -0.138        0.295\np_3           0.255       -0.578\nSc            0.404       -0.838\nm             0.478       -0.961\nm_r           0.467       -0.945\nA            -0.243        0.457\n\nggplot(load_df, aes(ahistorical_PC1, phyloPCA_PC1, label = variable)) +\n  geom_abline(slope = 1, intercept = 0, linetype = \"dashed\", color = \"grey50\") +\n  geom_point(size = 3, color = \"#d4a853\") +\n  geom_text(vjust = -0.8, size = 3) +\n  labs(title = \"PC1 loadings: no tree vs with tree\",\n       x = \"Loading on PC1 (ahistorical)\",\n       y = \"Loading on PC1 (phyloPCA)\") +\n  theme_minimal() +\n  coord_equal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nRead this plot. Variables on the dashed y = x line have identical loadings either way — phylogeny didn’t change them. Variables far from the line are loadings that were being driven (or masked) by shared ancestry."
+  },
+  {
+    "objectID": "demo8-worksheet.html#pgls-bivariate-tests-with-phylogenetic-correction",
+    "href": "demo8-worksheet.html#pgls-bivariate-tests-with-phylogenetic-correction",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.4 PGLS — bivariate tests with phylogenetic correction",
+    "text": "2.4 PGLS — bivariate tests with phylogenetic correction\nThe same two lm() fits from Part 1, but now allowing the residuals to be correlated according to the tree’s Brownian-motion expectation. We use caper::pgls with lambda = \"ML\", which fits the optimal amount of phylogenetic correction.\n\ntraits_df &lt;- data.frame(species = rownames(traits), traits)\ncd &lt;- comparative.data(phy = tree, data = traits_df,\n                       names.col = \"species\", vcv = TRUE)\n\npgls_1 &lt;- pgls(A ~ m,   data = cd, lambda = \"ML\")\npgls_2 &lt;- pgls(m_c ~ m_r,     data = cd, lambda = \"ML\")\n\nsummary(pgls_1)\n\n\nCall:\npgls(formula = A ~ m, data = cd, lambda = \"ML\")\n\nResiduals:\n      Min        1Q    Median        3Q       Max \n-0.052457 -0.025837 -0.011330  0.004365  0.065454 \n\nBranch length transformations:\n\nkappa  [Fix]  : 1.000\nlambda [ ML]  : 0.975\n   lower bound : 0.000, p = 0.021505\n   upper bound : 1.000, p = 0.8988\n   95.0% CI   : (0.193, NA)\ndelta  [Fix]  : 1.000\n\nCoefficients:\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept)  1.3624846  0.1268589 10.7402 5.383e-09 ***\nm           -0.0143414  0.0064272 -2.2313   0.03941 *  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.0369 on 17 degrees of freedom\nMultiple R-squared: 0.2265, Adjusted R-squared: 0.181 \nF-statistic: 4.979 on 1 and 17 DF,  p-value: 0.03941 \n\nsummary(pgls_2)\n\n\nCall:\npgls(formula = m_c ~ m_r, data = cd, lambda = \"ML\")\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-0.3747 -0.1304  0.1127  0.1795  0.3470 \n\nBranch length transformations:\n\nkappa  [Fix]  : 1.000\nlambda [ ML]  : 0.741\n   lower bound : 0.000, p = 0.034136\n   upper bound : 1.000, p = 0.31064\n   95.0% CI   : (0.051, NA)\ndelta  [Fix]  : 1.000\n\nCoefficients:\n             Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.077211   0.907493  -2.289   0.03515 *  \nm_r          1.084280   0.058709  18.469 1.096e-12 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.2406 on 17 degrees of freedom\nMultiple R-squared: 0.9525, Adjusted R-squared: 0.9497 \nF-statistic: 341.1 on 1 and 17 DF,  p-value: 1.095e-12 \n\n\nSide-by-side with Part 1’s lm():\n\ncompare &lt;- data.frame(\n  fit = c(\"A ~ m\", \"m_c ~ m_r\"),\n  lm_slope    = c(coef(fit_1)[2], coef(fit_2)[2]),\n  lm_p        = c(summary(fit_1)$coefficients[2, 4],\n                  summary(fit_2)$coefficients[2, 4]),\n  pgls_slope  = c(coef(pgls_1)[2], coef(pgls_2)[2]),\n  pgls_p      = c(summary(pgls_1)$coefficients[2, 4],\n                  summary(pgls_2)$coefficients[2, 4]),\n  pgls_lambda = c(summary(pgls_1)$param[\"lambda\"],\n                  summary(pgls_2)$param[\"lambda\"])\n)\nround(compare[, -1], 3)\n\n    lm_slope  lm_p pgls_slope pgls_p pgls_lambda\nm     -0.019 0.059     -0.014  0.039       0.975\nm_r    1.081 0.000      1.084  0.000       0.741\n\n\nPay attention to two things:\n\nDid the slope change? If yes, the ancestral covariance was pushing your lm() estimate around.\nDid the p-value change? A relationship that’s significant under lm() but not under PGLS was being inflated by phylogenetic non-independence. The reverse — significant under PGLS but not lm() — happens when phylogeny was masking a real signal.\n\nThe pgls_lambda column tells you how much phylogenetic correction the fit actually wanted. λ ≈ 0 means the residuals look independent, λ ≈ 1 means Brownian-motion-strength correlation."
+  },
+  {
+    "objectID": "demo8-worksheet.html#per-variable-phylogenetic-signal-k-and-λ",
+    "href": "demo8-worksheet.html#per-variable-phylogenetic-signal-k-and-λ",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.5 Per-variable phylogenetic signal (K and λ)",
+    "text": "2.5 Per-variable phylogenetic signal (K and λ)\nRun Blomberg’s K and Pagel’s λ on each pavo variable separately, with permutation tests:\n\nsignal &lt;- t(sapply(colnames(traits), function(v) {\n  x &lt;- setNames(traits[, v], rownames(traits))\n  k_res &lt;- phylosig(tree, x, method = \"K\",      test = TRUE, nsim = 999)\n  l_res &lt;- phylosig(tree, x, method = \"lambda\", test = TRUE)\n  c(K = k_res$K, K_p = k_res$P,\n    lambda = as.numeric(l_res$lambda), lambda_p = l_res$P)\n}))\nsignal &lt;- as.data.frame(signal)\nround(signal, 3)\n\n        K   K_p lambda lambda_p\np_1 0.222 0.919  0.000    1.000\np_2 0.282 0.780  0.000    1.000\np_3 0.344 0.532  0.000    1.000\np_4 0.549 0.232  0.000    1.000\nSc  0.259 0.875  0.000    1.000\nm   0.356 0.521  0.000    1.000\nm_r 0.351 0.558  0.000    1.000\nm_c 0.370 0.473  0.000    1.000\nA   1.043 0.016  0.854    0.027\n\n\nK &lt; 1 means less signal than Brownian — relatives look more different than you’d expect under random drift. K &gt; 1 means the opposite. K = 1 is the BM expectation. The p-value tests K = 0 (no signal at all)."
+  },
+  {
+    "objectID": "demo8-worksheet.html#compare-to-frédérich-2026",
+    "href": "demo8-worksheet.html#compare-to-frédérich-2026",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.6 Compare to Frédérich 2026",
+    "text": "2.6 Compare to Frédérich 2026\nFrédérich et al. report multivariate Blomberg’s K for Chaetodontidae = 0.10 (their Table 1). That’s a single multivariate K across all 30 binary motif columns. Your nine per-pavo-variable K values are not directly comparable — but they describe the same biology from a different angle.\n\nsignal$variable &lt;- rownames(signal)\nggplot(signal, aes(reorder(variable, K), K, fill = K_p &lt; 0.05)) +\n  geom_col() +\n  geom_hline(yintercept = 0.10, linetype = \"dashed\", color = \"#d4a853\") +\n  geom_text(aes(label = sprintf(\"p=%.2f\", K_p)),\n            hjust = -0.1, size = 3, color = \"grey25\") +\n  scale_fill_manual(values = c(`TRUE` = \"#0a66c2\", `FALSE` = \"grey70\"),\n                    name = \"p &lt; 0.05\") +\n  coord_flip(ylim = c(0, max(signal$K) * 1.25)) +\n  labs(title = \"Blomberg's K per pavo variable\",\n       subtitle = \"dashed line = Frédérich 2026 multivariate K for Chaetodontidae (0.10)\",\n       x = NULL, y = \"Blomberg's K\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nIf most of your variables sit near or below the dashed line, you’ve reproduced Frédérich’s headline result with completely different data and a completely different statistical pipeline — that’s a real cross-validation."
+  },
+  {
+    "objectID": "demo8-worksheet.html#what-does-this-tell-us",
+    "href": "demo8-worksheet.html#what-does-this-tell-us",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.7 What does this tell us?",
+    "text": "2.7 What does this tell us?\nYou’ve now made three different phylogenetic corrections to Part 1’s analysis:\n\nphyloPCA loadings told you whether the axes you identified ahistorically were being driven by shared ancestry.\nPGLS slopes and p-values told you whether your bivariate lm() claims survive accounting for non-independence.\nK and λ per variable told you which specific pavo measurements are phylogenetically structured at all.\n\nHold onto whichever pattern is most striking — Part 3 will ask whether it’s robust to measurement noise, not just to phylogenetic correction."
+  },
+  {
+    "objectID": "demo8-worksheet.html#save-part-2-outputs",
+    "href": "demo8-worksheet.html#save-part-2-outputs",
+    "title": "Demo 8 — Worksheet",
+    "section": "2.8 Save Part 2 outputs",
+    "text": "2.8 Save Part 2 outputs\n\nsaveRDS(phy_pc,  \"results/part2-phylopca.rds\")\nsaveRDS(signal,  \"results/part2-signal.rds\")\nsaveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2),\n        \"results/part2-pgls.rds\")\nsaveRDS(compare, \"results/part2-compare-lm-pgls.rds\")"
+  },
+  {
+    "objectID": "demo8-worksheet.html#your-turn-your-own-family-1",
+    "href": "demo8-worksheet.html#your-turn-your-own-family-1",
+    "title": "Demo 8 — Worksheet",
+    "section": "Your Turn — your own family",
+    "text": "Your Turn — your own family\nSame drill as Part 1: switch bundle to your group’s mini-bundle and re-run 2.1–2.6. You’ll get a per-family K plot directly comparable to Frédérich’s published value for that family (Acanthuridae 0.11, Pomacanthidae 0.05, Lutjanidae 0.22, Mullidae 0.08, Pomacentridae 0.06 — Chaetodontidae 0.10 is the one we already did)."
+  },
+  {
+    "objectID": "demo8-worksheet.html#run-pavo-on-the-5-image-stack",
+    "href": "demo8-worksheet.html#run-pavo-on-the-5-image-stack",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.1 Run pavo on the 5-image stack",
+    "text": "3.1 Run pavo on the 5-image stack\n\nsource(\"scripts/measurement-error.R\")\n\nerr &lt;- pavo_error_stats(bundle, error_species, n_images = 5)\nerr$per_image\n\n            p_1        p_2       p_3        p_4       Sc         m       m_r\nimg-1 0.2400000 0.11736842 0.2100000 0.43263158 3.304197  9.624442  9.973684\nimg-2 0.1014286 0.09214286 0.5414286 0.26500000 2.616787 17.158571 16.857143\nimg-3 0.1248276 0.23517241 0.1351724 0.50482759 2.906888  6.586742  7.155172\nimg-4 0.2843243 0.27783784 0.3340541 0.10378378 3.566367  9.388747  9.405405\nimg-5 0.2763158 0.36157895 0.2805263 0.08157895 3.419506 15.768848 15.842105\n            m_c         A\nimg-1  9.275200 1.0753066\nimg-2 17.460000 0.9654721\nimg-3  6.018311 1.1889004\nimg-4  9.372089 1.0035549\nimg-5 15.695590 1.0093348\n\n\nFive rows, nine columns: one row per image, one column per pavo variable.\n\ndata.frame(mean = round(err$mean, 4),\n           sd   = round(err$sd,   4),\n           cv   = round(err$sd / abs(err$mean), 3))\n\n       mean     sd    cv\np_1  0.2054 0.0863 0.420\np_2  0.2168 0.1123 0.518\np_3  0.3002 0.1542 0.514\np_4  0.2776 0.1900 0.685\nSc   3.1627 0.3913 0.124\nm   11.7055 4.5317 0.387\nm_r 11.8467 4.2587 0.359\nm_c 11.5642 4.8122 0.416\nA    1.0485 0.0879 0.084\n\n\nThe cv (coefficient of variation = SD / mean) is the most readable number. A cv near 0 means “five images give nearly identical pavo values”; a cv near 0.5 means “swapping the photo changes this pavo statistic by ~50 %”."
+  },
+  {
+    "objectID": "demo8-worksheet.html#visualize-within-species-noise",
+    "href": "demo8-worksheet.html#visualize-within-species-noise",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.2 Visualize within-species noise",
+    "text": "3.2 Visualize within-species noise\n\nlong &lt;- as.data.frame(err$per_image)\nlong$image &lt;- rownames(long)\nlong &lt;- tidyr::pivot_longer(long, cols = -image,\n                            names_to = \"variable\", values_to = \"value\")\n\nggplot(long, aes(variable, value)) +\n  geom_jitter(width = 0.12, height = 0, alpha = 0.7, color = \"#d4a853\", size = 2.5) +\n  stat_summary(fun = mean, geom = \"crossbar\", width = 0.45, color = \"#181b2b\") +\n  labs(title = sprintf(\"Within-species variation: %s × 5 images\", error_species),\n       subtitle = \"horizontal bar = mean; dots = one per image\",\n       x = NULL, y = \"pavo value\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 30, hjust = 1))\n\n\n\n\n\n\n\n\nVariables with tight clusters are robust. Variables with wide spread are not — and those are the variables whose K and PGLS results from Part 2 are most likely to wobble."
+  },
+  {
+    "objectID": "demo8-worksheet.html#the-simplifying-assumption",
+    "href": "demo8-worksheet.html#the-simplifying-assumption",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.3 The simplifying assumption",
+    "text": "3.3 The simplifying assumption\n\n\n\n\n\n\nWarning\n\n\n\nWe’re about to treat the SDs from one species as the SDs for every species. That’s a known-strong assumption — within-species variance might be larger for some species (heterogeneous within-species color) and smaller for others. We’re making the assumption because (a) we can only afford to photograph one species five times in this demo, and (b) it lets the class see uncertainty propagation as one tunable knob. In a research paper you’d want to estimate per-species SDs — and then your noise vector would itself be a matrix."
+  },
+  {
+    "objectID": "demo8-worksheet.html#monte-carlo-re-run-parts-1-2-under-noise",
+    "href": "demo8-worksheet.html#monte-carlo-re-run-parts-1-2-under-noise",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.4 Monte Carlo: re-run Parts 1 & 2 under noise",
+    "text": "3.4 Monte Carlo: re-run Parts 1 & 2 under noise\n\nsource(\"scripts/error-aware-analyses.R\")\n\n# 200 iterations takes ~3-5 minutes on a recent laptop. Drop to 50 if\n# you're running into class time.\nmc &lt;- mc_redo_analyses(traits, tree, err$sd, n_iter = 200, seed = 2026)\n\nmc holds:\n\nmc$pc1_loadings — 200 × 9 matrix of PC1 loadings (one row per iteration)\nmc$K and mc$lambda — 200 × 9 matrix of per-variable signal stats\nmc$pgls_slopes — 200 × 2 matrix of the two named PGLS slopes\nmc$summaries — 95 % CIs (2.5 %, 50 %, 97.5 % quantiles) for each of the above"
+  },
+  {
+    "objectID": "demo8-worksheet.html#blombergs-k-observed-vs-noisy",
+    "href": "demo8-worksheet.html#blombergs-k-observed-vs-noisy",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.5 Blomberg’s K — observed vs noisy",
+    "text": "3.5 Blomberg’s K — observed vs noisy\n\nK_long &lt;- tidyr::pivot_longer(as.data.frame(mc$K),\n                              cols = everything(),\n                              names_to = \"variable\", values_to = \"K\")\n\nobs &lt;- signal[, c(\"variable\", \"K\")]\nobs$variable &lt;- factor(obs$variable, levels = colnames(mc$K))\nK_long$variable &lt;- factor(K_long$variable, levels = colnames(mc$K))\n\nggplot(K_long, aes(variable, K)) +\n  geom_boxplot(fill = \"grey85\", color = \"grey40\", outlier.size = 0.6) +\n  geom_point(data = obs, aes(variable, K),\n             color = \"#d4a853\", size = 3) +\n  geom_hline(yintercept = 0.10, linetype = \"dashed\", color = \"#0a66c2\") +\n  coord_flip() +\n  labs(title = \"Distribution of Blomberg's K across 200 noisy re-fits\",\n       subtitle = \"gold dot = observed K (Part 2); blue dashed = Frédérich 2026 K = 0.10\",\n       x = NULL, y = \"K\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\nRead this plot variable-by-variable:\n\nTight, low boxplots near 0: your “no signal” conclusion is robust.\nTight, high boxplots above 0.10: your “signal exists” conclusion is robust.\nBoxplots that straddle 0: you cannot distinguish your observed K from zero once you admit the measurements are noisy.\nObserved K (gold) falls outside the boxplot: this is the diagnostic that your Part 2 point estimate is fragile — sampling a different image would have given you a meaningfully different K."
+  },
+  {
+    "objectID": "demo8-worksheet.html#pgls-slopes-observed-vs-noisy",
+    "href": "demo8-worksheet.html#pgls-slopes-observed-vs-noisy",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.6 PGLS slopes — observed vs noisy",
+    "text": "3.6 PGLS slopes — observed vs noisy\n\nslope_ci &lt;- mc$summaries$slopes_ci\nslope_tbl &lt;- data.frame(\n  fit       = c(\"A ~ m\", \"m_c ~ m_r\"),\n  pgls_obs  = c(coef(pgls_1)[2], coef(pgls_2)[2]),\n  ci_low    = slope_ci[\"2.5%\",  ],\n  ci_median = slope_ci[\"50%\",   ],\n  ci_high   = slope_ci[\"97.5%\", ]\n)\nslope_tbl[, -1] &lt;- round(slope_tbl[, -1], 3)\nslope_tbl\n\n          fit pgls_obs ci_low ci_median ci_high\nm       A ~ m   -0.014 -0.020    -0.009   0.001\nm_r m_c ~ m_r    1.084  0.307     0.651   1.059\n\n\nIf your observed PGLS slope from Part 2 sits comfortably inside the MC 95 % CI, you can quote that slope with confidence. If it sits at the edge, or if zero lies inside the CI, the relationship is real-but-fragile."
+  },
+  {
+    "objectID": "demo8-worksheet.html#what-does-this-tell-us-1",
+    "href": "demo8-worksheet.html#what-does-this-tell-us-1",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.7 What does this tell us?",
+    "text": "3.7 What does this tell us?\nThree takeaway sentences you should be able to write for your own family:\n\n“With perfect measurements, our pavo data agree / disagree with Frédérich 2026’s headline of weak phylogenetic signal in reef-fish color patterns.”\n“Once we admit measurement error of the size we observed in one species, the conclusions about VARIABLE X / Y / Z survive, but the conclusions about VARIABLE A / B / C become indistinguishable from noise.”\n“Therefore the strongest claim we can defend for our family is: …”\n\nThat third sentence is what you’ll turn in."
+  },
+  {
+    "objectID": "demo8-worksheet.html#save-part-3-outputs",
+    "href": "demo8-worksheet.html#save-part-3-outputs",
+    "title": "Demo 8 — Worksheet",
+    "section": "3.8 Save Part 3 outputs",
+    "text": "3.8 Save Part 3 outputs\n\nsaveRDS(err, \"results/part3-error-stats.rds\")\nsaveRDS(mc,  \"results/part3-mc.rds\")"
+  },
+  {
+    "objectID": "demo8-worksheet.html#your-turn-your-own-family-2",
+    "href": "demo8-worksheet.html#your-turn-your-own-family-2",
+    "title": "Demo 8 — Worksheet",
+    "section": "Your Turn — your own family",
+    "text": "Your Turn — your own family\nSame drill: set bundle &lt;- \"&lt;family&gt;-mini-bundle\" (e.g. \"acanthuridae-mini-bundle\"), drop the unzipped folder next to it, and re-run from 3.1 onward. The error-species is parsed automatically from your bundle’s README.txt, so no other edits needed.\nThe Monte Carlo step is the slowest — budget ~5 minutes if you bump n_iter to 200. For a quick rerun while exploring, n_iter = 50 is enough to see the broad shape of the distributions."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Demo 8 — Color-pattern diversity with and without history",
+    "section": "",
+    "text": "TipThe thread from last week\n\n\n\nLast week (Demo 7), Frédérich et al. 2026 told us that surgeonfish color patterns have weak phylogenetic signal (Acanthuridae K_mult = 0.11) and evolve fast within a constrained motif space. This week you’ll test the same question on your group’s family, but with your own pavo-derived continuous pattern measurements rather than the paper’s binary motif coding — and you’ll see what happens when you take measurement error seriously.\nFrédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., Laudet, V., & Dornburg, A. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. BMC Biology, 24(46). DOI"
+  },
+  {
+    "objectID": "index.html#todays-three-part-question",
+    "href": "index.html#todays-three-part-question",
+    "title": "Demo 8 — Color-pattern diversity with and without history",
+    "section": "Today’s three-part question",
+    "text": "Today’s three-part question\nAre your group’s color-pattern variables (a) structured, (b) structured because of phylogeny, and (c) structured robustly enough to survive measurement noise?\n\n\n\n\n\n\n\n\nPart\nWhat you do\nWhat you learn\n\n\n\n\n1 — Standing diversity\n20 species × ≥5 genera. Run pavo’s classify() + adjacent() per image. PCA + bivariate lm() tests across pattern statistics.\nWhat pattern axes vary across your family today — ignoring tree.\n\n\n2 — Phylogenetic correction\nSame 20 species, same statistics. phyl.pca, PGLS, Blomberg’s K + Pagel’s λ on every pavo variable.\nWhether the structure you found in Part 1 is just shared ancestry, or signal that exists once you account for it.\n\n\n3 — Measurement-error propagation\nOne species, 5 images. Compute mean ± SD per pavo variable. Treat that SD as universal measurement error. Monte Carlo (200 iter) re-run of Parts 1 & 2.\nWhich of your Part-1 / Part-2 results still hold once you admit your tip values were never point estimates.\n\n\n\nThe three parts build on each other: Part 2 corrects Part 1 for ancestry; Part 3 stress-tests both for noise."
+  },
+  {
+    "objectID": "index.html#your-bundle",
+    "href": "index.html#your-bundle",
+    "title": "Demo 8 — Color-pattern diversity with and without history",
+    "section": "Your bundle",
+    "text": "Your bundle\nYou’ll work with the same family you analyzed in Demo 7. Your group code (from Demo 7) gets you into the FishView mini-bundle:\n\n\n\nGroup\nFamily\nMini-bundle code\n\n\n\n\n1\nBalistoidea (triggerfishes)\ntrigger-2026\n\n\n2\nPomacanthidae (angelfishes)\nangel-2026\n\n\n3\nScarinae (parrotfishes)\nparrot-2026\n\n\n4\nCirrhilabrini (fairy wrasses)\nfairy-2026\n\n\n5\nAcanthuridae (surgeonfishes)\ntang-2026\n\n\n6\nHypsigenyinae (hogfishes)\nhog-2026\n\n\n7\nHalichoerine (Coris-allies wrasses)\ncoris-2026\n\n\n\nYour bundle contains:\n\n20 species × 1 exemplar image spanning ≥5 genera (matched to your group’s tree).\n5 images of one “error-species” — the species the lecturer marked as your measurement-error target.\n&lt;family&gt;-mini-tree.tre — pruned tree with exactly the 20 tips.\nREADME.txt — which species is the error-species and where each image came from.\n\nFor the walkthrough below, we use Chaetodontidae (butterflyfishes) as the shared example so we can all watch the same code produce the same plots in class."
+  },
+  {
+    "objectID": "index.html#materials",
+    "href": "index.html#materials",
+    "title": "Demo 8 — Color-pattern diversity with and without history",
+    "section": "Materials",
+    "text": "Materials\n\nIntro Slides — concept tour (three parts, ~15 min)\nDemo 8 Prep page — install R packages, verify your bundle downloads, run the readiness check. Do this before class.\n\n\nFor the TA / instructor\n\nTA Guide — concept scaffolds, timing, common traps, answer key\n\n\n\nKey files (click to download)\n\n\n\nFile\nDescription\nDownload\n\n\n\n\nChaetodontidae walkthrough bundle\nspecies × 1 image + 1 error-species × 5 images + tree (ZIP)\nchaetodontidae-mini-bundle.zip\n\n\nWorksheet R script\nAll chunks pre-extracted; paste into RStudio one section at a time\nwalkthrough.R\n\n\nMeasurement-error helper\nFunctions used in Part 3 — sourced by the worksheet\nmeasurement-error.R\n\n\nError-aware MC wrapper\nRe-runs Parts 1 & 2 under noise — sourced by Part 3\nerror-aware-analyses.R\n\n\n\n\n\nR packages needed\ninstall.packages(c(\n  \"pavo\",       # color-pattern stats\n  \"ape\",        # tree handling\n  \"phytools\",   # phyl.pca, Blomberg's K\n  \"caper\",      # PGLS\n  \"nlme\",       # gls fallback for PGLS\n  \"plotrix\",    # phytools dependency\n  \"tidyr\",      # pivot_longer in Part 3 plots\n  \"ggplot2\"\n))\ntidyr is new this week — Part 3 reshapes the 200 × 9 Monte Carlo result matrix for the diagnostic boxplots, and tidyr::pivot_longer is the cleanest way to do that."
+  },
+  {
+    "objectID": "index.html#what-students-turn-in",
+    "href": "index.html#what-students-turn-in",
+    "title": "Demo 8 — Color-pattern diversity with and without history",
+    "section": "What students turn in",
+    "text": "What students turn in\n\nPart 1 figure — your family’s pavo PCA scatter (PC1 vs PC2) with species labelled.\nPart 2 comparison — PCA biplot, K + λ values for each pavo variable, one-sentence interpretation of which variables show signal.\nPart 3 figure — Monte Carlo CIs on K (or λ, or one PGLS slope) for your group’s data.\nOne paragraph (≤250 words): “Does my family’s pattern diversity look phylogenetically structured? How much of that conclusion depends on the precision of pavo measurements? Compare to Frédérich’s surgeonfish result.”\n\nUpload to BruinLearn by end of day Wednesday."
+  },
+  {
+    "objectID": "index.html#citations",
+    "href": "index.html#citations",
+    "title": "Demo 8 — Color-pattern diversity with and without history",
+    "section": "Citations",
+    "text": "Citations\nFrédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., Laudet, V., & Dornburg, A. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. BMC Biology, 24(46). DOI\nMaia, R., Gruson, H., Endler, J. A., & White, T. E. (2019). pavo 2: new tools for the spectral and spatial analysis of colour in R. Methods in Ecology and Evolution, 10(7), 1097–1107.\nRevell, L. J. (2009). Size-correction and principal components for interspecific comparative studies. Evolution, 63(12), 3258–3268. — origin of phyl.pca."
+  },
+  {
+    "objectID": "demo8-prep.html",
+    "href": "demo8-prep.html",
+    "title": "Demo 8 — Prep",
+    "section": "",
+    "text": "WarningTuesday-night reality check\n\n\n\nThe Monte Carlo in Part 3 takes ~3 minutes the first time it runs. The setup steps below take ~20 minutes total. If you wait until Wednesday morning to install everything you’ll spend the demo watching your laptop instead of doing science. Please complete this list tonight."
+  },
+  {
+    "objectID": "demo8-prep.html#step-1-r-and-rstudio",
+    "href": "demo8-prep.html#step-1-r-and-rstudio",
+    "title": "Demo 8 — Prep",
+    "section": "Step 1 — R and RStudio",
+    "text": "Step 1 — R and RStudio\nR 4.2 or higher, and current RStudio.\n\nR: https://cloud.r-project.org/\nRStudio: https://posit.co/download/rstudio-desktop/\n\nIf you did this for Demo 7 you’re already done with Step 1."
+  },
+  {
+    "objectID": "demo8-prep.html#step-2-install-r-packages",
+    "href": "demo8-prep.html#step-2-install-r-packages",
+    "title": "Demo 8 — Prep",
+    "section": "Step 2 — Install R packages",
+    "text": "Step 2 — Install R packages\nPaste this into the RStudio Console:\ninstall.packages(c(\n  \"pavo\",       # color + pattern stats\n  \"ape\",        # tree handling\n  \"phytools\",   # phyl.pca, Blomberg's K, Pagel's lambda\n  \"caper\",      # PGLS\n  \"nlme\",       # gls fallback for PGLS\n  \"plotrix\",    # phytools dependency (don't skip)\n  \"tidyr\",      # pivot_longer in Part 3 plots\n  \"ggplot2\"\n))\nThen verify all eight loaded cleanly:\nlibrary(pavo); library(ape); library(phytools); library(caper)\nlibrary(nlme); library(plotrix); library(tidyr); library(ggplot2)\ncat(\"YOU'RE READY FOR WEDNESDAY!\\n\")\nIf anything fails — especially pavo or caper, which have C dependencies — email your TA tonight, not Wednesday morning."
+  },
+  {
+    "objectID": "demo8-prep.html#step-3-download-the-chaetodontidae-walkthrough-bundle",
+    "href": "demo8-prep.html#step-3-download-the-chaetodontidae-walkthrough-bundle",
+    "title": "Demo 8 — Prep",
+    "section": "Step 3 — Download the Chaetodontidae walkthrough bundle",
+    "text": "Step 3 — Download the Chaetodontidae walkthrough bundle\nIn RStudio, first set your working directory to a folder you’ll use for this demo (e.g. ~/Documents/EEB187/demo8/). The unzipped bundle will land inside that working dir as a sibling folder, and every code chunk in the worksheet expects it there.\n# 1. Confirm where you are (this is where everything lives — including the bundle)\ngetwd()\n\n# 2. Download the ZIP into the working directory\ndownload.file(\n  \"https://michaelalfaro.github.io/eeb187-demos/data/chaetodontidae-mini-bundle.zip\",\n  \"chaetodontidae-mini-bundle.zip\"\n)\n\n# 3. Unzip in place — this creates a folder called chaetodontidae-mini-bundle/\nunzip(\"chaetodontidae-mini-bundle.zip\")\nlist.files(\"chaetodontidae-mini-bundle\", recursive = TRUE)\nYou should see roughly:\n&lt;your working dir&gt;/\n└── chaetodontidae-mini-bundle/\n    ├── chaetodontidae-mini-tree.tre\n    ├── README.txt\n    ├── picked_species.txt\n    ├── picked_tip_labels.txt\n    ├── species_metadata.csv\n    ├── images/\n    │   ├── Chaetodon_lunula/exemplar.png\n    │   ├── Chaetodon_auriga/exemplar.png\n    │   ├── … (more single-exemplar species) …\n    │   └── Heniochus_acuminatus/        &lt;-- the error-species\n    │       ├── img-1.png\n    │       ├── img-2.png\n    │       ├── img-3.png\n    │       ├── img-4.png\n    │       └── img-5.png\n\n\n\n\n\n\nNote\n\n\n\nYour own family follows the same shape. When you switch to your group’s bundle in the “Your Turn” sections, the path is just &lt;your-family&gt;-mini-bundle/ (e.g. acanthuridae-mini-bundle/ for the surgeonfish group) — same images/, same README.txt, same five files inside."
+  },
+  {
+    "objectID": "demo8-prep.html#step-4-readiness-check",
+    "href": "demo8-prep.html#step-4-readiness-check",
+    "title": "Demo 8 — Prep",
+    "section": "Step 4 — Readiness check",
+    "text": "Step 4 — Readiness check\nRun this short script in the Console — it confirms the tree loads, the species list matches the tree tips, and pavo can read one of the bundle images:\nlibrary(ape); library(pavo)\n\nbundle &lt;- \"chaetodontidae-mini-bundle\"\n\ntree &lt;- read.tree(file.path(bundle, \"chaetodontidae-mini-tree.tre\"))\npicked_species &lt;- readLines(file.path(bundle, \"picked_species.txt\"))\npicked_tips    &lt;- readLines(file.path(bundle, \"picked_tip_labels.txt\"))\n\n# Sanity: every directory in images/ matches a picked species; every tip is on the tree\nspecies_dirs &lt;- list.dirs(file.path(bundle, \"images\"), recursive = FALSE)\nstopifnot(setequal(basename(species_dirs), picked_species))\nstopifnot(all(picked_tips %in% tree$tip.label))\n\n# pavo can read at least one image\nfirst_sp_dir &lt;- species_dirs[1]\nfirst_png    &lt;- list.files(first_sp_dir, pattern = \"\\\\.png$\", full.names = TRUE)[1]\nimg1 &lt;- getimg(first_png)\nstopifnot(!is.null(img1))\n\ncat(\"READINESS CHECK PASSED — bundle has\",\n    length(picked_species), \"species,\",\n    Ntip(tree), \"tips on tree, pavo reads images.\\n\")\nplotTree(ape::keep.tip(tree, picked_tips), type = \"fan\", fsize = 0.7)\nYou should see “READINESS CHECK PASSED” and a fan tree of just the species in your bundle. If you see anything else, re-download the bundle or email your TA."
+  },
+  {
+    "objectID": "demo8-prep.html#step-5-fishview-mini-bundle-login-check-your-own-family",
+    "href": "demo8-prep.html#step-5-fishview-mini-bundle-login-check-your-own-family",
+    "title": "Demo 8 — Prep",
+    "section": "Step 5 — FishView mini-bundle login check (your own family)",
+    "text": "Step 5 — FishView mini-bundle login check (your own family)\nThe bundle in Step 3 is Chaetodontidae — the example we’ll all walk through in class. But your group will also run the same workflow on your own family from Demo 7. Confirm tonight that you can reach your group’s mini-bundle on FishView:\n\nFrom UCLA campus WiFi or UCLA Bruin Secure VPN, open http://164.67.78.200:5052/\nEnter your mini-bundle code (same code prefix as Demo 7, but ends with -mini):\n\n\n\n\nGroup\nMini-bundle code\n\n\n\n\n1\ntrigger-mini\n\n\n2\nangel-mini\n\n\n3\nparrot-mini\n\n\n4\nfairy-mini\n\n\n5\ntang-mini\n\n\n6\nhog-mini\n\n\n7\ncoris-mini\n\n\n\n\nYou should land on a dashboard showing 20 starred species and 1 error-species (badge: “5-image stack”). If you see that, you’re ready.\nDon’t export the bundle yet — the lecturer locks in final picks Tuesday night. The dashboard is just a confirmation that your group’s data is live.\n\n\n\n\n\n\n\nTipOff-campus?\n\n\n\nThe FishView server is only reachable from UCLA’s network. Connect to UCLA Bruin Secure VPN first."
+  },
+  {
+    "objectID": "demo8-prep.html#if-something-breaks",
+    "href": "demo8-prep.html#if-something-breaks",
+    "title": "Demo 8 — Prep",
+    "section": "If something breaks",
+    "text": "If something breaks\n\nPackage install fails on pavo or caper: likely a system-library issue. On macOS try brew install gdal first, then re-install. On Windows try the binary build via install.packages(\"pavo\", type = \"binary\").\nread.tree() errors with “incorrect string constant”: the tree file didn’t fully download. Re-run Step 3.\ngetimg() errors with “PNG read failed”: an image in the bundle is malformed. List the bad path with list.files(\"chaetodontidae-mini-bundle/images\") and email your TA.\nMini-bundle code returns “unknown group”: the FishView entry might not be fully provisioned yet. Email your TA — your group’s mini-bundle gets locked in by 6 PM Tuesday."
+  }
+]
