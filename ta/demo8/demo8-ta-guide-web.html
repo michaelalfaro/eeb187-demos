@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#part-1" id="toc-part-1" class="nav-link" data-scroll-target="#part-1">Part 1</a></li>
   <li><a href="#part-1-ecology-1.8" id="toc-part-1-ecology-1.8" class="nav-link" data-scroll-target="#part-1-ecology-1.8">Part 1 ecology (§1.8)</a></li>
   <li><a href="#part-2" id="toc-part-2" class="nav-link" data-scroll-target="#part-2">Part 2</a></li>
-  <li><a href="#part-2-ecology-2.8" id="toc-part-2-ecology-2.8" class="nav-link" data-scroll-target="#part-2-ecology-2.8">Part 2 ecology (§2.8)</a></li>
+  <li><a href="#part-2-ecology-2.9" id="toc-part-2-ecology-2.9" class="nav-link" data-scroll-target="#part-2-ecology-2.9">Part 2 ecology (§2.9)</a></li>
   <li><a href="#part-3" id="toc-part-3" class="nav-link" data-scroll-target="#part-3">Part 3</a></li>
   </ul></li>
   <li><a href="#common-student-traps-how-to-recover" id="toc-common-student-traps-how-to-recover" class="nav-link" data-scroll-target="#common-student-traps-how-to-recover">Common student traps + how to recover</a></li>
@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Is that structure real biology, or is it just shared ancestry?</strong> (Part 2: phyloPCA + PGLS + K/λ.)</li>
 <li><strong>Does the structure survive measurement noise?</strong> (Part 3: 5-image stack → per-variable SD → 100-iter Monte Carlo perturbation → CIs on K, λ, PGLS slopes.)</li>
 </ol>
-<p>Each part also has a small ecology pendant (§1.8, §2.8) that pulls 4 FishBase traits (trophic level, max depth, max length, vulnerability) and asks: <em>do pavo color-pattern axes track how the fish lives, before vs after phylogenetic correction?</em></p>
+<p>Each part also has a small ecology pendant (§1.8, §2.9) that pulls 4 FishBase traits (trophic level, max depth, max length, vulnerability) and asks: <em>do pavo color-pattern axes track how the fish lives, before vs after phylogenetic correction?</em> Part 2 §2.8 is a new walkthrough section that teaches students how to fetch those traits themselves via <code>rfishbase</code> — they reproduce the bundle’s <code>species_traits.csv</code> from <code>species()</code> + <code>ecology()</code> and then get a recipe for doing the same on their own family’s tip labels.</p>
 <p>The pedagogical payoff students should walk away with:</p>
 <blockquote class="blockquote">
 <p><em>Color patterns in butterflyfishes can change very fast, often faster than the ecological traits that supposedly drive them. So if you find low K for color, that’s a feature, not a failure of the analysis — it means convergence is rampant and you can’t read color off the phylogeny.</em></p>
@@ -282,7 +282,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>The key structural change vs Demo 7: <strong>the lecturer’s Chaetodontidae run is watch-only</strong>. Students run Parts 2 and 3 against their <em>own</em> family’s bundle, so the headline figures they turn in are theirs, not the lecturer’s.</p>
-<p>If you’re falling behind, <strong>drop Part 1 §1.8 (ecology bivariates)</strong> and the side-by-side K bar at §2.8’s tail. Both are pendants — the spine (PCA → phyloPCA → MC) stands without them. Don’t cut the in-class picker block — that’s the point of the demo.</p>
+<p>If you’re falling behind, <strong>drop Part 1 §1.8 (ecology bivariates)</strong>, <strong>skip §2.8 (rfishbase fetch walkthrough)</strong>, and the side-by-side K bar at §2.9’s tail. All three are pendants — the spine (PCA → phyloPCA → MC) stands without them. Don’t cut the in-class picker block — that’s the point of the demo.</p>
 <hr>
 </section>
 <section id="concept-scaffolds-what-you-might-need-to-explain" class="level2">
@@ -354,8 +354,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Per-variable K (color):</strong> five of six variables (<code>m</code>, <code>Jc</code>, <code>Jt</code>, <code>m_dS</code>, <code>m_dL</code>) sit at K between ≈ 0.15 and 0.45 with non-significant p.&nbsp;<strong><code>A</code> is the standout — K ≈ 1.3, p ≈ 0.01</strong> (relatives MORE similar than Brownian, i.e.&nbsp;active conservation of pattern aspect ratio).</li>
 </ul>
 </section>
-<section id="part-2-ecology-2.8" class="level3">
-<h3 class="anchored" data-anchor-id="part-2-ecology-2.8">Part 2 ecology (§2.8)</h3>
+<section id="part-2-ecology-2.9" class="level3">
+<h3 class="anchored" data-anchor-id="part-2-ecology-2.9">Part 2 ecology (§2.9)</h3>
 <div class="callout callout-style-simple callout-important">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -472,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Trees have different ages/topologies.</strong> K and λ scales are interpretable within a family, not across families.</li>
 <li><strong>Error-species varies.</strong> Each group picks their own. The README names it; the worksheet’s auto-parse picks it up. If a student hard-codes <code>Heniochus_acuminatus</code> from the Chaetodontidae walkthrough, they’ll crash. Tell them to re-run §1.2 and §1.3 fresh after switching <code>bundle</code>.</li>
 <li><strong>Some species may drop with no tree tip.</strong> Just like <code>Chaetodon_trifascialis</code> did in the walkthrough. The worksheet’s name-prefix matching handles this; students just see a smaller <code>length(species)</code> than they picked.</li>
-<li><strong><code>species_traits.csv</code> is generated server-side at Export time</strong> (FishBase fields: Troph, DepthRangeDeep, Length, Vulnerability). Some species have missing values for some traits — <code>na.action = na.pass</code> in §1.8 / §2.8 handles this. Don’t panic if a group’s <code>signal_eco</code> table has fewer rows than ecology variables.</li>
+<li><strong><code>species_traits.csv</code> is generated server-side at Export time</strong> (FishBase fields: Troph, DepthRangeDeep, Length, Vulnerability). Some species have missing values for some traits — <code>na.action = na.pass</code> in §1.8 / §2.9 handles this. Don’t panic if a group’s <code>signal_eco</code> table has fewer rows than ecology variables. The §2.8 rfishbase walkthrough also shows students <em>which</em> traits are gappy for their family — flag this if a group plans to use one of those traits in a writeup claim.</li>
 </ul>
 <hr>
 </section>
@@ -491,7 +491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Server up but slow / one group can’t export:</strong> other groups continue; that group falls back to the Chaetodontidae bundle for the in-class portion and finishes their family’s bundle as homework.</li>
 <li><strong>Wi-fi out → no FishView, no <code>download.file</code>:</strong> Part 3 doesn’t need the network once the bundle is unzipped, so anyone who downloaded the Chaetodontidae bundle in prep can still complete Parts 2 and 3 against it.</li>
 <li><strong>R session crashes on a student laptop:</strong> the <code>if (!exists())</code> reload pattern at the top of Parts 2 and 3 means they can re-run a single chunk to recover. They lose Part 1’s plot images but not the trait matrix.</li>
-<li><strong>rfishbase calls during class (don’t let this happen):</strong> the trait CSV ships with each exported bundle. <strong>No student should be calling rfishbase live</strong>. If you see them try, redirect them to <code>read.csv(file.path(bundle, "species_traits.csv"))</code>.</li>
+<li><strong>rfishbase fails to install on a group’s laptop:</strong> they can still run §2.9 onward — that section reads from the bundled CSV, not the live pull. Skip §2.8 for that group and tell them to use the CSV-based <code>combined</code> data directly. The downstream PGLS / K-on-ecology chunks don’t need rfishbase.</li>
 </ul>
 <hr>
 </section>
@@ -979,7 +979,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Is that structure real biology, or is it just shared ancestry?** (Part 2: phyloPCA + PGLS + K/λ.)</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Does the structure survive measurement noise?** (Part 3: 5-image stack → per-variable SD → 100-iter Monte Carlo perturbation → CIs on K, λ, PGLS slopes.)</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Each part also has a small ecology pendant (§1.8, §2.8) that pulls 4 FishBase traits (trophic level, max depth, max length, vulnerability) and asks: *do pavo color-pattern axes track how the fish lives, before vs after phylogenetic correction?*</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Each part also has a small ecology pendant (§1.8, §2.9) that pulls 4 FishBase traits (trophic level, max depth, max length, vulnerability) and asks: *do pavo color-pattern axes track how the fish lives, before vs after phylogenetic correction?* Part 2 §2.8 is a new walkthrough section that teaches students how to fetch those traits themselves via <span class="in">`rfishbase`</span> — they reproduce the bundle's <span class="in">`species_traits.csv`</span> from <span class="in">`species()`</span> + <span class="in">`ecology()`</span> and then get a recipe for doing the same on their own family's tip labels.</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>The pedagogical payoff students should walk away with:</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
@@ -1002,7 +1002,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>The key structural change vs Demo 7: **the lecturer's Chaetodontidae run is watch-only**. Students run Parts 2 and 3 against their *own* family's bundle, so the headline figures they turn in are theirs, not the lecturer's.</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>If you're falling behind, **drop Part 1 §1.8 (ecology bivariates)** and the side-by-side K bar at §2.8's tail. Both are pendants — the spine (PCA → phyloPCA → MC) stands without them. Don't cut the in-class picker block — that's the point of the demo.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>If you're falling behind, **drop Part 1 §1.8 (ecology bivariates)**, **skip §2.8 (rfishbase fetch walkthrough)**, and the side-by-side K bar at §2.9's tail. All three are pendants — the spine (PCA → phyloPCA → MC) stands without them. Don't cut the in-class picker block — that's the point of the demo.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
@@ -1074,7 +1074,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`pgls(m_dL ~ m_dS)`:** positive slope, p usually &lt; 0.05 after phylogenetic correction.</span>
 <span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Per-variable K (color):** five of six variables (`m`, `Jc`, `Jt`, `m_dS`, `m_dL`) sit at K between ≈ 0.15 and 0.45 with non-significant p. **`A` is the standout — K ≈ 1.3, p ≈ 0.01** (relatives MORE similar than Brownian, i.e. active conservation of pattern aspect ratio).</span>
 <span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 2 ecology (§2.8)</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 2 ecology (§2.9)</span></span>
 <span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>::: {.callout-important appearance="simple"}</span>
 <span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>**Heads-up for the lecturer when slide 13 lands.** The Chaetodontidae walkthrough does **not** show the "color evolves faster than ecology" pattern sharply — most ecology K values cluster near the color-pattern K values, not near K = 1. With only 19 tips that's exactly what you'd expect; it's a sample-size story, not a falsification of Frédérich. Frame slide 13 as *"look for this in your own family — Chaetodontidae is too small,"* not as *"here is the punchline."*</span>
@@ -1121,7 +1121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Trees have different ages/topologies.** K and λ scales are interpretable within a family, not across families.</span>
 <span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error-species varies.** Each group picks their own. The README names it; the worksheet's auto-parse picks it up. If a student hard-codes <span class="in">`Heniochus_acuminatus`</span> from the Chaetodontidae walkthrough, they'll crash. Tell them to re-run §1.2 and §1.3 fresh after switching <span class="in">`bundle`</span>.</span>
 <span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Some species may drop with no tree tip.** Just like <span class="in">`Chaetodon_trifascialis`</span> did in the walkthrough. The worksheet's name-prefix matching handles this; students just see a smaller <span class="in">`length(species)`</span> than they picked.</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`species_traits.csv` is generated server-side at Export time** (FishBase fields: Troph, DepthRangeDeep, Length, Vulnerability). Some species have missing values for some traits — <span class="in">`na.action = na.pass`</span> in §1.8 / §2.8 handles this. Don't panic if a group's <span class="in">`signal_eco`</span> table has fewer rows than ecology variables.</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`species_traits.csv` is generated server-side at Export time** (FishBase fields: Troph, DepthRangeDeep, Length, Vulnerability). Some species have missing values for some traits — <span class="in">`na.action = na.pass`</span> in §1.8 / §2.9 handles this. Don't panic if a group's <span class="in">`signal_eco`</span> table has fewer rows than ecology variables. The §2.8 rfishbase walkthrough also shows students *which* traits are gappy for their family — flag this if a group plans to use one of those traits in a writeup claim.</span>
 <span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
@@ -1139,7 +1139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Server up but slow / one group can't export:** other groups continue; that group falls back to the Chaetodontidae bundle for the in-class portion and finishes their family's bundle as homework.</span>
 <span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Wi-fi out → no FishView, no `download.file`:** Part 3 doesn't need the network once the bundle is unzipped, so anyone who downloaded the Chaetodontidae bundle in prep can still complete Parts 2 and 3 against it.</span>
 <span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R session crashes on a student laptop:** the <span class="in">`if (!exists())`</span> reload pattern at the top of Parts 2 and 3 means they can re-run a single chunk to recover. They lose Part 1's plot images but not the trait matrix.</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**rfishbase calls during class (don't let this happen):** the trait CSV ships with each exported bundle. **No student should be calling rfishbase live**. If you see them try, redirect them to <span class="in">`read.csv(file.path(bundle, "species_traits.csv"))`</span>.</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**rfishbase fails to install on a group's laptop:** they can still run §2.9 onward — that section reads from the bundled CSV, not the live pull. Skip §2.8 for that group and tell them to use the CSV-based <span class="in">`combined`</span> data directly. The downstream PGLS / K-on-ecology chunks don't need rfishbase.</span>
 <span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
