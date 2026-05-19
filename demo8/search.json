@@ -84,11 +84,46 @@
     "text": "1.9 Save Part 1 outputs\nParts 2 and 3 will both want the trait matrix + the ecology join:\n\ndir.create(\"results\", showWarnings = FALSE)\nsaveRDS(traits,         \"results/part1-traits.rds\")\nsaveRDS(pc,             \"results/part1-pca.rds\")\nsaveRDS(cor_mat,        \"results/part1-cor.rds\")\nsaveRDS(species_to_tip, \"results/part1-species-to-tip.rds\")\nsaveRDS(combined,       \"results/part1-combined.rds\")"
   },
   {
-    "objectID": "demo8-worksheet.html#your-turn-your-own-family",
-    "href": "demo8-worksheet.html#your-turn-your-own-family",
+    "objectID": "demo8-worksheet.html#a-log-into-fishview-for-your-family",
+    "href": "demo8-worksheet.html#a-log-into-fishview-for-your-family",
     "title": "Demo 8 — Worksheet",
-    "section": "Your Turn — your own family",
-    "text": "Your Turn — your own family\nSwitch to your group’s bundle. On the FishView mini-bundle dashboard, hit Export to download &lt;family&gt;-mini-bundle.zip, drop it into the same working directory you used above, then:\nunzip(\"&lt;family&gt;-mini-bundle.zip\")   # creates &lt;family&gt;-mini-bundle/\nbundle &lt;- \"&lt;family&gt;-mini-bundle\"    # e.g. \"acanthuridae-mini-bundle\"\nThen re-run everything from 1.2 onward — the chunks only depend on bundle, so no other edits are needed.\nYou’ll want 20 species spanning ≥5 genera in your bundle. The lecturer has pre-selected those; if you see fewer than 20 species or fewer than 5 genera in your bundle, flag a TA."
+    "section": "A — Log into FishView for your family",
+    "text": "A — Log into FishView for your family\nSame code you used for Demo 7:\n\n\n\nGroup\nFamily\nCode\n\n\n\n\n1\nBalistoidea (triggerfishes)\ntrigger-2026\n\n\n2\nPomacanthidae (angelfishes)\nangel-2026\n\n\n3\nScarinae (parrotfishes)\nparrot-2026\n\n\n4\nCirrhilabrini (fairy wrasses)\nfairy-2026\n\n\n5\nAcanthuridae (surgeonfishes)\ntang-2026\n\n\n6\nHypsigenyinae (hogfishes)\nhog-2026\n\n\n7\nHalichoerine (Coris-allies wrasses)\ncoris-2026\n\n\n\nOpen http://164.67.78.200:5052/ and log in. You’ll land on your family’s dashboard."
+  },
+  {
+    "objectID": "demo8-worksheet.html#b-pick-at-least-15-species-across-5-genera",
+    "href": "demo8-worksheet.html#b-pick-at-least-15-species-across-5-genera",
+    "title": "Demo 8 — Worksheet",
+    "section": "B — Pick at least 15 species across ≥5 genera",
+    "text": "B — Pick at least 15 species across ≥5 genera\nBrowse the species table. The picker visually marks species that Frédérich et al. 2026 used in their analysis — those are reasonable starting choices, but you don’t have to use them. Pick species that:\n\nSpan ≥ 5 distinct genera (the picker shows a running genus count — watch that)\nHave enough usable photographs that you’ll be able to choose one good exemplar each\nTogether cover ≥ 15 species (more is fine — bigger bundle = tighter K estimates)\n\n\n\n\n\n\n\nWarning\n\n\n\nResist the urge to just check the first 15 boxes. The choices you make here are the analysis. A bundle of 15 Acanthurus species and one Naso won’t tell you anything new about Acanthuridae diversity — you’d be measuring within-genus variation, not across-family variation."
+  },
+  {
+    "objectID": "demo8-worksheet.html#c-pick-the-exemplar-image-for-each-species",
+    "href": "demo8-worksheet.html#c-pick-the-exemplar-image-for-each-species",
+    "title": "Demo 8 — Worksheet",
+    "section": "C — Pick the exemplar image for each species",
+    "text": "C — Pick the exemplar image for each species\nClick into each starred species → review page. Star one image as the exemplar. Your judgment criteria:\n\nLateral view (fish facing left or right, full body visible)\nIn focus, well-exposed, not heavily edited\nRepresentative of “what the species looks like” — not a juvenile, not a rare morph, not a mid-flash display\n\nSame UI as Demo 7’s Part 2 review: include/exclude/exemplar buttons, optional reorient if the fish is tilted. If a species has no good photograph, un-check it from your bundle list and pick a different species."
+  },
+  {
+    "objectID": "demo8-worksheet.html#d-mark-one-species-as-the-error-species-and-pick-5-of-its-images",
+    "href": "demo8-worksheet.html#d-mark-one-species-as-the-error-species-and-pick-5-of-its-images",
+    "title": "Demo 8 — Worksheet",
+    "section": "D — Mark ONE species as the error-species and pick 5 of its images",
+    "text": "D — Mark ONE species as the error-species and pick 5 of its images\nChoose one of your starred species to be the error-species — a species with at least 5 different usable photographs, because Part 3 uses them to estimate measurement noise. Click that species’s “Make error-species” toggle on the review page.\nFor the error-species, instead of starring just one exemplar, mark 5 images — these become img-1.png through img-5.png. Pick five that are all valid representations of the same fish but vary in angle, lighting, or photographer — that variation IS the noise you’re trying to characterize."
+  },
+  {
+    "objectID": "demo8-worksheet.html#e-export-the-bundle",
+    "href": "demo8-worksheet.html#e-export-the-bundle",
+    "title": "Demo 8 — Worksheet",
+    "section": "E — Export the bundle",
+    "text": "E — Export the bundle\nBack on the dashboard, hit Export Bundle. The button refuses to fire if:\n\nFewer than 15 species starred\nFewer than 5 distinct genera\nAny starred species lacks an exemplar\nNo error-species marked\nError-species has fewer than 5 images selected\n\nWhen all checks pass you get &lt;family&gt;-mini-bundle.zip (e.g. acanthuridae-mini-bundle.zip)."
+  },
+  {
+    "objectID": "demo8-worksheet.html#f-bring-it-back-to-r",
+    "href": "demo8-worksheet.html#f-bring-it-back-to-r",
+    "title": "Demo 8 — Worksheet",
+    "section": "F — Bring it back to R",
+    "text": "F — Bring it back to R\nDrop the ZIP into the same working directory you’ve been using for the Chaetodontidae walkthrough, then:\nunzip(\"acanthuridae-mini-bundle.zip\")    # or your family's filename\nbundle &lt;- \"acanthuridae-mini-bundle\"     # switch bundle path\nThat’s it. Re-run §1.2 onward. Every chunk only depends on the bundle variable — your family’s data flows through the same pipeline.\nThe plots you produce from your bundle are your group’s contribution to the demo. Keep re-running this same worksheet against this bundle for Parts 2 and 3, and use the figures + numbers you generate in your writeup."
   },
   {
     "objectID": "demo8-worksheet.html#match-the-trait-matrix-to-the-tree",
@@ -151,14 +186,7 @@
     "href": "demo8-worksheet.html#save-part-2-outputs",
     "title": "Demo 8 — Worksheet",
     "section": "2.9 Save Part 2 outputs",
-    "text": "2.9 Save Part 2 outputs\n\nsaveRDS(phy_pc,  \"results/part2-phylopca.rds\")\nsaveRDS(signal,  \"results/part2-signal.rds\")\nsaveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2,\n             pgls_eco_1 = pgls_eco_1, pgls_eco_2 = pgls_eco_2),\n        \"results/part2-pgls.rds\")\nsaveRDS(compare,    \"results/part2-compare-lm-pgls.rds\")\nsaveRDS(signal_eco, \"results/part2-signal-ecology.rds\")"
-  },
-  {
-    "objectID": "demo8-worksheet.html#your-turn-your-own-family-1",
-    "href": "demo8-worksheet.html#your-turn-your-own-family-1",
-    "title": "Demo 8 — Worksheet",
-    "section": "Your Turn — your own family",
-    "text": "Your Turn — your own family\nSame drill as Part 1: switch bundle to your group’s mini-bundle and re-run 2.1–2.8. You’ll get a per-family K plot directly comparable to Frédérich’s published value for that family (Acanthuridae 0.11, Pomacanthidae 0.05, Lutjanidae 0.22, Mullidae 0.08, Pomacentridae 0.06 — Chaetodontidae 0.10 is the one we already did)."
+    "text": "2.9 Save Part 2 outputs\n\nsaveRDS(phy_pc,  \"results/part2-phylopca.rds\")\nsaveRDS(signal,  \"results/part2-signal.rds\")\nsaveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2,\n             pgls_eco_1 = pgls_eco_1, pgls_eco_2 = pgls_eco_2),\n        \"results/part2-pgls.rds\")\nsaveRDS(compare,    \"results/part2-compare-lm-pgls.rds\")\nsaveRDS(signal_eco, \"results/part2-signal-ecology.rds\")\n\n\n\n\n\n\n\nTipOn your own bundle\n\n\n\nIf you’ve already exported your family’s bundle (the in-class step between Parts 1 and 2), your bundle variable is already pointing at it — Part 2’s chunks just ran on your data, not Chaetodontidae. Your per-family K plot is directly comparable to Frédérich’s published values: Acanthuridae 0.11, Pomacanthidae 0.05, Lutjanidae 0.22, Mullidae 0.08, Pomacentridae 0.06 (Chaetodontidae 0.10 was the walkthrough)."
   },
   {
     "objectID": "demo8-worksheet.html#run-pavo-on-the-5-image-stack",
@@ -217,11 +245,11 @@
     "text": "3.8 Save Part 3 outputs\n\nsaveRDS(err, \"results/part3-error-stats.rds\")\nsaveRDS(mc,  \"results/part3-mc.rds\")"
   },
   {
-    "objectID": "demo8-worksheet.html#your-turn-your-own-family-2",
-    "href": "demo8-worksheet.html#your-turn-your-own-family-2",
+    "objectID": "demo8-worksheet.html#take-it-home-your-writeup",
+    "href": "demo8-worksheet.html#take-it-home-your-writeup",
     "title": "Demo 8 — Worksheet",
-    "section": "Your Turn — your own family",
-    "text": "Your Turn — your own family\nSame drill: set bundle &lt;- \"&lt;family&gt;-mini-bundle\" (e.g. \"acanthuridae-mini-bundle\"), drop the unzipped folder next to it, and re-run from 3.1 onward. The error-species is parsed automatically from your bundle’s README.txt, so no other edits needed.\nThe Monte Carlo step is the slowest — budget ~5 minutes if you bump n_iter to 200. For a quick rerun while exploring, n_iter = 50 is enough to see the broad shape of the distributions."
+    "section": "Take it home — your writeup",
+    "text": "Take it home — your writeup\nYou should now have, for your own family, the four figures the worksheet keeps producing:\n\nThe Part 1 PCA scatter (PC1 vs PC2, species labelled).\nThe Part 2 K-comparison bar (color patterns vs ecology) + the table of K and λ values per pavo variable.\nThe Part 3 K boxplot showing your observed K values inside the noisy MC distribution.\nThe Part 3 PGLS-slope CI table.\n\nYour writeup (≤ 250 words):\nDoes my family’s pattern diversity look phylogenetically structured? How much of that conclusion depends on the precision of pavo measurements? Compare to Frédérich’s surgeonfish result.\nAnchor each claim to one of those four figures. Where Part 3 disagrees with Part 2, say so — the most interesting answer in this demo is the one where the noisy K straddles zero even though the point-estimate K didn’t.\nUpload writeup + the four figures to BruinLearn by end of day Wednesday.\n\n\n\n\n\n\nNote\n\n\n\nThe Monte Carlo step is the slowest piece of this worksheet. If you ran n_iter = 100 in class and want tighter CIs for your writeup, bump to n_iter = 200 (~3–5 min) before generating your final figure. n_iter = 50 is fine for quick exploration."
   },
   {
     "objectID": "index.html",
@@ -238,11 +266,11 @@
     "text": "Today’s three-part question\nAre your group’s color-pattern variables (a) structured, (b) structured because of phylogeny, and (c) structured robustly enough to survive measurement noise?\n\n\n\n\n\n\n\n\nPart\nWhat you do\nWhat you learn\n\n\n\n\n1 — Standing diversity\n20 species × ≥5 genera. Run pavo’s classify() + adjacent() per image. PCA + bivariate lm() tests across pattern statistics.\nWhat pattern axes vary across your family today — ignoring tree.\n\n\n2 — Phylogenetic correction\nSame 20 species, same statistics. phyl.pca, PGLS, Blomberg’s K + Pagel’s λ on every pavo variable.\nWhether the structure you found in Part 1 is just shared ancestry, or signal that exists once you account for it.\n\n\n3 — Measurement-error propagation\nOne species, 5 images. Compute mean ± SD per pavo variable. Treat that SD as universal measurement error. Monte Carlo (200 iter) re-run of Parts 1 & 2.\nWhich of your Part-1 / Part-2 results still hold once you admit your tip values were never point estimates.\n\n\n\nThe three parts build on each other: Part 2 corrects Part 1 for ancestry; Part 3 stress-tests both for noise."
   },
   {
-    "objectID": "index.html#your-bundle",
-    "href": "index.html#your-bundle",
+    "objectID": "index.html#the-two-data-slots-of-this-demo",
+    "href": "index.html#the-two-data-slots-of-this-demo",
     "title": "Demo 8 — Color-pattern diversity with and without history",
-    "section": "Your bundle",
-    "text": "Your bundle\nYou’ll work with the same family you analyzed in Demo 7. Your group code (from Demo 7) gets you into the FishView mini-bundle:\n\n\n\nGroup\nFamily\nMini-bundle code\n\n\n\n\n1\nBalistoidea (triggerfishes)\ntrigger-2026\n\n\n2\nPomacanthidae (angelfishes)\nangel-2026\n\n\n3\nScarinae (parrotfishes)\nparrot-2026\n\n\n4\nCirrhilabrini (fairy wrasses)\nfairy-2026\n\n\n5\nAcanthuridae (surgeonfishes)\ntang-2026\n\n\n6\nHypsigenyinae (hogfishes)\nhog-2026\n\n\n7\nHalichoerine (Coris-allies wrasses)\ncoris-2026\n\n\n\nYour bundle contains 20 species total, spanning ≥5 genera, all matched to your group’s tree:\n\n19 of the 20 species ship one exemplar image each (images/&lt;species&gt;/exemplar.png).\n1 of the 20 species — the “error-species,” picked by the lecturer — ships a 5-image stack (images/&lt;error_species&gt;/img-1.png through img-5.png) instead of a single exemplar. Part 3 uses these five to estimate measurement noise.\n&lt;family&gt;-mini-tree.tre — pruned tree with exactly those 20 tips.\nspecies_traits.csv — four ecological traits from FishBase (trophic level, max depth, max length, vulnerability index) — used in §1.8 and §2.8.\nREADME.txt — names the error-species and lists each shipped image.\n\nFor the walkthrough below, we use Chaetodontidae (butterflyfishes) as the shared example so we can all watch the same code produce the same plots in class."
+    "section": "The two data slots of this demo",
+    "text": "The two data slots of this demo\nThere are two bundles of data in this lab, and you’ll touch both:\n\n1. Chaetodontidae — the walkthrough bundle (everyone the same)\nPre-built. 19 butterflyfish species across 5 genera, plus Heniochus_acuminatus as the error-species (5 photos for Part 3). You download it tonight from the prep page. The walkthrough below — every code chunk, every plot — runs on this bundle, so when the lecturer renders the worksheet in class, your screen produces the same figures.\n\n\n2. Your group’s family — the bundle you’ll build in class\nYour group is the same one from Demo 7 (Balistoidea, Pomacanthidae, Scarinae, Cirrhilabrini, Acanthuridae, Hypsigenyinae, or Halichoerine). On Wednesday you’ll log into FishView with the same group code you used for Demo 7 (trigger-2026, angel-2026, parrot-2026, fairy-2026, tang-2026, hog-2026, or coris-2026) and assemble your own bundle from scratch:\n\nPick at least 15 species spanning ≥5 genera from your family’s tree\nFor each species, evaluate the available photographs and star one exemplar\nMark one of your species as the error-species and pick 5 distinct images for it\nClick Export Bundle → download &lt;family&gt;-mini-bundle.zip\n\nThe bundle you export has the same shape as the Chaetodontidae one (tree, images, README, picked-species manifests, and a species_traits.csv of FishBase ecological traits) — so when you unzip it and point the worksheet at it, every chunk just runs.\n\n\n\n\n\n\nTip\n\n\n\nThe Chaetodontidae walkthrough teaches you the code. Your group’s bundle teaches you the choices — which species are worth photographing, which photographs are worth analyzing, and how much your conclusions depend on those decisions."
   },
   {
     "objectID": "index.html#materials",
@@ -301,11 +329,11 @@
     "text": "Step 4 — Readiness check\nRun this short script in the Console — it confirms the tree loads, the species list matches the tree tips, and pavo can read one of the bundle images:\nlibrary(ape); library(pavo)\n\nbundle &lt;- \"chaetodontidae-mini-bundle\"\n\ntree &lt;- read.tree(file.path(bundle, \"chaetodontidae-mini-tree.tre\"))\npicked_species &lt;- readLines(file.path(bundle, \"picked_species.txt\"))\npicked_tips    &lt;- readLines(file.path(bundle, \"picked_tip_labels.txt\"))\n\n# Sanity: every directory in images/ matches a picked species; every tip is on the tree\nspecies_dirs &lt;- list.dirs(file.path(bundle, \"images\"), recursive = FALSE)\nstopifnot(setequal(basename(species_dirs), picked_species))\nstopifnot(all(picked_tips %in% tree$tip.label))\n\n# pavo can read at least one image\nfirst_sp_dir &lt;- species_dirs[1]\nfirst_png    &lt;- list.files(first_sp_dir, pattern = \"\\\\.png$\", full.names = TRUE)[1]\nimg1 &lt;- getimg(first_png)\nstopifnot(!is.null(img1))\n\ncat(\"READINESS CHECK PASSED — bundle has\",\n    length(picked_species), \"species,\",\n    Ntip(tree), \"tips on tree, pavo reads images.\\n\")\nplotTree(ape::keep.tip(tree, picked_tips), type = \"fan\", fsize = 0.7)\nYou should see “READINESS CHECK PASSED” and a fan tree of just the species in your bundle. If you see anything else, re-download the bundle or email your TA."
   },
   {
-    "objectID": "demo8-prep.html#step-5-fishview-mini-bundle-login-check-your-own-family",
-    "href": "demo8-prep.html#step-5-fishview-mini-bundle-login-check-your-own-family",
+    "objectID": "demo8-prep.html#step-5-confirm-your-demo-7-fishview-login-still-works",
+    "href": "demo8-prep.html#step-5-confirm-your-demo-7-fishview-login-still-works",
     "title": "Demo 8 — Prep",
-    "section": "Step 5 — FishView mini-bundle login check (your own family)",
-    "text": "Step 5 — FishView mini-bundle login check (your own family)\nThe bundle in Step 3 is Chaetodontidae — the example we’ll all walk through in class. But your group will also run the same workflow on your own family from Demo 7. Confirm tonight that you can reach your group’s mini-bundle on FishView:\n\nFrom UCLA campus WiFi or UCLA Bruin Secure VPN, open http://164.67.78.200:5052/\nEnter your mini-bundle code (same code prefix as Demo 7, but ends with -mini):\n\n\n\n\nGroup\nMini-bundle code\n\n\n\n\n1\ntrigger-mini\n\n\n2\nangel-mini\n\n\n3\nparrot-mini\n\n\n4\nfairy-mini\n\n\n5\ntang-mini\n\n\n6\nhog-mini\n\n\n7\ncoris-mini\n\n\n\n\nYou should land on a dashboard showing 20 starred species and 1 error-species (badge: “5-image stack”). If you see that, you’re ready.\nDon’t export the bundle yet — the lecturer locks in final picks Tuesday night. The dashboard is just a confirmation that your group’s data is live.\n\n\n\n\n\n\n\nTipOff-campus?\n\n\n\nThe FishView server is only reachable from UCLA’s network. Connect to UCLA Bruin Secure VPN first."
+    "section": "Step 5 — Confirm your Demo 7 FishView login still works",
+    "text": "Step 5 — Confirm your Demo 7 FishView login still works\nOn Wednesday, you and your group will build your own mini-bundle from scratch by picking species + evaluating images on FishView. The same login code you used for Demo 7 still works. Confirm tonight that you can still reach it:\n\nFrom UCLA campus WiFi or UCLA Bruin Secure VPN, open http://164.67.78.200:5052/\nEnter your Demo 7 group code:\n\n\n\n\nGroup\nFamily\nCode\n\n\n\n\n1\nBalistoidea (triggerfishes)\ntrigger-2026\n\n\n2\nPomacanthidae (angelfishes)\nangel-2026\n\n\n3\nScarinae (parrotfishes)\nparrot-2026\n\n\n4\nCirrhilabrini (fairy wrasses)\nfairy-2026\n\n\n5\nAcanthuridae (surgeonfishes)\ntang-2026\n\n\n6\nHypsigenyinae (hogfishes)\nhog-2026\n\n\n7\nHalichoerine (Coris-allies wrasses)\ncoris-2026\n\n\n\n\nYou should land on your family’s dashboard showing the species table from Demo 7. If it loads and shows fish, you’re ready.\n\n\n\n\n\n\n\nWarning\n\n\n\nDo not pick anything yet. The curation work is the in-class exercise for Demo 8 — picking before Wednesday means you’ll miss the lesson. Tonight is just a login check.\n\n\n\n\n\n\n\n\nTipOff-campus?\n\n\n\nThe FishView server is only reachable from UCLA’s network. Connect to UCLA Bruin Secure VPN first."
   },
   {
     "objectID": "demo8-prep.html#if-something-breaks",

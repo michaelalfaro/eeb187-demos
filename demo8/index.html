@@ -155,7 +155,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#todays-three-part-question" id="toc-todays-three-part-question" class="nav-link active" data-scroll-target="#todays-three-part-question">Today’s three-part question</a></li>
-  <li><a href="#your-bundle" id="toc-your-bundle" class="nav-link" data-scroll-target="#your-bundle">Your bundle</a></li>
+  <li><a href="#the-two-data-slots-of-this-demo" id="toc-the-two-data-slots-of-this-demo" class="nav-link" data-scroll-target="#the-two-data-slots-of-this-demo">The two data slots of this demo</a>
+  <ul class="collapse">
+  <li><a href="#chaetodontidae-the-walkthrough-bundle-everyone-the-same" id="toc-chaetodontidae-the-walkthrough-bundle-everyone-the-same" class="nav-link" data-scroll-target="#chaetodontidae-the-walkthrough-bundle-everyone-the-same">1. Chaetodontidae — the walkthrough bundle (everyone the same)</a></li>
+  <li><a href="#your-groups-family-the-bundle-youll-build-in-class" id="toc-your-groups-family-the-bundle-youll-build-in-class" class="nav-link" data-scroll-target="#your-groups-family-the-bundle-youll-build-in-class">2. Your group’s family — the bundle you’ll build in class</a></li>
+  </ul></li>
   <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a>
   <ul class="collapse">
   <li><a href="#key-files-click-to-download" id="toc-key-files-click-to-download" class="nav-link" data-scroll-target="#key-files-click-to-download">Key files (click to download)</a></li>
@@ -240,65 +244,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The three parts build on each other: Part 2 corrects Part 1 for ancestry; Part 3 stress-tests <strong>both</strong> for noise.</p>
 <hr>
 </section>
-<section id="your-bundle" class="level2">
-<h2 class="anchored" data-anchor-id="your-bundle">Your bundle</h2>
-<p>You’ll work with the same family you analyzed in Demo 7. Your group code (from Demo 7) gets you into the FishView mini-bundle:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Group</th>
-<th>Family</th>
-<th>Mini-bundle code</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Balistoidea (triggerfishes)</td>
-<td><code>trigger-2026</code></td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>Pomacanthidae (angelfishes)</td>
-<td><code>angel-2026</code></td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>Scarinae (parrotfishes)</td>
-<td><code>parrot-2026</code></td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>Cirrhilabrini (fairy wrasses)</td>
-<td><code>fairy-2026</code></td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>Acanthuridae (surgeonfishes)</td>
-<td><code>tang-2026</code></td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>Hypsigenyinae (hogfishes)</td>
-<td><code>hog-2026</code></td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>Halichoerine (Coris-allies wrasses)</td>
-<td><code>coris-2026</code></td>
-</tr>
-</tbody>
-</table>
-<p>Your bundle contains <strong>20 species</strong> total, spanning ≥5 genera, all matched to your group’s tree:</p>
+<section id="the-two-data-slots-of-this-demo" class="level2">
+<h2 class="anchored" data-anchor-id="the-two-data-slots-of-this-demo">The two data slots of this demo</h2>
+<p>There are <strong>two</strong> bundles of data in this lab, and you’ll touch both:</p>
+<section id="chaetodontidae-the-walkthrough-bundle-everyone-the-same" class="level3">
+<h3 class="anchored" data-anchor-id="chaetodontidae-the-walkthrough-bundle-everyone-the-same">1. Chaetodontidae — the walkthrough bundle (everyone the same)</h3>
+<p>Pre-built. 19 butterflyfish species across 5 genera, plus <em>Heniochus_acuminatus</em> as the error-species (5 photos for Part 3). You download it tonight from the prep page. The walkthrough below — every code chunk, every plot — runs on <strong>this</strong> bundle, so when the lecturer renders the worksheet in class, your screen produces the same figures.</p>
+</section>
+<section id="your-groups-family-the-bundle-youll-build-in-class" class="level3">
+<h3 class="anchored" data-anchor-id="your-groups-family-the-bundle-youll-build-in-class">2. Your group’s family — the bundle you’ll build in class</h3>
+<p>Your group is the same one from Demo 7 (Balistoidea, Pomacanthidae, Scarinae, Cirrhilabrini, Acanthuridae, Hypsigenyinae, or Halichoerine). On Wednesday you’ll log into FishView with <strong>the same group code you used for Demo 7</strong> (<code>trigger-2026</code>, <code>angel-2026</code>, <code>parrot-2026</code>, <code>fairy-2026</code>, <code>tang-2026</code>, <code>hog-2026</code>, or <code>coris-2026</code>) and <strong>assemble your own bundle from scratch</strong>:</p>
 <ul>
-<li><strong>19 of the 20 species</strong> ship one exemplar image each (<code>images/&lt;species&gt;/exemplar.png</code>).</li>
-<li><strong>1 of the 20 species</strong> — the “error-species,” picked by the lecturer — ships a <strong>5-image stack</strong> (<code>images/&lt;error_species&gt;/img-1.png</code> through <code>img-5.png</code>) instead of a single exemplar. Part 3 uses these five to estimate measurement noise.</li>
-<li><strong><code>&lt;family&gt;-mini-tree.tre</code></strong> — pruned tree with exactly those 20 tips.</li>
-<li><strong><code>species_traits.csv</code></strong> — four ecological traits from FishBase (trophic level, max depth, max length, vulnerability index) — used in §1.8 and §2.8.</li>
-<li><strong>README.txt</strong> — names the error-species and lists each shipped image.</li>
+<li>Pick <strong>at least 15 species</strong> spanning <strong>≥5 genera</strong> from your family’s tree</li>
+<li>For each species, evaluate the available photographs and <strong>star one exemplar</strong></li>
+<li><strong>Mark one of your species as the error-species</strong> and pick <strong>5 distinct images</strong> for it</li>
+<li>Click <strong>Export Bundle</strong> → download <code>&lt;family&gt;-mini-bundle.zip</code></li>
 </ul>
-<p>For the walkthrough below, we use <strong>Chaetodontidae</strong> (butterflyfishes) as the shared example so we can all watch the same code produce the same plots in class.</p>
+<p>The bundle you export has the same shape as the Chaetodontidae one (tree, images, README, picked-species manifests, and a <code>species_traits.csv</code> of FishBase ecological traits) — so when you unzip it and point the worksheet at it, every chunk just runs.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Chaetodontidae walkthrough teaches you the <strong>code</strong>. Your group’s bundle teaches you the <strong>choices</strong> — which species are worth photographing, which photographs are worth analyzing, and how much your conclusions depend on those decisions.</p>
+</div>
+</div>
 <hr>
+</section>
 </section>
 <section id="materials" class="level2">
 <h2 class="anchored" data-anchor-id="materials">Materials</h2>
@@ -856,90 +833,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Your bundle</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## The two data slots of this demo</span></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>You'll work with the same family you analyzed in Demo 7. Your group code (from Demo 7) gets you into the FishView mini-bundle:</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>There are **two** bundles of data in this lab, and you'll touch both:</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group <span class="pp">|</span> Family <span class="pp">|</span> Mini-bundle code <span class="pp">|</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------|--------|------------------|</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> Balistoidea (triggerfishes) <span class="pp">|</span> <span class="in">`trigger-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> Pomacanthidae (angelfishes) <span class="pp">|</span> <span class="in">`angel-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> Scarinae (parrotfishes) <span class="pp">|</span> <span class="in">`parrot-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> Cirrhilabrini (fairy wrasses) <span class="pp">|</span> <span class="in">`fairy-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> Acanthuridae (surgeonfishes) <span class="pp">|</span> <span class="in">`tang-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> Hypsigenyinae (hogfishes) <span class="pp">|</span> <span class="in">`hog-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 7 <span class="pp">|</span> Halichoerine (Coris-allies wrasses) <span class="pp">|</span> <span class="in">`coris-2026`</span> <span class="pp">|</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>Your bundle contains **20 species** total, spanning ≥5 genera, all matched to your group's tree:</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**19 of the 20 species** ship one exemplar image each (<span class="in">`images/&lt;species&gt;/exemplar.png`</span>).</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**1 of the 20 species** — the "error-species," picked by the lecturer — ships a **5-image stack** (<span class="in">`images/&lt;error_species&gt;/img-1.png`</span> through <span class="in">`img-5.png`</span>) instead of a single exemplar. Part 3 uses these five to estimate measurement noise.</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`&lt;family&gt;-mini-tree.tre`** — pruned tree with exactly those 20 tips.</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`species_traits.csv`** — four ecological traits from FishBase (trophic level, max depth, max length, vulnerability index) — used in §1.8 and §2.8.</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**README.txt** — names the error-species and lists each shipped image.</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>For the walkthrough below, we use **Chaetodontidae** (butterflyfishes) as the shared example so we can all watch the same code produce the same plots in class.</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Materials</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Intro Slides](slides/demo8-intro-slides.html)** — concept tour (19 slides, ~15 min) · <span class="co">[</span><span class="ot">PDF</span><span class="co">](slides/demo8-intro-slides.pdf)</span> · <span class="co">[</span><span class="ot">PowerPoint</span><span class="co">](slides/demo8-intro-slides.pptx)</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Demo 8 Prep page](demo8-prep.html)** — install R packages, verify your bundle downloads, run the readiness check. **Do this before class.**</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-profile="ta"}</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### For the TA / instructor</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[TA Guide](demo8-ta-guide-web.html)** — concept scaffolds, timing, common traps, answer key</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Chaetodontidae — the walkthrough bundle (everyone the same)</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>Pre-built. 19 butterflyfish species across 5 genera, plus *Heniochus_acuminatus* as the error-species (5 photos for Part 3). You download it tonight from the prep page. The walkthrough below — every code chunk, every plot — runs on **this** bundle, so when the lecturer renders the worksheet in class, your screen produces the same figures.</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Your group's family — the bundle you'll build in class</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>Your group is the same one from Demo 7 (Balistoidea, Pomacanthidae, Scarinae, Cirrhilabrini, Acanthuridae, Hypsigenyinae, or Halichoerine). On Wednesday you'll log into FishView with **the same group code you used for Demo 7** (`trigger-2026`, `angel-2026`, `parrot-2026`, `fairy-2026`, `tang-2026`, `hog-2026`, or `coris-2026`) and **assemble your own bundle from scratch**:</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pick **at least 15 species** spanning **≥5 genera** from your family's tree</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>For each species, evaluate the available photographs and **star one exemplar**</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mark one of your species as the error-species** and pick **5 distinct images** for it</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Click **Export Bundle** → download <span class="in">`&lt;family&gt;-mini-bundle.zip`</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>The bundle you export has the same shape as the Chaetodontidae one (tree, images, README, picked-species manifests, and a <span class="in">`species_traits.csv`</span> of FishBase ecological traits) — so when you unzip it and point the worksheet at it, every chunk just runs.</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>The Chaetodontidae walkthrough teaches you the **code**. Your group's bundle teaches you the **choices** — which species are worth photographing, which photographs are worth analyzing, and how much your conclusions depend on those decisions.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Materials</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Intro Slides](slides/demo8-intro-slides.html)** — concept tour (19 slides, ~15 min) · <span class="co">[</span><span class="ot">PDF</span><span class="co">](slides/demo8-intro-slides.pdf)</span> · <span class="co">[</span><span class="ot">PowerPoint</span><span class="co">](slides/demo8-intro-slides.pptx)</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Demo 8 Prep page](demo8-prep.html)** — install R packages, verify your bundle downloads, run the readiness check. **Do this before class.**</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-profile="ta"}</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="fu">### For the TA / instructor</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[TA Guide](demo8-ta-guide-web.html)** — concept scaffolds, timing, common traps, answer key</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key files (click to download)</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> File <span class="pp">|</span> Description <span class="pp">|</span> Download <span class="pp">|</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|-------------|----------|</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Chaetodontidae walkthrough bundle <span class="pp">|</span> species × 1 image + 1 error-species × 5 images + tree (ZIP) <span class="pp">|</span> <span class="co">[</span><span class="ot">chaetodontidae-mini-bundle.zip</span><span class="co">](data/chaetodontidae-mini-bundle.zip)</span> <span class="pp">|</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Worksheet R script <span class="pp">|</span> All chunks pre-extracted; paste into RStudio one section at a time <span class="pp">|</span> <span class="co">[</span><span class="ot">walkthrough.R</span><span class="co">](scripts/walkthrough.R)</span> <span class="pp">|</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Measurement-error helper <span class="pp">|</span> Functions used in Part 3 — sourced by the worksheet <span class="pp">|</span> <span class="co">[</span><span class="ot">measurement-error.R</span><span class="co">](scripts/measurement-error.R)</span> <span class="pp">|</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Error-aware MC wrapper <span class="pp">|</span> Re-runs Parts 1 &amp; 2 under noise — sourced by Part 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">error-aware-analyses.R</span><span class="co">](scripts/error-aware-analyses.R)</span> <span class="pp">|</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### R packages needed</span></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(</span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pavo"</span>,       <span class="co"># color-pattern stats</span></span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ape"</span>,        <span class="co"># tree handling</span></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="st">"phytools"</span>,   <span class="co"># phyl.pca, Blomberg's K</span></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  <span class="st">"caper"</span>,      <span class="co"># PGLS</span></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nlme"</span>,       <span class="co"># gls fallback for PGLS</span></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>  <span class="st">"plotrix"</span>,    <span class="co"># phytools dependency</span></span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidyr"</span>,      <span class="co"># pivot_longer in Part 3 plots</span></span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ggplot2"</span></span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="in">`tidyr`</span> is new this week — Part 3 reshapes the 200 × 9 Monte Carlo result matrix for the diagnostic boxplots, and <span class="in">`tidyr::pivot_longer`</span> is the cleanest way to do that.</span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## What students turn in</span></span>
-<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Part 1 figure** — your family's pavo PCA scatter (PC1 vs PC2) with species labelled.</span>
-<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Part 2 comparison** — PCA biplot, K + λ values for each pavo variable, one-sentence interpretation of which variables show signal.</span>
-<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Part 3 figure** — Monte Carlo CIs on K (or λ, or one PGLS slope) for your group's data.</span>
-<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**One paragraph (≤250 words):** *"Does my family's pattern diversity look phylogenetically structured? How much of that conclusion depends on the precision of pavo measurements? Compare to Frédérich's surgeonfish result."*</span>
-<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>Upload to BruinLearn by end of day Wednesday.</span>
-<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citations</span></span>
-<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>Frédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., Laudet, V., &amp; Dornburg, A. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. *BMC Biology*, *24*(46). <span class="co">[</span><span class="ot">DOI</span><span class="co">](https://doi.org/10.1186/s12915-026-02544-4)</span></span>
-<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>Maia, R., Gruson, H., Endler, J. A., &amp; White, T. E. (2019). pavo 2: new tools for the spectral and spatial analysis of colour in R. *Methods in Ecology and Evolution*, *10*(7), 1097–1107.</span>
-<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>Revell, L. J. (2009). Size-correction and principal components for interspecific comparative studies. *Evolution*, *63*(12), 3258–3268. — origin of <span class="in">`phyl.pca`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key files (click to download)</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> File <span class="pp">|</span> Description <span class="pp">|</span> Download <span class="pp">|</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|-------------|----------|</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Chaetodontidae walkthrough bundle <span class="pp">|</span> species × 1 image + 1 error-species × 5 images + tree (ZIP) <span class="pp">|</span> <span class="co">[</span><span class="ot">chaetodontidae-mini-bundle.zip</span><span class="co">](data/chaetodontidae-mini-bundle.zip)</span> <span class="pp">|</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Worksheet R script <span class="pp">|</span> All chunks pre-extracted; paste into RStudio one section at a time <span class="pp">|</span> <span class="co">[</span><span class="ot">walkthrough.R</span><span class="co">](scripts/walkthrough.R)</span> <span class="pp">|</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Measurement-error helper <span class="pp">|</span> Functions used in Part 3 — sourced by the worksheet <span class="pp">|</span> <span class="co">[</span><span class="ot">measurement-error.R</span><span class="co">](scripts/measurement-error.R)</span> <span class="pp">|</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Error-aware MC wrapper <span class="pp">|</span> Re-runs Parts 1 &amp; 2 under noise — sourced by Part 3 <span class="pp">|</span> <span class="co">[</span><span class="ot">error-aware-analyses.R</span><span class="co">](scripts/error-aware-analyses.R)</span> <span class="pp">|</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="fu">### R packages needed</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pavo"</span>,       <span class="co"># color-pattern stats</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ape"</span>,        <span class="co"># tree handling</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>  <span class="st">"phytools"</span>,   <span class="co"># phyl.pca, Blomberg's K</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="st">"caper"</span>,      <span class="co"># PGLS</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nlme"</span>,       <span class="co"># gls fallback for PGLS</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  <span class="st">"plotrix"</span>,    <span class="co"># phytools dependency</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidyr"</span>,      <span class="co"># pivot_longer in Part 3 plots</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ggplot2"</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="in">`tidyr`</span> is new this week — Part 3 reshapes the 200 × 9 Monte Carlo result matrix for the diagnostic boxplots, and <span class="in">`tidyr::pivot_longer`</span> is the cleanest way to do that.</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="fu">## What students turn in</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Part 1 figure** — your family's pavo PCA scatter (PC1 vs PC2) with species labelled.</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Part 2 comparison** — PCA biplot, K + λ values for each pavo variable, one-sentence interpretation of which variables show signal.</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Part 3 figure** — Monte Carlo CIs on K (or λ, or one PGLS slope) for your group's data.</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**One paragraph (≤250 words):** *"Does my family's pattern diversity look phylogenetically structured? How much of that conclusion depends on the precision of pavo measurements? Compare to Frédérich's surgeonfish result."*</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>Upload to BruinLearn by end of day Wednesday.</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citations</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>Frédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., Laudet, V., &amp; Dornburg, A. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. *BMC Biology*, *24*(46). <span class="co">[</span><span class="ot">DOI</span><span class="co">](https://doi.org/10.1186/s12915-026-02544-4)</span></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>Maia, R., Gruson, H., Endler, J. A., &amp; White, T. E. (2019). pavo 2: new tools for the spectral and spatial analysis of colour in R. *Methods in Ecology and Evolution*, *10*(7), 1097–1107.</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>Revell, L. J. (2009). Size-correction and principal components for interspecific comparative studies. *Evolution*, *63*(12), 3258–3268. — origin of <span class="in">`phyl.pca`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
