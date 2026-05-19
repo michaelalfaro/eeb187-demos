@@ -17,8 +17,8 @@ suppressPackageStartupMessages({
 
 # Run all stats one time on a noise-perturbed trait matrix.
 .one_iteration <- function(traits, tree, error_sd,
-                           pgls_form_1 = A ~ m,
-                           pgls_form_2 = m_c ~ m_r) {
+                           pgls_form_1 = A    ~ m,
+                           pgls_form_2 = m_dL ~ m_dS) {
 
   # Gaussian noise: SD per column = error_sd[col], applied independently to each tip.
   noise <- matrix(rnorm(prod(dim(traits)),

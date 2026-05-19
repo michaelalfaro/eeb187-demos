@@ -162,9 +162,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#timing-total-75-min" id="toc-timing-total-75-min" class="nav-link" data-scroll-target="#timing-total-75-min">Timing — total 75 min</a></li>
   <li><a href="#concept-scaffolds-what-you-might-need-to-explain" id="toc-concept-scaffolds-what-you-might-need-to-explain" class="nav-link" data-scroll-target="#concept-scaffolds-what-you-might-need-to-explain">Concept scaffolds — what you might need to explain</a>
   <ul class="collapse">
-  <li><a href="#why-does-phylopca-refuse-to-run-when-prcomp-was-fine" id="toc-why-does-phylopca-refuse-to-run-when-prcomp-was-fine" class="nav-link" data-scroll-target="#why-does-phylopca-refuse-to-run-when-prcomp-was-fine">“Why does phyloPCA refuse to run when prcomp was fine?”</a></li>
   <li><a href="#why-is-blombergs-k-small-for-color-patterns" id="toc-why-is-blombergs-k-small-for-color-patterns" class="nav-link" data-scroll-target="#why-is-blombergs-k-small-for-color-patterns">“Why is Blomberg’s K small for color patterns?”</a></li>
-  <li><a href="#why-is-the-slope-of-m_c-m_r-close-to-1" id="toc-why-is-the-slope-of-m_c-m_r-close-to-1" class="nav-link" data-scroll-target="#why-is-the-slope-of-m_c-m_r-close-to-1">“Why is the slope of <code>m_c ~ m_r</code> close to 1?”</a></li>
+  <li><a href="#why-is-a-aspect-ratio-the-only-variable-with-strong-k-in-our-walkthrough" id="toc-why-is-a-aspect-ratio-the-only-variable-with-strong-k-in-our-walkthrough" class="nav-link" data-scroll-target="#why-is-a-aspect-ratio-the-only-variable-with-strong-k-in-our-walkthrough">“Why is <code>A</code> (aspect ratio) the only variable with strong K in our walkthrough?”</a></li>
+  <li><a href="#why-use-opponent-color-distances-instead-of-a-full-visual-model" id="toc-why-use-opponent-color-distances-instead-of-a-full-visual-model" class="nav-link" data-scroll-target="#why-use-opponent-color-distances-instead-of-a-full-visual-model">“Why use opponent-color distances instead of a full visual model?”</a></li>
+  <li><a href="#why-mask-the-white-background" id="toc-why-mask-the-white-background" class="nav-link" data-scroll-target="#why-mask-the-white-background">“Why mask the white background?”</a></li>
   <li><a href="#what-does-the-mc-step-in-part-3-actually-do" id="toc-what-does-the-mc-step-in-part-3-actually-do" class="nav-link" data-scroll-target="#what-does-the-mc-step-in-part-3-actually-do">“What does the MC step in Part 3 actually do?”</a></li>
   </ul></li>
   <li><a href="#expected-numbers-from-the-chaetodontidae-walkthrough" id="toc-expected-numbers-from-the-chaetodontidae-walkthrough" class="nav-link" data-scroll-target="#expected-numbers-from-the-chaetodontidae-walkthrough">Expected numbers from the Chaetodontidae walkthrough</a>
@@ -286,21 +287,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="concept-scaffolds-what-you-might-need-to-explain" class="level2">
 <h2 class="anchored" data-anchor-id="concept-scaffolds-what-you-might-need-to-explain">Concept scaffolds — what you might need to explain</h2>
-<section id="why-does-phylopca-refuse-to-run-when-prcomp-was-fine" class="level3">
-<h3 class="anchored" data-anchor-id="why-does-phylopca-refuse-to-run-when-prcomp-was-fine">“Why does phyloPCA refuse to run when prcomp was fine?”</h3>
-<p><code>prcomp</code> does eigen-decomposition of a (centered, scaled) covariance and <strong>silently produces zero-variance PCs</strong> for any algebraic redundancy. With our 9 pavo vars there are two redundancies (<code>Σp_i = 1</code>, <code>A = m_r/m_c</code>), so PC8 and PC9 always come out with variance ≈ 1e-16. <code>prcomp</code> shrugs and gives you PC1–PC7 that mean something plus two “dead” axes.</p>
-<p><code>phyl.pca</code> is different: it has to <strong>invert</strong> the covariance to do the lambda-scaled phylogenetic correction. A singular covariance has no inverse, so it crashes. The fix in §2.2 — dropping <code>p_4</code> and <code>m_c</code> — restores invertibility.</p>
-<p>The deeper concept: redundancy is fine until you ask the data to be invertible. Multicollinearity that’s “harmless” in OLS becomes “fatal” in any procedure that does linear algebra on the variance-covariance matrix (PCA-with-residuals, regression with high-leverage points, GLS, ML estimation of covariance parameters).</p>
-</section>
 <section id="why-is-blombergs-k-small-for-color-patterns" class="level3">
 <h3 class="anchored" data-anchor-id="why-is-blombergs-k-small-for-color-patterns">“Why is Blomberg’s K small for color patterns?”</h3>
 <p>K = 0 ⇒ trait is randomly distributed on the tree (close relatives look as different as distant ones). K = 1 ⇒ trait matches Brownian-motion expectation exactly. K &gt; 1 ⇒ relatives more similar than BM predicts (rare; happens with strong niche conservatism). K = 0.1 (which Frédérich reports for Chaetodontidae) means <strong>color evolves much faster than Brownian drift would predict</strong> — i.e.&nbsp;there’s lots of convergence and reversal across the tree.</p>
-<p>The expected output for our 19-species walkthrough is most pavo variables sitting between K ≈ 0 and K ≈ 1, with at most one or two showing significant signal at p &lt; 0.05. <strong><code>A</code> typically comes out around K ≈ 1 with significant p</strong> in this dataset, which is genuinely interesting — pattern <em>orientation</em> (bar-y vs stripe-y) has more phylogenetic structure than pattern <em>complexity</em>.</p>
+<p>In our 19-species walkthrough, five of six pavo variables (<code>m</code>, <code>Jc</code>, <code>Jt</code>, <code>m_dS</code>, <code>m_dL</code>) come out at K between ~ 0.15 and ~ 0.45 with non-significant p.&nbsp;<strong><code>A</code> is the exception</strong> — K ≈ 1.3, p ≈ 0.01. That’s K &gt; 1, which is a stronger statement than “matches Brownian”; it means <em>close relatives are more similar in pattern aspect ratio than drift would predict</em>. Pattern orientation is actively conserved within butterflyfishes; everything else is labile.</p>
 </section>
-<section id="why-is-the-slope-of-m_c-m_r-close-to-1" class="level3">
-<h3 class="anchored" data-anchor-id="why-is-the-slope-of-m_c-m_r-close-to-1">“Why is the slope of <code>m_c ~ m_r</code> close to 1?”</h3>
-<p>Because horizontal and vertical transition densities are <strong>almost always similar</strong> for non-pathological body patterns. Most fish have roughly the same pattern density in both directions. The 95 % CI on the slope almost always covers 1 — and that’s the point of the test, not the default <code>summary()</code> p-value (which tests slope = 0, which isn’t biologically interesting here).</p>
-<p>Make sure students look at <code>confint(fit_2)["m_r", ]</code>, not at the p-value.</p>
+<section id="why-is-a-aspect-ratio-the-only-variable-with-strong-k-in-our-walkthrough" class="level3">
+<h3 class="anchored" data-anchor-id="why-is-a-aspect-ratio-the-only-variable-with-strong-k-in-our-walkthrough">“Why is <code>A</code> (aspect ratio) the only variable with strong K in our walkthrough?”</h3>
+<p><code>A = m_r / m_c</code> measures the ratio of horizontal-vs-vertical pixel transitions, which directly reflects whether a fish is bar-y (vertical bars produce horizontal transitions) or stripe-y. Bar/stripe orientation is heavily constrained by body plan, fin development, and pigmentation-stripe genetics that have been documented to be highly conserved in reef fish lineages. It would be more surprising if pattern aspect ratio were <em>not</em> conserved.</p>
+<p>The other five variables capture pattern <em>complexity</em> and <em>boundary strength</em>, which can change drastically with relatively minor pigmentation tweaks. That’s why convergence is rampant on those axes.</p>
+</section>
+<section id="why-use-opponent-color-distances-instead-of-a-full-visual-model" class="level3">
+<h3 class="anchored" data-anchor-id="why-use-opponent-color-distances-instead-of-a-full-visual-model">“Why use opponent-color distances instead of a full visual model?”</h3>
+<p><code>m_dS</code> and <code>m_dL</code> need a coldists table. A full pavo workflow would compute coldists from a visual model (<code>vismodel()</code>) using receptor-noise-limited distances under an assumed visual system. We skip the visual model and just compute Euclidean distances on opponent-transformed RGBs:</p>
+<ul>
+<li><code>col1 = (R - G) / (R + G)</code> (red-green axis)</li>
+<li><code>col2 = (G - B) / (G + B)</code> (green-blue axis)</li>
+<li><code>lum  = R + G + B</code> (achromatic)</li>
+</ul>
+<p>This matches the recipe from Alfaro et al.&nbsp;2019 (ICB), Demo 6’s <code>simple_coldists()</code>, and avoids the question of <em>whose</em> visual system the fish are signaling to. Pedagogically it lets students see what <code>m_dS</code> and <code>m_dL</code> <em>measure</em> without committing to a visual ecology assumption that needs its own lecture.</p>
+</section>
+<section id="why-mask-the-white-background" class="level3">
+<h3 class="anchored" data-anchor-id="why-mask-the-white-background">“Why mask the white background?”</h3>
+<p>FishView paints each fish onto a white field at export time. Without <code>bkgID + exclude = "background"</code>, <code>classify()</code> will treat the white field as one of the 4 color classes — and <code>adjacent()</code> will count enormous numbers of pattern transitions at the fish/white boundary. That inflates <code>m</code> and dominates <code>m_dS</code> / <code>m_dL</code>. The pipeline picks the whitest class (highest R+G+B) and tells <code>adjacent()</code> to exclude it. Same recipe as Demo 6.</p>
 </section>
 <section id="what-does-the-mc-step-in-part-3-actually-do" class="level3">
 <h3 class="anchored" data-anchor-id="what-does-the-mc-step-in-part-3-actually-do">“What does the MC step in Part 3 actually do?”</h3>
@@ -308,10 +317,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>Pull a noise vector from <code>N(0, error_sd)</code> for each pavo variable.</li>
 <li>Add it to every tip’s value (every species gets the same noise SD applied independently).</li>
-<li>Re-run <code>prcomp</code>, <code>phylosig(K)</code>, <code>phylosig(lambda)</code>, <code>pgls(A ~ m)</code>, <code>pgls(m_c ~ m_r)</code>.</li>
+<li>Re-run <code>prcomp</code>, <code>phylosig(K)</code>, <code>phylosig(lambda)</code>, <code>pgls(A ~ m)</code>, <code>pgls(m_dL ~ m_dS)</code>.</li>
 <li>Store the result.</li>
 </ol>
-<p>The result is a 100-row × 9-column matrix of K values (and ditto for the other stats). The boxplot shows the spread; the <strong>observed-from-Part-2</strong> value is the gold dot.</p>
+<p>The result is a 100-row × 6-column matrix of K values (and ditto for the other stats). The boxplot shows the spread; the <strong>observed-from-Part-2</strong> value is the gold dot.</p>
 <p>The diagnostic students should apply: if the observed dot is <strong>inside</strong> the box, your Part 2 conclusion is robust. If the dot is <strong>outside the box</strong>, sampling a different image would have given you a meaningfully different K — i.e.&nbsp;the Part 2 result was lucky.</p>
 <p>For PGLS slopes (§3.6): the diagnostic is whether <strong>zero</strong> lies inside the MC 95 % CI. Not whether the observed slope lies inside (it does by construction).</p>
 <hr>
@@ -323,9 +332,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="part-1" class="level3">
 <h3 class="anchored" data-anchor-id="part-1">Part 1</h3>
 <ul>
-<li><strong>PCA:</strong> PC1 explains ≈ 46 %, PC2 ≈ 17 %, PC3 ≈ 16 %. Rank collapses at PC8 (zero variance) by design.</li>
-<li><strong><code>lm(A ~ m)</code>:</strong> slope ≈ -0.019, R² ≈ 0.19, p ≈ 0.06 (marginal). Story: more complex patterns are <em>slightly</em> more isotropic.</li>
-<li><strong><code>lm(m_c ~ m_r)</code>:</strong> slope ≈ 1.08, R² ≈ 0.93, p ≈ 5e-11. The 95 % CI on <code>m_r</code> covers 1, so Chaetodontidae are isotropic on average.</li>
+<li><strong>PCA:</strong> PC1 explains ≈ 42.5 %, PC2 ≈ 23.9 %, PC3 ≈ 14 %. Full-rank — no zero-variance trailing axes.</li>
+<li><strong><code>lm(A ~ m)</code>:</strong> slope close to zero, p typically &gt; 0.3. Story: pattern complexity and aspect ratio are essentially decoupled in butterflyfishes.</li>
+<li><strong><code>lm(m_dL ~ m_dS)</code>:</strong> slope ≈ 0.05–0.10, R² typically 0.10–0.25. Chromatic and luminance boundary strengths are weakly positively correlated; many species have one without the other.</li>
 </ul>
 </section>
 <section id="part-1-ecology-1.8" class="level3">
@@ -339,10 +348,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="part-2" class="level3">
 <h3 class="anchored" data-anchor-id="part-2">Part 2</h3>
 <ul>
-<li><strong>phyl.pca with <code>lambda = "ML"</code></strong> runs cleanly on the 7-variable reduced trait set.</li>
-<li><strong><code>pgls(A ~ m)</code>:</strong> slope ≈ -0.014, λ-ML ≈ 0–1 depending on optimizer landing.</li>
-<li><strong><code>pgls(m_c ~ m_r)</code>:</strong> slope ≈ 1.08, near-perfect fit.</li>
-<li><strong>Per-variable K (color):</strong> mostly K &lt; 1, p &gt; 0.05. <code>A</code> sometimes comes out K ≈ 1.04 with p ≈ 0.03 — significant.</li>
+<li><strong>phyl.pca with <code>lambda = "ML"</code></strong> runs cleanly on the full 6-variable set (no rank-deficiency workaround needed).</li>
+<li><strong><code>pgls(A ~ m)</code>:</strong> slope near zero, often non-significant.</li>
+<li><strong><code>pgls(m_dL ~ m_dS)</code>:</strong> positive slope, p usually &lt; 0.05 after phylogenetic correction.</li>
+<li><strong>Per-variable K (color):</strong> five of six variables (<code>m</code>, <code>Jc</code>, <code>Jt</code>, <code>m_dS</code>, <code>m_dL</code>) sit at K between ≈ 0.15 and 0.45 with non-significant p.&nbsp;<strong><code>A</code> is the standout — K ≈ 1.3, p ≈ 0.01</strong> (relatives MORE similar than Brownian, i.e.&nbsp;active conservation of pattern aspect ratio).</li>
 </ul>
 </section>
 <section id="part-2-ecology-2.8" class="level3">
@@ -365,11 +374,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="part-3" class="level3">
 <h3 class="anchored" data-anchor-id="part-3">Part 3</h3>
 <ul>
-<li><strong>Error-stack means (Heniochus_acuminatus):</strong> Sc ≈ 3.1, m ≈ 12, A ≈ 1.0.</li>
-<li><strong>CV across the 5 images:</strong> highest for <code>p_2</code> and <code>p_4</code> (CV ≈ 0.7–0.9), lowest for <code>A</code> and <code>Sc</code> (CV ≈ 0.1–0.2).</li>
-<li><strong>MC K distributions:</strong> centred near observed values; spread is wider for <code>p_2</code>, <code>p_4</code> (the noisy variables).</li>
-<li><strong>MC PGLS slope for <code>A ~ m</code>:</strong> CI typically covers 0 → Part 2’s marginal significance doesn’t survive noise.</li>
-<li><strong>MC PGLS slope for <code>m_c ~ m_r</code>:</strong> CI tight around 1 → robust.</li>
+<li><strong>Error-stack means (Heniochus_acuminatus):</strong> vary depending on bundle; check the printed table.</li>
+<li><strong>CV across the 5 images:</strong> lowest for <code>A</code> (the conserved variable — same fish, same aspect ratio across angles ≈ 0.05–0.15); higher for <code>m_dS</code>, <code>m_dL</code> (lighting-sensitive boundary strengths ≈ 0.3–0.6).</li>
+<li><strong>MC K distributions:</strong> centred near observed values; spread is widest for <code>m_dS</code>, <code>m_dL</code>. <code>A</code>’s K boxplot stays tight around 1.0–1.4 — its observed signal is robust.</li>
+<li><strong>MC PGLS slope for <code>A ~ m</code>:</strong> CI typically covers 0 → no real bivariate relationship survives noise.</li>
+<li><strong>MC PGLS slope for <code>m_dL ~ m_dS</code>:</strong> depends on how clean the boundary metrics come out; CI may or may not exclude zero.</li>
 </ul>
 <hr>
 </section>
@@ -397,8 +406,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><code>phyl.pca</code> errors with “system is computationally singular”</td>
-<td>They didn’t drop <code>p_4</code> and <code>m_c</code> (§2.2)</td>
-<td>Walk through the algebraic redundancy explanation. The drop is in chunk <code>phylopca</code>.</td>
+<td>Their bundle has fewer than 6 species with usable images (rare) OR they’re running an older worksheet that still drops <code>p_4</code>/<code>m_c</code> from a 9-variable set</td>
+<td>The new 6-variable set ({m, A, Jc, Jt, m_dS, m_dL}) is full-rank so this shouldn’t happen — re-download the worksheet HTML.</td>
 </tr>
 <tr class="odd">
 <td><code>signal[, c("variable", "K")]</code> errors with “undefined columns”</td>
@@ -999,142 +1008,148 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Concept scaffolds — what you might need to explain</span></span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why does phyloPCA refuse to run when prcomp was fine?"</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why is Blomberg's K small for color patterns?"</span></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">`prcomp`</span> does eigen-decomposition of a (centered, scaled) covariance and **silently produces zero-variance PCs** for any algebraic redundancy. With our 9 pavo vars there are two redundancies (<span class="in">`Σp_i = 1`</span>, <span class="in">`A = m_r/m_c`</span>), so PC8 and PC9 always come out with variance ≈ 1e-16. <span class="in">`prcomp`</span> shrugs and gives you PC1–PC7 that mean something plus two "dead" axes.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>K = 0 ⇒ trait is randomly distributed on the tree (close relatives look as different as distant ones). K = 1 ⇒ trait matches Brownian-motion expectation exactly. K &gt; 1 ⇒ relatives more similar than BM predicts (rare; happens with strong niche conservatism). K = 0.1 (which Frédérich reports for Chaetodontidae) means **color evolves much faster than Brownian drift would predict** — i.e. there's lots of convergence and reversal across the tree.</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="in">`phyl.pca`</span> is different: it has to **invert** the covariance to do the lambda-scaled phylogenetic correction. A singular covariance has no inverse, so it crashes. The fix in §2.2 — dropping <span class="in">`p_4`</span> and <span class="in">`m_c`</span> — restores invertibility.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>In our 19-species walkthrough, five of six pavo variables (<span class="in">`m`</span>, <span class="in">`Jc`</span>, <span class="in">`Jt`</span>, <span class="in">`m_dS`</span>, <span class="in">`m_dL`</span>) come out at K between ~ 0.15 and ~ 0.45 with non-significant p. **`A` is the exception** — K ≈ 1.3, p ≈ 0.01. That's K &gt; 1, which is a stronger statement than "matches Brownian"; it means *close relatives are more similar in pattern aspect ratio than drift would predict*. Pattern orientation is actively conserved within butterflyfishes; everything else is labile.</span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>The deeper concept: redundancy is fine until you ask the data to be invertible. Multicollinearity that's "harmless" in OLS becomes "fatal" in any procedure that does linear algebra on the variance-covariance matrix (PCA-with-residuals, regression with high-leverage points, GLS, ML estimation of covariance parameters).</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why is `A` (aspect ratio) the only variable with strong K in our walkthrough?"</span></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why is Blomberg's K small for color patterns?"</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="in">`A = m_r / m_c`</span> measures the ratio of horizontal-vs-vertical pixel transitions, which directly reflects whether a fish is bar-y (vertical bars produce horizontal transitions) or stripe-y. Bar/stripe orientation is heavily constrained by body plan, fin development, and pigmentation-stripe genetics that have been documented to be highly conserved in reef fish lineages. It would be more surprising if pattern aspect ratio were *not* conserved.</span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>K = 0 ⇒ trait is randomly distributed on the tree (close relatives look as different as distant ones). K = 1 ⇒ trait matches Brownian-motion expectation exactly. K &gt; 1 ⇒ relatives more similar than BM predicts (rare; happens with strong niche conservatism). K = 0.1 (which Frédérich reports for Chaetodontidae) means **color evolves much faster than Brownian drift would predict** — i.e. there's lots of convergence and reversal across the tree.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>The other five variables capture pattern *complexity* and *boundary strength*, which can change drastically with relatively minor pigmentation tweaks. That's why convergence is rampant on those axes.</span>
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>The expected output for our 19-species walkthrough is most pavo variables sitting between K ≈ 0 and K ≈ 1, with at most one or two showing significant signal at p &lt; 0.05. **`A` typically comes out around K ≈ 1 with significant p** in this dataset, which is genuinely interesting — pattern *orientation* (bar-y vs stripe-y) has more phylogenetic structure than pattern *complexity*.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why use opponent-color distances instead of a full visual model?"</span></span>
 <span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why is the slope of `m_c ~ m_r` close to 1?"</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="in">`m_dS`</span> and <span class="in">`m_dL`</span> need a coldists table. A full pavo workflow would compute coldists from a visual model (<span class="in">`vismodel()`</span>) using receptor-noise-limited distances under an assumed visual system. We skip the visual model and just compute Euclidean distances on opponent-transformed RGBs:</span>
 <span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>Because horizontal and vertical transition densities are **almost always similar** for non-pathological body patterns. Most fish have roughly the same pattern density in both directions. The 95 % CI on the slope almost always covers 1 — and that's the point of the test, not the default <span class="in">`summary()`</span> p-value (which tests slope = 0, which isn't biologically interesting here).</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>Make sure students look at <span class="in">`confint(fit_2)["m_r", ]`</span>, not at the p-value.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`col1 = (R - G) / (R + G)`</span> (red-green axis)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`col2 = (G - B) / (G + B)`</span> (green-blue axis)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`lum  = R + G + B`</span> (achromatic)</span>
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">### "What does the MC step in Part 3 actually do?"</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>This matches the recipe from Alfaro et al. 2019 (ICB), Demo 6's <span class="in">`simple_coldists()`</span>, and avoids the question of *whose* visual system the fish are signaling to. Pedagogically it lets students see what `m_dS` and `m_dL` *measure* without committing to a visual ecology assumption that needs its own lecture.</span>
 <span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>For each of 100 (or 200) iterations:</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="fu">### "Why mask the white background?"</span></span>
 <span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Pull a noise vector from <span class="in">`N(0, error_sd)`</span> for each pavo variable.</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Add it to every tip's value (every species gets the same noise SD applied independently).</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Re-run <span class="in">`prcomp`</span>, <span class="in">`phylosig(K)`</span>, <span class="in">`phylosig(lambda)`</span>, <span class="in">`pgls(A ~ m)`</span>, <span class="in">`pgls(m_c ~ m_r)`</span>.</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Store the result.</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>The result is a 100-row × 9-column matrix of K values (and ditto for the other stats). The boxplot shows the spread; the **observed-from-Part-2** value is the gold dot.</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>The diagnostic students should apply: if the observed dot is **inside** the box, your Part 2 conclusion is robust. If the dot is **outside the box**, sampling a different image would have given you a meaningfully different K — i.e. the Part 2 result was lucky.</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>For PGLS slopes (§3.6): the diagnostic is whether **zero** lies inside the MC 95 % CI. Not whether the observed slope lies inside (it does by construction).</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>FishView paints each fish onto a white field at export time. Without <span class="in">`bkgID + exclude = "background"`</span>, <span class="in">`classify()`</span> will treat the white field as one of the 4 color classes — and <span class="in">`adjacent()`</span> will count enormous numbers of pattern transitions at the fish/white boundary. That inflates <span class="in">`m`</span> and dominates <span class="in">`m_dS`</span> / <span class="in">`m_dL`</span>. The pipeline picks the whitest class (highest R+G+B) and tells <span class="in">`adjacent()`</span> to exclude it. Same recipe as Demo 6.</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="fu">### "What does the MC step in Part 3 actually do?"</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>For each of 100 (or 200) iterations:</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Pull a noise vector from <span class="in">`N(0, error_sd)`</span> for each pavo variable.</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Add it to every tip's value (every species gets the same noise SD applied independently).</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Re-run <span class="in">`prcomp`</span>, <span class="in">`phylosig(K)`</span>, <span class="in">`phylosig(lambda)`</span>, <span class="in">`pgls(A ~ m)`</span>, <span class="in">`pgls(m_dL ~ m_dS)`</span>.</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Store the result.</span>
 <span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>The result is a 100-row × 6-column matrix of K values (and ditto for the other stats). The boxplot shows the spread; the **observed-from-Part-2** value is the gold dot.</span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Expected numbers from the Chaetodontidae walkthrough</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>The diagnostic students should apply: if the observed dot is **inside** the box, your Part 2 conclusion is robust. If the dot is **outside the box**, sampling a different image would have given you a meaningfully different K — i.e. the Part 2 result was lucky.</span>
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>Use these to spot-check student output mid-class. Numbers come from running the worksheet against the 19-species bundle (19 because <span class="in">`Chaetodon_trifascialis`</span> got dropped — no tree tip).</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>For PGLS slopes (§3.6): the diagnostic is whether **zero** lies inside the MC 95 % CI. Not whether the observed slope lies inside (it does by construction).</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 1</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**PCA:** PC1 explains ≈ 46 %, PC2 ≈ 17 %, PC3 ≈ 16 %. Rank collapses at PC8 (zero variance) by design.</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(A ~ m)`:** slope ≈ -0.019, R² ≈ 0.19, p ≈ 0.06 (marginal). Story: more complex patterns are *slightly* more isotropic.</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(m_c ~ m_r)`:** slope ≈ 1.08, R² ≈ 0.93, p ≈ 5e-11. The 95 % CI on <span class="in">`m_r`</span> covers 1, so Chaetodontidae are isotropic on average.</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## Expected numbers from the Chaetodontidae walkthrough</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>Use these to spot-check student output mid-class. Numbers come from running the worksheet against the 19-species bundle (19 because <span class="in">`Chaetodon_trifascialis`</span> got dropped — no tree tip).</span>
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 1 ecology (§1.8)</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 1</span></span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(m ~ Troph)`:** weak (R² &lt; 0.1, p &gt; 0.3). Trophic level doesn't predict pattern complexity in this small sample.</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(A ~ log_depth)`:** also weak. Depth doesn't predict directional asymmetry.</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**PC1 ↔ ecology correlations:** all small (|r| &lt; 0.3).</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**PCA:** PC1 explains ≈ 42.5 %, PC2 ≈ 23.9 %, PC3 ≈ 14 %. Full-rank — no zero-variance trailing axes.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(A ~ m)`:** slope close to zero, p typically &gt; 0.3. Story: pattern complexity and aspect ratio are essentially decoupled in butterflyfishes.</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(m_dL ~ m_dS)`:** slope ≈ 0.05–0.10, R² typically 0.10–0.25. Chromatic and luminance boundary strengths are weakly positively correlated; many species have one without the other.</span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 2</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 1 ecology (§1.8)</span></span>
 <span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**phyl.pca with `lambda = "ML"`** runs cleanly on the 7-variable reduced trait set.</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`pgls(A ~ m)`:** slope ≈ -0.014, λ-ML ≈ 0–1 depending on optimizer landing.</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`pgls(m_c ~ m_r)`:** slope ≈ 1.08, near-perfect fit.</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Per-variable K (color):** mostly K &lt; 1, p &gt; 0.05. <span class="in">`A`</span> sometimes comes out K ≈ 1.04 with p ≈ 0.03 — significant.</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 2 ecology (§2.8)</span></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>::: {.callout-important appearance="simple"}</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>**Heads-up for the lecturer when slide 13 lands.** The Chaetodontidae walkthrough does **not** show the "color evolves faster than ecology" pattern sharply — most ecology K values cluster near the color-pattern K values, not near K = 1. With only 19 tips that's exactly what you'd expect; it's a sample-size story, not a falsification of Frédérich. Frame slide 13 as *"look for this in your own family — Chaetodontidae is too small,"* not as *"here is the punchline."*</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(m ~ Troph)`:** weak (R² &lt; 0.1, p &gt; 0.3). Trophic level doesn't predict pattern complexity in this small sample.</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`lm(A ~ log_depth)`:** also weak. Depth doesn't predict directional asymmetry.</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**PC1 ↔ ecology correlations:** all small (|r| &lt; 0.3).</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 2</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**phyl.pca with `lambda = "ML"`** runs cleanly on the full 6-variable set (no rank-deficiency workaround needed).</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`pgls(A ~ m)`:** slope near zero, often non-significant.</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`pgls(m_dL ~ m_dS)`:** positive slope, p usually &lt; 0.05 after phylogenetic correction.</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Per-variable K (color):** five of six variables (`m`, `Jc`, `Jt`, `m_dS`, `m_dL`) sit at K between ≈ 0.15 and 0.45 with non-significant p. **`A` is the standout — K ≈ 1.3, p ≈ 0.01** (relatives MORE similar than Brownian, i.e. active conservation of pattern aspect ratio).</span>
 <span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**K for ecology vars:** `Troph` ≈ 0.33 (n.s.); `log_depth` ≈ 0.42 (n.s.); `log_length` ≈ 0.72 (**p ≈ 0.02**); <span class="in">`Vulnerability`</span> ≈ 0.36 (n.s.).</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Takeaway for the data we'll show:** body size is the one ecological trait with significant phylogenetic structure in this 19-species sample. All other ecology K's overlap with the color-pattern K's, so the comparison plot looks like one cloud, not two. Each student group's own family (some with deeper trees and more species spread) is where the comparison may sharpen.</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 3</span></span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error-stack means (Heniochus_acuminatus):** Sc ≈ 3.1, m ≈ 12, A ≈ 1.0.</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**CV across the 5 images:** highest for <span class="in">`p_2`</span> and <span class="in">`p_4`</span> (CV ≈ 0.7–0.9), lowest for <span class="in">`A`</span> and <span class="in">`Sc`</span> (CV ≈ 0.1–0.2).</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**MC K distributions:** centred near observed values; spread is wider for <span class="in">`p_2`</span>, <span class="in">`p_4`</span> (the noisy variables).</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**MC PGLS slope for `A ~ m`:** CI typically covers 0 → Part 2's marginal significance doesn't survive noise.</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**MC PGLS slope for `m_c ~ m_r`:** CI tight around 1 → robust.</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 2 ecology (§2.8)</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>::: {.callout-important appearance="simple"}</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>**Heads-up for the lecturer when slide 13 lands.** The Chaetodontidae walkthrough does **not** show the "color evolves faster than ecology" pattern sharply — most ecology K values cluster near the color-pattern K values, not near K = 1. With only 19 tips that's exactly what you'd expect; it's a sample-size story, not a falsification of Frédérich. Frame slide 13 as *"look for this in your own family — Chaetodontidae is too small,"* not as *"here is the punchline."*</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**K for ecology vars:** `Troph` ≈ 0.33 (n.s.); `log_depth` ≈ 0.42 (n.s.); `log_length` ≈ 0.72 (**p ≈ 0.02**); <span class="in">`Vulnerability`</span> ≈ 0.36 (n.s.).</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Takeaway for the data we'll show:** body size is the one ecological trait with significant phylogenetic structure in this 19-species sample. All other ecology K's overlap with the color-pattern K's, so the comparison plot looks like one cloud, not two. Each student group's own family (some with deeper trees and more species spread) is where the comparison may sharpen.</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="fu">### Part 3</span></span>
 <span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="fu">## Common student traps + how to recover</span></span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Symptom <span class="pp">|</span> Cause <span class="pp">|</span> Fix <span class="pp">|</span></span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Error in adjacent(cl, xpts = 50) : Required argument xscale is missing`</span> <span class="pp">|</span> Old worksheet version cached <span class="pp">|</span> Have them re-download the bundle and the worksheet HTML; they have a stale chunk. <span class="pp">|</span></span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`phyl.pca`</span> errors with "system is computationally singular" <span class="pp">|</span> They didn't drop <span class="in">`p_4`</span> and <span class="in">`m_c`</span> (§2.2) <span class="pp">|</span> Walk through the algebraic redundancy explanation. The drop is in chunk <span class="in">`phylopca`</span>. <span class="pp">|</span></span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`signal[, c("variable", "K")]`</span> errors with "undefined columns" <span class="pp">|</span> They skipped chunk <span class="in">`signal-bar`</span> which adds <span class="in">`signal$variable &lt;- rownames(signal)`</span> <span class="pp">|</span> Just run that line; it's a one-liner. <span class="pp">|</span></span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5-image stack chunk shows <span class="in">`NULL`</span> for <span class="in">`err`</span> <span class="pp">|</span> They restarted R and didn't re-source <span class="in">`measurement-error.R`</span> <span class="pp">|</span> The §3.1 reload block exists for this — make sure they ran it. <span class="pp">|</span></span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Monte Carlo hangs &gt; 5 min <span class="pp">|</span> <span class="in">`n_iter = 200`</span> and a slow laptop OR a <span class="in">`pgls`</span> call hitting a tough λ optimum <span class="pp">|</span> Reduce to <span class="in">`n_iter = 50`</span>. Quality of conclusions barely changes. <span class="pp">|</span></span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`read.csv("species_traits.csv")`</span> fails with "file not found" <span class="pp">|</span> They unzipped the bundle in the wrong working dir <span class="pp">|</span> <span class="in">`getwd()`</span> and <span class="in">`list.files(bundle)`</span> will diagnose. Bundle should be in the working dir, *not* inside <span class="in">`data/`</span>. <span class="pp">|</span></span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Their PCA shows wildly different proportions of variance than the worked example <span class="pp">|</span> They're on a different family bundle. Expected. <span class="pp">|</span> Remind them this *is* their group's headline result, not the Chaetodontidae one. <span class="pp">|</span></span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> FishView Export button is greyed out <span class="pp">|</span> One of the picker's validation checks failed: &lt; 15 species, &lt; 5 genera, a starred species has no exemplar, no error-species marked, or error-species has &lt; 5 images. <span class="pp">|</span> The picker now shows which check is failing as a banner. Walk them to the violation and fix it. <span class="pp">|</span></span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group ends up with 18 *Chaetodon* and 2 other genera | They check-boxed the first 18 species without watching the genus counter | Push them to **uncheck** until they're down to ≤ 6 *Chaetodon* and pick 9+ species from other genera. The bundle has to span the family, not a clade within it. <span class="pp">|</span></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> All 5 error-species images look identical (same fish, same shot, slight crops) <span class="pp">|</span> They picked five thumbnails that are duplicates of the same photo <span class="pp">|</span> Tell them the *whole point* of the 5-image stack is to capture how a different photo of the *same species* changes pavo values. Same shot ≠ different photos. They need angle / lighting / photographer variation. <span class="pp">|</span></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group's K plot is mostly empty / 4 of 9 vars have no boxplot <span class="pp">|</span> Their bundle came in below 12 tips after tree-pruning. K estimation is unstable at that N. <span class="pp">|</span> Have them add 3–4 more species from FishView (Export again — yes, they can re-export) and re-run. <span class="pp">|</span></span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`bundle &lt;-`</span> is still pointing at <span class="in">`chaetodontidae-mini-bundle`</span> after they exported their family's <span class="pp">|</span> They forgot step F of "Build your bundle" — switching the path <span class="pp">|</span> One-liner: <span class="in">`bundle &lt;- "acanthuridae-mini-bundle"`</span> (or whichever family). Re-run from §1.2. <span class="pp">|</span></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="fu">## Group-bundle FAQ — what each group ends up with</span></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>Each group exports a bundle from FishView during the in-class 15-min block. The shape is identical to the Chaetodontidae walkthrough bundle (tree, images, README, <span class="in">`picked_*.txt`</span> manifests, <span class="in">`species_traits.csv`</span>), but:</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error-stack means (Heniochus_acuminatus):** vary depending on bundle; check the printed table.</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**CV across the 5 images:** lowest for <span class="in">`A`</span> (the conserved variable — same fish, same aspect ratio across angles ≈ 0.05–0.15); higher for <span class="in">`m_dS`</span>, <span class="in">`m_dL`</span> (lighting-sensitive boundary strengths ≈ 0.3–0.6).</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**MC K distributions:** centred near observed values; spread is widest for <span class="in">`m_dS`</span>, <span class="in">`m_dL`</span>. <span class="in">`A`</span>'s K boxplot stays tight around 1.0–1.4 — its observed signal is robust.</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**MC PGLS slope for `A ~ m`:** CI typically covers 0 → no real bivariate relationship survives noise.</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**MC PGLS slope for `m_dL ~ m_dS`:** depends on how clean the boundary metrics come out; CI may or may not exclude zero.</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="fu">## Common student traps + how to recover</span></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Symptom <span class="pp">|</span> Cause <span class="pp">|</span> Fix <span class="pp">|</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`Error in adjacent(cl, xpts = 50) : Required argument xscale is missing`</span> <span class="pp">|</span> Old worksheet version cached <span class="pp">|</span> Have them re-download the bundle and the worksheet HTML; they have a stale chunk. <span class="pp">|</span></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`phyl.pca`</span> errors with "system is computationally singular" <span class="pp">|</span> Their bundle has fewer than 6 species with usable images (rare) OR they're running an older worksheet that still drops <span class="in">`p_4`</span>/<span class="in">`m_c`</span> from a 9-variable set <span class="pp">|</span> The new 6-variable set ({m, A, Jc, Jt, m_dS, m_dL}) is full-rank so this shouldn't happen — re-download the worksheet HTML. <span class="pp">|</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`signal[, c("variable", "K")]`</span> errors with "undefined columns" <span class="pp">|</span> They skipped chunk <span class="in">`signal-bar`</span> which adds <span class="in">`signal$variable &lt;- rownames(signal)`</span> <span class="pp">|</span> Just run that line; it's a one-liner. <span class="pp">|</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5-image stack chunk shows <span class="in">`NULL`</span> for <span class="in">`err`</span> <span class="pp">|</span> They restarted R and didn't re-source <span class="in">`measurement-error.R`</span> <span class="pp">|</span> The §3.1 reload block exists for this — make sure they ran it. <span class="pp">|</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Monte Carlo hangs &gt; 5 min <span class="pp">|</span> <span class="in">`n_iter = 200`</span> and a slow laptop OR a <span class="in">`pgls`</span> call hitting a tough λ optimum <span class="pp">|</span> Reduce to <span class="in">`n_iter = 50`</span>. Quality of conclusions barely changes. <span class="pp">|</span></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`read.csv("species_traits.csv")`</span> fails with "file not found" <span class="pp">|</span> They unzipped the bundle in the wrong working dir <span class="pp">|</span> <span class="in">`getwd()`</span> and <span class="in">`list.files(bundle)`</span> will diagnose. Bundle should be in the working dir, *not* inside <span class="in">`data/`</span>. <span class="pp">|</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Their PCA shows wildly different proportions of variance than the worked example <span class="pp">|</span> They're on a different family bundle. Expected. <span class="pp">|</span> Remind them this *is* their group's headline result, not the Chaetodontidae one. <span class="pp">|</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> FishView Export button is greyed out <span class="pp">|</span> One of the picker's validation checks failed: &lt; 15 species, &lt; 5 genera, a starred species has no exemplar, no error-species marked, or error-species has &lt; 5 images. <span class="pp">|</span> The picker now shows which check is failing as a banner. Walk them to the violation and fix it. <span class="pp">|</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group ends up with 18 *Chaetodon* and 2 other genera | They check-boxed the first 18 species without watching the genus counter | Push them to **uncheck** until they're down to ≤ 6 *Chaetodon* and pick 9+ species from other genera. The bundle has to span the family, not a clade within it. <span class="pp">|</span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> All 5 error-species images look identical (same fish, same shot, slight crops) <span class="pp">|</span> They picked five thumbnails that are duplicates of the same photo <span class="pp">|</span> Tell them the *whole point* of the 5-image stack is to capture how a different photo of the *same species* changes pavo values. Same shot ≠ different photos. They need angle / lighting / photographer variation. <span class="pp">|</span></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group's K plot is mostly empty / 4 of 9 vars have no boxplot <span class="pp">|</span> Their bundle came in below 12 tips after tree-pruning. K estimation is unstable at that N. <span class="pp">|</span> Have them add 3–4 more species from FishView (Export again — yes, they can re-export) and re-run. <span class="pp">|</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`bundle &lt;-`</span> is still pointing at <span class="in">`chaetodontidae-mini-bundle`</span> after they exported their family's <span class="pp">|</span> They forgot step F of "Build your bundle" — switching the path <span class="pp">|</span> One-liner: <span class="in">`bundle &lt;- "acanthuridae-mini-bundle"`</span> (or whichever family). Re-run from §1.2. <span class="pp">|</span></span>
 <span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Group bundles will be smaller than 20.** The picker requires **≥ 15 species across ≥ 5 genera**. Most groups will pick 15–18, not 20. K estimates get noisier at lower N — flag this in the wrap-up if their K boxplots look wide.</span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Species lists differ.** Don't compare K values across families directly.</span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Trees have different ages/topologies.** K and λ scales are interpretable within a family, not across families.</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error-species varies.** Each group picks their own. The README names it; the worksheet's auto-parse picks it up. If a student hard-codes <span class="in">`Heniochus_acuminatus`</span> from the Chaetodontidae walkthrough, they'll crash. Tell them to re-run §1.2 and §1.3 fresh after switching <span class="in">`bundle`</span>.</span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Some species may drop with no tree tip.** Just like <span class="in">`Chaetodon_trifascialis`</span> did in the walkthrough. The worksheet's name-prefix matching handles this; students just see a smaller <span class="in">`length(species)`</span> than they picked.</span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`species_traits.csv` is generated server-side at Export time** (FishBase fields: Troph, DepthRangeDeep, Length, Vulnerability). Some species have missing values for some traits — <span class="in">`na.action = na.pass`</span> in §1.8 / §2.8 handles this. Don't panic if a group's <span class="in">`signal_eco`</span> table has fewer rows than ecology variables.</span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sample writeup the lecturer wants from each group</span></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "Our family — *&lt;Family&gt;* — showed [strong / weak / moderate] phylogenetic signal in color-pattern axes (K range = [X–Y]; significant for [Z out of N] variables). Body size was the only ecological trait with significant signal. After phylogenetic correction, the bivariate `&lt;A ~ m&gt;` relationship [survived / disappeared]. Under realistic measurement error (CV ≈ [X] from our 5-image error-species), the signal in `&lt;variable&gt;` still / no longer survived. We conclude that color patterns in *&lt;Family&gt;* </span><span class="co">[</span><span class="ot">match / contradict</span><span class="co">]</span><span class="at"> Frédérich et al.'s headline finding of fast convergent evolution."</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Group-bundle FAQ — what each group ends up with</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>Each group exports a bundle from FishView during the in-class 15-min block. The shape is identical to the Chaetodontidae walkthrough bundle (tree, images, README, <span class="in">`picked_*.txt`</span> manifests, <span class="in">`species_traits.csv`</span>), but:</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Group bundles will be smaller than 20.** The picker requires **≥ 15 species across ≥ 5 genera**. Most groups will pick 15–18, not 20. K estimates get noisier at lower N — flag this in the wrap-up if their K boxplots look wide.</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Species lists differ.** Don't compare K values across families directly.</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Trees have different ages/topologies.** K and λ scales are interpretable within a family, not across families.</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error-species varies.** Each group picks their own. The README names it; the worksheet's auto-parse picks it up. If a student hard-codes <span class="in">`Heniochus_acuminatus`</span> from the Chaetodontidae walkthrough, they'll crash. Tell them to re-run §1.2 and §1.3 fresh after switching <span class="in">`bundle`</span>.</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Some species may drop with no tree tip.** Just like <span class="in">`Chaetodon_trifascialis`</span> did in the walkthrough. The worksheet's name-prefix matching handles this; students just see a smaller <span class="in">`length(species)`</span> than they picked.</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`species_traits.csv` is generated server-side at Export time** (FishBase fields: Troph, DepthRangeDeep, Length, Vulnerability). Some species have missing values for some traits — <span class="in">`na.action = na.pass`</span> in §1.8 / §2.8 handles this. Don't panic if a group's <span class="in">`signal_eco`</span> table has fewer rows than ecology variables.</span>
 <span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>If a student walks out with three sentences in this shape, the demo worked.</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sample writeup the lecturer wants from each group</span></span>
 <span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to do if Wednesday goes sideways</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "Our family — *&lt;Family&gt;* — showed [strong / weak / moderate] phylogenetic signal in color-pattern axes (K range = [X–Y]; significant for [Z out of N] variables). Body size was the only ecological trait with significant signal. After phylogenetic correction, the bivariate `&lt;A ~ m&gt;` relationship [survived / disappeared]. Under realistic measurement error (CV ≈ [X] from our 5-image error-species), the signal in `&lt;variable&gt;` still / no longer survived. We conclude that color patterns in *&lt;Family&gt;* </span><span class="co">[</span><span class="ot">match / contradict</span><span class="co">]</span><span class="at"> Frédérich et al.'s headline finding of fast convergent evolution."</span></span>
 <span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**FishView server down → no group picker:** this is the most disruptive failure mode now that the in-class bundle build is on the critical path. Recovery plan: the Chaetodontidae walkthrough is pre-downloaded by every student in Step 3 of prep, so you can re-frame the lecture as *"we'll all run Parts 2 + 3 on Chaetodontidae together, and you'll do the picker work as homework once the server is back."* Their writeup then compares Chaetodontidae to Frédérich rather than their family. Notify the class within the first 5 min if the server is unreachable.</span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Server up but slow / one group can't export:** other groups continue; that group falls back to the Chaetodontidae bundle for the in-class portion and finishes their family's bundle as homework.</span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Wi-fi out → no FishView, no `download.file`:** Part 3 doesn't need the network once the bundle is unzipped, so anyone who downloaded the Chaetodontidae bundle in prep can still complete Parts 2 and 3 against it.</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R session crashes on a student laptop:** the <span class="in">`if (!exists())`</span> reload pattern at the top of Parts 2 and 3 means they can re-run a single chunk to recover. They lose Part 1's plot images but not the trait matrix.</span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**rfishbase calls during class (don't let this happen):** the trait CSV ships with each exported bundle. **No student should be calling rfishbase live**. If you see them try, redirect them to <span class="in">`read.csv(file.path(bundle, "species_traits.csv"))`</span>.</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>If a student walks out with three sentences in this shape, the demo worked.</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to do if Wednesday goes sideways</span></span>
 <span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citations for the slides if asked</span></span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Frédérich et al. 2026** — *BMC Biology* 24:46. DOI: <span class="ot">&lt;https://doi.org/10.1186/s12915-026-02544-4&gt;</span>. The paper this demo is built around.</span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Maia, Gruson, Endler &amp; White 2019** — *Methods Ecol Evol* 10:1097–1107. The pavo 2 paper. Defines <span class="in">`classify`</span> and <span class="in">`adjacent`</span>.</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Revell 2009** — *Evolution* 63:3258–3268. Defines <span class="in">`phyl.pca`</span>.</span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Freckleton, Harvey &amp; Pagel 2002** — *Am Nat* 160:712–726. Defines Pagel's λ.</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Blomberg, Garland &amp; Ives 2003** — *Evolution* 57:717–745. Defines Blomberg's K.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**FishView server down → no group picker:** this is the most disruptive failure mode now that the in-class bundle build is on the critical path. Recovery plan: the Chaetodontidae walkthrough is pre-downloaded by every student in Step 3 of prep, so you can re-frame the lecture as *"we'll all run Parts 2 + 3 on Chaetodontidae together, and you'll do the picker work as homework once the server is back."* Their writeup then compares Chaetodontidae to Frédérich rather than their family. Notify the class within the first 5 min if the server is unreachable.</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Server up but slow / one group can't export:** other groups continue; that group falls back to the Chaetodontidae bundle for the in-class portion and finishes their family's bundle as homework.</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Wi-fi out → no FishView, no `download.file`:** Part 3 doesn't need the network once the bundle is unzipped, so anyone who downloaded the Chaetodontidae bundle in prep can still complete Parts 2 and 3 against it.</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R session crashes on a student laptop:** the <span class="in">`if (!exists())`</span> reload pattern at the top of Parts 2 and 3 means they can re-run a single chunk to recover. They lose Part 1's plot images but not the trait matrix.</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**rfishbase calls during class (don't let this happen):** the trait CSV ships with each exported bundle. **No student should be calling rfishbase live**. If you see them try, redirect them to <span class="in">`read.csv(file.path(bundle, "species_traits.csv"))`</span>.</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citations for the slides if asked</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Frédérich et al. 2026** — *BMC Biology* 24:46. DOI: <span class="ot">&lt;https://doi.org/10.1186/s12915-026-02544-4&gt;</span>. The paper this demo is built around.</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Maia, Gruson, Endler &amp; White 2019** — *Methods Ecol Evol* 10:1097–1107. The pavo 2 paper. Defines <span class="in">`classify`</span> and <span class="in">`adjacent`</span>.</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Revell 2009** — *Evolution* 63:3258–3268. Defines <span class="in">`phyl.pca`</span>.</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Freckleton, Harvey &amp; Pagel 2002** — *Am Nat* 160:712–726. Defines Pagel's λ.</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Blomberg, Garland &amp; Ives 2003** — *Evolution* 57:717–745. Defines Blomberg's K.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

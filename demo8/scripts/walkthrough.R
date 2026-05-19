@@ -61,23 +61,21 @@ pick_image <- function(sp) {
   }
 }
 
-run_one <- function(sp) {
-  img      <- getimg(pick_image(sp))
-  classed  <- classify(img, kcols = 4, plotnew = FALSE)
-  adj      <- adjacent(classed, xpts = 50, xscale = 1)
-  adj$species <- sp
-  adj
-}
+source("scripts/measurement-error.R")   # pavo_pipeline_one_image(), calc_euc_lum_dists()
 
-results <- lapply(species, run_one)
-adj_df  <- do.call(rbind, results)
+results <- lapply(species, function(sp) {
+  row <- pavo_pipeline_one_image(pick_image(sp))
+  row$species <- sp
+  row
+})
+adj_df <- do.call(rbind, results)
 
 dim(adj_df)
 colnames(adj_df)
 
 
 # ---- 1.4 Species × pattern-stat matrix -----------------------------
-keep <- c("p_1", "p_2", "p_3", "p_4", "Sc", "m", "m_r", "m_c", "A")
+keep <- c("m", "A", "Jc", "Jt", "m_dS", "m_dL")
 traits <- adj_df[, c("species", keep)]
 rownames(traits) <- traits$species
 traits$species   <- NULL
@@ -155,17 +153,16 @@ plot_pca_images(pc$x, NULL, var_pct, bundle,
 cor_mat <- cor(traits)
 round(cor_mat, 2)
 
-pairs(traits[, c("Sc", "m", "m_r", "m_c", "A")],
+pairs(traits[, c("m", "A", "Jc", "Jt", "m_dS", "m_dL")],
       lower.panel = panel.smooth, pch = 19, cex = 0.7)
 
 fit_1 <- lm(A ~ m, data = traits)
 summary(fit_1)$coefficients
 summary(fit_1)$r.squared
 
-fit_2 <- lm(m_c ~ m_r, data = traits)
+fit_2 <- lm(m_dL ~ m_dS, data = traits)
 summary(fit_2)$coefficients
 summary(fit_2)$r.squared
-confint(fit_2)["m_r", ]  # interesting null for fit_2 is slope=1, not slope=0
 
 
 # ---- 1.8 Ecology — pavo patterns vs how the fish lives -------------
@@ -225,9 +222,8 @@ stopifnot(all(rownames(traits) == tree$tip.label))
 
 
 # ---- 2.2 phyloPCA --------------------------------------------------
-# Drop algebraically redundant columns: p_4 (Σp_i=1) and m_c (A=m_r/m_c).
-traits_phy <- traits[, setdiff(colnames(traits), c("p_4", "m_c"))]
-phy_pc <- phyl.pca(tree, traits_phy, method = "lambda", mode = "corr")
+# The 6-var set is full-rank; no need to drop columns.
+phy_pc <- phyl.pca(tree, traits, method = "lambda", mode = "corr")
 summary(phy_pc)
 
 tip_to_dir  <- setNames(names(species_to_tip), species_to_tip)
@@ -267,14 +263,14 @@ traits_df <- data.frame(species = rownames(traits), traits)
 cd <- comparative.data(phy = tree, data = traits_df,
                        names.col = "species", vcv = TRUE)
 
-pgls_1 <- pgls(A ~ m, data = cd, lambda = "ML")
-pgls_2 <- pgls(m_c ~ m_r,   data = cd, lambda = "ML")
+pgls_1 <- pgls(A    ~ m,     data = cd, lambda = "ML")
+pgls_2 <- pgls(m_dL ~ m_dS,  data = cd, lambda = "ML")
 
 summary(pgls_1)
 summary(pgls_2)
 
 compare <- data.frame(
-  fit = c("A ~ m", "m_c ~ m_r"),
+  fit = c("A ~ m", "m_dL ~ m_dS"),
   lm_slope    = c(coef(fit_1)[2], coef(fit_2)[2]),
   lm_p        = c(summary(fit_1)$coefficients[2, 4],
                   summary(fit_2)$coefficients[2, 4]),
