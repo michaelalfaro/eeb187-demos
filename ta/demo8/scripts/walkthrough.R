@@ -91,18 +91,64 @@ summary(pc)
 
 plot(pc, type = "l", main = "Scree: variance per axis")
 
-biplot(pc, cex = 0.75, main = "Chaetodontidae pattern PCA (no tree)")
+# Image-point biplot helper (shared between Part 1 and Part 2)
+abbr_sp <- function(x) {
+  vapply(strsplit(x, "_"), function(p) {
+    g <- substr(p[1], 1, 4)
+    s <- if (length(p) >= 2) substr(p[2], 1, 4) else ""
+    paste0(g, "_", s)
+  }, character(1))
+}
 
-pc_df <- as.data.frame(pc$x[, 1:2])
-pc_df$species <- rownames(pc_df)
+img_path_for <- function(sp_dir, bundle) {
+  c1 <- file.path(bundle, "images", sp_dir, "exemplar.png")
+  c2 <- file.path(bundle, "images", sp_dir, "img-1.png")
+  if (file.exists(c1)) c1 else c2
+}
 
-ggplot(pc_df, aes(PC1, PC2, label = species)) +
-  geom_point(size = 3, alpha = 0.7, color = "#0a66c2") +
-  geom_text(vjust = -0.8, size = 3) +
-  labs(title = "Pattern axes (no tree)",
-       x = sprintf("PC1 (%.1f%%)", summary(pc)$importance[2, 1] * 100),
-       y = sprintf("PC2 (%.1f%%)", summary(pc)$importance[2, 2] * 100)) +
-  theme_minimal()
+plot_pca_images <- function(scores, loadings = NULL, var_pct, bundle,
+                            score_to_dir = NULL, main = "PCA",
+                            img_frac = 0.085) {
+  scores <- as.matrix(scores[, 1:2, drop = FALSE])
+  keys   <- rownames(scores)
+  dirs   <- if (is.null(score_to_dir)) keys else score_to_dir[keys]
+  labels <- abbr_sp(dirs)
+  imgs   <- lapply(dirs, function(d) png::readPNG(img_path_for(d, bundle)))
+  xr <- range(scores[, 1]); yr <- range(scores[, 2])
+  pad <- 0.18
+  xr2 <- xr + c(-pad, pad) * diff(xr)
+  yr2 <- yr + c(-pad, pad) * diff(yr)
+  plot(NA, xlim = xr2, ylim = yr2, asp = 1,
+       xlab = sprintf("PC1  (%.1f%% variance)", var_pct[1]),
+       ylab = sprintf("PC2  (%.1f%% variance)", var_pct[2]),
+       main = main)
+  img_w <- diff(xr2) * img_frac
+  for (i in seq_along(imgs)) {
+    h_w <- dim(imgs[[i]])[1] / dim(imgs[[i]])[2]
+    img_h <- img_w * h_w
+    rasterImage(imgs[[i]],
+                scores[i, 1] - img_w/2, scores[i, 2] - img_h/2,
+                scores[i, 1] + img_w/2, scores[i, 2] + img_h/2)
+    text(scores[i, 1], scores[i, 2] - img_h/2 - diff(yr2) * 0.018,
+         labels[i], cex = 0.6, family = "mono")
+  }
+  if (!is.null(loadings)) {
+    L <- as.matrix(loadings[, 1:2, drop = FALSE])
+    arrow_scale <- 0.85 * min(diff(xr), diff(yr)) / 2 /
+                   max(sqrt(L[, 1]^2 + L[, 2]^2))
+    arrows(0, 0, L[, 1] * arrow_scale, L[, 2] * arrow_scale,
+           length = 0.1, col = "#c14a4a", lwd = 1.5)
+    text(L[, 1] * arrow_scale * 1.18, L[, 2] * arrow_scale * 1.18,
+         rownames(L), col = "#c14a4a", font = 2, cex = 0.95)
+  }
+  invisible(NULL)
+}
+
+var_pct <- round(100 * summary(pc)$importance[2, 1:2], 1)
+plot_pca_images(pc$x, pc$rotation, var_pct, bundle,
+                main = "Chaetodontidae pattern PCA · biplot (no tree)")
+plot_pca_images(pc$x, NULL, var_pct, bundle,
+                main = "Where each species sits on PC1 vs PC2")
 
 
 # ---- 1.6 Bivariate exploration -------------------------------------
@@ -183,7 +229,17 @@ stopifnot(all(rownames(traits) == tree$tip.label))
 traits_phy <- traits[, setdiff(colnames(traits), c("p_4", "m_c"))]
 phy_pc <- phyl.pca(tree, traits_phy, method = "lambda", mode = "corr")
 summary(phy_pc)
-biplot(phy_pc, main = "Chaetodontidae pattern phylo-PCA")
+
+tip_to_dir  <- setNames(names(species_to_tip), species_to_tip)
+phy_var_pct <- round(100 * diag(phy_pc$Eval) / sum(diag(phy_pc$Eval)), 1)
+plot_pca_images(
+  scores       = phy_pc$S,
+  loadings     = phy_pc$L,
+  var_pct      = phy_var_pct[1:2],
+  bundle       = bundle,
+  score_to_dir = tip_to_dir,
+  main         = "Chaetodontidae pattern phylo-PCA · biplot"
+)
 
 
 # ---- 2.3 Compare loadings (ahistorical vs phylo) -------------------
