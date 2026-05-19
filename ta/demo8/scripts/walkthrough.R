@@ -306,7 +306,44 @@ ggplot(signal, aes(reorder(variable, K), K, fill = K_p < 0.05)) +
   theme_minimal()
 
 
-# ---- 2.8 Ecology after phylogenetic correction ---------------------
+# ---- 2.8 Pulling FishBase traits with rfishbase --------------------
+# Reproduce what species_traits.csv was built from. Pinned 3.1.10
+# because the current rfishbase release pulls in duckdb (C++ toolchain
+# required) which fails to build on many laptops. Install in the prep
+# page:
+#   remotes::install_version("rfishbase", "3.1.10", upgrade = "never")
+suppressPackageStartupMessages(library(rfishbase))
+
+species_fb <- gsub("_", " ", species)   # FishBase uses "Genus species"
+sp_fb <- species(species_fb,
+                 fields = c("Species", "Length", "DepthRangeDeep", "Vulnerability"))
+ec_fb <- ecology(species_fb, fields = c("Species", "FoodTroph", "DietTroph"))
+ec_fb$Troph <- ifelse(!is.na(ec_fb$FoodTroph), ec_fb$FoodTroph, ec_fb$DietTroph)
+ec_agg <- aggregate(Troph ~ Species, data = ec_fb, mean, na.rm = TRUE)
+
+fb_traits <- merge(sp_fb, ec_agg, by = "Species", all.x = TRUE)
+fb_traits$species <- gsub(" ", "_", fb_traits$Species)
+fb_traits <- fb_traits[, c("species", "Troph", "DepthRangeDeep", "Length", "Vulnerability")]
+fb_traits <- fb_traits[match(species, fb_traits$species), ]
+head(fb_traits)
+print(colSums(is.na(fb_traits[, -1])))   # missing-value counts per trait
+
+# Sanity-check vs the bundled CSV — if max |Δ| ≈ 0 per variable, the
+# bundle's CSV is just rfishbase output. Differences usually mean
+# FishBase has updated trait values since the bundle was built.
+eco_csv <- read.csv(file.path(bundle, "species_traits.csv"))
+eco_csv <- eco_csv[match(species, eco_csv$species), ]
+cmp <- merge(fb_traits, eco_csv, by = "species", suffixes = c("_live", "_csv"))
+for (v in c("Troph", "DepthRangeDeep", "Length", "Vulnerability")) {
+  d <- abs(cmp[[paste0(v, "_live")]] - cmp[[paste0(v, "_csv")]])
+  cat(sprintf("  %-15s  max |Δ| = %.4f  (NA in %d rows)\n",
+              v, max(d, na.rm = TRUE), sum(is.na(d))))
+}
+# Use either fb_traits (live) or combined (CSV-based, built in §1.8)
+# below; downstream PGLS reads from `combined` so we just continue.
+
+
+# ---- 2.9 Ecology after phylogenetic correction ---------------------
 if (!exists("combined")) combined <- readRDS("results/part1-combined.rds")
 combined$species <- species_to_tip[combined$species]
 combined <- combined[match(tree$tip.label, combined$species), ]
@@ -350,7 +387,7 @@ ggplot(side_by_side, aes(reorder(variable, K), K, fill = kind)) +
   labs(x = NULL, y = "Blomberg's K")
 
 
-# ---- 2.9 Save outputs ----------------------------------------------
+# ---- 2.10 Save outputs ---------------------------------------------
 saveRDS(phy_pc,  "results/part2-phylopca.rds")
 saveRDS(signal,  "results/part2-signal.rds")
 saveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2,
