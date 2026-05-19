@@ -163,6 +163,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-3-download-the-chaetodontidae-walkthrough-bundle" id="toc-step-3-download-the-chaetodontidae-walkthrough-bundle" class="nav-link" data-scroll-target="#step-3-download-the-chaetodontidae-walkthrough-bundle">Step 3 — Download the Chaetodontidae walkthrough bundle</a></li>
   <li><a href="#step-4-readiness-check" id="toc-step-4-readiness-check" class="nav-link" data-scroll-target="#step-4-readiness-check">Step 4 — Readiness check</a></li>
   <li><a href="#step-5-confirm-your-demo-7-fishview-login-still-works" id="toc-step-5-confirm-your-demo-7-fishview-login-still-works" class="nav-link" data-scroll-target="#step-5-confirm-your-demo-7-fishview-login-still-works">Step 5 — Confirm your Demo 7 FishView login still works</a></li>
+  <li><a href="#step-6-one-click-server-smoke-check" id="toc-step-6-one-click-server-smoke-check" class="nav-link" data-scroll-target="#step-6-one-click-server-smoke-check">Step 6 — One-click server smoke check</a>
+  <ul class="collapse">
+  <li><a href="#expected-outcomes" id="toc-expected-outcomes" class="nav-link" data-scroll-target="#expected-outcomes">Expected outcomes</a></li>
+  </ul></li>
   <li><a href="#if-something-breaks" id="toc-if-something-breaks" class="nav-link" data-scroll-target="#if-something-breaks">If something breaks</a></li>
   </ul>
 </nav>
@@ -305,26 +309,28 @@ Note
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="st">"chaetodontidae-mini-bundle"</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(bundle, <span class="st">"chaetodontidae-mini-tree.tre"</span>))</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>picked_species <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_species.txt"</span>))</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>picked_tips    <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_tip_labels.txt"</span>))</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity: every directory in images/ matches a picked species; every tip is on the tree</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>species_dirs <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="fu">file.path</span>(bundle, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">basename</span>(species_dirs), picked_species))</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(picked_tips <span class="sc">%in%</span> tree<span class="sc">$</span>tip.label))</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># pavo can read at least one image</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>first_sp_dir <span class="ot">&lt;-</span> species_dirs[<span class="dv">1</span>]</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>first_png    <span class="ot">&lt;-</span> <span class="fu">list.files</span>(first_sp_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>img1 <span class="ot">&lt;-</span> <span class="fu">getimg</span>(first_png)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">is.null</span>(img1))</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"READINESS CHECK PASSED — bundle has"</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(picked_species), <span class="st">"species,"</span>,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Ntip</span>(tree), <span class="st">"tips on tree, pavo reads images.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plotTree</span>(ape<span class="sc">::</span><span class="fu">keep.tip</span>(tree, picked_tips), <span class="at">type =</span> <span class="st">"fan"</span>, <span class="at">fsize =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>You should see “READINESS CHECK PASSED” and a fan tree of just the species in your bundle. If you see anything else, re-download the bundle or email your TA.</p>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The worksheet defines two small helpers in scripts/measurement-error.R</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># that handle NEXUS vs Newick trees and strip specimen suffixes off tip</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># labels. We don't need them for the readiness check — just the raw</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># bundle contents.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>tree_path      <span class="ot">&lt;-</span> <span class="fu">list.files</span>(bundle, <span class="at">pattern =</span> <span class="st">"-mini-tree</span><span class="sc">\\</span><span class="st">.tre$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>tree           <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.tree</span>(tree_path)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>picked_species <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_species.txt"</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity: every directory in images/ matches a picked species</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>species_dirs <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="fu">file.path</span>(bundle, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">basename</span>(species_dirs), picked_species))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># pavo can read at least one image</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>first_sp_dir <span class="ot">&lt;-</span> species_dirs[<span class="dv">1</span>]</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>first_png    <span class="ot">&lt;-</span> <span class="fu">list.files</span>(first_sp_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>img1 <span class="ot">&lt;-</span> <span class="fu">getimg</span>(first_png)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">is.null</span>(img1))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"READINESS CHECK PASSED — bundle has"</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(picked_species), <span class="st">"species,"</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Ntip</span>(tree), <span class="st">"tips on tree, pavo reads images.</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see “READINESS CHECK PASSED”. If you see anything else, re-download the bundle or email your TA.</p>
 </section>
 <section id="step-5-confirm-your-demo-7-fishview-login-still-works" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-confirm-your-demo-7-fishview-login-still-works">Step 5 — Confirm your Demo 7 FishView login still works</h2>
@@ -408,6 +414,69 @@ Warning
 <p>The FishView server is only reachable from UCLA’s network. Connect to <strong>UCLA Bruin Secure VPN</strong> first.</p>
 </div>
 </div>
+</section>
+<section id="step-6-one-click-server-smoke-check" class="level2">
+<h2 class="anchored" data-anchor-id="step-6-one-click-server-smoke-check">Step 6 — One-click server smoke check</h2>
+<p>Wednesday’s analysis depends on FishView’s <strong>Export Bundle</strong> button actually shipping you a ZIP. We’ve got a special pre-class smoke-test endpoint that bypasses the in-class validation (the ≥15-species / ≥5-genera / error-species rules) so you can verify the whole pipeline reaches you tonight without spoiling the in-class curation work.</p>
+<p>Three minutes, no analysis involved:</p>
+<ol type="1">
+<li><p>Logged into your family’s dashboard from Step 5 — open any species in the table.</p></li>
+<li><p>On its review page, click <strong>Include</strong> on <strong>one or two images</strong>. (One is enough. You don’t need to star an exemplar, mark an error-species, or do any real curation — that’s all for Wednesday.)</p></li>
+<li><p>In a fresh browser tab, visit this URL with your family code in the path:</p>
+<pre><code>http://164.67.78.200:5052/api/export-bundle/&lt;your-family&gt;?smoke=true</code></pre>
+<p>Substitute <code>&lt;your-family&gt;</code> from this table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>URL family code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1 (triggerfishes)</td>
+<td><code>balistoidea</code></td>
+</tr>
+<tr class="even">
+<td>2 (angelfishes)</td>
+<td><code>pomacanthidae</code></td>
+</tr>
+<tr class="odd">
+<td>3 (parrotfishes)</td>
+<td><code>scarinae</code></td>
+</tr>
+<tr class="even">
+<td>4 (fairy wrasses)</td>
+<td><code>cirrhilabrini</code></td>
+</tr>
+<tr class="odd">
+<td>5 (surgeonfishes)</td>
+<td><code>acanthuridae</code></td>
+</tr>
+<tr class="even">
+<td>6 (hogfishes)</td>
+<td><code>hypsigenyinae</code></td>
+</tr>
+<tr class="odd">
+<td>7 (Coris-allies)</td>
+<td><code>halichoerine</code></td>
+</tr>
+</tbody>
+</table>
+<p>So group 5 would visit <code>http://164.67.78.200:5052/api/export-bundle/acanthuridae?smoke=true</code>.</p></li>
+<li><p>You should get a download prompt for <code>&lt;family&gt;-mini-bundle.zip</code> (a few hundred KB to a few MB).</p></li>
+<li><p><strong>Delete the ZIP after the download finishes</strong> — it’s a smoke artifact, not what you’ll analyze on Wednesday.</p></li>
+</ol>
+<section id="expected-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="expected-outcomes">Expected outcomes</h3>
+<ul>
+<li><strong>You get a ZIP</strong> → :white_check_mark: server pipeline works end-to-end; you’re ready for Wednesday.</li>
+<li><strong>Browser shows <code>{"error":"nothing_to_export", ...}</code></strong> → you didn’t click Include on any image. Go back to step 2.</li>
+<li><strong>Browser shows a login page</strong> → your session expired. Re-enter your group code from Step 5 and retry.</li>
+<li><strong>Page won’t load at all</strong> → you’re off UCLA WiFi / VPN. Reconnect and retry.</li>
+<li><strong>Any other JSON error</strong> → email your TA with the error text by Tuesday afternoon.</li>
+</ul>
+</section>
 </section>
 <section id="if-something-breaks" class="level2">
 <h2 class="anchored" data-anchor-id="if-something-breaks">If something breaks</h2>
@@ -875,177 +944,218 @@ Warning
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Demo 8 — Prep"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Do these five things before Wednesday's class"</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tuesday-night reality check</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>The Monte Carlo in Part 3 takes ~2 minutes the **first** time it runs. The setup steps below take ~20 minutes total. If you wait until Wednesday morning to install everything you'll spend the demo watching your laptop instead of doing science. Please complete this list **tonight**.</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple"}</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two bundles, one demo — what's what</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>You'll touch **two** bundles during this lab:</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chaetodontidae** (Step 3) — the *shared worked example* the whole class watches the lecturer run in real time. Pre-built. Everyone downloads it tonight.</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Your group's family** — what you'll **build yourselves in class on Wednesday** by curating species + images on FishView, then re-running the worksheet on what you exported. Tonight you only need to confirm your Demo 7 group code still logs you in (Step 5).</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1 — R and RStudio</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>R 4.2 or higher, and current RStudio.</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>R: <span class="ot">&lt;https://cloud.r-project.org/&gt;</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>RStudio: <span class="ot">&lt;https://posit.co/download/rstudio-desktop/&gt;</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>If you did this for Demo 7 you're already done with Step 1.</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2 — Install R packages</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>Paste this into the **RStudio Console**:</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pavo"</span>,       <span class="co"># color + pattern stats</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ape"</span>,        <span class="co"># tree handling</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"phytools"</span>,   <span class="co"># phyl.pca, Blomberg's K, Pagel's lambda</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"caper"</span>,      <span class="co"># PGLS</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nlme"</span>,       <span class="co"># gls fallback for PGLS</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="st">"plotrix"</span>,    <span class="co"># phytools dependency (don't skip)</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="st">"png"</span>,        <span class="co"># PCA biplots embed exemplar PNG thumbnails as point markers</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidyr"</span>,      <span class="co"># pivot_longer in Part 3 plots</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ggplot2"</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>Then verify all nine loaded cleanly:</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pavo); <span class="fu">library</span>(ape); <span class="fu">library</span>(phytools); <span class="fu">library</span>(caper)</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlme); <span class="fu">library</span>(plotrix); <span class="fu">library</span>(tidyr); <span class="fu">library</span>(ggplot2)</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">requireNamespace</span>(<span class="st">"png"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))   <span class="co"># used by biplot thumbnails</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"YOU'RE READY FOR WEDNESDAY!</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>If anything fails — especially <span class="in">`pavo`</span> or <span class="in">`caper`</span>, which have C dependencies — email your TA tonight, not Wednesday morning.</span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3 — Download the Chaetodontidae walkthrough bundle</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>In RStudio, **first set your working directory** to a folder you'll use for this demo (e.g. <span class="in">`~/Documents/EEB187/demo8/`</span>). The unzipped bundle will land *inside* that working dir as a sibling folder, and every code chunk in the worksheet expects it there.</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Confirm where you are (this is where everything lives — including the bundle)</span></span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Download the ZIP into the working directory</span></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(</span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://michaelalfaro.github.io/eeb187-demos/data/chaetodontidae-mini-bundle.zip"</span>,</span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  <span class="st">"chaetodontidae-mini-bundle.zip"</span></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Unzip in place — this creates a folder called chaetodontidae-mini-bundle/</span></span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"chaetodontidae-mini-bundle.zip"</span>)</span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"chaetodontidae-mini-bundle"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>You should see roughly:</span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;your working dir&gt;/</span></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="in">└── chaetodontidae-mini-bundle/</span></span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── chaetodontidae-mini-tree.tre</span></span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── README.txt</span></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── picked_species.txt</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── picked_tip_labels.txt</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── species_metadata.csv</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── species_traits.csv               &lt;-- 4 FishBase traits (used in §1.8 and §2.8)</span></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── images/</span></span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_lunula/exemplar.png</span></span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_auriga/exemplar.png</span></span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── … (more single-exemplar species) …</span></span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="in">    │   └── Heniochus_acuminatus/        &lt;-- the error-species</span></span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-1.png</span></span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-2.png</span></span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-3.png</span></span>
-<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-4.png</span></span>
-<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a><span class="in">    │       └── img-5.png</span></span>
-<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>**Your own family follows the same shape.** When you switch to your group's bundle in the "Your Turn" sections, the path is just <span class="in">`&lt;your-family&gt;-mini-bundle/`</span> (e.g. <span class="in">`acanthuridae-mini-bundle/`</span> for the surgeonfish group) — same <span class="in">`images/`</span>, same <span class="in">`README.txt`</span>, same five files inside.</span>
-<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 4 — Readiness check</span></span>
-<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>Run this short script in the Console — it confirms the tree loads, the species list matches the tree tips, and pavo can read one of the bundle images:</span>
-<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape); <span class="fu">library</span>(pavo)</span>
-<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="st">"chaetodontidae-mini-bundle"</span></span>
-<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(bundle, <span class="st">"chaetodontidae-mini-tree.tre"</span>))</span>
-<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>picked_species <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_species.txt"</span>))</span>
-<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>picked_tips    <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_tip_labels.txt"</span>))</span>
-<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity: every directory in images/ matches a picked species; every tip is on the tree</span></span>
-<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>species_dirs <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="fu">file.path</span>(bundle, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">basename</span>(species_dirs), picked_species))</span>
-<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(picked_tips <span class="sc">%in%</span> tree<span class="sc">$</span>tip.label))</span>
-<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a><span class="co"># pavo can read at least one image</span></span>
-<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>first_sp_dir <span class="ot">&lt;-</span> species_dirs[<span class="dv">1</span>]</span>
-<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>first_png    <span class="ot">&lt;-</span> <span class="fu">list.files</span>(first_sp_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
-<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>img1 <span class="ot">&lt;-</span> <span class="fu">getimg</span>(first_png)</span>
-<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">is.null</span>(img1))</span>
-<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"READINESS CHECK PASSED — bundle has"</span>,</span>
-<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(picked_species), <span class="st">"species,"</span>,</span>
-<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Ntip</span>(tree), <span class="st">"tips on tree, pavo reads images.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="fu">plotTree</span>(ape<span class="sc">::</span><span class="fu">keep.tip</span>(tree, picked_tips), <span class="at">type =</span> <span class="st">"fan"</span>, <span class="at">fsize =</span> <span class="fl">0.7</span>)</span>
-<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a>You should see "READINESS CHECK PASSED" and a fan tree of just the species in your bundle. If you see anything else, re-download the bundle or email your TA.</span>
-<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 5 — Confirm your Demo 7 FishView login still works</span></span>
-<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>On Wednesday, **you and your group will build your own mini-bundle from scratch** by picking species + evaluating images on FishView. The same login code you used for Demo 7 still works. Confirm tonight that you can still reach it:</span>
-<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>From UCLA campus WiFi or UCLA Bruin Secure VPN, open <span class="ot">&lt;http://164.67.78.200:5052/&gt;</span></span>
-<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Enter your **Demo 7 group code**:</span>
-<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group <span class="pp">|</span> Family <span class="pp">|</span> Code <span class="pp">|</span></span>
-<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------|--------|------|</span></span>
-<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> Balistoidea (triggerfishes) <span class="pp">|</span> <span class="in">`trigger-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> Pomacanthidae (angelfishes) <span class="pp">|</span> <span class="in">`angel-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> Scarinae (parrotfishes) <span class="pp">|</span> <span class="in">`parrot-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> Cirrhilabrini (fairy wrasses) <span class="pp">|</span> <span class="in">`fairy-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> Acanthuridae (surgeonfishes) <span class="pp">|</span> <span class="in">`tang-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> Hypsigenyinae (hogfishes) <span class="pp">|</span> <span class="in">`hog-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 7 <span class="pp">|</span> Halichoerine (Coris-allies wrasses) <span class="pp">|</span> <span class="in">`coris-2026`</span> <span class="pp">|</span></span>
-<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>You should land on your family's dashboard showing the species table from Demo 7. If it loads and shows fish, you're ready.</span>
-<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a>**Do not pick anything yet.** The curation work is the in-class exercise for Demo 8 — picking before Wednesday means you'll miss the lesson. Tonight is just a login check.</span>
-<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a><span class="fu">## Off-campus?</span></span>
-<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a>The FishView server is only reachable from UCLA's network. Connect to **UCLA Bruin Secure VPN** first.</span>
-<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## If something breaks</span></span>
-<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Package install fails on `pavo` or `caper`:** likely a system-library issue. On macOS try <span class="in">`brew install gdal`</span> first, then re-install. On Windows try the binary build via <span class="in">`install.packages("pavo", type = "binary")`</span>.</span>
-<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`read.tree()` errors with "incorrect string constant":** the tree file didn't fully download. Re-run Step 3.</span>
-<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`getimg()` errors with "PNG read failed":** an image in the bundle is malformed. List the bad path with <span class="in">`list.files("chaetodontidae-mini-bundle/images")`</span> and email your TA.</span>
-<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mini-bundle code returns "unknown group":** the FishView entry might not be fully provisioned yet. Email your TA — your group's mini-bundle gets locked in by 6 PM Tuesday.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Demo 8 — Prep"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Do these five things before Wednesday's class"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tuesday-night reality check</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>The Monte Carlo in Part 3 takes ~2 minutes the **first** time it runs. The setup steps below take ~20 minutes total. If you wait until Wednesday morning to install everything you'll spend the demo watching your laptop instead of doing science. Please complete this list **tonight**.</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip appearance="simple"}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two bundles, one demo — what's what</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>You'll touch **two** bundles during this lab:</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chaetodontidae** (Step 3) — the *shared worked example* the whole class watches the lecturer run in real time. Pre-built. Everyone downloads it tonight.</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Your group's family** — what you'll **build yourselves in class on Wednesday** by curating species + images on FishView, then re-running the worksheet on what you exported. Tonight you only need to confirm your Demo 7 group code still logs you in (Step 5).</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1 — R and RStudio</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>R 4.2 or higher, and current RStudio.</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>R: <span class="ot">&lt;https://cloud.r-project.org/&gt;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>RStudio: <span class="ot">&lt;https://posit.co/download/rstudio-desktop/&gt;</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>If you did this for Demo 7 you're already done with Step 1.</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2 — Install R packages</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>Paste this into the **RStudio Console**:</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pavo"</span>,       <span class="co"># color + pattern stats</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ape"</span>,        <span class="co"># tree handling</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"phytools"</span>,   <span class="co"># phyl.pca, Blomberg's K, Pagel's lambda</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="st">"caper"</span>,      <span class="co"># PGLS</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="st">"nlme"</span>,       <span class="co"># gls fallback for PGLS</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="st">"plotrix"</span>,    <span class="co"># phytools dependency (don't skip)</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="st">"png"</span>,        <span class="co"># PCA biplots embed exemplar PNG thumbnails as point markers</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidyr"</span>,      <span class="co"># pivot_longer in Part 3 plots</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ggplot2"</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>Then verify all nine loaded cleanly:</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pavo); <span class="fu">library</span>(ape); <span class="fu">library</span>(phytools); <span class="fu">library</span>(caper)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlme); <span class="fu">library</span>(plotrix); <span class="fu">library</span>(tidyr); <span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">requireNamespace</span>(<span class="st">"png"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))   <span class="co"># used by biplot thumbnails</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"YOU'RE READY FOR WEDNESDAY!</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>If anything fails — especially <span class="in">`pavo`</span> or <span class="in">`caper`</span>, which have C dependencies — email your TA tonight, not Wednesday morning.</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 3 — Download the Chaetodontidae walkthrough bundle</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>In RStudio, **first set your working directory** to a folder you'll use for this demo (e.g. <span class="in">`~/Documents/EEB187/demo8/`</span>). The unzipped bundle will land *inside* that working dir as a sibling folder, and every code chunk in the worksheet expects it there.</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Confirm where you are (this is where everything lives — including the bundle)</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Download the ZIP into the working directory</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://michaelalfaro.github.io/eeb187-demos/data/chaetodontidae-mini-bundle.zip"</span>,</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  <span class="st">"chaetodontidae-mini-bundle.zip"</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Unzip in place — this creates a folder called chaetodontidae-mini-bundle/</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="st">"chaetodontidae-mini-bundle.zip"</span>)</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">"chaetodontidae-mini-bundle"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>You should see roughly:</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;your working dir&gt;/</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="in">└── chaetodontidae-mini-bundle/</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── chaetodontidae-mini-tree.tre</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── README.txt</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── picked_species.txt</span></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── picked_tip_labels.txt</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── species_metadata.csv</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── species_traits.csv               &lt;-- 4 FishBase traits (used in §1.8 and §2.8)</span></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="in">    ├── images/</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_lunula/exemplar.png</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── Chaetodon_auriga/exemplar.png</span></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="in">    │   ├── … (more single-exemplar species) …</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="in">    │   └── Heniochus_acuminatus/        &lt;-- the error-species</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-1.png</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-2.png</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-3.png</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a><span class="in">    │       ├── img-4.png</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a><span class="in">    │       └── img-5.png</span></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>**Your own family follows the same shape.** When you switch to your group's bundle in the "Your Turn" sections, the path is just <span class="in">`&lt;your-family&gt;-mini-bundle/`</span> (e.g. <span class="in">`acanthuridae-mini-bundle/`</span> for the surgeonfish group) — same <span class="in">`images/`</span>, same <span class="in">`README.txt`</span>, same five files inside.</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 4 — Readiness check</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>Run this short script in the Console — it confirms the tree loads, the species list matches the tree tips, and pavo can read one of the bundle images:</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape); <span class="fu">library</span>(pavo)</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="st">"chaetodontidae-mini-bundle"</span></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a><span class="co"># The worksheet defines two small helpers in scripts/measurement-error.R</span></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a><span class="co"># that handle NEXUS vs Newick trees and strip specimen suffixes off tip</span></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a><span class="co"># labels. We don't need them for the readiness check — just the raw</span></span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a><span class="co"># bundle contents.</span></span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>tree_path      <span class="ot">&lt;-</span> <span class="fu">list.files</span>(bundle, <span class="at">pattern =</span> <span class="st">"-mini-tree</span><span class="sc">\\</span><span class="st">.tre$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>tree           <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.tree</span>(tree_path)</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>picked_species <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(bundle, <span class="st">"picked_species.txt"</span>))</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity: every directory in images/ matches a picked species</span></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>species_dirs <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="fu">file.path</span>(bundle, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">basename</span>(species_dirs), picked_species))</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a><span class="co"># pavo can read at least one image</span></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>first_sp_dir <span class="ot">&lt;-</span> species_dirs[<span class="dv">1</span>]</span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>first_png    <span class="ot">&lt;-</span> <span class="fu">list.files</span>(first_sp_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>img1 <span class="ot">&lt;-</span> <span class="fu">getimg</span>(first_png)</span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">is.null</span>(img1))</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"READINESS CHECK PASSED — bundle has"</span>,</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(picked_species), <span class="st">"species,"</span>,</span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Ntip</span>(tree), <span class="st">"tips on tree, pavo reads images.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>You should see "READINESS CHECK PASSED". If you see anything else, re-download the bundle or email your TA.</span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 5 — Confirm your Demo 7 FishView login still works</span></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>On Wednesday, **you and your group will build your own mini-bundle from scratch** by picking species + evaluating images on FishView. The same login code you used for Demo 7 still works. Confirm tonight that you can still reach it:</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>From UCLA campus WiFi or UCLA Bruin Secure VPN, open <span class="ot">&lt;http://164.67.78.200:5052/&gt;</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Enter your **Demo 7 group code**:</span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Group <span class="pp">|</span> Family <span class="pp">|</span> Code <span class="pp">|</span></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------|--------|------|</span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 1 <span class="pp">|</span> Balistoidea (triggerfishes) <span class="pp">|</span> <span class="in">`trigger-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> Pomacanthidae (angelfishes) <span class="pp">|</span> <span class="in">`angel-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 3 <span class="pp">|</span> Scarinae (parrotfishes) <span class="pp">|</span> <span class="in">`parrot-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 4 <span class="pp">|</span> Cirrhilabrini (fairy wrasses) <span class="pp">|</span> <span class="in">`fairy-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 5 <span class="pp">|</span> Acanthuridae (surgeonfishes) <span class="pp">|</span> <span class="in">`tang-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 6 <span class="pp">|</span> Hypsigenyinae (hogfishes) <span class="pp">|</span> <span class="in">`hog-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 7 <span class="pp">|</span> Halichoerine (Coris-allies wrasses) <span class="pp">|</span> <span class="in">`coris-2026`</span> <span class="pp">|</span></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>You should land on your family's dashboard showing the species table from Demo 7. If it loads and shows fish, you're ready.</span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>**Do not pick anything yet.** The curation work is the in-class exercise for Demo 8 — picking before Wednesday means you'll miss the lesson. Tonight is just a login check.</span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="fu">## Off-campus?</span></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>The FishView server is only reachable from UCLA's network. Connect to **UCLA Bruin Secure VPN** first.</span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 6 — One-click server smoke check</span></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>Wednesday's analysis depends on FishView's **Export Bundle** button actually shipping you a ZIP. We've got a special pre-class smoke-test endpoint that bypasses the in-class validation (the ≥15-species / ≥5-genera / error-species rules) so you can verify the whole pipeline reaches you tonight without spoiling the in-class curation work.</span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>Three minutes, no analysis involved:</span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Logged into your family's dashboard from Step 5 — open any species in the table.</span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>On its review page, click **Include** on **one or two images**. (One is enough. You don't need to star an exemplar, mark an error-species, or do any real curation — that's all for Wednesday.)</span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>In a fresh browser tab, visit this URL with your family code in the path:</span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>   <span class="in">```</span></span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a><span class="in">   http://164.67.78.200:5052/api/export-bundle/&lt;your-family&gt;?smoke=true</span></span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a><span class="in">   ```</span></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>   Substitute <span class="in">`&lt;your-family&gt;`</span> from this table:</span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>   | Group | URL family code |</span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>   |---|---|</span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a>   | 1 (triggerfishes) | <span class="in">`balistoidea`</span> |</span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>   | 2 (angelfishes)   | <span class="in">`pomacanthidae`</span> |</span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a>   | 3 (parrotfishes)  | <span class="in">`scarinae`</span> |</span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>   | 4 (fairy wrasses) | <span class="in">`cirrhilabrini`</span> |</span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a>   | 5 (surgeonfishes) | <span class="in">`acanthuridae`</span> |</span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a>   | 6 (hogfishes)     | <span class="in">`hypsigenyinae`</span> |</span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a>   | 7 (Coris-allies)  | <span class="in">`halichoerine`</span> |</span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>   So group 5 would visit <span class="in">`http://164.67.78.200:5052/api/export-bundle/acanthuridae?smoke=true`</span>.</span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>You should get a download prompt for <span class="in">`&lt;family&gt;-mini-bundle.zip`</span> (a few hundred KB to a few MB).</span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Delete the ZIP after the download finishes** — it's a smoke artifact, not what you'll analyze on Wednesday.</span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a><span class="fu">### Expected outcomes</span></span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**You get a ZIP** → <span class="sc">:white_check_mark:</span> server pipeline works end-to-end; you're ready for Wednesday.</span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Browser shows `{"error":"nothing_to_export", ...}`** → you didn't click Include on any image. Go back to step 2.</span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Browser shows a login page** → your session expired. Re-enter your group code from Step 5 and retry.</span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Page won't load at all** → you're off UCLA WiFi / VPN. Reconnect and retry.</span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Any other JSON error** → email your TA with the error text by Tuesday afternoon.</span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## If something breaks</span></span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Package install fails on `pavo` or `caper`:** likely a system-library issue. On macOS try <span class="in">`brew install gdal`</span> first, then re-install. On Windows try the binary build via <span class="in">`install.packages("pavo", type = "binary")`</span>.</span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`read.tree()` errors with "incorrect string constant":** the tree file didn't fully download. Re-run Step 3.</span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**`getimg()` errors with "PNG read failed":** an image in the bundle is malformed. List the bad path with <span class="in">`list.files("chaetodontidae-mini-bundle/images")`</span> and email your TA.</span>
+<span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Mini-bundle code returns "unknown group":** the FishView entry might not be fully provisioned yet. Email your TA — your group's mini-bundle gets locked in by 6 PM Tuesday.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

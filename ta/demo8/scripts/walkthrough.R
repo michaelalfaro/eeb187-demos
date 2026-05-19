@@ -14,32 +14,28 @@ library(ggplot2)
 set.seed(2026)
 bundle <- "chaetodontidae-mini-bundle"   # your own family: e.g. "acanthuridae-mini-bundle"
 
+# Load pavo pipeline + bundle-loading helpers
+source("scripts/measurement-error.R")
+
 
 # ---- 1.2 Inventory the bundle --------------------------------------
-tree <- read.tree(file.path(bundle, "chaetodontidae-mini-tree.tre"))
+tree <- read_tree_auto(bundle_tree_path(bundle))
+tree <- normalize_tree_tips(tree)   # strip specimen suffixes -> Genus_species
 
 picked_species <- readLines(file.path(bundle, "picked_species.txt"))
-picked_tips    <- readLines(file.path(bundle, "picked_tip_labels.txt"))
-
-match_tip <- function(sp, tips) {
-  hits <- grep(paste0("^", sp, "(?:[_0-9]|$)"), tips, value = TRUE, perl = TRUE)
-  if (length(hits) == 0) NA_character_ else hits[1]
-}
-species_to_tip <- vapply(picked_species, match_tip, character(1), tips = picked_tips)
-
-unmatched <- picked_species[is.na(species_to_tip)]
-if (length(unmatched)) {
-  message("Dropping ", length(unmatched), " species with no tree tip: ",
-          paste(unmatched, collapse = ", "))
-}
-species <- picked_species[!is.na(species_to_tip)]
-species_to_tip <- species_to_tip[!is.na(species_to_tip)]
+species <- intersect(picked_species, tree$tip.label)
+dropped <- setdiff(picked_species, tree$tip.label)
+if (length(dropped))
+  message("Dropping ", length(dropped),
+          " species with no tip on the tree: ",
+          paste(dropped, collapse = ", "))
+species_to_tip <- setNames(species, species)
 
 stopifnot(all(file.exists(file.path(bundle, "images", species))))
 stopifnot(all(species_to_tip %in% tree$tip.label))
 
 length(species)
-head(species_to_tip)
+head(species)
 
 readLines(file.path(bundle, "README.txt"), n = 25)
 
@@ -47,7 +43,7 @@ readLines(file.path(bundle, "README.txt"), n = 25)
 # ---- 1.3 Run pavo on each species (slow: ~30-60 s) -----------------
 readme <- readLines(file.path(bundle, "README.txt"))
 err_line <- grep("^Error-species", readme, value = TRUE)[1]
-error_species <- if (is.na(err_line) || grepl("NONE", err_line)) NA_character_ else
+error_species <- if (is.na(err_line) || grepl("\\(none\\)|NONE|none", err_line)) NA_character_ else
                  trimws(sub("\\s*\\(.*", "",
                             sub(".*?:\\s*", "", err_line)))
 cat("Error-species in this bundle:",
@@ -386,7 +382,7 @@ if (!exists("tree")) {
 # Parse error-species name from README (re-parsed so Part 3 stands alone).
 readme <- readLines(file.path(bundle, "README.txt"))
 err_line <- grep("^Error-species", readme, value = TRUE)[1]
-error_species <- if (is.na(err_line) || grepl("NONE", err_line)) NA_character_ else
+error_species <- if (is.na(err_line) || grepl("\\(none\\)|NONE|none", err_line)) NA_character_ else
                  trimws(sub("\\s*\\(.*", "", sub(".*?:\\s*", "", err_line)))
 stopifnot(!is.na(error_species))
 
