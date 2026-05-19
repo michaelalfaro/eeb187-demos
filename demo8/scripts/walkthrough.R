@@ -306,7 +306,89 @@ ggplot(signal, aes(reorder(variable, K), K, fill = K_p < 0.05)) +
   theme_minimal()
 
 
-# ---- 2.8 Ecology after phylogenetic correction ---------------------
+# ---- 2.8 Pulling FishBase traits with rfishbase --------------------
+# Reproduce what species_traits.csv was built from. Pinned 3.1.10
+# because the current rfishbase release pulls in duckdb (C++ toolchain
+# required) which fails to build on many laptops. Install in the prep
+# page:
+#   remotes::install_version("rfishbase", "3.1.10", upgrade = "never")
+suppressPackageStartupMessages(library(rfishbase))
+
+species_fb <- gsub("_", " ", species)   # FishBase uses "Genus species"
+sp_fb <- species(species_fb,
+                 fields = c("Species", "Length", "DepthRangeDeep", "Vulnerability"))
+ec_fb <- ecology(species_fb, fields = c("Species", "FoodTroph", "DietTroph"))
+ec_fb$Troph <- ifelse(!is.na(ec_fb$FoodTroph), ec_fb$FoodTroph, ec_fb$DietTroph)
+ec_agg <- aggregate(Troph ~ Species, data = ec_fb, mean, na.rm = TRUE)
+
+fb_traits <- merge(sp_fb, ec_agg, by = "Species", all.x = TRUE)
+fb_traits$species <- gsub(" ", "_", fb_traits$Species)
+fb_traits <- fb_traits[, c("species", "Troph", "DepthRangeDeep", "Length", "Vulnerability")]
+fb_traits <- fb_traits[match(species, fb_traits$species), ]
+head(fb_traits)
+print(colSums(is.na(fb_traits[, -1])))   # missing-value counts per trait
+
+# Sanity-check vs the bundled CSV — if max |Δ| ≈ 0 per variable, the
+# bundle's CSV is just rfishbase output. Differences usually mean
+# FishBase has updated trait values since the bundle was built.
+eco_csv <- read.csv(file.path(bundle, "species_traits.csv"))
+eco_csv <- eco_csv[match(species, eco_csv$species), ]
+cmp <- merge(fb_traits, eco_csv, by = "species", suffixes = c("_live", "_csv"))
+for (v in c("Troph", "DepthRangeDeep", "Length", "Vulnerability")) {
+  d <- abs(cmp[[paste0(v, "_live")]] - cmp[[paste0(v, "_csv")]])
+  cat(sprintf("  %-15s  max |Δ| = %.4f  (NA in %d rows)\n",
+              v, max(d, na.rm = TRUE), sum(is.na(d))))
+}
+# Use either fb_traits (live) or combined (CSV-based, built in §1.8)
+# below; downstream PGLS reads from `combined` so we just continue.
+
+# --- Diagnosing failed lookups --------------------------------------
+# Species with NA on ALL four traits = FishBase didn't recognize the name.
+failed <- fb_traits[
+  rowSums(is.na(fb_traits[, c("Troph", "DepthRangeDeep", "Length", "Vulnerability")])) == 4,
+  "species"
+]
+cat("Species with no FishBase data:", length(failed), "\n")
+if (length(failed)) print(failed)
+
+# --- Taxonomic reconciliation ---------------------------------------
+# Two rfishbase helpers for failed lookups:
+#   validate_names(x)  - returns the current valid FishBase name (or NA)
+#   synonyms(x)        - returns the synonyms-table rows where x appears
+#
+# Run this block ONLY if `failed` is non-empty.
+if (length(failed)) {
+  val <- rfishbase::validate_names(gsub("_", " ", failed))
+  print(data.frame(input = failed, fishbase_valid = val))
+
+  for (sp in failed) {
+    syn <- rfishbase::synonyms(gsub("_", " ", sp))
+    if (nrow(syn) > 0) {
+      cat("\n", sp, " synonyms entries:\n", sep = "")
+      print(syn[, c("synonym", "Status", "Species")])
+    }
+  }
+}
+
+# --- Override pattern: don't rename the tree tip; rename the lookup --
+# Example for a species whose tip says Coris_julis but FishBase wants
+# Coris_alfaroi. Override fb_traits so the FishBase data attaches under
+# whatever name your tree calls it.
+#   fb_extra <- species("Coris alfaroi",
+#                       fields = c("Species","Length","DepthRangeDeep","Vulnerability"))
+#   fb_extra$species <- "Coris_julis"
+#   fb_traits[fb_traits$species == "Coris_julis", names(fb_extra)] <- fb_extra
+
+# --- Prune the tree to species that have ecology data ---------------
+have_data <- fb_traits$species[
+  rowSums(!is.na(fb_traits[, c("Troph", "DepthRangeDeep", "Length", "Vulnerability")])) > 0
+]
+tree_eco <- ape::keep.tip(tree, have_data)
+cat("ecology-pruned tree:", ape::Ntip(tree_eco), "tips (was", ape::Ntip(tree), ")\n")
+# Use tree_eco for §2.9 PGLS / K-on-ecology calls; tree for pavo-only.
+
+
+# ---- 2.9 Ecology after phylogenetic correction ---------------------
 if (!exists("combined")) combined <- readRDS("results/part1-combined.rds")
 combined$species <- species_to_tip[combined$species]
 combined <- combined[match(tree$tip.label, combined$species), ]
@@ -350,7 +432,7 @@ ggplot(side_by_side, aes(reorder(variable, K), K, fill = kind)) +
   labs(x = NULL, y = "Blomberg's K")
 
 
-# ---- 2.9 Save outputs ----------------------------------------------
+# ---- 2.10 Save outputs ---------------------------------------------
 saveRDS(phy_pc,  "results/part2-phylopca.rds")
 saveRDS(signal,  "results/part2-signal.rds")
 saveRDS(list(pgls_1 = pgls_1, pgls_2 = pgls_2,

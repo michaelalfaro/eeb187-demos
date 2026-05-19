@@ -342,6 +342,51 @@ for (v in c("Troph", "DepthRangeDeep", "Length", "Vulnerability")) {
 # Use either fb_traits (live) or combined (CSV-based, built in §1.8)
 # below; downstream PGLS reads from `combined` so we just continue.
 
+# --- Diagnosing failed lookups --------------------------------------
+# Species with NA on ALL four traits = FishBase didn't recognize the name.
+failed <- fb_traits[
+  rowSums(is.na(fb_traits[, c("Troph", "DepthRangeDeep", "Length", "Vulnerability")])) == 4,
+  "species"
+]
+cat("Species with no FishBase data:", length(failed), "\n")
+if (length(failed)) print(failed)
+
+# --- Taxonomic reconciliation ---------------------------------------
+# Two rfishbase helpers for failed lookups:
+#   validate_names(x)  - returns the current valid FishBase name (or NA)
+#   synonyms(x)        - returns the synonyms-table rows where x appears
+#
+# Run this block ONLY if `failed` is non-empty.
+if (length(failed)) {
+  val <- rfishbase::validate_names(gsub("_", " ", failed))
+  print(data.frame(input = failed, fishbase_valid = val))
+
+  for (sp in failed) {
+    syn <- rfishbase::synonyms(gsub("_", " ", sp))
+    if (nrow(syn) > 0) {
+      cat("\n", sp, " synonyms entries:\n", sep = "")
+      print(syn[, c("synonym", "Status", "Species")])
+    }
+  }
+}
+
+# --- Override pattern: don't rename the tree tip; rename the lookup --
+# Example for a species whose tip says Coris_julis but FishBase wants
+# Coris_alfaroi. Override fb_traits so the FishBase data attaches under
+# whatever name your tree calls it.
+#   fb_extra <- species("Coris alfaroi",
+#                       fields = c("Species","Length","DepthRangeDeep","Vulnerability"))
+#   fb_extra$species <- "Coris_julis"
+#   fb_traits[fb_traits$species == "Coris_julis", names(fb_extra)] <- fb_extra
+
+# --- Prune the tree to species that have ecology data ---------------
+have_data <- fb_traits$species[
+  rowSums(!is.na(fb_traits[, c("Troph", "DepthRangeDeep", "Length", "Vulnerability")])) > 0
+]
+tree_eco <- ape::keep.tip(tree, have_data)
+cat("ecology-pruned tree:", ape::Ntip(tree_eco), "tips (was", ape::Ntip(tree), ")\n")
+# Use tree_eco for §2.9 PGLS / K-on-ecology calls; tree for pavo-only.
+
 
 # ---- 2.9 Ecology after phylogenetic correction ---------------------
 if (!exists("combined")) combined <- readRDS("results/part1-combined.rds")
