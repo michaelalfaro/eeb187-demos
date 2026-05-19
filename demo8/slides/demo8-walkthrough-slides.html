@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo 8 — Walkthrough Slides | EEB 187</title>
+<style>
+  :root {
+    --bg: #181b2b;
+    --panel: #20243a;
+    --fg: #f6f6f8;
+    --muted: #c4c6d0;
+    --faint: #9196a8;
+    --gold: #d4a853;
+    --border: #2c3e50;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg);
+               font-family: -apple-system, "Aptos", "Segoe UI", Helvetica, Arial, sans-serif; }
+  header { padding: 1.4em 1.4em 0.6em; border-bottom: 1px solid var(--border);
+           background: var(--panel); }
+  header h1 { margin: 0 0 0.25em; font-family: Georgia, serif; font-size: 1.6em; font-weight: 700; }
+  header .meta { color: var(--muted); font-size: 0.95em; }
+  header .formats { margin-top: 0.7em; color: var(--faint); font-size: 0.9em; }
+  header .formats a { color: var(--gold); text-decoration: none; margin-right: 0.6em; }
+  header .formats a:hover { text-decoration: underline; }
+  main { max-width: 1400px; margin: 0 auto; padding: 1.5em 1em 4em; }
+  .slide { position: relative; margin: 1.4em 0; border-radius: 6px;
+           overflow: hidden; box-shadow: 0 6px 22px rgba(0,0,0,0.45); background: var(--panel); }
+  .slide img { display: block; width: 100%; height: auto; }
+  .slide .num { position: absolute; top: 0.6em; left: 0.8em;
+                background: rgba(24,27,43,0.75); color: var(--gold);
+                padding: 0.18em 0.55em; border-radius: 4px; font-size: 0.85em;
+                font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  nav.toc { margin: 1em 0 2em; color: var(--faint); font-size: 0.85em; line-height: 1.7; }
+  nav.toc a { color: var(--muted); text-decoration: none; margin-right: 0.7em; }
+  nav.toc a:hover { color: var(--gold); }
+  footer { text-align: center; color: var(--faint); font-size: 0.85em;
+           padding: 2em 1em 3em; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Demo 8 — Walkthrough Slides (Rosamari's deck)</h1>
+  <div class="meta">EEB 187 · Wednesday May 20, 2026 · pavo + phylogeny + measurement error · 36 slides · ~35–45 min</div>
+  <div class="formats">
+    Also available:
+    <a href="demo8-walkthrough-slides.pdf">PDF</a>·
+    <a href="demo8-walkthrough-slides.pptx">PowerPoint</a>
+  </div>
+</header>
+<main>
+  <nav class="toc">
+    Jump to slide:
+    <a href="#s01">1</a><a href="#s02">2</a><a href="#s03">3</a><a href="#s04">4</a><a href="#s05">5</a><a href="#s06">6</a><a href="#s07">7</a><a href="#s08">8</a><a href="#s09">9</a><a href="#s10">10</a><a href="#s11">11</a><a href="#s12">12</a><a href="#s13">13</a><a href="#s14">14</a><a href="#s15">15</a><a href="#s16">16</a><a href="#s17">17</a><a href="#s18">18</a><a href="#s19">19</a><a href="#s20">20</a><a href="#s21">21</a><a href="#s22">22</a><a href="#s23">23</a><a href="#s24">24</a><a href="#s25">25</a><a href="#s26">26</a><a href="#s27">27</a><a href="#s28">28</a><a href="#s29">29</a><a href="#s30">30</a><a href="#s31">31</a><a href="#s32">32</a><a href="#s33">33</a><a href="#s34">34</a><a href="#s35">35</a><a href="#s36">36</a>
+  </nav>
+  <div class="slide" id="s01"><span class="num">1 / 36</span><img src="demo8-walkthrough-slides-pages/slide-01.png" alt="Slide 1"></div>
+  <div class="slide" id="s02"><span class="num">2 / 36</span><img src="demo8-walkthrough-slides-pages/slide-02.png" alt="Slide 2"></div>
+  <div class="slide" id="s03"><span class="num">3 / 36</span><img src="demo8-walkthrough-slides-pages/slide-03.png" alt="Slide 3"></div>
+  <div class="slide" id="s04"><span class="num">4 / 36</span><img src="demo8-walkthrough-slides-pages/slide-04.png" alt="Slide 4"></div>
+  <div class="slide" id="s05"><span class="num">5 / 36</span><img src="demo8-walkthrough-slides-pages/slide-05.png" alt="Slide 5 — Morphospace concept"></div>
+  <div class="slide" id="s06"><span class="num">6 / 36</span><img src="demo8-walkthrough-slides-pages/slide-06.png" alt="Slide 6 — 6 pavo descriptors"></div>
+  <div class="slide" id="s07"><span class="num">7 / 36</span><img src="demo8-walkthrough-slides-pages/slide-07.png" alt="Slide 7 — Why PCA"></div>
+  <div class="slide" id="s08"><span class="num">8 / 36</span><img src="demo8-walkthrough-slides-pages/slide-08.png" alt="Slide 8 — PCA in three steps"></div>
+  <div class="slide" id="s09"><span class="num">9 / 36</span><img src="demo8-walkthrough-slides-pages/slide-09.png" alt="Slide 9 — Scree plot"></div>
+  <div class="slide" id="s10"><span class="num">10 / 36</span><img src="demo8-walkthrough-slides-pages/slide-10.png" alt="Slide 10 — Biplot concept"></div>
+  <div class="slide" id="s11"><span class="num">11 / 36</span><img src="demo8-walkthrough-slides-pages/slide-11.png" alt="Slide 11 — Chaetodontidae biplot"></div>
+  <div class="slide" id="s12"><span class="num">12 / 36</span><img src="demo8-walkthrough-slides-pages/slide-12.png" alt="Slide 12 — Chaetodontidae morphospace"></div>
+  <div class="slide" id="s13"><span class="num">13 / 36</span><img src="demo8-walkthrough-slides-pages/slide-13.png" alt="Slide 13 — Ecology question"></div>
+  <div class="slide" id="s14"><span class="num">14 / 36</span><img src="demo8-walkthrough-slides-pages/slide-14.png" alt="Slide 14 — Two ecology tests"></div>
+  <div class="slide" id="s15"><span class="num">15 / 36</span><img src="demo8-walkthrough-slides-pages/slide-15.png" alt="Slide 15 — Ecology scatter"></div>
+  <div class="slide" id="s16"><span class="num">16 / 36</span><img src="demo8-walkthrough-slides-pages/slide-16.png" alt="Slide 16 — Why phylogeny matters"></div>
+  <div class="slide" id="s17"><span class="num">17 / 36</span><img src="demo8-walkthrough-slides-pages/slide-17.png" alt="Slide 17 — Two corrections"></div>
+  <div class="slide" id="s18"><span class="num">18 / 36</span><img src="demo8-walkthrough-slides-pages/slide-18.png" alt="Slide 18 — phyloPCA centering concept"></div>
+  <div class="slide" id="s19"><span class="num">19 / 36</span><img src="demo8-walkthrough-slides-pages/slide-19.png" alt="Slide 19 — phyloPCA unpacked"></div>
+  <div class="slide" id="s20"><span class="num">20 / 36</span><img src="demo8-walkthrough-slides-pages/slide-20.png" alt="Slide 20 — phyloPCA biplot"></div>
+  <div class="slide" id="s21"><span class="num">21 / 36</span><img src="demo8-walkthrough-slides-pages/slide-21.png" alt="Slide 21 — Compare loadings"></div>
+  <div class="slide" id="s22"><span class="num">22 / 36</span><img src="demo8-walkthrough-slides-pages/slide-22.png" alt="Slide 22 — PGLS concept"></div>
+  <div class="slide" id="s23"><span class="num">23 / 36</span><img src="demo8-walkthrough-slides-pages/slide-23.png" alt="Slide 23 — Blomberg's K concept"></div>
+  <div class="slide" id="s24"><span class="num">24 / 36</span><img src="demo8-walkthrough-slides-pages/slide-24.png" alt="Slide 24 — K per pavo variable"></div>
+  <div class="slide" id="s25"><span class="num">25 / 36</span><img src="demo8-walkthrough-slides-pages/slide-25.png" alt="Slide 25 — Color vs ecology signal"></div>
+  <div class="slide" id="s26"><span class="num">26 / 36</span><img src="demo8-walkthrough-slides-pages/slide-26.png" alt="Slide 26 — Part 2 take-home"></div>
+  <div class="slide" id="s27"><span class="num">27 / 36</span><img src="demo8-walkthrough-slides-pages/slide-27.png" alt="Slide 27 — Why a single number is a lie"></div>
+  <div class="slide" id="s28"><span class="num">28 / 36</span><img src="demo8-walkthrough-slides-pages/slide-28.png" alt="Slide 28 — 5-image error stack"></div>
+  <div class="slide" id="s29"><span class="num">29 / 36</span><img src="demo8-walkthrough-slides-pages/slide-29.png" alt="Slide 29 — Monte Carlo loop"></div>
+  <div class="slide" id="s30"><span class="num">30 / 36</span><img src="demo8-walkthrough-slides-pages/slide-30.png" alt="Slide 30 — Reading the MC boxplot"></div>
+  <div class="slide" id="s31"><span class="num">31 / 36</span><img src="demo8-walkthrough-slides-pages/slide-31.png" alt="Slide 31 — Chaetodontidae K under noise"></div>
+  <div class="slide" id="s32"><span class="num">32 / 36</span><img src="demo8-walkthrough-slides-pages/slide-32.png" alt="Slide 32 — Part 3 take-home"></div>
+  <div class="slide" id="s33"><span class="num">33 / 36</span><img src="demo8-walkthrough-slides-pages/slide-33.png" alt="Slide 33 — Now you build your bundle"></div>
+  <div class="slide" id="s34"><span class="num">34 / 36</span><img src="demo8-walkthrough-slides-pages/slide-34.png" alt="Slide 34 — What you turn in"></div>
+  <div class="slide" id="s35"><span class="num">35 / 36</span><img src="demo8-walkthrough-slides-pages/slide-35.png" alt="Slide 35 — Tonight"></div>
+  <div class="slide" id="s36"><span class="num">36 / 36</span><img src="demo8-walkthrough-slides-pages/slide-36.png" alt="Slide 36 — See you Wednesday"></div>
+</main>
+<footer>
+  EEB 187 · Ecology and Evolution of Color · UCLA · Spring 2026
+</footer>
+</body>
+</html>
