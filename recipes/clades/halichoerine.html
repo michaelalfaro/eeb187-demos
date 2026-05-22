@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Halichoerine — Coris-Allies and Halichoeres Wrasses – EEB 187 — Project Recipe Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-bc185b5c5bdbcb35c2eb49d8a876ef70.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b487cddad83ce73ad93f1328ce7d9f7a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c35703f27e2ef84e2c700e09dd0c80cb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b487cddad83ce73ad93f1328ce7d9f7a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">EEB 187 — Project Recipe Book</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../clades/index.html" aria-current="page"> 
+<span class="menu-text">Know Your Clade</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../recipes/core/phylogenetic-signal.html"> 
+<span class="menu-text">Recipes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../poster/poster-tips.html"> 
+<span class="menu-text">Poster</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../clades/balistoidea.html">Clades</a></li><li class="breadcrumb-item"><a href="../clades/halichoerine.html">Halichoerine — Coris-Allies and Halichoeres Wrasses</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Know Your Clade</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Clades</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/balistoidea.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Balistoidea — Triggerfishes and Filefishes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/pomacanthidae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pomacanthidae — Marine Angelfishes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/scarinae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Scarinae — Parrotfishes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/cirrhilabrini.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cirrhilabrini — Fairy Wrasses and Flasher Wrasses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/acanthuridae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acanthuridae — Surgeonfishes, Tangs, and Unicornfishes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/hypsigenyinae.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypsigenyinae — Hogfishes and Sheephead Wrasses</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/halichoerine.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Halichoerine — Coris-Allies and Halichoeres Wrasses</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quick-reference-card" id="toc-quick-reference-card" class="nav-link active" data-scroll-target="#quick-reference-card">Quick-Reference Card</a></li>
+  <li><a href="#natural-history" id="toc-natural-history" class="nav-link" data-scroll-target="#natural-history">Natural History</a></li>
+  <li><a href="#color-pattern-diversity" id="toc-color-pattern-diversity" class="nav-link" data-scroll-target="#color-pattern-diversity">Color Pattern Diversity</a></li>
+  <li><a href="#dimorphism-and-ontogeny-warnings" id="toc-dimorphism-and-ontogeny-warnings" class="nav-link" data-scroll-target="#dimorphism-and-ontogeny-warnings">Dimorphism and Ontogeny Warnings</a></li>
+  <li><a href="#promising-questions-for-this-clade" id="toc-promising-questions-for-this-clade" class="nav-link" data-scroll-target="#promising-questions-for-this-clade">Promising Questions for This Clade</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../clades/balistoidea.html">Clades</a></li><li class="breadcrumb-item"><a href="../clades/halichoerine.html">Halichoerine — Coris-Allies and Halichoeres Wrasses</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Halichoerine — Coris-Allies and Halichoeres Wrasses</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="quick-reference-card" class="level2">
+<h2 class="anchored" data-anchor-id="quick-reference-card">Quick-Reference Card</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 56%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Species in tree</td>
+<td>140</td>
+</tr>
+<tr class="even">
+<td>Sexual system</td>
+<td>Protogynous hermaphrodites</td>
+</tr>
+<tr class="odd">
+<td>Dichromatism</td>
+<td>Strong (IP/TP differences consistent across most genera)</td>
+</tr>
+<tr class="even">
+<td>Primary diet</td>
+<td>Mixed — invertivores (small crustaceans, mollusks), some planktivores</td>
+</tr>
+<tr class="odd">
+<td>Depth range</td>
+<td>1–50 m (most species on shallow reef flats and sand margins)</td>
+</tr>
+<tr class="even">
+<td>Key reference</td>
+<td>Price et al.&nbsp;(2018), <em>Molecular Phylogenetics and Evolution</em>; Barber &amp; Bellwood (2005), <em>Molecular Phylogenetics and Evolution</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="natural-history" class="level2">
+<h2 class="anchored" data-anchor-id="natural-history">Natural History</h2>
+<p>The Halichoerine clade is the <strong>largest group</strong> in the course, encompassing approximately 140 species drawn from some of the most species-rich genera within Labridae: <em>Halichoeres</em> (~83 species), <em>Coris</em> (~19 species), <em>Thalassoma</em> (~17 species), <em>Macropharyngodon</em> (~10 species), <em>Anampses</em> (~11 species), and several smaller genera. This clade represents the julidine lineage of wrasses — small to medium-sized, typically elongate reef fishes that are among the most abundant and conspicuous members of tropical reef communities worldwide. The phylogenomic analysis of Brownstein et al.&nbsp;(2025) confirmed that multiple lineages within this clade diversified rapidly during the Miocene, contributing to the explosive radiation of labrid diversity on coral reefs.</p>
+<p><em>Halichoeres</em> is the single largest wrasse genus and is circumtropically distributed across the Atlantic, Eastern Pacific, and Indo-Pacific. Molecular phylogenetics has revealed that <em>Halichoeres</em> as traditionally defined is likely <strong>polyphyletic</strong> — species currently placed in the genus may not all share a single common ancestor exclusive of other genera (Barber &amp; Bellwood, 2005; Price et al., 2018). This means that patterns of color evolution mapped onto the <em>Halichoeres</em> phylogeny may reflect deep evolutionary divergences rather than recent radiation within a single lineage. The polyphyly of <em>Halichoeres</em> is itself an important finding for your analysis: it means that apparent “within-genus” color diversity may actually span multiple independent evolutionary lineages.</p>
+<p>A defining biogeographic story in this clade involves <strong>geminate species pairs</strong> across the Isthmus of Panama. When the isthmus closed approximately 3 million years ago, it divided ancestral populations of marine species into Caribbean (Atlantic) and Eastern Pacific descendants. <em>Halichoeres</em> contains several well-documented geminate pairs: <em>H. bivittatus</em> (Atlantic) and <em>H. dispilus</em> (Pacific), <em>H. maculipinna</em> (Atlantic) and <em>H. chierchiae</em> (Pacific). Price et al.&nbsp;(2018) showed that five of 25 speciation events in New World <em>Halichoeres</em> occurred across this barrier, though not all at the time of final closure — some trans-Isthmian splits are much older (up to ~20 Ma). These geminate pairs offer a natural experiment: how much has color diverged between sister species separated by a well-dated vicariance event?</p>
+<p>Ecologically, halichoerine wrasses are primarily invertivores, foraging on sand flats, rubble zones, and reef edges for small crustaceans, polychaetes, and mollusks. Several genera have distinctive foraging behaviors: <em>Coris</em> species dig through sand for buried invertebrates; <em>Thalassoma</em> species are fast-swimming generalists that also pick zooplankton from the water column; <em>Macropharyngodon</em> (“leopard wrasses”) specialize on small, hard-shelled invertebrates (foraminifera, ostracods) and have distinctive pharyngeal jaw dentition. One of the most widespread behaviors in the clade is <strong>sand-sleeping</strong>: many species bury themselves in sand at night or when threatened, a behavior that may impose constraints on coloration (sand-sleeping species may benefit from cryptic dorsal coloration visible from above).</p>
+</section>
+<section id="color-pattern-diversity" class="level2">
+<h2 class="anchored" data-anchor-id="color-pattern-diversity">Color Pattern Diversity</h2>
+<p>The halichoerine clade contains some of the most extreme color diversity in any single labrid lineage. <em>Macropharyngodon</em> leopard wrasses display intricate, almost psychedelic patterns of teal spots, orange rosettes, and irregular black outlines on a pale background — each individual has a unique pattern, like a fingerprint. <em>Thalassoma</em> species are characterized by bold facial stripes and head patterns: <em>T. lunare</em> (moon wrasse) has a green body with vivid magenta-to-yellow face markings, while <em>T. bifasciatum</em> (bluehead wrasse) is one of the most studied reef fishes in the world, with TP males displaying a brilliant blue head separated from a green body by black-and-white vertical bars. <em>Coris gaimard</em> undergoes dramatic ontogenetic color change: juveniles are bright orange-red with white-edged black dorsal spots (“clown” pattern), while adults develop a dark blue-green body with brilliant blue facial spots.</p>
+<p><em>Halichoeres</em> species span the full spectrum from drab to vivid. Some sand-associated species (e.g., <em>H. poeyi</em>, <em>H. bivittatus</em> IP) are olive-green or brown with subtle stripes and blotches, while others (e.g., <em>H. ornatissimus</em>, the ornate wrasse) display rainbow-like patterns of red, green, blue, and orange facial stripes. This genus-level color variation — from cryptic to maximally conspicuous — within a single (albeit polyphyletic) genus makes <em>Halichoeres</em> ideal for testing ecological predictors of color evolution.</p>
+<p><em>Anampses</em> wrasses show a different pattern: many species display intricate spotting and line patterns on a dark body, with dramatic IP/TP differences. <em>A. meleagrides</em> females are black with white spots, while TP males are dark green with blue facial lines and an orange tail.</p>
+</section>
+<section id="dimorphism-and-ontogeny-warnings" class="level2">
+<h2 class="anchored" data-anchor-id="dimorphism-and-ontogeny-warnings">Dimorphism and Ontogeny Warnings</h2>
+<div class="callout callout-style-default callout-warning callout-titled" title="Data quality: what to watch for">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Data quality: what to watch for
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>IP/TP dimorphism — present and important.</strong> Like all labrid clades, halichoerine wrasses are protogynous hermaphrodites with IP/TP color differences. The magnitude of dimorphism varies by genus:</p>
+<ul>
+<li><strong><em>Thalassoma</em>:</strong> Strong dimorphism. TP males (e.g., bluehead wrasse blue phase) are dramatically different from IPs (yellow/brown). Use TP males.</li>
+<li><strong><em>Halichoeres</em>:</strong> Moderate to strong dimorphism. TP males typically show more vivid colors and bolder markings than IPs. Use TP males.</li>
+<li><strong><em>Coris</em>:</strong> Moderate dimorphism. TP males are generally more intensely colored with more defined facial patterns.</li>
+<li><strong><em>Macropharyngodon</em>:</strong> Moderate dimorphism. Both phases are intricately patterned, but TP males tend toward more saturated colors and sharper pattern boundaries.</li>
+<li><strong><em>Anampses</em>:</strong> Strong dimorphism. IP and TP can look like completely different species. Use TP males.</li>
+</ul>
+<p><strong>General rule:</strong> Use TP male images consistently. In labrids, females and juveniles often retain the juvenile color morph. If you cannot determine sex, choose the most vivid/boldly patterned individual, which is likely a TP male.</p>
+<p><strong>Ontogenetic changes:</strong> <em>Coris</em> species undergo dramatic juvenile-to-adult color transformation (e.g., <em>C. gaimard</em> juvenile “clown” pattern to adult blue-green). <em>Thalassoma</em> juveniles are typically uniformly colored (yellow, green, or brown) and lack the facial markings of adults. Exclude juveniles.</p>
+<p><strong>Dataset size management:</strong> With 140 species, this is by far the largest student dataset. Not all species will have high-quality photographs. Rather than including poor-quality or uncertain images for every species, <strong>focus on a well-sampled subset of 50–70 species</strong> that have:</p>
+<ul>
+<li>Clear, high-resolution lateral-view photographs</li>
+<li>Confirmed TP male individuals</li>
+<li>Verified species identification</li>
+</ul>
+<p>A well-curated subset of 60 species will produce more reliable pavo metrics than a noisy dataset of 140 species with mixed phases, poor images, and misidentifications. Document which species you excluded and why — this is good scientific practice, not a weakness.</p>
+<p><strong>Polyphyly of <em>Halichoeres</em>:</strong> Your tree may show <em>Halichoeres</em> species scattered across multiple parts of the phylogeny rather than forming a single clade. This is not a tree error — it reflects the genuine polyphyly of the genus. When reporting results, consider analyzing well-supported subclades of <em>Halichoeres</em> separately rather than treating the genus as a single unit.</p>
+</div>
+</div>
+</section>
+<section id="promising-questions-for-this-clade" class="level2">
+<h2 class="anchored" data-anchor-id="promising-questions-for-this-clade">Promising Questions for This Clade</h2>
+<ol type="1">
+<li><p><strong><a href="../recipes/advanced/biogeographic-color.html">Biogeographic Color Comparison</a></strong> — The geminate species pairs across the Isthmus of Panama provide a powerful natural experiment. Have Caribbean and Pacific sister species diverged in color metrics since vicariant separation? Is the magnitude of color divergence correlated with time since divergence?</p></li>
+<li><p><strong><a href="../recipes/core/cross-family-comparison.html">Cross-Family Comparison</a></strong> — As the largest labrid clade in the course, halichoerine wrasses contribute the most species to the combined labrid mega-analysis. Compare the color morphospace occupied by your clade to the other three labrid groups (Scarinae, Cirrhilabrini, Hypsigenyinae). Does the largest clade occupy the broadest color space?</p></li>
+<li><p><strong><a href="../recipes/core/phylogenetic-signal.html">Phylogenetic Signal</a></strong> — With 140 species (or your curated subset), you have the best statistical power for estimating phylogenetic signal (Blomberg’s K, Pagel’s lambda). Is color more phylogenetically conserved in some genera (<em>Macropharyngodon</em>, with its distinctive spotted pattern) than others (<em>Halichoeres</em>, with its broad color range)?</p></li>
+<li><p><strong><a href="../recipes/core/axis-of-diversification.html">Axis of Diversification</a></strong> — With extreme color diversity spanning from cryptic sand-dwellers to psychedelic leopard wrasses, which axis of pavo color space (brightness, saturation, hue, pattern complexity) shows the greatest disparity? Is the primary axis of color diversification the same across all genera?</p></li>
+<li><p><strong><a href="../recipes/ecology/swimming-mode-pattern.html">Swimming Mode and Pattern</a></strong> — Halichoerine wrasses include both labriform swimmers (pectoral fin propulsion) and more body-undulatory swimmers. Does swimming mode correlate with stripe orientation or color pattern geometry?</p></li>
+</ol>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Barber, P. H., &amp; Bellwood, D. R. (2005). Biodiversity hotspots: Evolutionary origins of biodiversity in wrasses (<em>Halichoeres</em>: Labridae) in the Indo-Pacific and new world tropics. <em>Molecular Phylogenetics and Evolution</em>, 35(1), 235–253.</p>
+<p>Brownstein, C. D., et al.&nbsp;(2025). Explosive diversification of coral reef fishes near the Miocene–Pliocene boundary. <em>Science Advances</em>, 11, eadu6149.</p>
+<p>Price, S. A., Claverie, T., Near, T. J., &amp; Wainwright, P. C. (2018). Phylogenetics and geography of speciation in New World <em>Halichoeres</em> wrasses. <em>Molecular Phylogenetics and Evolution</em>, 121, 35–45.</p>
+<p>Westneat, M. W., &amp; Alfaro, M. E. (2005). Phylogenetic relationships and evolutionary history of the reef fish family Labridae. <em>Molecular Phylogenetics and Evolution</em>, 36(2), 370–390.</p>
+<p>Frédérich, B., Mittelheiser, L., Gillet, A., et al.&nbsp;(2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. <em>BMC Biology</em>, 24, 46.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
