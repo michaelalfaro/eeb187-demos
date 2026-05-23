@@ -340,7 +340,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../clades/hypsigenyinae.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hypsigenyinae — Hogfishes and Sheephead Wrasses</span></a>
+ <span class="menu-text">Hypsigenyinae — Hogfishes, Tuskfishes, and Sheepheads</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -361,12 +361,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quick-reference-card" id="toc-quick-reference-card" class="nav-link active" data-scroll-target="#quick-reference-card">Quick-Reference Card</a></li>
+  <li><a href="#quick-reference-card" id="toc-quick-reference-card" class="nav-link active" data-scroll-target="#quick-reference-card">Quick-Reference Card</a>
+  <ul class="collapse">
+  <li><a href="#taxonomy-and-phylogenetics" id="toc-taxonomy-and-phylogenetics" class="nav-link" data-scroll-target="#taxonomy-and-phylogenetics">Taxonomy and Phylogenetics</a></li>
   <li><a href="#natural-history" id="toc-natural-history" class="nav-link" data-scroll-target="#natural-history">Natural History</a></li>
+  <li><a href="#visual-ecology-and-signaling" id="toc-visual-ecology-and-signaling" class="nav-link" data-scroll-target="#visual-ecology-and-signaling">Visual Ecology and Signaling</a></li>
   <li><a href="#color-pattern-diversity" id="toc-color-pattern-diversity" class="nav-link" data-scroll-target="#color-pattern-diversity">Color Pattern Diversity</a></li>
-  <li><a href="#dimorphism-and-ontogeny-warnings" id="toc-dimorphism-and-ontogeny-warnings" class="nav-link" data-scroll-target="#dimorphism-and-ontogeny-warnings">Dimorphism and Ontogeny Warnings</a></li>
+  <li><a href="#sexual-dimorphism-ontogeny-and-polymorphism" id="toc-sexual-dimorphism-ontogeny-and-polymorphism" class="nav-link" data-scroll-target="#sexual-dimorphism-ontogeny-and-polymorphism">Sexual Dimorphism, Ontogeny, and Polymorphism</a></li>
+  <li><a href="#ontogenetic-color-change-in-pomacanthus" id="toc-ontogenetic-color-change-in-pomacanthus" class="nav-link" data-scroll-target="#ontogenetic-color-change-in-pomacanthus">Ontogenetic Color Change in <em>Pomacanthus</em></a></li>
+  <li><a href="#data-quality-warnings" id="toc-data-quality-warnings" class="nav-link" data-scroll-target="#data-quality-warnings">Data Quality Warnings</a></li>
   <li><a href="#promising-questions-for-this-clade" id="toc-promising-questions-for-this-clade" class="nav-link" data-scroll-target="#promising-questions-for-this-clade">Promising Questions for This Clade</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -393,8 +399,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="quick-reference-card" class="level2">
-<h2 class="anchored" data-anchor-id="quick-reference-card">Quick-Reference Card</h2>
+<section id="quick-reference-card" class="level1">
+<h1>Quick-Reference Card</h1>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -419,48 +425,74 @@ Note
 <tbody>
 <tr class="odd">
 <td>Species in tree</td>
-<td>56 (includes some outgroup taxa — see warning below)</td>
+<td>47 (outgroups pruned — pomacanthids only)</td>
 </tr>
 <tr class="even">
+<td>Family size</td>
+<td>~88 species in 8 genera (Baraf et al., 2019)</td>
+</tr>
+<tr class="odd">
 <td>Sexual system</td>
-<td>Protogynous hermaphrodites (haremic)</td>
+<td>Protogynous hermaphrodites; predominantly haremic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Dichromatism</td>
-<td>Moderate (varies by genus; strongest in <em>Genicanthus</em>)</td>
-</tr>
-<tr class="even">
-<td>Primary diet</td>
-<td>Spongivores / omnivores; some <em>Centropyge</em> graze algae</td>
+<td>Subtle to moderate in most genera; pronounced in <em>Genicanthus</em></td>
 </tr>
 <tr class="odd">
-<td>Depth range</td>
-<td>1–70 m (most species 3–40 m; some deepwater <em>Centropyge</em> and <em>Paracentropyge</em> to 70+ m)</td>
+<td>Primary diet</td>
+<td>Spongivory (large genera) to omnivory and algal grazing (<em>Centropyge</em>, <em>Paracentropyge</em>) (Konow &amp; Bellwood, 2011)</td>
 </tr>
 <tr class="even">
-<td>Key reference</td>
-<td>Gaither et al.&nbsp;(2014), <em>Molecular Phylogenetics and Evolution</em></td>
+<td>Depth range</td>
+<td>~1–70 m; some <em>Paracentropyge</em> and <em>Centropyge</em> extend into the mesophotic zone</td>
+</tr>
+<tr class="odd">
+<td>Key references</td>
+<td>Bellwood et al.&nbsp;(2004); Gaither et al.&nbsp;(2014); Baraf et al.&nbsp;(2019, 2024); Tea et al.&nbsp;(2020)</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<section id="taxonomy-and-phylogenetics" class="level2">
+<h2 class="anchored" data-anchor-id="taxonomy-and-phylogenetics">Taxonomy and Phylogenetics</h2>
+<p>Pomacanthidae are placed in the order Acanthuriformes (or, under older classifications, Perciformes), and have long been considered sister to butterflyfishes (Chaetodontidae), with which they share many ecological and morphological features (Bellwood et al., 2004). Family-level monophyly is well supported, but generic boundaries have been turbulent. The first molecular phylogeny of the family, based on mitochondrial 12S and 16S rRNA, recovered all but one genus as monophyletic: <em>Centropyge</em> was paraphyletic, with the swallowtail genus <em>Genicanthus</em> and the smoke-angelfish genus <em>Apolemichthys</em> nested within it (Bellwood et al., 2004). Subsequent multi-locus work confirmed and refined this picture, additionally elevating <em>Paracentropyge</em> and <em>Xiphypops</em> to genus rank to restore monophyly (Gaither et al., 2014).</p>
+<p>The Atlantic and tropical eastern Pacific genus <em>Holacanthus</em> is itself a small, well-supported clade whose internal phylogeny tracks the closure of the Isthmus of Panama (Alva-Campbell et al., 2010). Pomacanthid biogeography is dominated by an Indo-Australian centre of origin and diversity, from which lineages have repeatedly dispersed into the Indian Ocean, the Red Sea, and (less often) the Atlantic (Baraf et al., 2019). The most recent target-capture phylogenomic analysis, using ~1,000 ultraconserved elements from 45 species, recovers a well-resolved family backbone but flags persistent discordance around the <em>Centropyge</em> radiation and the monotypic <em>Pygoplites</em> lineage, consistent with ancient introgression and incomplete lineage sorting (Baraf et al., 2024). For this lab, the key practical point is that close phylogenetic relatives can look dramatically different (e.g., flame <em>Centropyge loricula</em> vs.&nbsp;lemonpeel <em>C. flavissima</em>) and distantly related species can look remarkably similar (cross-genus convergence on vertical-bar patterns) — meaning color, although taxonomically informative, is not a clean proxy for phylogenetic distance in this family (Gaither et al., 2014).</p>
 </section>
 <section id="natural-history" class="level2">
 <h2 class="anchored" data-anchor-id="natural-history">Natural History</h2>
-<p>The Pomacanthidae (marine angelfishes) comprise approximately 90 species in 8 genera, distributed across tropical and subtropical reefs of the Atlantic, Indian, and Pacific oceans. The family is divided into two major ecological groups: the large-bodied angelfishes (<em>Pomacanthus</em>, <em>Holacanthus</em>, <em>Chaetodontoplus</em>) and the pygmy or dwarf angelfishes (<em>Centropyge</em> and allies). Your tree includes 56 species, but also contains several outgroup taxa from other families used for phylogenetic context (see warning below). Molecular phylogenetics has revealed that <em>Centropyge</em> as traditionally defined is paraphyletic — the genera <em>Apolemichthys</em> and <em>Genicanthus</em> nest within it (Gaither et al., 2014). This taxonomic instability is itself an interesting color-evolution story: species that look dramatically different in coloration turn out to be close relatives, while species that look nearly identical can be genetically distinct.</p>
-<p>Angelfishes are characteristic members of coral reef communities, occupying territories on reef slopes, walls, and lagoon patch reefs. Large-bodied species are primarily spongivores, supplementing their diet with tunicates, algae, and small invertebrates. Pygmy angelfishes tend toward omnivory, grazing on algae and detrital films while also consuming small benthic invertebrates. Most species form harems in which a dominant male defends a territory containing several smaller females. Upon the death or removal of the male, the largest female undergoes sex change (protogynous hermaphroditism) — a process that is typically accompanied by a color change, sometimes dramatic. The tight coupling between social status, sex, and coloration makes pomacanthids a compelling system for studying the co-evolution of sexual and social signals.</p>
-<p>Pomacanthids are perhaps most famous for their extreme ontogenetic color change. Juvenile emperor angelfish (<em>Pomacanthus imperator</em>) display electric blue and white concentric rings on a dark navy body — a pattern that provides camouflage among coral rubble and may reduce aggression from territorial adults. As the fish matures (at approximately 8–12 cm body length), the concentric rings gradually elongate and fade, transforming over several months into the adult pattern of alternating horizontal blue and yellow stripes. This transformation is so complete that early taxonomists described the juveniles and adults as separate species. Similar but distinct ontogenetic shifts occur in <em>P. semicirculatus</em>, <em>P. annularis</em>, and many other large-bodied pomacanthids. This extreme ontogenetic color change makes angelfishes one of the best study systems for understanding the developmental regulation and evolutionary lability of color pattern.</p>
-<p>Hybridization is remarkably common in Pomacanthidae, particularly among <em>Centropyge</em> species. The family has the highest proportion of documented hybrids of any coral reef fish family. Hybrid individuals often display intermediate color patterns, creating a “color continuum” between parent species that has caused persistent taxonomic confusion and has implications for how we interpret discrete color categories in comparative analyses.</p>
+<p>Pomacanthidae are obligate coral-reef inhabitants of the Atlantic, Indian, and Pacific oceans, with species richness peaking in the Coral Triangle (Baraf et al., 2019). Adults occupy fore-reef slopes, walls, lagoon patch reefs, and (for many <em>Centropyge</em> and <em>Paracentropyge</em>) mesophotic reef habitats below 50 m. Most species are diurnal and strongly site-attached, defending feeding and mating territories within structurally complex substrate.</p>
+<p>Diet varies substantially across the family. Large-bodied genera (<em>Pomacanthus</em>, <em>Holacanthus</em>, <em>Pomacanthops</em>, <em>Chaetodontoplus</em>) are best known as spongivores — one of the few vertebrate groups that exploits sponges in quantity — and supplement sponges with tunicates, hydroids, filamentous algae, and small benthic invertebrates. The pygmy and dwarf genera (<em>Centropyge</em>, <em>Paracentropyge</em>, <em>Xiphypops</em>) graze algal turf and detritus, and <em>Genicanthus</em> is unusual within the family for being a midwater zooplanktivore. Despite this broad trophic range, the underlying feeding apparatus is morphologically and kinematically conservative: high trophic diversity has evolved with surprisingly limited functional disparity in jaw morphology and feeding kinematics (Konow &amp; Bellwood, 2011).</p>
+<p>Mating systems are predominantly haremic, with a dominant male defending a territory containing one to several females. All pomacanthids studied to date are protogynous hermaphrodites: females change sex to male upon loss of the dominant individual, and the transition is typically accompanied by behavioural change and, in some genera, conspicuous color change (Pyle &amp; Randall, 1994). Spawning is pelagic and pair-based, with planktonic larval durations on the order of weeks, which contributes to the broad distributions and apparent panmixia of many species (Schultz et al., 2007).</p>
+<p>A defining natural-history feature of the family is the extraordinarily high frequency of interspecific hybridization. A recent genomic survey detected putative hybrids involving 42 of 88 species (~48% of the family), distributed across every extant genus except the monotypic <em>Pygoplites</em> (Tea et al., 2020). Field studies at hybrid hotspots such as Christmas Island show that hybridization tends to be promoted by a combination of low local abundance of one parent species and broad niche overlap between parents — conditions easily met as Indo-Pacific lineages contact one another along suture zones (Hodge et al., 2019).</p>
+</section>
+<section id="visual-ecology-and-signaling" class="level2">
+<h2 class="anchored" data-anchor-id="visual-ecology-and-signaling">Visual Ecology and Signaling</h2>
+<p>Primary measurements of pomacanthid visual systems — microspectrophotometry of cone visual pigments, opsin gene expression, behavioural psychophysics — are essentially absent from the literature. Almost everything we know about how angelfishes perceive their reef is inferred from the broader reef-fish literature (Marshall et al., 2019). It is worth stating this gap explicitly: despite the family’s status as a charismatic, visually conspicuous group, no published study has directly characterised the cone complement of any pomacanthid.</p>
+<p>What is known generalises across most acanthuriforms and percomorphs (Marshall et al., 2019). Reef fishes typically possess a duplex retina with one rod opsin (RH1) and up to five cone opsin classes (SWS1, SWS2, RH2 paralogues, LWS), arranged as single cones (expressing short-wavelength opsins) and pairs of double cones (expressing medium- and long-wavelength opsins). Several reef-fish lineages, including some butterflyfishes and damselfishes, are UV-sensitive via SWS1 in single cones, and a parsimonious assumption is that at least some pomacanthids retain UV sensitivity, especially those species (e.g., <em>Genicanthus</em>, <em>Centropyge</em>) whose body colours include UV-reflective whites or yellows that would otherwise be invisible to ecologically relevant viewers. This remains an open empirical question.</p>
+<p>Light environments occupied by pomacanthids span the near-surface blue-green spectrum of shallow lagoons through the increasingly monochromatic blue light of mesophotic reefs (Marshall et al., 2019). The most likely functional contexts for color signalling in the family are species recognition (especially in sympatric <em>Centropyge</em> species where hybridization is rampant), sex recognition (in <em>Genicanthus</em>, where dichromatism is strong), and territorial advertisement. Color also functions as a developmental signal: juveniles of large <em>Pomacanthus</em> species use radically different patterns from adults, which is widely interpreted as a mechanism for avoiding aggression from territorial conspecifics (Pyle &amp; Randall, 1994).</p>
 </section>
 <section id="color-pattern-diversity" class="level2">
 <h2 class="anchored" data-anchor-id="color-pattern-diversity">Color Pattern Diversity</h2>
-<p>Pomacanthids display a spectacular range of color patterns. At one extreme, <em>Centropyge</em> pygmy angelfishes include species that are almost entirely a single vivid color — the flame angelfish (<em>C. loricula</em>) is bright orange-red with black vertical bars, while the lemonpeel angelfish (<em>C. flavissima</em>) is uniformly bright yellow with a blue eye-ring. At the other extreme, large <em>Pomacanthus</em> species display complex multicolor patterns: the regal angelfish (<em>Pygoplites diacanthus</em>) has alternating yellow and blue-edged white vertical bars on a blue background.</p>
-<p>Sexual dichromatism is most pronounced in <em>Genicanthus</em> (swallowtail angelfishes), where males and females can differ dramatically: male <em>G. lamarck</em> has bold horizontal black stripes on a white body, while females show a dark upper body fading to white below. In most other genera, dichromatism is subtle to moderate.</p>
-<p>Color convergences across families are notable. The bold vertical barring of many angelfishes is paralleled in butterflyfishes (Chaetodontidae), which occupy similar reef habitats. The juvenile concentric-ring pattern of <em>Pomacanthus</em> has no close parallel in other reef fish families, making it a genuinely unique developmental phenomenon.</p>
+<p>Within the standardised pattern survey of Frédérich et al.&nbsp;(2026), Pomacanthidae stand out among the six reef-fish families analysed for the diversity and lability of their patterns. Pomacanthid evolution has produced near-monochromatic body plans (e.g., <em>Centropyge flavissima</em> in uniform yellow with a blue eye-ring), bold vertical-bar patterns (<em>Pygoplites diacanthus</em>, several <em>Pomacanthus</em>), striking concentric-arc juveniles (<em>Pomacanthus</em> spp.; see below), and intricate face-and-fin masks (<em>Apolemichthys</em>, <em>Chaetodontoplus</em>). Frédérich et al.&nbsp;(2026) further show that pigmentation patterns have evolved rapidly and repeatedly across reef-fish families, with multiple independent origins of the same visual motifs — a result consistent with convergence on a limited set of “designs” that work in reef light environments.</p>
+<p>Convergence with other families is striking. Vertical-bar patterns broadly resembling those of butterflyfishes have evolved at least twice in pomacanthids (in <em>Pygoplites</em> and in juvenile <em>Pomacanthus</em>), and the bar/stripe axis is one of the most labile features of reef-fish colouration generally (Hemingson et al., 2019). Hemingson and colleagues showed in butterflyfishes that pattern divergence is most rapid when closely related species have overlapping geographic ranges of similar size — a prediction worth testing explicitly in pomacanthids, where many sister-pair contact zones are sites of both pattern divergence and hybridization (Tea et al., 2020).</p>
+<p>Within-genus disparities are also instructive. The <em>Holacanthus</em> radiation occupies a relatively narrow morphological space but a wide chromatic one, from the cool blues of <em>H. ciliaris</em> to the bold yellow/black contrast of <em>H. tricolor</em> (Alva-Campbell et al., 2010). <em>Centropyge</em> spans the most colourful range of any genus in the family but is also the most paraphyletic, the most hybridised, and the most taxonomically unstable — a reminder that bright, distinctive colours need not reflect deep evolutionary distinctiveness (Gaither et al., 2014).</p>
 </section>
-<section id="dimorphism-and-ontogeny-warnings" class="level2">
-<h2 class="anchored" data-anchor-id="dimorphism-and-ontogeny-warnings">Dimorphism and Ontogeny Warnings</h2>
+<section id="sexual-dimorphism-ontogeny-and-polymorphism" class="level2">
+<h2 class="anchored" data-anchor-id="sexual-dimorphism-ontogeny-and-polymorphism">Sexual Dimorphism, Ontogeny, and Polymorphism</h2>
+<p>Sexual dichromatism in Pomacanthidae ranges from negligible (most <em>Centropyge</em>, <em>Holacanthus</em>, <em>Pomacanthus</em>) to extreme. The clearest case is <em>Genicanthus</em>, where males and females differ in body pattern so dramatically that they were originally described as separate species: male <em>G. lamarck</em> has bold horizontal black stripes on a white body whereas females are darker dorsally and whitish below. Because sex change is protogynous, all <em>Genicanthus</em> individuals begin life with female colouration and acquire male pattern upon ascending to the dominant breeding position (Pyle &amp; Randall, 1994).</p>
+<p>Geographic colour polymorphism is also well documented. The flame angelfish <em>Centropyge loricula</em> expresses three regional colour morphs across the Pacific — red (Hawai‘i), reduced-black (Marquesas), and orange (broader Oceania) — yet population genetic markers reveal little differentiation among morphs, indicating that morph variation is not tracking deep population structure (Schultz et al., 2007). Similar morph complexes have been described in <em>C. flavissima</em> and <em>C. heraldi</em>, which appear to comprise cryptic sibling species pairs (Gaither et al., 2014). For comparative colour analyses, these examples emphasise that within-species chromatic variation in pomacanthids can be substantial and ecologically meaningful, not noise.</p>
+<p>Hybrid individuals typically show intermediate or mosaic colour patterns relative to parental species, and these intermediates form a near-continuous chromatic spectrum at sympatric contact zones (Pyle &amp; Randall, 1994; Tea et al., 2020). Because hybrids are frequent (~48% of species; Tea et al., 2020) and because they bias quantitative colour summaries toward parental averages, hybrids must be flagged or excluded from comparative analyses rather than coerced into one parental category.</p>
+</section>
+<section id="ontogenetic-color-change-in-pomacanthus" class="level2">
+<h2 class="anchored" data-anchor-id="ontogenetic-color-change-in-pomacanthus">Ontogenetic Color Change in <em>Pomacanthus</em></h2>
+<p>The most spectacular ontogenetic colour change in any reef-fish family occurs in <em>Pomacanthus</em> and its close relatives. Juveniles of <em>P. imperator</em>, <em>P. semicirculatus</em>, <em>P. annularis</em>, <em>P. navarchus</em>, and <em>P. paru</em> display dark bodies marked with electric-blue and white concentric arcs or rings centred near the caudal peduncle. As individuals reach roughly 8–12 cm standard length, the arcs progressively elongate and flatten over a period of weeks to months, ultimately resolving into the species-specific adult pattern — which in <em>P. imperator</em> and <em>P. semicirculatus</em> takes the form of horizontal blue-and-yellow stripes (Pyle &amp; Randall, 1994).</p>
+<p>Two adaptive hypotheses are commonly invoked for this developmental shift. First, the disruptive concentric pattern is thought to enhance crypsis among coral rubble and rocky substrate where juveniles shelter. Second, the radically different juvenile pattern may reduce intraspecific aggression by signalling to territorial adults that the juvenile is not a competitor for the local territory or mate (Pyle &amp; Randall, 1994). These hypotheses have rarely been tested experimentally in <em>Pomacanthus</em>, and the developmental and genetic basis of the transformation — how the arcs reorganise into stripes, what regulatory changes underlie the shift — remains essentially unknown. Pomacanthids are therefore an attractive but underexploited model for the evo-devo of pattern formation, complementing better-studied systems like cichlids and damselfishes.</p>
+<p>The macroevolutionary distribution of extreme ontogenetic colour change within the family has not been formally mapped, though it appears largely restricted to large-bodied genera (<em>Pomacanthus</em>, <em>Holacanthus</em>, some <em>Chaetodontoplus</em>) and is muted or absent in the dwarf genera. This pattern offers a natural opportunity for ancestral-state reconstruction across the family phylogeny (Baraf et al., 2019, 2024).</p>
+</section>
+<section id="data-quality-warnings" class="level2">
+<h2 class="anchored" data-anchor-id="data-quality-warnings">Data Quality Warnings</h2>
 <div class="callout callout-style-default callout-warning callout-titled" title="Data quality: what to watch for">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -471,36 +503,45 @@ Data quality: what to watch for
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Outgroup taxa in your tree:</strong> Your phylogeny includes species from outside Pomacanthidae that were used as outgroups in the original phylogenetic analysis. Expect to see tip labels for <em>Chaetodon</em> (butterflyfishes), <em>Forcipiger</em> (longnose butterflyfishes), <em>Naso</em> (unicornfishes), <em>Zanclus</em> (Moorish idol), and <em>Acanthurus</em> (surgeonfishes). <strong>You must exclude these outgroup taxa from your color-pattern analyses.</strong> They are there to root the tree, not to be part of your pomacanthid dataset. Filter them out before computing any pavo summary statistics.</p>
-<p><strong>Ontogenetic color change:</strong> This is the single biggest data-quality risk for your group. Juvenile and adult <em>Pomacanthus</em> and <em>Holacanthus</em> look like entirely different species. If your image set includes photographs of juvenile angelfish, they will introduce massive noise into your analysis. When curating images:</p>
+<p><strong>Ontogenetic colour change is the single largest risk for this group.</strong> Juvenile and adult <em>Pomacanthus</em> and <em>Holacanthus</em> look like entirely different species, and a few mislabelled juvenile images can swamp the chromatic signal of an entire genus. When curating images:</p>
 <ul>
-<li>Verify that each image is an <strong>adult</strong> (or sub-adult with predominantly adult pattern).</li>
-<li>Juveniles of <em>Pomacanthus</em> are characterized by concentric rings, spots, or bars on a dark body.</li>
-<li>When in doubt, check body size relative to known adult size for the species. If the fish appears to be less than half the species’ maximum total length, treat it as a juvenile.</li>
+<li>Verify that each image is an <strong>adult</strong> (or sub-adult expressing predominantly adult pattern).</li>
+<li>Juveniles of large <em>Pomacanthus</em> species are typically dark-bodied with concentric blue-and-white arcs or rings centred near the tail.</li>
+<li>If a fish appears to be less than ~half the species’ maximum total length, treat it as a juvenile until you have evidence otherwise.</li>
 </ul>
-<p><strong>Dimorphism:</strong> Outside of <em>Genicanthus</em>, sexual dimorphism is moderate and often involves subtle differences in fin coloration or body saturation rather than wholesale pattern changes. For most genera, a single representative image per species is adequate. For <em>Genicanthus</em>, you may want to note whether you are using male or female images and be consistent.</p>
-<p><strong>Hybridization:</strong> <em>Centropyge</em> hybrids are common and often display intermediate coloration that does not match either parent species. If a specimen looks “off” relative to standard field guides, it may be a hybrid. Flag these for review rather than forcing them into a species category.</p>
+<p><strong>Sexual dimorphism in <em>Genicanthus</em>.</strong> Males and females differ dramatically. Be consistent in which sex you use for a species, and record the choice in your metadata. For all other genera, a single adult representative per species is generally adequate.</p>
+<p><strong>Hybridisation.</strong> Pomacanthidae have the highest documented hybrid frequency of any reef-fish family (Tea et al., 2020); <em>Centropyge</em>, <em>Pomacanthus</em>, <em>Genicanthus</em>, and <em>Chaetodontoplus</em> all contain hybrids that look intermediate to or unlike either parent. If a specimen looks “off” relative to a standard field guide, suspect a hybrid and flag it for review rather than forcing it into a species category.</p>
+<p><strong>Geographic colour morphs.</strong> Several <em>Centropyge</em> species (notably <em>C. loricula</em>, <em>C. flavissima</em>, <em>C. heraldi</em>) include regional colour morphs that may be genetically nearly identical but visually distinct (Schultz et al., 2007). Decide a priori whether you are analysing species means, morph-specific values, or both.</p>
 </div>
 </div>
 </section>
 <section id="promising-questions-for-this-clade" class="level2">
 <h2 class="anchored" data-anchor-id="promising-questions-for-this-clade">Promising Questions for This Clade</h2>
 <ol type="1">
-<li><p><strong><a href="../recipes/pattern/discrete-trait-mapping.html">Discrete Trait Mapping</a></strong> — Map the juvenile-to-adult pattern transformation across the pomacanthid phylogeny. Is extreme ontogenetic color change ancestral to the family, or has it evolved independently in multiple lineages? Do pygmy angelfishes (<em>Centropyge</em>), which show less dramatic ontogenetic change, represent the derived condition?</p></li>
-<li><p><strong><a href="../recipes/ecology/depth-and-color.html">Depth and Color</a></strong> — Pomacanthids range from shallow lagoons to deeper reef slopes, with some <em>Centropyge</em> and <em>Paracentropyge</em> occurring in mesophotic zones below 50 m. Do deeper-dwelling species show reduced conspicuousness, as predicted by the depth–color hypothesis?</p></li>
-<li><p><strong><a href="../recipes/advanced/evolutionary-model-comparison.html">Evolutionary Model Comparison</a></strong> — Given the paraphyly of <em>Centropyge</em> and the prevalence of hybridization, pomacanthids may violate the assumptions of standard Brownian motion models. Test whether Ornstein-Uhlenbeck models with multiple optima better fit your color data.</p></li>
-<li><p><strong><a href="../recipes/core/cross-family-comparison.html">Cross-Family Comparison</a></strong> — Angelfishes are often confused with butterflyfishes by casual observers, and several species share convergent color patterns (vertical bars, eyespots, bold contrasts). A formal comparison of color metrics between Pomacanthidae and the outgroup <em>Chaetodon</em> species in your tree could test whether this convergence is quantitatively real.</p></li>
+<li><p><strong><a href="../recipes/pattern/discrete-trait-mapping.html">Discrete Trait Mapping</a></strong> — Map the juvenile-to-adult pattern transformation across the pomacanthid phylogeny. Is extreme ontogenetic colour change ancestral to the family, or has it evolved independently in large-bodied lineages? Do pygmy angelfishes (<em>Centropyge</em>, <em>Paracentropyge</em>, <em>Xiphypops</em>), which show less dramatic ontogenetic change, represent the derived condition — or simply a body-size-correlated loss of the juvenile pattern?</p></li>
+<li><p><strong><a href="../recipes/ecology/depth-and-color.html">Depth and Color</a></strong> — Pomacanthids range from shallow lagoons to mesophotic reef slopes, with some <em>Centropyge</em> and <em>Paracentropyge</em> occurring well below 50 m. Do deeper-dwelling species show reduced spectral conspicuousness or shifts toward longer-wavelength reflectance, as predicted by the depth-and-light-environment hypothesis?</p></li>
+<li><p><strong><a href="../recipes/advanced/evolutionary-model-comparison.html">Evolutionary Model Comparison</a></strong> — Given the paraphyly of <em>Centropyge</em>, the prevalence of ancient introgression, and the high frequency of contemporary hybridisation, pomacanthids likely violate the assumptions of standard Brownian motion models. Compare BM, OU (single and multi-optima), and early-burst models on continuous colour traits, and consider whether reticulate-network-aware comparative methods would change the inference.</p></li>
+<li><p><strong><a href="../recipes/core/cross-family-comparison.html">Cross-Family Comparison</a></strong> — Angelfishes are frequently mistaken for butterflyfishes by casual observers, and Frédérich et al.&nbsp;(2026) and Hemingson et al.&nbsp;(2019) provide quantitative frameworks for testing whether vertical-bar and eyespot motifs in Pomacanthidae and Chaetodontidae represent statistically detectable convergence on the same chromatic phenotype.</p></li>
 </ol>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<p>Gaither, M. R., Schultz, J. K., Bellwood, D. R., Pyle, R. L., DiBattista, J. D., Rocha, L. A., &amp; Bowen, B. W. (2014). Evolution of pygmy angelfishes: Recent divergences, introgression, and the usefulness of color in taxonomy. <em>Molecular Phylogenetics and Evolution</em>, 74, 38–47.</p>
-<p>Baraf, L. H., DiBattista, J. D., Golani, D., Feldstein Farkash, T., Bernardi, G., &amp; Gaither, M. R. (2024). Comparative mitogenomics of marine angelfishes (F: Pomacanthidae). <em>Ecology and Evolution</em>, 14(8), e70127.</p>
-<p>Alva-Campbell, Y., Floeter, S. R., Robertson, D. R., Bellwood, D. R., &amp; Bernardi, G. (2010). Molecular phylogenetics and evolution of <em>Holacanthus</em> angelfishes (Pomacanthidae). <em>Molecular Phylogenetics and Evolution</em>, 56(1), 456–461.</p>
-<p>Frédérich, B., Mittelheiser, L., Gillet, A., et al.&nbsp;(2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. <em>BMC Biology</em>, 24, 46.</p>
-<p>Schultz, J. K., Pyle, R. L., DeMartini, E., &amp; Bowen, B. W. (2007). Genetic connectivity among color morphs and Pacific archipelagos for the flame angelfish, <em>Centropyge loricula</em>. <em>Marine Biology</em>, 154, 425–437.</p>
+<p>Alva-Campbell, Y., Floeter, S. R., Robertson, D. R., Bellwood, D. R., &amp; Bernardi, G. (2010). Molecular phylogenetics and evolution of <em>Holacanthus</em> angelfishes (Pomacanthidae). <em>Molecular Phylogenetics and Evolution</em>, 56(1), 456–461. <a href="https://doi.org/10.1016/j.ympev.2010.02.014">https://doi.org/10.1016/j.ympev.2010.02.014</a></p>
+<p>Baraf, L. M., Pratchett, M. S., &amp; Cowman, P. F. (2019). Ancestral biogeography and ecology of marine angelfishes (F: Pomacanthidae). <em>Molecular Phylogenetics and Evolution</em>, 140, 106596. <a href="https://doi.org/10.1016/j.ympev.2019.106596">https://doi.org/10.1016/j.ympev.2019.106596</a></p>
+<p>Baraf, L. H., DiBattista, J. D., Golani, D., Feldstein Farkash, T., Bernardi, G., &amp; Gaither, M. R. (2024). Comparative mitogenomics of marine angelfishes (F: Pomacanthidae). <em>Ecology and Evolution</em>, 14(8), e70127. <a href="https://doi.org/10.1002/ece3.70127">https://doi.org/10.1002/ece3.70127</a></p>
+<p>Bellwood, D. R., van Herwerden, L., &amp; Konow, N. (2004). Evolution and biogeography of marine angelfishes (Pisces: Pomacanthidae). <em>Molecular Phylogenetics and Evolution</em>, 33(1), 140–155. <a href="https://doi.org/10.1016/j.ympev.2004.04.015">https://doi.org/10.1016/j.ympev.2004.04.015</a></p>
+<p>Frédérich, B., Mittelheiser, L., Gillet, A., Hodge, J. R., Laudet, V., &amp; Dornburg, A. (2026). Rapid and repeated evolution of pigmentation patterns in reef fishes. <em>BMC Biology</em>, 24, 46. <a href="https://doi.org/10.1186/s12915-026-02544-4">https://doi.org/10.1186/s12915-026-02544-4</a></p>
+<p>Gaither, M. R., Schultz, J. K., Bellwood, D. R., Pyle, R. L., DiBattista, J. D., Rocha, L. A., &amp; Bowen, B. W. (2014). Evolution of pygmy angelfishes: Recent divergences, introgression, and the usefulness of color in taxonomy. <em>Molecular Phylogenetics and Evolution</em>, 74, 38–47. <a href="https://doi.org/10.1016/j.ympev.2014.01.017">https://doi.org/10.1016/j.ympev.2014.01.017</a></p>
+<p>Hemingson, C. R., Cowman, P. F., Hodge, J. R., &amp; Bellwood, D. R. (2019). Colour pattern divergence in reef fish species is rapid and driven by both range overlap and symmetry. <em>Ecology Letters</em>, 22(1), 190–199. <a href="https://doi.org/10.1111/ele.13180">https://doi.org/10.1111/ele.13180</a></p>
+<p>Hodge, J. R., van Herwerden, L., &amp; Bellwood, D. R. (2019). Do ecological traits of low abundance and niche overlap promote hybridisation among coral-reef angelfishes? <em>Coral Reefs</em>, 38(4), 743–753. <a href="https://doi.org/10.1007/s00338-019-01816-6">https://doi.org/10.1007/s00338-019-01816-6</a></p>
+<p>Konow, N., &amp; Bellwood, D. R. (2011). Evolution of high trophic diversity based on limited functional disparity in the feeding apparatus of marine angelfishes (f.&nbsp;Pomacanthidae). <em>PLOS ONE</em>, 6(9), e24113. <a href="https://doi.org/10.1371/journal.pone.0024113">https://doi.org/10.1371/journal.pone.0024113</a></p>
+<p>Marshall, N. J., Cortesi, F., de Busserolles, F., Siebeck, U. E., &amp; Cheney, K. L. (2019). Colours and colour vision in reef fishes: Past, present and future research directions. <em>Journal of Fish Biology</em>, 95(1), 5–38. <a href="https://doi.org/10.1111/jfb.13849">https://doi.org/10.1111/jfb.13849</a></p>
+<p>Pyle, R. L., &amp; Randall, J. E. (1994). A review of hybridization in marine angelfishes (Perciformes: Pomacanthidae). <em>Environmental Biology of Fishes</em>, 41(1–4), 127–145. <a href="https://doi.org/10.1007/BF02197841">https://doi.org/10.1007/BF02197841</a></p>
+<p>Schultz, J. K., Pyle, R. L., DeMartini, E., &amp; Bowen, B. W. (2007). Genetic connectivity among color morphs and Pacific archipelagos for the flame angelfish, <em>Centropyge loriculus</em>. <em>Marine Biology</em>, 151(1), 167–175. <a href="https://doi.org/10.1007/s00227-006-0471-5">https://doi.org/10.1007/s00227-006-0471-5</a></p>
+<p>Tea, Y.-K., Hobbs, J.-P. A., Vitelli, F., DiBattista, J. D., Ho, S. Y. W., &amp; Lo, N. (2020). Angels in disguise: Sympatric hybridization in the marine angelfishes is widespread and occurs between deeply divergent lineages. <em>Proceedings of the Royal Society B: Biological Sciences</em>, 287(1932), 20201459. <a href="https://doi.org/10.1098/rspb.2020.1459">https://doi.org/10.1098/rspb.2020.1459</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
