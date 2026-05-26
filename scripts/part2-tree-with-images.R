@@ -42,11 +42,20 @@ suppressPackageStartupMessages({
   stop("Unsupported image extension: ", path)
 }
 
-# Match an image filename like "Acanthurus_lineatus.png" or "acanthurus-lineatus.jpg"
-# back to a canonical "Genus_species" key.
-.image_key <- function(filename) {
-  base <- tools::file_path_sans_ext(basename(filename))
-  base <- gsub("[-\\s]+", "_", base)
+# Match an image path back to a canonical "Genus_species" key.
+# Handles two bundle layouts:
+#   (a) flat:        images/Acanthurus_lineatus.png
+#   (b) per-species: images/Acanthurus_lineatus/exemplar.png
+# If the immediate parent directory of the file is itself a "Genus_species"
+# string, use that as the key. Otherwise fall back to the filename stem.
+.image_key <- function(path) {
+  parent <- basename(dirname(path))
+  if (grepl("^[A-Z][a-z]+[_-][a-z]+", parent)) {
+    base <- gsub("[-\\s]+", "_", parent)
+  } else {
+    base <- tools::file_path_sans_ext(basename(path))
+    base <- gsub("[-\\s]+", "_", base)
+  }
   # Capitalize first letter
   paste0(toupper(substring(base, 1, 1)), substring(base, 2))
 }
@@ -118,6 +127,7 @@ plot_part2 <- function(family,
   img_files <- list.files(img_dir,
                           pattern = "\\.(png|jpe?g)$",
                           ignore.case = TRUE,
+                          recursive = TRUE,
                           full.names = TRUE)
   if (length(img_files) == 0) {
     stop("No PNG/JPG images found under ", img_dir)
