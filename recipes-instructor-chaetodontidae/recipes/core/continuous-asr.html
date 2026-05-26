@@ -378,6 +378,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#where-on-the-tree-has-each-axis-evolved-most" id="toc-where-on-the-tree-has-each-axis-evolved-most" class="nav-link" data-scroll-target="#where-on-the-tree-has-each-axis-evolved-most">Where on the tree has each axis evolved most?</a>
   <ul class="collapse">
+  <li><a href="#phylopc1-pattern-density" id="toc-phylopc1-pattern-density" class="nav-link" data-scroll-target="#phylopc1-pattern-density">PhyloPC1 — pattern density</a></li>
+  <li><a href="#phylopc2-color-diversity" id="toc-phylopc2-color-diversity" class="nav-link" data-scroll-target="#phylopc2-color-diversity">PhyloPC2 — color diversity</a></li>
+  <li><a href="#phylopc3-stripe-geometry" id="toc-phylopc3-stripe-geometry" class="nav-link" data-scroll-target="#phylopc3-stripe-geometry">PhyloPC3 — stripe geometry</a></li>
+  <li><a href="#shared-colorbar" id="toc-shared-colorbar" class="nav-link" data-scroll-target="#shared-colorbar">Shared colorbar</a></li>
   <li><a href="#hero-pdf-of-the-per-branch-rate-map" id="toc-hero-pdf-of-the-per-branch-rate-map" class="nav-link" data-scroll-target="#hero-pdf-of-the-per-branch-rate-map">Hero PDF of the per-branch rate map</a></li>
   <li><a href="#top-rate-branches-per-axis" id="toc-top-rate-branches-per-axis" class="nav-link" data-scroll-target="#top-rate-branches-per-axis">Top-rate branches per axis</a></li>
   </ul></li>
@@ -684,25 +688,25 @@ Tip
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>plot_pc_with_tips <span class="ot">&lt;-</span> <span class="cf">function</span>(cm, ttl, hero_pdf,</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">img_pad =</span> <span class="fl">0.04</span>, <span class="at">lbl_pad =</span> <span class="fl">0.012</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">img_height_frac =</span> <span class="fl">0.7</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">w =</span> <span class="dv">12</span>, <span class="at">h =</span> <span class="dv">18</span>) {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">img_pad =</span> <span class="fl">0.05</span>, <span class="at">lbl_pad =</span> <span class="fl">0.014</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">img_height_frac =</span> <span class="fl">0.85</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">w =</span> <span class="dv">14</span>, <span class="at">h =</span> <span class="dv">32</span>) {</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  tip_labels <span class="ot">&lt;-</span> cm<span class="sc">$</span>tree<span class="sc">$</span>tip.label</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  n_tips     <span class="ot">&lt;-</span> <span class="fu">length</span>(tip_labels)</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  total_h    <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">nodeHeights</span>(cm<span class="sc">$</span>tree))</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  draw_one <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">scale_for_pdf =</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">2.6</span>, <span class="fl">0.4</span>, <span class="fl">2.6</span>, <span class="fl">7.5</span>), <span class="at">bg =</span> <span class="st">"white"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="fl">0.4</span>, <span class="fl">2.6</span>, <span class="fl">9.0</span>), <span class="at">bg =</span> <span class="st">"white"</span>)</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(cm,</span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">fsize    =</span> <span class="dv">0</span>,            <span class="co"># suppress default tip labels</span></span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">ftype    =</span> <span class="st">"off"</span>,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd      =</span> <span class="fl">1.2</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">lwd      =</span> <span class="fl">1.4</span>,</span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">outline  =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">legend   =</span> total_h <span class="sc">*</span> <span class="fl">0.55</span>,</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">leg.txt  =</span> <span class="st">""</span>,</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlim     =</span> <span class="fu">c</span>(<span class="dv">0</span>, total_h <span class="sc">*</span> <span class="fl">1.35</span>))</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">title</span>(ttl, <span class="at">line =</span> <span class="fl">1.0</span>, <span class="at">cex.main =</span> <span class="fl">1.2</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlim     =</span> <span class="fu">c</span>(<span class="dv">0</span>, total_h <span class="sc">*</span> <span class="fl">1.45</span>))</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">title</span>(ttl, <span class="at">line =</span> <span class="fl">1.0</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Tip y-coords from phytools last-plot info</span></span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    lpp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
@@ -715,36 +719,38 @@ Tip
 <span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    img_h <span class="ot">&lt;-</span> dy <span class="sc">*</span> img_height_frac</span>
 <span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    img_w <span class="ot">&lt;-</span> total_h <span class="sc">*</span> img_pad</span>
 <span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_tips)) {</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>      sp  <span class="ot">&lt;-</span> tip_labels[i]</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>      png_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(IMG_DIR, <span class="fu">paste0</span>(sp, <span class="st">".png"</span>))</span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>      x0  <span class="ot">&lt;-</span> tip_x[i] <span class="sc">+</span> total_h <span class="sc">*</span> <span class="fl">0.005</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>      y_c <span class="ot">&lt;-</span> tip_y[i]</span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">file.exists</span>(png_path)) {</span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>        img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(png_path)</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rasterImage</span>(img,</span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>                    <span class="at">xleft   =</span> x0,</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>                    <span class="at">xright  =</span> x0 <span class="sc">+</span> img_w,</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ybottom =</span> y_c <span class="sc">-</span> img_h <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ytop    =</span> y_c <span class="sc">+</span> img_h <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">text</span>(x0 <span class="sc">+</span> img_w <span class="sc">+</span> total_h <span class="sc">*</span> lbl_pad, y_c,</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>           <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, sp),</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>           <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>),</span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>           <span class="at">cex =</span> <span class="cf">if</span> (scale_for_pdf) <span class="fl">0.50</span> <span class="cf">else</span> <span class="fl">0.34</span>,</span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>           <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Hero PDF</span></span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pdf</span>(hero_pdf, <span class="at">width =</span> w, <span class="at">height =</span> h)</span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">draw_one</span>(<span class="at">scale_for_pdf =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># In-document version (will be captured by the chunk fig settings)</span></span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">draw_one</span>(<span class="at">scale_for_pdf =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="cn">NULL</span>)</span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    lbl_cex <span class="ot">&lt;-</span> <span class="cf">if</span> (scale_for_pdf) <span class="fl">0.62</span> <span class="cf">else</span> <span class="fl">0.55</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n_tips)) {</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>      sp  <span class="ot">&lt;-</span> tip_labels[i]</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>      png_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(IMG_DIR, <span class="fu">paste0</span>(sp, <span class="st">".png"</span>))</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>      x0  <span class="ot">&lt;-</span> tip_x[i] <span class="sc">+</span> total_h <span class="sc">*</span> <span class="fl">0.005</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>      y_c <span class="ot">&lt;-</span> tip_y[i]</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">file.exists</span>(png_path)) {</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>        img <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(png_path)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rasterImage</span>(img,</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>                    <span class="at">xleft   =</span> x0,</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>                    <span class="at">xright  =</span> x0 <span class="sc">+</span> img_w,</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ybottom =</span> y_c <span class="sc">-</span> img_h <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ytop    =</span> y_c <span class="sc">+</span> img_h <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">text</span>(x0 <span class="sc">+</span> img_w <span class="sc">+</span> total_h <span class="sc">*</span> lbl_pad, y_c,</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>           <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, sp),</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>           <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>),</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>           <span class="at">cex =</span> lbl_cex,</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>           <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Hero PDF</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pdf</span>(hero_pdf, <span class="at">width =</span> w, <span class="at">height =</span> h)</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">draw_one</span>(<span class="at">scale_for_pdf =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># In-document version (will be captured by the chunk fig settings)</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">draw_one</span>(<span class="at">scale_for_pdf =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="cn">NULL</span>)</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -757,8 +763,8 @@ Tip
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="continuous-asr_files/figure-html/asr-pc1-1.png" class="img-fluid figure-img" width="990"></p>
-<figcaption>Ancestral state reconstruction for PhyloPC1 (pattern density, 40% variance). Hot colors = simple/uniform pattern; cool colors = busy/high-transition pattern. Tip = species exemplar image with name below.</figcaption>
+<p><img src="continuous-asr_files/figure-html/asr-pc1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Ancestral state reconstruction for PhyloPC1 (pattern density, 40% variance). Hot colors = simple/uniform pattern; cool colors = busy/high-transition pattern. Tip = species exemplar image with name.</figcaption>
 </figure>
 </div>
 </div>
@@ -774,7 +780,7 @@ Tip
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="continuous-asr_files/figure-html/asr-pc2-1.png" class="img-fluid figure-img" width="990"></p>
+<p><img src="continuous-asr_files/figure-html/asr-pc2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption>Ancestral state reconstruction for PhyloPC2 (color/luminance diversity, 19% variance). Hot colors = high Jc/Jt; cool colors = low chromatic diversity.</figcaption>
 </figure>
 </div>
@@ -791,7 +797,7 @@ Tip
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="continuous-asr_files/figure-html/asr-pc3-1.png" class="img-fluid figure-img" width="990"></p>
+<p><img src="continuous-asr_files/figure-html/asr-pc3-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <figcaption>Ancestral state reconstruction for PhyloPC3 (stripe geometry, 14% variance). Hot colors = horizontal stripes; cool colors = vertical bars.</figcaption>
 </figure>
 </div>
@@ -892,92 +898,71 @@ Tip
 <section id="where-on-the-tree-has-each-axis-evolved-most" class="level2">
 <h2 class="anchored" data-anchor-id="where-on-the-tree-has-each-axis-evolved-most">Where on the tree has each axis evolved most?</h2>
 <p>The summary table above tells us the <em>total</em> and <em>peak</em> rate per axis, but not <strong>which branches</strong> carry the action. Below we paint each branch by its per-branch Brownian rate (|Δ| per Ma): grey = quiet, hot colors = fast. Top-decile branches are highlighted in red on top.</p>
+<section id="phylopc1-pattern-density" class="level3">
+<h3 class="anchored" data-anchor-id="phylopc1-pattern-density">PhyloPC1 — pattern density</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a consistent palette across all three trees so the panels are</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># directly comparable. We use the joint distribution of all branch rates.</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>all_rates <span class="ot">&lt;-</span> <span class="fu">c</span>(br1, br2, br3)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>all_rates[<span class="sc">!</span><span class="fu">is.finite</span>(all_rates)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>rate_max <span class="ot">&lt;-</span> <span class="fu">quantile</span>(all_rates, <span class="fl">0.98</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)  <span class="co"># clip top 2% outliers</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#dddddd"</span>, <span class="st">"#fee08b"</span>, <span class="st">"#fdae61"</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"#f46d43"</span>, <span class="st">"#d73027"</span>))(<span class="dv">100</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>rate_to_col <span class="ot">&lt;-</span> <span class="cf">function</span>(r) {</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  r_clip <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(r, <span class="dv">0</span>), rate_max)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  idx    <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">1</span>, <span class="fu">ceiling</span>(<span class="dv">100</span> <span class="sc">*</span> r_clip <span class="sc">/</span> rate_max))</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  pal[idx]</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>rate_to_lwd <span class="ot">&lt;-</span> <span class="cf">function</span>(r) <span class="fl">0.6</span> <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">pmin</span>(r, rate_max) <span class="sc">/</span> rate_max</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plot_rate_tree <span class="ot">&lt;-</span> <span class="cf">function</span>(cm, br, ttl, ve_val) {</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  tr  <span class="ot">&lt;-</span> cm<span class="sc">$</span>tree</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">class</span>(tr) <span class="ot">&lt;-</span> <span class="st">"phylo"</span>   <span class="co"># strip simmap dispatch so plot.phylo is used</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  ecol <span class="ot">&lt;-</span> <span class="fu">rate_to_col</span>(br)</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  elwd <span class="ot">&lt;-</span> <span class="fu">rate_to_lwd</span>(br)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Highlight top-decile branches with a dark red outline</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  top_q  <span class="ot">&lt;-</span> <span class="fu">quantile</span>(br, <span class="fl">0.90</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  is_top <span class="ot">&lt;-</span> br <span class="sc">&gt;=</span> top_q</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">3.2</span>, <span class="fl">0.4</span>, <span class="fl">2.6</span>, <span class="fl">0.4</span>), <span class="at">bg =</span> <span class="st">"white"</span>)</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tr, <span class="at">edge.color =</span> ecol, <span class="at">edge.width =</span> elwd,</span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">0.40</span>, <span class="at">label.offset =</span> <span class="fl">0.5</span>, <span class="at">no.margin =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">tip.color =</span> <span class="st">"grey25"</span>)</span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Overlay top branches so they sit on top of normal ones</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(is_top)) {</span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    edges_top <span class="ot">&lt;-</span> <span class="fu">which</span>(is_top)</span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (e <span class="cf">in</span> edges_top) {</span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>      par_new <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Re-plot just the top edges by replotting the tree with those edges</span></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># in dark red and width bumped — cheap trick: use edgelabels.</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">edgelabels</span>(<span class="at">edge =</span> <span class="fu">which</span>(is_top), <span class="at">pch =</span> <span class="cn">NA</span>)</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Draw segments manually using last_plot.phylo coordinates</span></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    lpp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (e <span class="cf">in</span> edges_top) {</span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>      par_node  <span class="ot">&lt;-</span> tr<span class="sc">$</span>edge[e, <span class="dv">1</span>]</span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>      child_node <span class="ot">&lt;-</span> tr<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">segments</span>(<span class="at">x0 =</span> lpp<span class="sc">$</span>xx[par_node], <span class="at">y0 =</span> lpp<span class="sc">$</span>yy[child_node],</span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>               <span class="at">x1 =</span> lpp<span class="sc">$</span>xx[child_node], <span class="at">y1 =</span> lpp<span class="sc">$</span>yy[child_node],</span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"#7f0a0a"</span>, <span class="at">lwd =</span> elwd[e] <span class="sc">+</span> <span class="fl">1.4</span>, <span class="at">lend =</span> <span class="dv">1</span>)</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">segments</span>(<span class="at">x0 =</span> lpp<span class="sc">$</span>xx[par_node], <span class="at">y0 =</span> lpp<span class="sc">$</span>yy[par_node],</span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>               <span class="at">x1 =</span> lpp<span class="sc">$</span>xx[par_node], <span class="at">y1 =</span> lpp<span class="sc">$</span>yy[child_node],</span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>               <span class="at">col =</span> <span class="st">"#7f0a0a"</span>, <span class="at">lwd =</span> elwd[e] <span class="sc">+</span> <span class="fl">1.4</span>, <span class="at">lend =</span> <span class="dv">1</span>)</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axisPhylo</span>(<span class="at">cex.axis =</span> <span class="fl">0.65</span>)</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(<span class="st">"Time before present (Ma)"</span>, <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="fl">1.8</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="fu">sprintf</span>(<span class="st">"%s (%.0f%% var)</span><span class="sc">\n</span><span class="st">mean rate = %.4f, max = %.4f"</span>,</span>
-<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>                ttl, ve_val, <span class="fu">mean</span>(br, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>                <span class="fu">max</span>(br, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>        <span class="at">line =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">cex.main =</span> <span class="fl">0.95</span>)</span>
-<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>       <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.12</span>))</span>
-<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rate_tree</span>(cm1, br1, <span class="st">"PhyloPC1 · pattern density"</span>, ve[<span class="dv">1</span>])</span>
-<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rate_tree</span>(cm2, br2, <span class="st">"PhyloPC2 · color diversity"</span>, ve[<span class="dv">2</span>])</span>
-<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rate_tree</span>(cm3, br3, <span class="st">"PhyloPC3 · stripe geometry"</span>, ve[<span class="dv">3</span>])</span>
-<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Shared colorbar legend</span></span>
-<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="dv">6</span>, <span class="fl">0.5</span>, <span class="dv">6</span>), <span class="at">bg =</span> <span class="st">"white"</span>)</span>
-<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="fu">seq</span>(<span class="dv">0</span>, rate_max, <span class="at">length.out =</span> <span class="dv">100</span>), <span class="dv">1</span>, <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">ncol =</span> <span class="dv">1</span>),</span>
-<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> pal, <span class="at">axes =</span> <span class="cn">FALSE</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span>
-<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">pretty</span>(<span class="fu">c</span>(<span class="dv">0</span>, rate_max), <span class="dv">5</span>), <span class="at">cex.axis =</span> <span class="fl">0.75</span>)</span>
-<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Branch rate |Δ| per Ma  (grey = quiet, red = fast; outlined = top decile)"</span>,</span>
-<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="fl">1.9</span>, <span class="at">cex =</span> <span class="fl">0.78</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rate_tree</span>(cm1, br1, <span class="st">"PhyloPC1 · pattern density"</span>, ve[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="continuous-asr_files/figure-html/branch-rate-map-1.png" class="img-fluid figure-img" width="1540"></p>
-<figcaption>Per-branch evolutionary rates on the chronogram for each PhyloPC. Branches are colored by |Δ|/Ma using a shared viridis-style scale; the thickest red branches are the top-decile rate hotspots for that axis.</figcaption>
+<p><img src="continuous-asr_files/figure-html/branch-rate-pc1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Per-branch rates on PhyloPC1 (pattern density). Branches colored by |Δ|/Ma on a shared scale; top-decile rate hotspots outlined in dark red.</figcaption>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="phylopc2-color-diversity" class="level3">
+<h3 class="anchored" data-anchor-id="phylopc2-color-diversity">PhyloPC2 — color diversity</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rate_tree</span>(cm2, br2, <span class="st">"PhyloPC2 · color diversity"</span>, ve[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="continuous-asr_files/figure-html/branch-rate-pc2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Per-branch rates on PhyloPC2 (color/luminance diversity).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="phylopc3-stripe-geometry" class="level3">
+<h3 class="anchored" data-anchor-id="phylopc3-stripe-geometry">PhyloPC3 — stripe geometry</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rate_tree</span>(cm3, br3, <span class="st">"PhyloPC3 · stripe geometry"</span>, ve[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="continuous-asr_files/figure-html/branch-rate-pc3-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Per-branch rates on PhyloPC3 (stripe geometry).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="shared-colorbar" class="level3">
+<h3 class="anchored" data-anchor-id="shared-colorbar">Shared colorbar</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">3.2</span>, <span class="dv">6</span>, <span class="fl">0.5</span>, <span class="dv">6</span>), <span class="at">bg =</span> <span class="st">"white"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="fu">seq</span>(<span class="dv">0</span>, rate_max, <span class="at">length.out =</span> <span class="dv">100</span>), <span class="dv">1</span>, <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">ncol =</span> <span class="dv">1</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> pal, <span class="at">axes =</span> <span class="cn">FALSE</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">pretty</span>(<span class="fu">c</span>(<span class="dv">0</span>, rate_max), <span class="dv">5</span>), <span class="at">cex.axis =</span> <span class="fl">0.9</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Branch rate |Δ| per Ma  (grey = quiet, red = fast; outlined = top decile)"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">1</span>, <span class="at">line =</span> <span class="fl">2.0</span>, <span class="at">cex =</span> <span class="fl">1.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="continuous-asr_files/figure-html/branch-rate-legend-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="hero-pdf-of-the-per-branch-rate-map" class="level3">
 <h3 class="anchored" data-anchor-id="hero-pdf-of-the-per-branch-rate-map">Hero PDF of the per-branch rate map</h3>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in mtext("Branch rate |Δ| per Ma", side = 1, line = 1.9, cex = 0.78):
+<pre><code>Warning in mtext("Branch rate |Δ| per Ma", side = 1, line = 2, cex = 1):
 conversion failure on 'Branch rate |Δ| per Ma' in 'mbcsToSbcs': for Δ (U+0394)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -994,44 +979,44 @@ conversion failure on 'Branch rate |Δ| per Ma' in 'mbcsToSbcs': for Δ (U+0394)
 <h3 class="anchored" data-anchor-id="top-rate-branches-per-axis">Top-rate branches per axis</h3>
 <p>A table of the 10 fastest-evolving branches per PC, identified by their child-node tip descendants (handy for the poster narrative — “this clade moved fastest on PC1”).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>top_branches <span class="ot">&lt;-</span> <span class="cf">function</span>(cm, br, <span class="at">k =</span> <span class="dv">10</span>) {</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  tr  <span class="ot">&lt;-</span> cm<span class="sc">$</span>tree</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  ord <span class="ot">&lt;-</span> <span class="fu">order</span>(br, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="fu">seq_len</span>(k)]</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  descendants <span class="ot">&lt;-</span> <span class="fu">sapply</span>(ord, <span class="cf">function</span>(e) {</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    child <span class="ot">&lt;-</span> tr<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (child <span class="sc">&lt;=</span> <span class="fu">length</span>(tr<span class="sc">$</span>tip.label)) {</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      tr<span class="sc">$</span>tip.label[child]</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>      tips <span class="ot">&lt;-</span> <span class="fu">extract.clade</span>(tr, child)<span class="sc">$</span>tip.label</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sprintf</span>(<span class="st">"%s (+%d)"</span>, tips[<span class="dv">1</span>], <span class="fu">length</span>(tips) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">rank        =</span> <span class="fu">seq_len</span>(k),</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">rate        =</span> <span class="fu">round</span>(br[ord], <span class="dv">4</span>),</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">edge_length =</span> <span class="fu">round</span>(tr<span class="sc">$</span>edge.length[ord], <span class="dv">2</span>),</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">descendant  =</span> descendants</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">top_branches</span>(cm1, br1)</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">top_branches</span>(cm2, br2)</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fu">top_branches</span>(cm3, br3)</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rank =</span> t1<span class="sc">$</span>rank,</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">PC1_rate =</span> t1<span class="sc">$</span>rate, <span class="at">PC1_descendant =</span> t1<span class="sc">$</span>descendant,</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">PC2_rate =</span> t2<span class="sc">$</span>rate, <span class="at">PC2_descendant =</span> t2<span class="sc">$</span>descendant,</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">PC3_rate =</span> t3<span class="sc">$</span>rate, <span class="at">PC3_descendant =</span> t3<span class="sc">$</span>descendant</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(combined,</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Top-10 fastest-evolving branches per PhyloPC (descendant tip listed; '+n' = total tips in clade if internal)."</span>,</span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>             <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Rank"</span>,</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"PC1 rate"</span>, <span class="st">"PC1 descendant"</span>,</span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"PC2 rate"</span>, <span class="st">"PC2 descendant"</span>,</span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"PC3 rate"</span>, <span class="st">"PC3 descendant"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">font_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>top_branches <span class="ot">&lt;-</span> <span class="cf">function</span>(cm, br, <span class="at">k =</span> <span class="dv">10</span>) {</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  tr  <span class="ot">&lt;-</span> cm<span class="sc">$</span>tree</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  ord <span class="ot">&lt;-</span> <span class="fu">order</span>(br, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="fu">seq_len</span>(k)]</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  descendants <span class="ot">&lt;-</span> <span class="fu">sapply</span>(ord, <span class="cf">function</span>(e) {</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    child <span class="ot">&lt;-</span> tr<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (child <span class="sc">&lt;=</span> <span class="fu">length</span>(tr<span class="sc">$</span>tip.label)) {</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      tr<span class="sc">$</span>tip.label[child]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      tips <span class="ot">&lt;-</span> <span class="fu">extract.clade</span>(tr, child)<span class="sc">$</span>tip.label</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sprintf</span>(<span class="st">"%s (+%d)"</span>, tips[<span class="dv">1</span>], <span class="fu">length</span>(tips) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">rank        =</span> <span class="fu">seq_len</span>(k),</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">rate        =</span> <span class="fu">round</span>(br[ord], <span class="dv">4</span>),</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">edge_length =</span> <span class="fu">round</span>(tr<span class="sc">$</span>edge.length[ord], <span class="dv">2</span>),</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">descendant  =</span> descendants</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> <span class="fu">top_branches</span>(cm1, br1)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> <span class="fu">top_branches</span>(cm2, br2)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>t3 <span class="ot">&lt;-</span> <span class="fu">top_branches</span>(cm3, br3)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">Rank =</span> t1<span class="sc">$</span>rank,</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">PC1_rate =</span> t1<span class="sc">$</span>rate, <span class="at">PC1_descendant =</span> t1<span class="sc">$</span>descendant,</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">PC2_rate =</span> t2<span class="sc">$</span>rate, <span class="at">PC2_descendant =</span> t2<span class="sc">$</span>descendant,</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">PC3_rate =</span> t3<span class="sc">$</span>rate, <span class="at">PC3_descendant =</span> t3<span class="sc">$</span>descendant</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(combined,</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Top-10 fastest-evolving branches per PhyloPC (descendant tip listed; '+n' = total tips in clade if internal)."</span>,</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>             <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Rank"</span>,</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"PC1 rate"</span>, <span class="st">"PC1 descendant"</span>,</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"PC2 rate"</span>, <span class="st">"PC2 descendant"</span>,</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"PC3 rate"</span>, <span class="st">"PC3 descendant"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">font_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <caption>Top-10 fastest-evolving branches per PhyloPC (descendant tip listed; '+n' = total tips in clade if internal).</caption>
