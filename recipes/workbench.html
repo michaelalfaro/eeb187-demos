@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Project Recipe Book — From Data to Discovery – EEB 187 — Project Recipe Book</title>
+<title>Workbench — Helpful Tips – EEB 187 — Project Recipe Book</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,14 +106,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
 
-<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -291,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -303,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Recipes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./workbench.html"> 
+    <a class="nav-link active" href="./workbench.html" aria-current="page"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
   <li class="nav-item">
@@ -317,22 +314,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./workbench.html">Workbench — Helpful Tips</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workbench.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Workbench — Helpful Tips</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#setup-preparing-your-data" id="toc-setup-preparing-your-data" class="nav-link" data-scroll-target="#setup-preparing-your-data">Setup: Preparing Your Data</a></li>
-  <li><a href="#where-do-i-start-decision-flowchart" id="toc-where-do-i-start-decision-flowchart" class="nav-link" data-scroll-target="#where-do-i-start-decision-flowchart">Where Do I Start? — Decision Flowchart</a></li>
-  <li><a href="#minimum-viable-project" id="toc-minimum-viable-project" class="nav-link" data-scroll-target="#minimum-viable-project">Minimum Viable Project</a></li>
-  <li><a href="#combined-labrid-mega-analysis" id="toc-combined-labrid-mega-analysis" class="nav-link" data-scroll-target="#combined-labrid-mega-analysis">Combined Labrid Mega-Analysis</a></li>
-  <li><a href="#quick-links" id="toc-quick-links" class="nav-link" data-scroll-target="#quick-links">Quick Links</a></li>
+  <li><a href="#the-3-drop-uploader-recommended" id="toc-the-3-drop-uploader-recommended" class="nav-link active" data-scroll-target="#the-3-drop-uploader-recommended">The 3-drop uploader (recommended)</a></li>
+  <li><a href="#what-run.r-should-expect-to-find" id="toc-what-run.r-should-expect-to-find" class="nav-link" data-scroll-target="#what-run.r-should-expect-to-find">What <code>run.R</code> should expect to find</a></li>
+  <li><a href="#rules-run.r-must-follow" id="toc-rules-run.r-must-follow" class="nav-link" data-scroll-target="#rules-run.r-must-follow">Rules <code>run.R</code> must follow</a></li>
+  <li><a href="#single-zip-fallback-advanced" id="toc-single-zip-fallback-advanced" class="nav-link" data-scroll-target="#single-zip-fallback-advanced">Single-ZIP fallback (advanced)</a></li>
+  <li><a href="#rules-run.r-must-follow-1" id="toc-rules-run.r-must-follow-1" class="nav-link" data-scroll-target="#rules-run.r-must-follow-1">Rules <code>run.R</code> must follow</a></li>
+  <li><a href="#hello-world-run.r-you-can-copy" id="toc-hello-world-run.r-you-can-copy" class="nav-link" data-scroll-target="#hello-world-run.r-you-can-copy">Hello-world <code>run.R</code> you can copy</a></li>
+  <li><a href="#what-happens-after-you-upload" id="toc-what-happens-after-you-upload" class="nav-link" data-scroll-target="#what-happens-after-you-upload">What happens after you upload</a></li>
+  <li><a href="#limits" id="toc-limits" class="nav-link" data-scroll-target="#limits">Limits</a></li>
+  <li><a href="#pre-installed-packages" id="toc-pre-installed-packages" class="nav-link" data-scroll-target="#pre-installed-packages">Pre-installed packages</a></li>
+  <li><a href="#tips-for-a-smooth-workflow" id="toc-tips-for-a-smooth-workflow" class="nav-link" data-scroll-target="#tips-for-a-smooth-workflow">Tips for a smooth workflow</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   </ul>
 </nav>
     </div>
@@ -342,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Project Recipe Book — From Data to Discovery</h1>
+<h1 class="title">Workbench — Helpful Tips</h1>
 </div>
 
 
@@ -359,221 +384,263 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>You have pavo metrics and a phylogeny. This cookbook helps you turn those into a testable research question, the R code to test it, and the interpretation framework to explain what you found.</p>
-<section id="prerequisites" class="level2">
-<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<div class="callout callout-style-default callout-note callout-titled" title="What you need before you start">
+<p>The <strong>Workbench</strong> is your group’s project portal on the FishView server. You drop in three files — your R script, your tree, and a ZIP of images — and the server assembles a dated snapshot you can run with one click. Michael can re-run your code from the same page to help you debug.</p>
+<p>This page collects the helpful tips that make the Workbench Just Work. The primary flow is the 3-drop uploader; a single-ZIP fallback exists if you prefer it.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-What you need before you start
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Before diving into any recipe, make sure you have all of the following:</p>
-<ul class="task-list">
-<li><label><input type="checkbox"><strong>FishView bundle</strong> — your clade’s directory with <code>*-mini-tree.tre</code>, <code>picked_species.txt</code>, and (optionally) <code>species_traits.csv</code></label></li>
-<li><label><input type="checkbox"><strong>pavo metrics CSV</strong> — the output from your Demo 7 / Demo 8 pavo analysis, with one row per species and columns including <code>species</code>, <code>m</code>, <code>A</code>, <code>Jc</code>, <code>Jt</code>, <code>m_dS</code>, <code>m_dL</code></label></li>
-<li><label><input type="checkbox"><strong>R packages installed</strong>: <code>pavo</code>, <code>ape</code>, <code>phytools</code>, <code>caper</code>, <code>nlme</code>, <code>rfishbase</code>, <code>ggplot2</code></label></li>
-</ul>
-<p>Install all packages at once:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"pavo"</span>, <span class="st">"ape"</span>, <span class="st">"phytools"</span>, <span class="st">"caper"</span>, <span class="st">"nlme"</span>, <span class="st">"rfishbase"</span>, <span class="st">"ggplot2"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The Workbench lives at <strong><a href="http://164.67.78.200:5052/workbench/" class="uri">http://164.67.78.200:5052/workbench/</a></strong> (same server as FishView — UCLA WiFi or Bruin Secure VPN). You log in with the same group code you use for FishView.</p>
 </div>
 </div>
-</section>
-<section id="setup-preparing-your-data" class="level2">
-<h2 class="anchored" data-anchor-id="setup-preparing-your-data">Setup: Preparing Your Data</h2>
-<div class="callout callout-style-default callout-warning callout-titled" title="Do this BEFORE running any recipe">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Do this BEFORE running any recipe
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Your FishView bundle’s tree may have tip labels with specimen codes (e.g., <code>Chaetodon_auriga2</code>, <code>Chaetodon_kleinii_PW4831</code>). All recipes expect clean <code>Genus_species</code> format. The best way to normalize is to use the course <strong>crosswalk</strong> — a curated table that maps every tree tip to its canonical species name. The crosswalk handles edge cases (subgenus reassignments, spelling fixes, CF-prefix tips) that a regex heuristic gets wrong on ~3% of tips.</p>
-<p>Run this once to normalize your tree and save it:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Load your tree (auto-detect Newick vs NEXUS)</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>tree_file <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"path/to/your/bundle"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"-mini-tree</span><span class="sc">\\</span><span class="st">.tre$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(<span class="fu">read.nexus</span>(tree_file),</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">read.tree</span>(tree_file))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">inherits</span>(tree, <span class="st">"multiPhylo"</span>)) tree <span class="ot">&lt;-</span> tree[[<span class="dv">1</span>]]</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Load the course crosswalk (tip_label -&gt; canonical Genus_species)</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>crosswalk_url <span class="ot">&lt;-</span> <span class="st">"https://michaelalfaro.github.io/eeb187-demos/recipes/data/crosswalk.csv"</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>crosswalk <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read.csv</span>(crosswalk_url, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Could not fetch crosswalk from URL: "</span>, e<span class="sc">$</span>message)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Falling back to a regex heuristic. Some tips may be mangled."</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cn">NULL</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Normalize tip labels — crosswalk-first, regex fallback</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>to_binomial_heuristic <span class="ot">&lt;-</span> <span class="cf">function</span>(tips) {</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vapply</span>(tips, <span class="cf">function</span>(t) {</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    parts <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(t, <span class="st">"_"</span>, <span class="at">fixed =</span> <span class="cn">TRUE</span>)[[<span class="dv">1</span>]]</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(parts) <span class="sc">&lt;</span> <span class="dv">2</span>) <span class="fu">return</span>(parts[<span class="dv">1</span>])</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    genus   <span class="ot">&lt;-</span> parts[<span class="dv">1</span>]</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    species <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"^([a-z]+).*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, parts[<span class="dv">2</span>])</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(genus, species, <span class="at">sep =</span> <span class="st">"_"</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  }, <span class="fu">character</span>(<span class="dv">1</span>), <span class="at">USE.NAMES =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(crosswalk)) {</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  lookup <span class="ot">&lt;-</span> <span class="fu">setNames</span>(crosswalk<span class="sc">$</span>tree_species, crosswalk<span class="sc">$</span>tip_label)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  resolved <span class="ot">&lt;-</span> lookup[tree<span class="sc">$</span>tip.label]</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  n_missing <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(resolved))</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (n_missing <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(n_missing, <span class="st">" tips not found in crosswalk — applying heuristic for those."</span>)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    fallback <span class="ot">&lt;-</span> <span class="fu">to_binomial_heuristic</span>(tree<span class="sc">$</span>tip.label[<span class="fu">is.na</span>(resolved)])</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    resolved[<span class="fu">is.na</span>(resolved)] <span class="ot">&lt;-</span> fallback</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  tree<span class="sc">$</span>tip.label <span class="ot">&lt;-</span> <span class="fu">unname</span>(resolved)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  tree<span class="sc">$</span>tip.label <span class="ot">&lt;-</span> <span class="fu">to_binomial_heuristic</span>(tree<span class="sc">$</span>tip.label)</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Drop duplicates (keeps first occurrence) — after normalization,</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co"># two specimen-coded tips may collapse to the same species name</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>dups <span class="ot">&lt;-</span> <span class="fu">duplicated</span>(tree<span class="sc">$</span>tip.label)</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(dups)) {</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Dropping"</span>, <span class="fu">sum</span>(dups), <span class="st">"duplicate tips</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  tree <span class="ot">&lt;-</span> <span class="fu">drop.tip</span>(tree, tree<span class="sc">$</span>tip.label[dups])</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Tree ready:"</span>, <span class="fu">length</span>(tree<span class="sc">$</span>tip.label), <span class="st">"species</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Why bother with the crosswalk?">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Why bother with the crosswalk?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>On the full 517-tip dataset, the regex heuristic alone silently mangles <strong>16 tips (3.1%)</strong> — including <code>Paracentropyge_multifasciata</code> → <code>Centropyge_multifasciata</code>, <code>Halichoeres_papillionaceous</code> → <code>papilionaceus</code>, <code>Anampses_temmincki</code> → <code>temminckii</code>, and CF-prefix tips like <code>Sparisoma_cf_atomarium</code>. Pomacanthidae is hit worst (7/56 tips = 12.5%). The crosswalk fixes all of these.</p>
-</div>
-</div>
-<p>Your <strong>pavo metrics CSV</strong> should have a <code>species</code> column using the same <code>Genus_species</code> format. If you ran Demo 8, your output already has this. Make sure the species names in your CSV exactly match the normalized tree tip labels.</p>
-<p><strong>Quick check:</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"path/to/your/pavo_metrics.csv"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>overlap <span class="ot">&lt;-</span> <span class="fu">intersect</span>(tree<span class="sc">$</span>tip.label, traits<span class="sc">$</span>species)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">length</span>(overlap), <span class="st">"of"</span>, <span class="fu">nrow</span>(traits), <span class="st">"species matched to tree</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</section>
-<section id="where-do-i-start-decision-flowchart" class="level2">
-<h2 class="anchored" data-anchor-id="where-do-i-start-decision-flowchart">Where Do I Start? — Decision Flowchart</h2>
-<p>Use this flowchart to find the recipes most relevant to your question.</p>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    A["What are you curious about?"] --&gt; B["How did color evolve\nalong the phylogeny?"]
-    A --&gt; C["Does ecology predict\ncolor?"]
-    A --&gt; D["Does life history predict\ncolor?"]
-    A --&gt; E["What patterns and\nfunctions does color serve?"]
-    A --&gt; F["How does my clade\ncompare to others?"]
-
-    B --&gt; B1["Core Recipes 1–5\nPhylogenetic signal,\nrates, axes"]
-    C --&gt; C1["Ecology Recipes 6–13\nDepth, body size, diet,\nvulnerability, latitude"]
-    D --&gt; D1["Life History Recipes 14–15\nSexual systems,\nschooling"]
-    E --&gt; E1["Pattern Recipes 16–18\nDiscrete mapping,\nfunctional hypotheses,\nstripe orientation"]
-    F --&gt; F1["Core Recipe 4\nCross-family comparison"]
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</section>
-<section id="minimum-viable-project" class="level2">
-<h2 class="anchored" data-anchor-id="minimum-viable-project">Minimum Viable Project</h2>
-<div class="callout callout-style-default callout-important callout-titled" title="Every group must complete these two recipes">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Every group must complete these two recipes
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Recipe 1 — Phylogenetic Signal</strong>: Does color cluster on the tree? This is the foundation for everything else.</li>
-<li><strong>Recipe 3 — Axis of Diversification</strong>: What dimension of color space has diversified most in your clade?</li>
-</ul>
-<p>Beyond those two, pick <strong>1–2 additional recipes</strong> that connect to your clade’s biology. For example: wrasses with complex social systems are natural candidates for Recipe 14 (sexual system complexity); surgeonfish groups with strong depth gradients are natural candidates for Recipe 6 (depth and color).</p>
-</div>
-</div>
-</section>
-<section id="combined-labrid-mega-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="combined-labrid-mega-analysis">Combined Labrid Mega-Analysis</h2>
-<div class="callout callout-style-default callout-tip callout-titled" title="A note for Scarinae, Cirrhilabrini, Hypsigenyinae, and Halichoerine groups">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-A note for Scarinae, Cirrhilabrini, Hypsigenyinae, and Halichoerine groups
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Michael will pool the pavo data from all four labrid subgroups — Scarinae, Cirrhilabrini, Hypsigenyinae, and Halichoerine — into a single mega-analysis on the full labrid phylogeny. Your contribution to that analysis is your group’s pavo metrics CSV, properly formatted with species names matching the tree tips.</p>
-<p>This means your group has two outputs: 1. Your own within-clade analysis (using your mini-tree) 2. Your pavo data contributed to the combined labrid dataset</p>
-<p>Instructions for formatting your data for the pooled analysis are in <a href="./clades/index.html">Know Your Clade</a>.</p>
-</div>
-</div>
-</section>
-<section id="quick-links" class="level2">
-<h2 class="anchored" data-anchor-id="quick-links">Quick Links</h2>
+<hr>
+<section id="the-3-drop-uploader-recommended" class="level2">
+<h2 class="anchored" data-anchor-id="the-3-drop-uploader-recommended">The 3-drop uploader (recommended)</h2>
+<p>On the Workbench dashboard you’ll see four drop zones:</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Section</th>
-<th>What you’ll find</th>
+<th>Slot</th>
+<th>What goes here</th>
+<th>Required?</th>
+<th>Filename rule</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="./clades/index.html">Know Your Clade</a></td>
-<td>Clade overviews, ecology, species lists, and tree files</td>
+<td>1. <code>run.R</code></td>
+<td>Your analysis script</td>
+<td>yes</td>
+<td>must end in <code>.R</code></td>
 </tr>
 <tr class="even">
-<td><a href="./recipes/core/phylogenetic-signal.html">Core Recipes (1–5)</a></td>
-<td>Phylogenetic signal, rates of evolution, axes, cross-family comparisons</td>
+<td>2. Tree file</td>
+<td>Your phylogeny</td>
+<td>yes</td>
+<td>must end in <code>.tre</code>, <code>.tree</code>, <code>.nex</code>, or <code>.nwk</code></td>
 </tr>
 <tr class="odd">
-<td><a href="./recipes/ecology/depth-and-color.html">Ecology Recipes (6–13)</a></td>
-<td>Depth, body size, diet, vulnerability, growth, swimming mode, latitude</td>
+<td>3. Images ZIP</td>
+<td>A ZIP of species images</td>
+<td>yes</td>
+<td>must end in <code>.zip</code></td>
 </tr>
 <tr class="even">
-<td><a href="./recipes/life-history/sexual-system-complexity.html">Life History Recipes (14–15)</a></td>
-<td>Sexual systems, schooling behavior</td>
+<td>4. Notes</td>
+<td>A <code>notes.md</code> file <em>or</em> free-text box</td>
+<td>optional</td>
+<td><code>.md</code> / <code>.txt</code></td>
 </tr>
+</tbody>
+</table>
+<p>When you click <strong>Upload</strong>, the server builds a snapshot for you with the exact layout <code>run.R</code> expects:</p>
+<pre><code>snapshots/&lt;timestamp&gt;/
+├── run.R                    ← your script, top level
+├── data/
+│   ├── &lt;your-tree-file&gt;     ← whatever name you uploaded
+│   └── images/              ← contents of your images ZIP, extracted here
+├── outputs/                 ← empty; your script writes here
+└── notes.md                 ← only if you provided notes</code></pre>
+<p>You never have to think about the ZIP layout again — the server enforces it.</p>
+<hr>
+</section>
+<section id="what-run.r-should-expect-to-find" class="level2">
+<h2 class="anchored" data-anchor-id="what-run.r-should-expect-to-find">What <code>run.R</code> should expect to find</h2>
+<p>Because the server assembles the layout for you, your script can hard-code these relative paths:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tree — whatever filename you dropped in slot 2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="st">"data/your-tree-file.tre"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Images — extracted from the ZIP you dropped in slot 3</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>img_dir <span class="ot">&lt;-</span> <span class="st">"data/images"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(img_dir, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.(png|jpg|jpeg)$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Write outputs here</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results, <span class="st">"outputs/signal-test-results.csv"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"outputs/tree-with-color.pdf"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="rules-run.r-must-follow" class="level2">
+<h2 class="anchored" data-anchor-id="rules-run.r-must-follow">Rules <code>run.R</code> must follow</h2>
+<ol type="1">
+<li><strong>Read inputs from <code>./data/</code></strong> using relative paths only.</li>
+<li><strong>Write outputs to <code>./outputs/</code></strong> — that’s the directory the run page serves from.</li>
+<li><strong>Do not call <code>setwd()</code></strong> — the Workbench runs your script with the snapshot directory as the working directory.</li>
+<li><strong>Do not use <code>install.packages()</code></strong> — the server has the course package set pre-installed (see <a href="#pre-installed-packages">Pre-installed packages</a> below).</li>
+<li><strong>No network calls</strong> unless you genuinely need them (e.g.&nbsp;<code>rfishbase::species()</code>). The 5-minute timeout will kill long-running scrapes.</li>
+</ol>
+<hr>
+</section>
+<section id="single-zip-fallback-advanced" class="level2">
+<h2 class="anchored" data-anchor-id="single-zip-fallback-advanced">Single-ZIP fallback (advanced)</h2>
+<p>Under “Advanced: upload one ZIP instead” on the dashboard, you can submit a single ZIP with this layout:</p>
+<pre><code>my-analysis.zip
+├── run.R              ← REQUIRED entrypoint at top level
+├── data/              ← REQUIRED directory
+├── outputs/           ← REQUIRED directory (may be empty)
+└── notes.md           ← OPTIONAL</code></pre>
+<p>The validator rejects this ZIP if <code>run.R</code>, <code>data/</code>, or <code>outputs/</code> is missing from the top level, if paths contain <code>..</code>, or if the total exceeds 200 MB uncompressed.</p>
+<p>If you’re using this path: on macOS Finder, select the <em>contents</em> of your folder (not the folder itself), then “Compress” — otherwise everything ends up wrapped one level deep.</p>
+<hr>
+</section>
+<section id="rules-run.r-must-follow-1" class="level2">
+<h2 class="anchored" data-anchor-id="rules-run.r-must-follow-1">Rules <code>run.R</code> must follow</h2>
+<ol type="1">
+<li><p><strong>Read inputs from <code>./data/</code></strong> using relative paths only:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.nexus</span>(<span class="st">"data/cirrhilabrini-pruned-tree.tre"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/pavo-metrics.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Write outputs to <code>./outputs/</code></strong>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results, <span class="st">"outputs/signal-test-results.csv"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"outputs/tree-with-color.pdf"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Do not call <code>setwd()</code></strong> — the Workbench runs your script with the snapshot directory as the working directory, so relative paths Just Work.</p></li>
+<li><p><strong>Do not use <code>install.packages()</code></strong> — the server has the course package set pre-installed (see <a href="#pre-installed-packages">Pre-installed packages</a> below). If you need a package that isn’t there, ping Michael.</p></li>
+<li><p><strong>No network calls</strong> unless you genuinely need them (e.g.&nbsp;<code>rfishbase::species()</code>). The 5-minute timeout will kill long-running scrapes.</p></li>
+</ol>
+<hr>
+</section>
+<section id="hello-world-run.r-you-can-copy" class="level2">
+<h2 class="anchored" data-anchor-id="hello-world-run.r-you-can-copy">Hello-world <code>run.R</code> you can copy</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run.R — minimal example you can swap into your own analysis</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ape)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read input</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="st">"data/example-tree.tre"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Loaded tree with"</span>, <span class="fu">length</span>(tree<span class="sc">$</span>tip.label), <span class="st">"tips</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Do something</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>pd <span class="ot">&lt;-</span> <span class="fu">sum</span>(tree<span class="sc">$</span>edge.length)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total branch length:"</span>, <span class="fu">round</span>(pd, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Write output</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">metric =</span> <span class="st">"total_branch_length"</span>, <span class="at">value =</span> pd),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"outputs/summary.csv"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Wrote outputs/summary.csv</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Test it with the 3-drop uploader: drop <code>run.R</code> in slot 1, a tiny <code>example-tree.tre</code> (e.g.&nbsp;<code>(a,b,c,d);</code>) in slot 2, and any small ZIP of placeholder images in slot 3. Snapshot, run, done.</p>
+<hr>
+</section>
+<section id="what-happens-after-you-upload" class="level2">
+<h2 class="anchored" data-anchor-id="what-happens-after-you-upload">What happens after you upload</h2>
+<ol type="1">
+<li><strong>Validation</strong> — server inspects the ZIP and rejects with a clear message if the shape is wrong.</li>
+<li><strong>Snapshot</strong> — accepted ZIPs are extracted to <code>snapshots/&lt;timestamp&gt;/</code> on the server. Your previous snapshots stay; nothing is overwritten.</li>
+<li><strong>Dashboard view</strong> — your snapshot shows up on your group’s Workbench page with previews for images, PDFs, CSVs, and code.</li>
+<li><strong>Run</strong> — you (or Michael) hit <strong>▶ Run</strong> on a snapshot. The server executes <code>Rscript --vanilla run.R</code> in that snapshot’s directory and streams stdout/stderr to your browser in real time.</li>
+<li><strong>Outputs</strong> — anything new written under <code>outputs/</code> during the run becomes downloadable from the run’s summary page. Old snapshots and runs remain accessible — nothing is deleted automatically.</li>
+</ol>
+<p>A run is <strong>independent</strong> of the snapshot it was launched from. The snapshot itself is immutable once uploaded; runs read from it and write to a separate <code>runs/&lt;run_id&gt;/</code> directory.</p>
+<hr>
+</section>
+<section id="limits" class="level2">
+<h2 class="anchored" data-anchor-id="limits">Limits</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Limit</th>
+<th>Value</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
 <tr class="odd">
-<td><a href="./recipes/pattern/discrete-trait-mapping.html">Pattern Recipes (16–18)</a></td>
-<td>Discrete trait mapping, functional hypotheses, stripe orientation</td>
+<td>Max ZIP size</td>
+<td>200 MB uncompressed</td>
+<td>Mac mini disk</td>
 </tr>
 <tr class="even">
-<td><a href="./recipes/advanced/biogeographic-color.html">Advanced Recipes (19–20)</a></td>
-<td>Biogeography, disparity through time, model comparison</td>
+<td>Run timeout</td>
+<td>5 minutes wall time</td>
+<td>Avoid runaway processes</td>
 </tr>
 <tr class="odd">
-<td><a href="./poster/poster-tips.html">Poster Guide</a></td>
-<td>Layout, figure sizing, milestone checklist</td>
+<td>Concurrent runs per group</td>
+<td>1</td>
+<td>Avoids races on <code>outputs/</code></td>
+</tr>
+<tr class="even">
+<td>Snapshot history</td>
+<td>unlimited</td>
+<td>We’ll prune manually if needed</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="pre-installed-packages" class="level2">
+<h2 class="anchored" data-anchor-id="pre-installed-packages">Pre-installed packages</h2>
+<p>The Workbench R environment has these installed. Open an issue with Michael if you need something else.</p>
+<pre><code>pavo, ape, phytools, caper, nlme, geiger, ggtree,
+ggplot2, dplyr, tidyr, readr, rfishbase, viridis,
+RColorBrewer, png, jpeg, magick</code></pre>
+<hr>
+</section>
+<section id="tips-for-a-smooth-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="tips-for-a-smooth-workflow">Tips for a smooth workflow</h2>
+<ul>
+<li><strong>Iterate small.</strong> Drop in a minimal <code>run.R</code> that just loads your data and prints <code>dim()</code> first. Once that works, add one analysis step at a time.</li>
+<li><strong>Name your files clearly.</strong> <code>cirrhilabrini-pgls-attempt-3.R</code> is more useful in the snapshot list than <code>analysis.R</code>.</li>
+<li><strong>Use the notes box.</strong> A one-paragraph “what I’m trying / what I’m stuck on” helps Michael troubleshoot when he visits your snapshot.</li>
+<li><strong>Read the run log.</strong> When <code>▶ Run</code> fails, the SSE log shows the exact R error message. Fix in your local R, re-upload, re-run.</li>
+<li><strong>Don’t re-upload to “fix” — re-upload to make a new attempt.</strong> Snapshots are versioned; treat each one as a checkpoint of your progress.</li>
+</ul>
+<hr>
+</section>
+<section id="troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Upload rejected: “run.R not found at top level”</td>
+<td>You used the single-ZIP fallback and wrapped everything in a folder</td>
+<td>Either use the 3-drop uploader instead, or on macOS Finder select the <em>contents</em> of your folder (not the folder) then “Compress”</td>
+</tr>
+<tr class="even">
+<td>Run finishes immediately with exit code 1</td>
+<td>R syntax error in <code>run.R</code></td>
+<td>Read the stderr stream — line number is in the message</td>
+</tr>
+<tr class="odd">
+<td><code>cannot open file 'data/...'</code></td>
+<td>Wrong relative path, or file not in <code>data/</code></td>
+<td>Check the snapshot view — your ZIP’s contents are listed there</td>
+</tr>
+<tr class="even">
+<td>Run hangs and gets killed at 5 min</td>
+<td>Long-running <code>rfishbase</code> call or slow MCMC</td>
+<td>Cache the result locally and put the cached file in <code>data/</code> instead</td>
+</tr>
+<tr class="odd">
+<td>“Concurrent run already in progress”</td>
+<td>Two groupmates hit Run at the same time</td>
+<td>Wait for the first run to finish (visible on the dashboard)</td>
 </tr>
 </tbody>
 </table>
