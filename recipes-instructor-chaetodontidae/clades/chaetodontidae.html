@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Chaetodontidae — Butterflyfishes – EEB 187 — Instructor Walkthrough: Chaetodontidae</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-bc185b5c5bdbcb35c2eb49d8a876ef70.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b487cddad83ce73ad93f1328ce7d9f7a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c35703f27e2ef84e2c700e09dd0c80cb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b487cddad83ce73ad93f1328ce7d9f7a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = true;
+    const darkModeDefault = authorPrefersDark;
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">EEB 187 — Instructor Walkthrough: Chaetodontidae</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../clades/chaetodontidae.html" aria-current="page"> 
+<span class="menu-text">Know Your Clade</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../recipes/core/color-gamut.html"> 
+<span class="menu-text">Recipes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../workbench.html"> 
+<span class="menu-text">Workbench</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../clades/chaetodontidae.html">Chaetodontidae — Butterflyfishes</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clades/chaetodontidae.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Chaetodontidae — Butterflyfishes</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quick-reference-card" id="toc-quick-reference-card" class="nav-link active" data-scroll-target="#quick-reference-card">Quick-Reference Card</a>
+  <ul class="collapse">
+  <li><a href="#taxonomy-and-phylogenetics" id="toc-taxonomy-and-phylogenetics" class="nav-link" data-scroll-target="#taxonomy-and-phylogenetics">Taxonomy and Phylogenetics</a></li>
+  <li><a href="#natural-history" id="toc-natural-history" class="nav-link" data-scroll-target="#natural-history">Natural History</a></li>
+  <li><a href="#color-pattern-diversity" id="toc-color-pattern-diversity" class="nav-link" data-scroll-target="#color-pattern-diversity">Color Pattern Diversity</a></li>
+  <li><a href="#exemplar-set-in-this-bundle" id="toc-exemplar-set-in-this-bundle" class="nav-link" data-scroll-target="#exemplar-set-in-this-bundle">Exemplar Set in This Bundle</a></li>
+  <li><a href="#tree" id="toc-tree" class="nav-link" data-scroll-target="#tree">Tree</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Chaetodontidae — Butterflyfishes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="quick-reference-card" class="level1">
+<h1>Quick-Reference Card</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 56%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Species in tree</td>
+<td>109 (one tip per species, voucher suffixes stripped)</td>
+</tr>
+<tr class="even">
+<td>Exemplars in bundle</td>
+<td>130 (some species have no tip; some tips have no exemplar)</td>
+</tr>
+<tr class="odd">
+<td>Family size</td>
+<td>~130 species in ~12 genera</td>
+</tr>
+<tr class="even">
+<td>Crown age</td>
+<td>~43 Ma (Eocene)</td>
+</tr>
+<tr class="odd">
+<td>Sexual system</td>
+<td>Gonochoristic; long-term pair bonds in many <em>Chaetodon</em></td>
+</tr>
+<tr class="even">
+<td>Primary diet</td>
+<td>Obligate corallivory, generalist invertivory, planktivory — often within the same genus</td>
+</tr>
+<tr class="odd">
+<td>Depth range</td>
+<td>Reef crest to lower mesophotic (~150 m in <em>Prognathodes</em>)</td>
+</tr>
+<tr class="even">
+<td>Key references</td>
+<td>Bellwood et al.&nbsp;(2010); Cowman et al.&nbsp;(2017); Hemingson &amp; Bellwood (2018); Hodge et al.&nbsp;(2014)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="taxonomy-and-phylogenetics" class="level2">
+<h2 class="anchored" data-anchor-id="taxonomy-and-phylogenetics">Taxonomy and Phylogenetics</h2>
+<p>Chaetodontidae is a family of small reef-associated percomorphs distributed across tropical Indo-Pacific, Atlantic, and Eastern Pacific reefs. The current working classification recognizes ~130 species in two subfamilies — the Chaetodontinae (<em>Chaetodon</em> and allies, ~90 species) and the Prognathodinae (<em>Prognathodes</em>, <em>Roa</em>, and the <em>Forcipiger / Hemitaurichthys</em> group). The <strong>phylogenomic tree used in this walkthrough</strong> contains 109 tips after collapsing voucher duplicates, with a crown age of ~43 Ma fixed by congruification onto a fossil-calibrated reference tree.</p>
+<p>The most recent backbone work places butterflyfishes as sister to pomacanthids (Bellwood et al., 2010; Cowman et al., 2017), with which they share many of the perceptual and signaling features explored in this course. Generic boundaries within <em>Chaetodon</em> remain partly unsettled, but the broad species-group structure (e.g., the <em>trifascialis</em>, <em>unimaculatus</em>, <em>citrinellus</em>, and <em>kleinii</em> groups) is well supported.</p>
+</section>
+<section id="natural-history" class="level2">
+<h2 class="anchored" data-anchor-id="natural-history">Natural History</h2>
+<p>Butterflyfishes are diurnal, visually oriented reef specialists. Most species are obligately coral-associated, and ~60% of <em>Chaetodon</em> are <strong>obligate corallivores</strong> that feed primarily on the tissue of living scleractinians (Cole et al., 2008). The remaining species are generalist invertivores (<em>Forcipiger</em>, <em>Chelmon</em>) or midwater planktivores (<em>Hemitaurichthys</em>, several <em>Heniochus</em> and <em>Prognathodes</em>). Diet matters for color biology because corallivores tend to maintain extremely tight site fidelity around their feeding territories, where mate choice and species recognition both operate against the same visual backdrop.</p>
+<p>A defining life-history feature of the family is <strong>long-term pair bonding</strong>: many <em>Chaetodon</em> species form monogamous pairs that persist for years and coordinate territorial defense and feeding (Hodge et al., 2014). Both sexes look essentially identical (sexual monochromatism) but the pair, treated as a perceptual unit, is highly distinctive against the reef — which has shaped the family’s iconic bold, contrastive patterns.</p>
+</section>
+<section id="color-pattern-diversity" class="level2">
+<h2 class="anchored" data-anchor-id="color-pattern-diversity">Color Pattern Diversity</h2>
+<p>Hemingson &amp; Bellwood (2018) used the butterflyfishes as their flagship system for studying <strong>color pattern divergence in sympatric sister pairs</strong>, finding that sister species in geographic overlap diverge more in pattern than those in allopatry, especially on metrics related to <strong>stripe orientation</strong> and <strong>boundary geometry</strong>. This effect motivates the metrics computed in the <a href="../recipes/core/color-gamut.html">Color Gamut</a> and <a href="../recipes/core/continuous-asr.html">Continuous ASR</a> recipes on this site.</p>
+<p>Pattern diversity within the family spans:</p>
+<ul>
+<li><strong>Vertical-bar designs</strong> (<em>Chaetodon trifasciatus</em>, <em>C. lunulatus</em>, <em>C. ornatissimus</em>) where the body is divided into 3-7 contrasting bands.</li>
+<li><strong>Horizontal-stripe designs</strong> (<em>C. striatus</em>, <em>C. octofasciatus</em>) where bars are rotated 90° to align with the body axis.</li>
+<li><strong>Spot-and-eyespot designs</strong> (<em>C. punctatofasciatus</em>, <em>C. semeion</em>, <em>C. unimaculatus</em>) with discrete pigmented dots and false eyespots near the caudal peduncle.</li>
+<li><strong>Bicolour wedge designs</strong> (<em>C. paucifasciatus</em>, <em>C. mertensii</em>) with the body sharply divided into anterior pale and posterior coloured halves.</li>
+<li><strong>Cryptic and pelagic designs</strong> (<em>Hemitaurichthys polylepis</em>, <em>H. zoster</em>) for the planktivorous and offshore taxa.</li>
+</ul>
+<p>The <strong>gamut</strong> built in the next recipe will sample the full RGB range present across these patterns, after removing background pixels.</p>
+</section>
+<section id="exemplar-set-in-this-bundle" class="level2">
+<h2 class="anchored" data-anchor-id="exemplar-set-in-this-bundle">Exemplar Set in This Bundle</h2>
+<p>The bundle includes one curated exemplar image per species for 130 species. Image source priority follows the original analysis: oriented in-house photos where available, then iNaturalist, then FishBase, then Bishop. The <code>exemplar_inventory.csv</code> (not shipped in the student-facing bundle, but available in the source analysis) tracks the per-species <code>gestalt_k</code> (2–5) that was used in <code>pavo::classify</code> to seed the cached object.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="chaetodontidae_files/figure-html/exemplar-grid-1.png" class="img-fluid figure-img" width="1100"></p>
+<figcaption>First 30 of 130 exemplar species in the bundle (orientation: head-left).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tree" class="level2">
+<h2 class="anchored" data-anchor-id="tree">Tree</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="chaetodontidae_files/figure-html/tree-plot-1.png" class="img-fluid figure-img" width="880"></p>
+<figcaption>Time-calibrated chronogram, 109 species. Tips renamed to Genus_species.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>Bellwood, D. R., Klanten, S., Cowman, P. F., Pratchett, M. S., Konow, N., &amp; van Herwerden, L. (2010). Evolutionary history of the butterflyfishes (f.&nbsp;Chaetodontidae) and the rise of coral feeding fishes. <em>Journal of Evolutionary Biology</em>, 23, 335-349.</li>
+<li>Cole, A. J., Pratchett, M. S., &amp; Jones, G. P. (2008). Diversity and functional importance of coral-feeding fishes on tropical coral reefs. <em>Fish and Fisheries</em>, 9, 286-307.</li>
+<li>Cowman, P. F., Bellwood, D. R., &amp; van Herwerden, L. (2017). Molecular phylogenetics and evolution of the Chaetodontidae. <em>Molecular Phylogenetics and Evolution</em>, 116, 24-38.</li>
+<li>Hemingson, C. R., &amp; Bellwood, D. R. (2018). Biogeographic patterns in major marine realms: function, not taxonomy, unites fish assemblages. <em>Journal of Biogeography</em>, 45, 1416-1427.</li>
+<li>Hodge, J. R., van Herwerden, L., &amp; Bellwood, D. R. (2014). Temporal evolution of coral reef fishes: global patterns and disparity in isolated locations. <em>Journal of Biogeography</em>, 41, 2115-2127.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
