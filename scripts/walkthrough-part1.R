@@ -34,6 +34,45 @@ library(ape)       # reading and manipulating phylogenetic trees
 library(phytools)  # visualization + phylogenetic signal tests
 
 
+# ---- sanity-check helper (catches silent NULL / unnamed / all-NA traits) ----
+# Use after any line like `names(x) <- tr$species` or `setNames(...)`.
+# Pass `tree = tree_matched` so the tip-label overlap check runs.
+check_trait <- function(x, name = deparse(substitute(x)), tree = NULL) {
+  if (is.null(x)) {
+    warning("'", name, "' is NULL. Did you mistype a column name? ",
+            "Common cause: names(x) <- tr$some_typo where the column does not exist.",
+            call. = FALSE); return(invisible(x))
+  }
+  if (length(x) == 0) {
+    warning("'", name, "' has length 0.", call. = FALSE); return(invisible(x))
+  }
+  if (is.atomic(x) && is.null(names(x))) {
+    warning("'", name, "' has no names. phytools requires names matching tree tip labels. ",
+            "Did you set names(", name, ") <- tr$species ?", call. = FALSE)
+    return(invisible(x))
+  }
+  if (all(is.na(x))) {
+    warning("'", name, "' is entirely NA. Check the column you assigned from.",
+            call. = FALSE); return(invisible(x))
+  }
+  if (!is.null(tree) && !is.null(names(x))) {
+    overlap <- sum(names(x) %in% tree$tip.label)
+    if (overlap == 0) {
+      warning("'", name, "' shares 0 names with tree$tip.label. ",
+              "Did you forget to set names(", name, ") <- tr$species ?",
+              call. = FALSE); return(invisible(x))
+    }
+    message(sprintf("  OK %s: length %d, %d non-NA, %d/%d match tree tips",
+                    name, length(x), sum(!is.na(x)), overlap, length(tree$tip.label)))
+  } else {
+    message(sprintf("  OK %s: length %d, %d non-NA, %d named",
+                    name, length(x), sum(!is.na(x)),
+                    if (is.null(names(x))) 0L else sum(nzchar(names(x)))))
+  }
+  invisible(x)
+}
+
+
 # ---- SECTION 2: Load the surgeonfish tree ----
 # This is a time-calibrated tree — branch lengths are in MILLIONS OF YEARS.
 # "Time-calibrated" means we can read off when lineages diverged.
@@ -165,6 +204,7 @@ for (g in unique(genus)) {
 # Create a named vector (phytools requires this format):
 pc <- tr$pattern_complexity
 names(pc) <- tr$species
+check_trait(pc, tree = tree_matched)
 
 # Generate the contMap:
 cm <- contMap(tree_matched, pc, plot = FALSE)
@@ -239,6 +279,7 @@ cat("p-value   =", round(lambda_result$P, 4), "\n")
 
 marbling <- tr$Tr_marbling
 names(marbling) <- tr$species
+check_trait(marbling, tree = tree_matched)
 
 # How many species have trunk marbling?
 cat("Trunk marbling present:", sum(marbling), "of", length(marbling), "species\n")
@@ -277,6 +318,7 @@ title("Trunk marbling in Acanthuridae")
 # YOUR CODE HERE:
 # my_trait <- tr$___________
 # names(my_trait) <- tr$species
+# check_trait(my_trait, tree = tree_matched)   # catches typos in the column name!
 # ...
 
 

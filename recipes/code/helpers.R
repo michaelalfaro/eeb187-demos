@@ -27,6 +27,51 @@ theme_poster <- theme_minimal(base_size = 20) +
     plot.margin        = margin(20, 20, 20, 20)
   )
 
+# ── check_trait ──────────────────────────────────────────────────
+# Sanity-check helper: catches silent NULL / unnamed / all-NA traits.
+# Use after lines like `names(x) <- dat$species` or `setNames(...)`.
+# Pass `tree = <your tree>` so the tip-label overlap check runs.
+#
+# Surfaces the silent-failure mode that bit a student: writing
+#   names(my_trait) <- tr$acanthuridae      # column doesn't exist -> NULL
+# strips names off `my_trait`, leaving a numeric vector with no names.
+# Downstream tip lookups then return NA and the plot looks empty,
+# but no warning or error is ever raised.
+check_trait <- function(x, name = deparse(substitute(x)), tree = NULL) {
+  if (is.null(x)) {
+    warning("'", name, "' is NULL. Did you mistype a column name? ",
+            "Common cause: names(x) <- tr$some_typo where the column does not exist.",
+            call. = FALSE); return(invisible(x))
+  }
+  if (length(x) == 0) {
+    warning("'", name, "' has length 0.", call. = FALSE); return(invisible(x))
+  }
+  if (is.atomic(x) && is.null(names(x))) {
+    warning("'", name, "' has no names. phytools requires names matching tree tip labels. ",
+            "Did you set names(", name, ") <- dat$species ?", call. = FALSE)
+    return(invisible(x))
+  }
+  if (all(is.na(x))) {
+    warning("'", name, "' is entirely NA. Check the column you assigned from.",
+            call. = FALSE); return(invisible(x))
+  }
+  if (!is.null(tree) && !is.null(names(x))) {
+    overlap <- sum(names(x) %in% tree$tip.label)
+    if (overlap == 0) {
+      warning("'", name, "' shares 0 names with tree$tip.label. ",
+              "Did you forget to set names(", name, ") <- dat$species ?",
+              call. = FALSE); return(invisible(x))
+    }
+    message(sprintf("  OK %s: length %d, %d non-NA, %d/%d match tree tips",
+                    name, length(x), sum(!is.na(x)), overlap, length(tree$tip.label)))
+  } else {
+    message(sprintf("  OK %s: length %d, %d non-NA, %d named",
+                    name, length(x), sum(!is.na(x)),
+                    if (is.null(names(x))) 0L else sum(nzchar(names(x)))))
+  }
+  invisible(x)
+}
+
 # ── load_bundle ──────────────────────────────────────────────────
 load_bundle <- function(bundle_dir) {
   if (!dir.exists(bundle_dir))
