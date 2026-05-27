@@ -686,7 +686,7 @@ Tip
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      img <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">c</span>(img, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">prod</span>(<span class="fu">dim</span>(img)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]))),</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dim =</span> <span class="fu">c</span>(<span class="fu">dim</span>(img)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">4</span>))</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    mag <span class="ot">&lt;-</span> img[,,<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fl">0.8</span> <span class="sc">&amp;</span> img[,,<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="fl">0.3</span> <span class="sc">&amp;</span> img[,,<span class="dv">3</span>] <span class="sc">&gt;</span> <span class="fl">0.8</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    mag <span class="ot">&lt;-</span> img[,,<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> img[,,<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="fl">0.4</span> <span class="sc">&amp;</span> img[,,<span class="dv">3</span>] <span class="sc">&gt;</span> <span class="fl">0.7</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    img[,,<span class="dv">4</span>][mag] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  img</span>
@@ -854,7 +854,7 @@ Tip
 <span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rect</span>(x0, epoch_band_y_bot, x1, epoch_band_y_top,</span>
 <span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="cn">NA</span>, <span class="at">border =</span> <span class="st">"grey70"</span>, <span class="at">lwd =</span> <span class="fl">0.4</span>)</span>
 <span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>((x0 <span class="sc">+</span> x1) <span class="sc">/</span> <span class="dv">2</span>, (epoch_band_y_bot <span class="sc">+</span> epoch_band_y_top) <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>         ep<span class="sc">$</span>name, <span class="at">cex =</span> <span class="fl">0.70</span>, <span class="at">col =</span> <span class="st">"grey30"</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>         ep<span class="sc">$</span>name, <span class="at">cex =</span> <span class="fl">0.75</span>, <span class="at">col =</span> <span class="st">"grey30"</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
 <span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Numeric time ticks</span></span>
 <span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>  tick_ages <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">floor</span>(total_h <span class="sc">/</span> <span class="dv">5</span>) <span class="sc">*</span> <span class="dv">5</span>, <span class="at">by =</span> <span class="dv">5</span>)</span>
@@ -862,7 +862,7 @@ Tip
 <span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>  tick_y    <span class="ot">&lt;-</span> epoch_band_y_bot</span>
 <span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(tick_x, tick_y, tick_x, tick_y <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.3</span>, <span class="at">col =</span> <span class="st">"grey50"</span>, <span class="at">lwd =</span> <span class="fl">0.6</span>)</span>
 <span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(tick_x, tick_y <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.5</span>,</span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste0</span>(tick_ages, <span class="st">" Ma"</span>), <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">col =</span> <span class="st">"grey40"</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste0</span>(tick_ages, <span class="st">" Ma"</span>), <span class="at">cex =</span> <span class="fl">0.65</span>, <span class="at">col =</span> <span class="st">"grey40"</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
 <span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- Column x-anchors (data-unit positions) ------------------------------</span></span>
 <span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>  x_right_edge <span class="ot">&lt;-</span> <span class="fu">max</span>(tip_x) <span class="sc">+</span> total_h <span class="sc">*</span> <span class="fl">0.012</span>   <span class="co"># gap after tree tips</span></span>
@@ -922,7 +922,7 @@ Tip
 <span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Abbreviated species name --------------------------------------------</span></span>
 <span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(col_name_ctr, y_c, <span class="fu">short_label</span>(sp),</span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>         <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.50</span>, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>         <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.60</span>, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
 <span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PC1 circle -----------------------------------------------------------</span></span>
 <span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>    enc_pc <span class="ot">&lt;-</span> <span class="fu">encode</span>(PC1[sp], rng_PC1[<span class="dv">1</span>], rng_PC1[<span class="dv">2</span>], div_pal)</span>
@@ -961,9 +961,9 @@ Tip
 <span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>           <span class="at">col =</span> pal[idx], <span class="at">border =</span> <span class="st">"grey40"</span>, <span class="at">lwd =</span> <span class="fl">0.3</span>)</span>
 <span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(xc, legend_y <span class="sc">+</span> sh <span class="sc">*</span> <span class="fl">0.4</span>,</span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>         <span class="fu">sprintf</span>(<span class="st">"%.2g"</span>, rng[<span class="dv">2</span>]), <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">col =</span> <span class="st">"grey25"</span>)</span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>         <span class="fu">sprintf</span>(<span class="st">"%.2g"</span>, rng[<span class="dv">2</span>]), <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="fl">0.70</span>, <span class="at">col =</span> <span class="st">"grey25"</span>)</span>
 <span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(xc, legend_y <span class="sc">-</span> sh <span class="sc">*</span> n_steps <span class="sc">-</span> sh <span class="sc">*</span> <span class="fl">0.3</span>,</span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>         <span class="fu">sprintf</span>(<span class="st">"%.2g"</span>, rng[<span class="dv">1</span>]), <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>), <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">col =</span> <span class="st">"grey25"</span>)</span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>         <span class="fu">sprintf</span>(<span class="st">"%.2g"</span>, rng[<span class="dv">1</span>]), <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>), <span class="at">cex =</span> <span class="fl">0.70</span>, <span class="at">col =</span> <span class="st">"grey25"</span>)</span>
 <span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- Provenance note -----------------------------------------------------</span></span>
@@ -992,7 +992,7 @@ Tip
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_phylogeny_with_traits</span>(preview, <span class="at">w =</span> <span class="dv">14</span>, <span class="at">h =</span> <span class="dv">24</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"In-document preview written to %s (chunk-sized).</span><span class="sc">\n</span><span class="st">"</span>, preview))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>In-document preview written to /var/folders/55/g5mnt5hs55g_88082khsfk2r0000gn/T//RtmpsYt3D3/file693a69b1379.pdf (chunk-sized).</code></pre>
+<pre><code>In-document preview written to /var/folders/55/g5mnt5hs55g_88082khsfk2r0000gn/T//RtmpKcHdzX/file902960640da5.pdf (chunk-sized).</code></pre>
 </div>
 </div>
 <p><a href="../../figures/phylogeny-with-traits-hero.pdf">Download hero PDF: <code>phylogeny-with-traits-hero.pdf</code></a></p>
@@ -1482,4 +1482,4 @@ Tip
 
 
 
-</body></html><!-- cache-bust: 1779858275 -->
+</body></html>

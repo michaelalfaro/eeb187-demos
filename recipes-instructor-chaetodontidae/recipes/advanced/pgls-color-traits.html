@@ -854,10 +854,10 @@ p         0.2240        0.5093   0.3553</code></pre>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> <span class="fu">clade_color</span>(pr<span class="sc">$</span>species)</span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(pr<span class="sc">$</span>x, pr<span class="sc">$</span>y,</span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> cols, <span class="at">col =</span> <span class="st">"grey20"</span>,</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">1.4</span>, <span class="at">lwd =</span> <span class="fl">0.4</span>,</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">1.4</span>, <span class="at">lwd =</span> <span class="fl">0.7</span>,</span>
 <span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> xlab,</span>
 <span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="fu">sprintf</span>(<span class="st">"%s (partial)"</span>, response_label),</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex.lab =</span> <span class="fl">1.15</span>, <span class="at">cex.axis =</span> <span class="fl">1.0</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex.lab =</span> <span class="fl">1.35</span>, <span class="at">cex.axis =</span> <span class="fl">1.0</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
 <span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">sprintf</span>(<span class="st">"%s vs %s"</span>, response_label, focal_label),</span>
 <span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex.main =</span> <span class="fl">1.25</span>, <span class="at">font.main =</span> <span class="dv">2</span>)</span>
 <span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid</span>(<span class="at">col =</span> <span class="st">"grey92"</span>)</span>
@@ -905,41 +905,49 @@ p         0.2240        0.5093   0.3553</code></pre>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_panel</span>(pr_PC2_body,    <span class="st">"log body size (cm)"</span>, <span class="st">"PC2"</span>, m_pc2, <span class="st">"log_body"</span>)</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(hero_pdf, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">12</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(hero_pdf, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">13</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>), <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.15</span>))</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_panel</span>(pr_PC1_trophic, <span class="st">"Trophic level"</span>, <span class="st">"PC1"</span>, m_pc1, <span class="st">"trophic_level"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
-* : conversion failure on 'λ = 0.59' in 'mbcsToSbcs': for λ (U+03BB)
-Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
 * : conversion failure on 'λ = 0.59' in 'mbcsToSbcs': for λ (U+03BB)</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_panel</span>(pr_PC1_body,    <span class="st">"log body size (cm)"</span>, <span class="st">"PC1"</span>, m_pc1, <span class="st">"log_body"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
-* : conversion failure on 'λ = -0.03' in 'mbcsToSbcs': for λ (U+03BB)
-Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
+* : conversion failure on 'λ = 0.59' in 'mbcsToSbcs': for λ (U+03BB)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_panel</span>(pr_PC2_trophic, <span class="st">"Trophic level"</span>, <span class="st">"PC2"</span>, m_pc2, <span class="st">"trophic_level"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
 * : conversion failure on 'λ = -0.03' in 'mbcsToSbcs': for λ (U+03BB)</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genus color legend at the very bottom</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"center"</span>, <span class="at">horiz =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Chaetodon"</span>, <span class="st">"Prognathodes"</span>, <span class="st">"Heniochus"</span>, <span class="st">"Forcipiger"</span>,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Hemitaurichthys"</span>, <span class="st">"Roa"</span>, <span class="st">"Chelmon"</span>, <span class="st">"Other"</span>),</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">pt.bg =</span> <span class="fu">c</span>(<span class="st">"#1f77b4"</span>, <span class="st">"#d62728"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#9467bd"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"#ff7f0e"</span>, <span class="st">"#8c564b"</span>, <span class="st">"#17becf"</span>, <span class="st">"grey55"</span>),</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"grey20"</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">pt.cex =</span> <span class="fl">1.6</span>,</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_panel</span>(pr_PC2_body,    <span class="st">"log body size (cm)"</span>, <span class="st">"PC2"</span>, m_pc2, <span class="st">"log_body"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
+* : conversion failure on 'λ = -0.03' in 'mbcsToSbcs': for λ (U+03BB)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genus color legend as bottom strip</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"center"</span>, <span class="at">horiz =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Chaetodon"</span>, <span class="st">"Prognathodes"</span>, <span class="st">"Heniochus"</span>, <span class="st">"Forcipiger"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Hemitaurichthys"</span>, <span class="st">"Roa"</span>, <span class="st">"Chelmon"</span>, <span class="st">"Other"</span>),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">pt.bg =</span> <span class="fu">c</span>(<span class="st">"#1f77b4"</span>, <span class="st">"#d62728"</span>, <span class="st">"#2ca02c"</span>, <span class="st">"#9467bd"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"#ff7f0e"</span>, <span class="st">"#8c564b"</span>, <span class="st">"#17becf"</span>, <span class="st">"grey55"</span>),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"grey20"</span>, <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">pt.cex =</span> <span class="fl">1.6</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">cex =</span> <span class="fl">0.9</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>quartz_off_screen 
                 2 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Wrote: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">normalizePath</span>(hero_pdf)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Wrote: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">normalizePath</span>(hero_pdf)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/pgls-color-traits-hero.pdf</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In-document</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In-document</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -963,7 +971,7 @@ Warning in text.default(usr[2] - diff(usr[1:2]) * 0.02, usr[4] - diff(usr[3:4])
 <section id="diagnostics" class="level1">
 <h1>Diagnostics</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PC1 model:</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="fu">summary</span>(m_pc1)<span class="sc">$</span>tTable); <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, st1<span class="sc">$</span>lambda))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PC1 model:</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="fu">summary</span>(m_pc1)<span class="sc">$</span>tTable); <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, st1<span class="sc">$</span>lambda))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>PC1 model:</code></pre>
 </div>
@@ -976,7 +984,7 @@ log_body        3.1078365  2.287780  1.3584510 0.1772047</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>  lambda = 0.586</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">PC2 model:</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="fu">summary</span>(m_pc2)<span class="sc">$</span>tTable); <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, st2<span class="sc">$</span>lambda))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">PC2 model:</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="fu">summary</span>(m_pc2)<span class="sc">$</span>tTable); <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, st2<span class="sc">$</span>lambda))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 PC2 model:</code></pre>

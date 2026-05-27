@@ -303,6 +303,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -510,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -751,8 +755,14 @@ log_depth   0.004739539 0.01134503 0.4177636 0.6769812</code></pre>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(Maximum Depth, m)"</span>, <span class="at">y =</span> <span class="st">"Chromatic Diversity (Jc)"</span>,</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Does depth constrain chromatic diversity?"</span>,</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS controlling for phylogeny"</span>) <span class="sc">+</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  { <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(pgls_Jc))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(merged<span class="sc">$</span>log_depth) <span class="sc">-</span> <span class="fl">0.2</span>, <span class="at">y =</span> <span class="fu">max</span>(merged<span class="sc">$</span>Jc),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.3f, p = %.3f"</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">coef</span>(pgls_Jc)[<span class="dv">2</span>],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">summary</span>(pgls_Jc)<span class="sc">$</span>tTable[<span class="dv">2</span>, <span class="dv">4</span>]),</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) } <span class="sc">+</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -771,8 +781,14 @@ log_depth   0.004739539 0.01134503 0.4177636 0.6769812</code></pre>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(Maximum Depth, m)"</span>, <span class="at">y =</span> <span class="st">"Mean Chromatic Contrast (m_dS)"</span>,</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Does depth constrain chromatic contrast?"</span>,</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS controlling for phylogeny"</span>) <span class="sc">+</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  { <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(pgls_dS))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(merged<span class="sc">$</span>log_depth) <span class="sc">-</span> <span class="fl">0.2</span>, <span class="at">y =</span> <span class="fu">max</span>(merged<span class="sc">$</span>m_dS),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.3f, p = %.3f"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">coef</span>(pgls_dS)[<span class="dv">2</span>],</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">summary</span>(pgls_dS)<span class="sc">$</span>tTable[<span class="dv">2</span>, <span class="dv">4</span>]),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) } <span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

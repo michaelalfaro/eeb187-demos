@@ -303,6 +303,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -510,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -717,8 +721,15 @@ trophic_level 0.02882958 0.02928723 0.9843739 0.3271524</code></pre>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Trophic Level"</span>, <span class="at">y =</span> <span class="st">"Mean Chromatic Contrast (m_dS)"</span>,</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Does diet predict conspicuousness?"</span>,</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS controlling for phylogeny"</span>) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  { <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(model))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(merged<span class="sc">$</span>trophic_level) <span class="sc">-</span> <span class="fl">0.05</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> <span class="fu">max</span>(merged<span class="sc">$</span>m_dS),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.3f, p = %.3f"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">coef</span>(model)[<span class="dv">2</span>],</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">summary</span>(model)<span class="sc">$</span>tTable[<span class="dv">2</span>, <span class="dv">4</span>]),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) } <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

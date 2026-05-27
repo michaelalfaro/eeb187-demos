@@ -303,6 +303,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -510,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -686,7 +690,7 @@ Tip
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggtree</span>(tree, <span class="fu">aes</span>(<span class="at">color =</span> value), <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">%&lt;+%</span> tree_data <span class="sc">+</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">name =</span> <span class="st">"Transition</span><span class="sc">\n</span><span class="st">density (m)"</span>,</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">option =</span> <span class="st">"plasma"</span>) <span class="sc">+</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="at">size =</span> <span class="fl">2.2</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">offset =</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="at">size =</span> <span class="fl">3.0</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">offset =</span> <span class="fl">0.5</span>,</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">align =</span> <span class="cn">TRUE</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">linesize =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  ggtree<span class="sc">::</span><span class="fu">hexpand</span>(<span class="fl">0.4</span>) <span class="sc">+</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>) <span class="sc">+</span></span>
@@ -738,7 +742,7 @@ Tip
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggtree</span>(tree, <span class="at">layout =</span> <span class="st">"fan"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">%&lt;+%</span> genus_df <span class="sc">+</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tippoint</span>(<span class="fu">aes</span>(<span class="at">color =</span> genus), <span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="fu">aes</span>(<span class="at">color =</span> genus), <span class="at">size =</span> <span class="fl">1.8</span>, <span class="at">offset =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ggtree<span class="sc">::</span><span class="fu">hexpand</span>(<span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  ggtree<span class="sc">::</span><span class="fu">hexpand</span>(<span class="fl">0.6</span>) <span class="sc">+</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>),</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -775,7 +779,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>mrca_node <span class="ot">&lt;-</span> <span class="fu">getMRCA</span>(tree, genus_tips)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggtree</span>(tree, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="at">size =</span> <span class="fl">2.2</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="at">size =</span> <span class="fl">3.0</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  ggtree<span class="sc">::</span><span class="fu">hexpand</span>(<span class="fl">0.45</span>) <span class="sc">+</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>) <span class="sc">+</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">5</span>, <span class="dv">80</span>, <span class="dv">5</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
@@ -816,7 +820,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>p_tree <span class="ot">&lt;-</span> <span class="fu">ggtree</span>(tree, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="at">size =</span> <span class="fl">2.0</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tiplab</span>(<span class="at">size =</span> <span class="fl">3.0</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>,</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">align =</span> <span class="cn">TRUE</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">linesize =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  ggtree<span class="sc">::</span><span class="fu">hexpand</span>(<span class="fl">0.4</span>) <span class="sc">+</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -846,7 +850,7 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>())</span>
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span> p_tree <span class="sc">+</span> p_bar <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>combined <span class="ot">&lt;-</span> p_tree <span class="sc">+</span> p_bar <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="dv">1</span>))</span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>combined</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">

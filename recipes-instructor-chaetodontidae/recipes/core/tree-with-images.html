@@ -659,7 +659,7 @@ Tip
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      img <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">c</span>(img, <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">prod</span>(<span class="fu">dim</span>(img)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]))),</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dim =</span> <span class="fu">c</span>(<span class="fu">dim</span>(img)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="dv">4</span>))</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    mag <span class="ot">&lt;-</span> img[,,<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fl">0.8</span> <span class="sc">&amp;</span> img[,,<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="fl">0.3</span> <span class="sc">&amp;</span> img[,,<span class="dv">3</span>] <span class="sc">&gt;</span> <span class="fl">0.8</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    mag <span class="ot">&lt;-</span> img[,,<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fl">0.7</span> <span class="sc">&amp;</span> img[,,<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="fl">0.4</span> <span class="sc">&amp;</span> img[,,<span class="dv">3</span>] <span class="sc">&gt;</span> <span class="fl">0.7</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    img[,,<span class="dv">4</span>][mag] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  img</span>
@@ -760,7 +760,7 @@ Tip
 <span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(tick_x, epoch_band_y_bot, tick_x, epoch_band_y_bot <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.3</span>,</span>
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>           <span class="at">col =</span> <span class="st">"grey50"</span>, <span class="at">lwd =</span> <span class="fl">0.6</span>)</span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(tick_x, epoch_band_y_bot <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.5</span>,</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste0</span>(tick_ages, <span class="st">" Ma"</span>), <span class="at">cex =</span> <span class="fl">0.50</span>, <span class="at">col =</span> <span class="st">"grey40"</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste0</span>(tick_ages, <span class="st">" Ma"</span>), <span class="at">cex =</span> <span class="fl">0.60</span>, <span class="at">col =</span> <span class="st">"grey40"</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- Column anchors ------------------------------------------------------</span></span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  x_right_edge <span class="ot">&lt;-</span> <span class="fu">max</span>(tip_xs) <span class="sc">+</span> tree_depth <span class="sc">*</span> <span class="fl">0.012</span></span>
@@ -803,7 +803,7 @@ Tip
 <span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>                  <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(col_name_ctr, y_c, <span class="fu">short_label</span>(tip),</span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>         <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.45</span>, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>         <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
 <span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(out_pdf)</span>
@@ -870,7 +870,7 @@ substituted for — (U+2014)</code></pre>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  angle_deg <span class="ot">&lt;-</span> angle <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi</span>
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  adj <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>) <span class="cf">else</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>)</span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) angle_deg <span class="ot">&lt;-</span> angle_deg <span class="sc">+</span> <span class="dv">180</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(lx, ly, label, <span class="at">srt =</span> angle_deg, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.40</span>, <span class="at">adj =</span> adj)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(lx, ly, label, <span class="at">srt =</span> angle_deg, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">adj =</span> adj)</span>
 <span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1346,4 +1346,4 @@ substituted for — (U+2014)</code></pre>
 
 
 
-</body></html><!-- cache-bust: 1779858275 -->
+</body></html>
