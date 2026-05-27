@@ -288,6 +288,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="../../poster/final-project.html"> 
+<span class="menu-text">Final Project</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
@@ -296,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Know Your Clade</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../recipes/core/phylogenetic-signal.html" aria-current="page"> 
+    <a class="nav-link active" href="../../recipes/core/color-gamut.html" aria-current="page"> 
 <span class="menu-text">Recipes</span></a>
   </li>  
   <li class="nav-item">
@@ -319,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/core/tree-with-images.html">Core</a></li><li class="breadcrumb-item"><a href="../../recipes/core/measurement-robustness.html">Recipe 5: Measurement Robustness</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/core/color-gamut.html">Core</a></li><li class="breadcrumb-item"><a href="../../recipes/core/measurement-robustness.html">Recipe 5: Measurement Robustness</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -340,6 +344,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../recipes/core/color-gamut.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundation Recipe — Building a clade color gamut from images</span></a>
+  </div>
+</li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/core/tree-with-images.html" class="sidebar-item-text sidebar-link">
@@ -578,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/core/tree-with-images.html">Core</a></li><li class="breadcrumb-item"><a href="../../recipes/core/measurement-robustness.html">Recipe 5: Measurement Robustness</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/core/color-gamut.html">Core</a></li><li class="breadcrumb-item"><a href="../../recipes/core/measurement-robustness.html">Recipe 5: Measurement Robustness</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Recipe 5: Measurement Robustness</h1>
 <p class="subtitle lead">Are my results robust to measurement noise?</p>
@@ -764,56 +774,57 @@ Common pitfalls
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 7. Compute observed K values for comparison ───────────────</span></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>obs_K <span class="ot">&lt;-</span> <span class="fu">sapply</span>(pavo_vars, <span class="cf">function</span>(v) {</span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">setNames</span>(trait_mat[, v], <span class="fu">rownames</span>(trait_mat))</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  phytools<span class="sc">::</span><span class="fu">phylosig</span>(tree_mc, x, <span class="at">method =</span> <span class="st">"K"</span>)</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 8. K boxplot: observed vs. MC distribution ────────────────</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape MC K values for plotting</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>K_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">rep</span>(<span class="fu">colnames</span>(mc<span class="sc">$</span>K), <span class="at">each =</span> <span class="fu">nrow</span>(mc<span class="sc">$</span>K)),</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">K_mc     =</span> <span class="fu">as.vector</span>(mc<span class="sc">$</span>K),</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Observed K as a separate data frame for the diamond overlay</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>obs_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">names</span>(obs_K),</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">K_obs    =</span> <span class="fu">as.numeric</span>(obs_K),</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(K_long, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> K_mc)) <span class="sc">+</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"grey85"</span>, <span class="at">color =</span> <span class="st">"grey50"</span>, <span class="at">outlier.size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> obs_df,</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> K_obs),</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"#c14a4a"</span>) <span class="sc">+</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Measurement robustness: observed K vs. MC noise distribution"</span>,</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Red diamond = observed K; boxes = 200 MC iterations with measurement noise"</span>,</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Blomberg's K"</span></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  theme_poster</span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 9. Save poster-quality PDF ─────────────────────────────────</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"results/recipe5-mc-robustness.pdf"</span>, p, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">8</span>)</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Saved: results/recipe5-mc-robustness.pdf</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 10. Print summary: which variables are robust? ─────────────</span></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">── Robustness summary ──</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> pavo_vars) {</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  mc_vals  <span class="ot">&lt;-</span> mc<span class="sc">$</span>K[, v]</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  mc_upper <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mc_vals, <span class="fl">0.975</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  mc_lower <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mc_vals, <span class="fl">0.025</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  obs      <span class="ot">&lt;-</span> obs_K[v]</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  robust   <span class="ot">&lt;-</span> obs <span class="sc">&gt;</span> mc_upper</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  %-5s  obs K = %.3f   MC 95%% CI = [%.3f, %.3f]   %s</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>              v, obs, mc_lower, mc_upper,</span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> (robust) <span class="st">"ROBUST"</span> <span class="cf">else</span> <span class="st">"within noise"</span>))</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">check_trait</span>(x, <span class="at">name =</span> v, <span class="at">tree =</span> tree_mc)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  phytools<span class="sc">::</span><span class="fu">phylosig</span>(tree_mc, x, <span class="at">method =</span> <span class="st">"K"</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 8. K boxplot: observed vs. MC distribution ────────────────</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape MC K values for plotting</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>K_long <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">rep</span>(<span class="fu">colnames</span>(mc<span class="sc">$</span>K), <span class="at">each =</span> <span class="fu">nrow</span>(mc<span class="sc">$</span>K)),</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">K_mc     =</span> <span class="fu">as.vector</span>(mc<span class="sc">$</span>K),</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Observed K as a separate data frame for the diamond overlay</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>obs_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">names</span>(obs_K),</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">K_obs    =</span> <span class="fu">as.numeric</span>(obs_K),</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(K_long, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> K_mc)) <span class="sc">+</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"grey85"</span>, <span class="at">color =</span> <span class="st">"grey50"</span>, <span class="at">outlier.size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> obs_df,</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> K_obs),</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"#c14a4a"</span>) <span class="sc">+</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Measurement robustness: observed K vs. MC noise distribution"</span>,</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Red diamond = observed K; boxes = 200 MC iterations with measurement noise"</span>,</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Blomberg's K"</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>  theme_poster</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 9. Save poster-quality PDF ─────────────────────────────────</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"results/recipe5-mc-robustness.pdf"</span>, p, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">8</span>)</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Saved: results/recipe5-mc-robustness.pdf</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 10. Print summary: which variables are robust? ─────────────</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">── Robustness summary ──</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> pavo_vars) {</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  mc_vals  <span class="ot">&lt;-</span> mc<span class="sc">$</span>K[, v]</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  mc_upper <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mc_vals, <span class="fl">0.975</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  mc_lower <span class="ot">&lt;-</span> <span class="fu">quantile</span>(mc_vals, <span class="fl">0.025</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  obs      <span class="ot">&lt;-</span> obs_K[v]</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  robust   <span class="ot">&lt;-</span> obs <span class="sc">&gt;</span> mc_upper</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  %-5s  obs K = %.3f   MC 95%% CI = [%.3f, %.3f]   %s</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>              v, obs, mc_lower, mc_upper,</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> (robust) <span class="st">"ROBUST"</span> <span class="cf">else</span> <span class="st">"within noise"</span>))</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="from-the-literature" class="level2">
