@@ -213,7 +213,7 @@
     "href": "workbench.html#pre-installed-packages",
     "title": "Workbench — Helpful Tips",
     "section": "Pre-installed packages",
-    "text": "Pre-installed packages\nThe Workbench R environment has these installed. Open an issue with Michael if you need something else.\npavo, ape, phytools, caper, nlme, geiger, ggtree,\nggplot2, dplyr, tidyr, readr, rfishbase, viridis,\nRColorBrewer, png, jpeg, magick",
+    "text": "Pre-installed packages\nThe Workbench R environment has these installed. Open an issue with Michael if you need something else.\npavo, ape, phytools, caper, nlme, geiger, ggtree,\nggplot2, dplyr, tidyr, readr, rfishbase, viridis,\nRColorBrewer, png, jpeg, magick,\ngeometry, scatterplot3d",
     "crumbs": [
       "Workbench",
       "Workbench — Helpful Tips"
@@ -2558,7 +2558,7 @@
     "href": "index.html#minimum-viable-project",
     "title": "Project Recipe Book — From Data to Discovery",
     "section": "Minimum Viable Project",
-    "text": "Minimum Viable Project\n\n\n\n\n\n\nEvery group must complete these two recipes\n\n\n\n\nRecipe 1 — Phylogenetic Signal: Does color cluster on the tree? This is the foundation for everything else.\nRecipe 3 — Axis of Diversification: What dimension of color space has diversified most in your clade?\n\nBeyond those two, pick 1–2 additional recipes that connect to your clade’s biology. For example: wrasses with complex social systems are natural candidates for Recipe 14 (sexual system complexity); surgeonfish groups with strong depth gradients are natural candidates for Recipe 6 (depth and color)."
+    "text": "Minimum Viable Project\n\n\n\n\n\n\nEvery group must complete these THREE recipes\n\n\n\n\nFoundation Recipe — Color Gamut for Your Clade: Build the convex hull of your clade’s colors in RGB space. One number (gamut volume) + a visualization that anchors your poster. This is the analog of the avian-tetrahedron gamut from lecture. Start here — every other recipe assumes you have your clade’s gamut in hand.\nRecipe 1 — Phylogenetic Signal: Does color cluster on the tree?\nRecipe 3 — Axis of Diversification: What dimension of color space has diversified most in your clade?\n\nBeyond those three, pick 1–2 additional recipes that connect to your clade’s biology. For example: wrasses with complex social systems are natural candidates for Recipe 14 (sexual system complexity); surgeonfish groups with strong depth gradients are natural candidates for Recipe 6 (depth and color)."
   },
   {
     "objectID": "index.html#combined-labrid-mega-analysis",
@@ -4004,6 +4004,213 @@
     "crumbs": [
       "Poster",
       "Project Milestone Checklist"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html",
+    "href": "recipes/core/color-gamut.html",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "",
+    "text": "Start here\n\n\n\nThis is the Foundation Recipe — the first recipe every group runs. It is part of the project’s Minimum Viable Project (MVP) triad (Foundation Recipe + Recipe 1 Phylogenetic Signal + Recipe 3 Axis of Diversification). Build your clade’s color gamut here first; the other recipes assume you have it in hand.",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#the-big-question",
+    "href": "recipes/core/color-gamut.html#the-big-question",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "The Big Question",
+    "text": "The Big Question\n\nIf we drop every color my clade uses into a 3-D color space, how big is the cloud — and how does that cloud compare to other clades?",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#this-is-an-instance-of",
+    "href": "recipes/core/color-gamut.html#this-is-an-instance-of",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "This Is an Instance Of…",
+    "text": "This Is an Instance Of…\n\n\n\n\n\n\nColor gamut quantification\n\n\n\nA color gamut is the convex hull of all colors a clade realizes in some color space. Stoddard and Prum (2011) put avian plumage colors into the tetrahedral space defined by bird cone-photoreceptor responses and showed that, across birds, the family-level tetrahedral volumes vary by more than two orders of magnitude — some lineages fill a tiny corner of avian color space, others sprawl across it. The gamut volume is the single most common summary statistic for “how colorful is this clade”.\nWe cannot replicate the avian-tetrahedron setup for our reef-fish images (no reflectance spectra, no quantum catches, no patch-level standardized photography). What we can do is build the same conceptual object — a 3-D convex hull — in camera RGB space from the colors that pavo::classify() extracts via k-means clustering on each species’ image. This is qualitatively the same exercise as the avian tetrahedron, but with three blunt caveats spelled out at the bottom of this recipe.",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#why-this-matters-for-your-clade",
+    "href": "recipes/core/color-gamut.html#why-this-matters-for-your-clade",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "Why This Matters for Your Clade",
+    "text": "Why This Matters for Your Clade\nEvery poster eventually asks the reader: “is my clade colorful?” That word does a lot of work. Color richness (how many distinct colors a species shows), color contrast (how far apart neighboring colors are), and color space coverage (how much of the possible palette a clade collectively uses) are all “colorful” in plain English but they measure different things. The gamut volume is the answer to the third question: across all your species, how much of the available RGB cube does the clade actually occupy?\n\n\n\n\n\n\nClade-specific tips\n\n\n\n\nAcanthuridae (surgeonfishes): A genus-by-genus or subfamily-by-subfamily comparison of gamut volume is the natural follow-up — Acanthurus species span a wide gamut; Ctenochaetus species are mostly clustered in the brown/olive corner; Zebrasoma and Paracanthurus extend into bright yellows and blues that pull the hull out toward the cube’s vertices.\nPomacanthidae (angelfishes): Juvenile and adult color phases can almost double a species’ contribution to the gamut. Decide up front whether each species is represented by its adult, its juvenile, or both — and report that choice. Mixing is fine; pretending you didn’t is not.\nCirrhilabrini (fairy wrasses): Strong sexual dichromatism means a males-only gamut will look very different from a females-only or mixed gamut. The male display gamut is the more interesting one for most signaling-evolution questions.\nBalistoidea (triggerfishes + filefishes): Two-family comparison is built in — compute the gamut for Balistidae and Monacanthidae separately and put them on the same axes.",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#the-method",
+    "href": "recipes/core/color-gamut.html#the-method",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "The Method",
+    "text": "The Method\nFor each species’ image, pavo::classify() runs k-means on the pixel RGB values and returns k cluster centroids plus the pixel-count proportion that each cluster occupies. One of those clusters is almost always the background (or fin-clipped negative space, or solid white card behind the fish). The standard pavo workflow is to flag that cluster and drop it from any downstream analysis.\nHow we flag the background: the recipe prints a swatch grid of every cluster centroid for every image, with the centroid’s RGB triple labeled. You (the human) look at the swatches, decide what the background color of your photographs is (e.g., “blue water around RGB(0.20, 0.45, 0.65)” or “white card around RGB(0.95, 0.95, 0.95)”), and record those RGB values in background-ids.csv. For each image, the recipe then finds the cluster whose centroid is closest in Euclidean RGB distance to the bg color you recorded, and drops that cluster. This is the canonical workflow for the recipe book — it is more pedagogically transparent than any automatic heuristic, and the failure modes (“fish fills the frame”, “background is a mottled reef”, “white card is brighter than the brightest fin”) become impossible to silently miss because you’ve inspected the swatches yourself. It is also robust to k-means cluster-ID instability: a re-knit may renumber the clusters, but the bg color you recorded still matches the same centroid by nearest-neighbour.\nOnce backgrounds are stripped, we are left with a per-species set of foreground cluster centroids in RGB space. We pool these centroids across the whole clade and compute the 3-D convex hull with geometry::convhulln(..., options = \"FA\"), which returns both the hull facets and the hull volume. The volume is the headline number — the clade gamut size.\nBecause RGB lives in the unit cube [0,1]^3 (or [0,255]^3 if you prefer; we use [0,1]), the hull volume divided by 1 is the occupancy ratio: the fraction of the available RGB cube the clade fills. A clade with a gamut volume of 0.10 fills 10% of the possible RGB color space; a value of 0.30 is a third.\nWe then plot the points and hull from three angles: a static 3-D scatter (via scatterplot3d, since rgl is not available on the workbench), plus three 2-D projections (R vs G, R vs B, G vs B), each with points colored by their actual RGB value.",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#how-to-interpret-results",
+    "href": "recipes/core/color-gamut.html#how-to-interpret-results",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "How to Interpret Results",
+    "text": "How to Interpret Results\n\n\n\n\n\n\n\n\nResult\nInterpretation\nWhat to say on your poster\n\n\n\n\nGamut volume &lt; 0.05\nThe clade fills less than 5% of RGB space; tightly clustered colors\n“The clade occupies a narrow region of color space — its species converge on a shared palette.”\n\n\nGamut volume 0.05 – 0.20\nModerate coverage typical of many reef-fish families\n“Color diversity is moderate; the clade explores a few corners of RGB space but does not span the cube.”\n\n\nGamut volume &gt; 0.20\nBroad coverage; species range from drab to saturated and span hues\n“The clade fills a large region of RGB color space, with species at multiple extremes of hue and saturation.”\n\n\nGamut volume changes a lot when you change k\nThe gamut is sensitive to the granularity of classification\nReport the gamut for at least two values of k (e.g., k = 4 and k = 6) and discuss which more honestly summarizes your species’ patterns.\n\n\n\n\n\n\n\n\n\nCommon pitfalls and honest caveats\n\n\n\n\nThis is camera RGB, not perceptual color. Reef fish do not see the way a camera does — they have UV-sensitive cones, different spectral tuning, and view their world through water that filters wavelengths. The gamut you compute here is “how much of camera RGB the clade fills”, not “how much of fish color space”.\nBackgrounds matter a lot. If your images have inconsistent backgrounds (blue water vs. white card vs. mottled reef), the “background cluster” may not be a clean single class and your foreground centroids will be contaminated. Crop tightly when you can, and inspect every image’s swatch grid before you write its bg cluster into background-ids.csv.\nk is a knob. Choosing k = 3 gives you very coarse summary colors; k = 8 gives you fine ones. Larger k almost always inflates the gamut volume because more centroids span more of the cube. Pick a k that matches the actual chromatic structure of your species (most reef fish: 3 to 6 patches) and report the choice.\nOne image per species is a sample of one. The recipe enforces one image per species (see §Inputs). A second image of the same species — different lighting, different angle, different life stage — will give you slightly different centroids. The gamut is a property of your image set, not a population estimate. Two groups using two different image sets for the same clade will get different volumes. Multi-image aggregation will be addressed in a follow-up recipe.\nCluster centroids hide within-patch variation. A patch that is a smooth gradient from yellow to orange gets summarized by a single yellow-orange centroid. If a clade’s “color story” is about gradients, the centroid-and-hull approach undersells it.",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#the-code",
+    "href": "recipes/core/color-gamut.html#the-code",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "The Code",
+    "text": "The Code\nThe smoketest dataset lives under code/smoketest-color-gamut/ and is regeneratable from generate-smoketest-data.R. The recipe below runs end-to-end on that dataset and produces a gamut plot plus a single volume number.\n\nsuppressPackageStartupMessages({\n  library(pavo)\n  library(geometry)\n  library(scatterplot3d)\n  library(ape)\n  library(ggplot2)\n  library(grDevices)\n})\n\n\n# ── Inputs ────────────────────────────────────────────────────────\n# Path to your image directory (ONE image per species; filename = tip label).\n# For your real project replace these with your Workbench data paths.\nimg_dir   &lt;- \"../../code/smoketest-color-gamut/images\"\ntree_path &lt;- \"../../code/smoketest-color-gamut/acanthuridae.tre\"\nbg_csv    &lt;- \"../../code/smoketest-color-gamut/background-ids.csv\"\n\n# k for the k-means classification. Reef-fish species typically have\n# 3-6 distinct color patches plus a background, so k = 4 is a sensible\n# default. Try k = 3 and k = 5 to see how sensitive your gamut is.\nk &lt;- 4L\n\n\n# ── 1a. Enforce one-image-per-species policy ──────────────────────\n# Every image filename (sans extension) must map to a unique species.\n# If you have multiple images of a species, pick the most representative\n# and use just that one. Multi-image aggregation is a follow-up recipe.\n\nimg_files &lt;- list.files(img_dir,\n                        pattern = \"\\\\.(png|jpg|jpeg|tif|tiff)$\",\n                        ignore.case = TRUE, full.names = FALSE)\nspecies_labels &lt;- tools::file_path_sans_ext(img_files)\ndup_species    &lt;- species_labels[duplicated(species_labels)]\n\nif (length(dup_species)) {\n  stop(\n    \"Duplicate species labels detected in image directory:\\n  \",\n    paste(unique(dup_species), collapse = \", \"),\n    \"\\n\\nThe color-gamut recipe requires ONE representative image per species.\\n\",\n    \"Pick the most representative image for each duplicated species and \",\n    \"remove the others from `\", img_dir, \"`. Multi-image aggregation will \",\n    \"be addressed in a follow-up recipe.\"\n  )\n}\n\ncat(\"OK: \", length(img_files), \" images, all unique species labels.\\n\", sep = \"\")\n\nOK: 8 images, all unique species labels.\n\n\n\n# ── 1b. Load all species images and classify each one with k-means ─\n# We set a seed before classify() so the swatch grid you inspect (§3)\n# and the centroid table (§5) are byte-identical run-to-run. k-means\n# cluster indices may still shuffle if you change `k` or your image\n# set; the bg-by-RGB-distance match in §4 is robust to that.\nset.seed(20260526)\nimgs &lt;- pavo::getimg(img_dir)\ncat(\"Loaded\", length(imgs), \"images\\n\")\n\nLoaded 8 images\n\ncl &lt;- pavo::classify(imgs, kcols = k)\n\nWarning: package 'future' was built under R version 4.5.2\n\n\n\n# ── 2. Pull per-image cluster centroids (RGB) and proportions ─────\n# summary(cl) gives the RGB centroid of every cluster in every image,\n# but does NOT include the proportion (pixel share). We compute the\n# proportions from the classified pixel matrices directly.\ncentroids &lt;- summary(cl)\nnames(centroids)[1] &lt;- \"img_ID\"\n\nprop_rows &lt;- lapply(seq_along(cl), function(i) {\n  m   &lt;- cl[[i]]\n  tab &lt;- prop.table(table(as.vector(m)))\n  data.frame(\n    img_ID     = attr(m, \"imgname\"),\n    col_ID     = as.integer(names(tab)),\n    proportion = as.numeric(tab),\n    stringsAsFactors = FALSE\n  )\n})\nprops &lt;- do.call(rbind, prop_rows)\n\nper_image &lt;- merge(centroids, props, by = c(\"img_ID\", \"col_ID\"))\nper_image$species &lt;- per_image$img_ID  # filename was set to tip label\nhead(per_image)\n\n                img_ID col_ID name         R         G         B proportion\n1  Acanthurus_achilles      1    1 0.8588235 0.0627451 0.1960784   0.077775\n2  Acanthurus_achilles      2    2 0.7843137 0.4000000 0.5176471   0.123525\n3  Acanthurus_achilles      3    3 0.4313725 0.7882353 0.8470588   0.090525\n4  Acanthurus_achilles      4    4 0.5490196 0.5490196 0.5490196   0.708175\n5 Acanthurus_coeruleus      1    1 0.3137255 0.6588235 0.7019608   0.090525\n6 Acanthurus_coeruleus      2    2 0.7176471 0.2705882 0.9137255   0.123525\n               species\n1  Acanthurus_achilles\n2  Acanthurus_achilles\n3  Acanthurus_achilles\n4  Acanthurus_achilles\n5 Acanthurus_coeruleus\n6 Acanthurus_coeruleus\n\n\n\n# ── 3. Print a swatch grid of every centroid for every image ──────\n# This is the picture you read while filling in `background-ids.csv`.\n# Each row is one image; each cell shows the cluster's centroid colour\n# with its col_ID printed on top in contrasting text. The student's\n# job: for each row, decide which col_ID is the background and write\n# that pair into the CSV.\n\nswatch_df &lt;- per_image\nswatch_df$hex &lt;- grDevices::rgb(swatch_df$R, swatch_df$G, swatch_df$B,\n                                maxColorValue = 1)\n# pick a readable text colour per swatch (white on dark, black on light)\nswatch_df$text_col &lt;- ifelse(\n  (0.299 * swatch_df$R + 0.587 * swatch_df$G + 0.114 * swatch_df$B) &gt; 0.55,\n  \"black\", \"white\"\n)\nswatch_df$label &lt;- sprintf(\"(%.2f, %.2f, %.2f)\\n%.0f%%\",\n                          swatch_df$R, swatch_df$G, swatch_df$B,\n                          100 * swatch_df$proportion)\n\nggplot(swatch_df, aes(x = factor(col_ID), y = img_ID, fill = hex)) +\n  geom_tile(colour = \"grey20\", linewidth = 0.3) +\n  geom_text(aes(label = label, colour = text_col), size = 2.6, lineheight = 0.9) +\n  scale_fill_identity() +\n  scale_colour_identity() +\n  labs(x = \"Cluster (this run's index)\", y = NULL,\n       title = \"Centroid swatches per image\",\n       subtitle = \"Identify the background COLOR (RGB triple) and record it in background-ids.csv\") +\n  theme_minimal(base_size = 11) +\n  theme(panel.grid = element_blank(),\n        axis.text.y = element_text(family = \"mono\"))\n\n\n\n\n\n\n\n\n\n# ── 4. Drop the background cluster for each image, via nearest-RGB ─\n# Convention (recipe-book canonical): you (the student) inspect the\n# swatch grid above and record, for each image, the approximate RGB\n# triple of the background colour you saw. For each image we then\n# drop the cluster whose centroid is closest in Euclidean RGB distance\n# to your recorded bg colour. This is robust to k-means cluster-index\n# instability across knits.\n#\n# Schema for background-ids.csv (lines starting with `#` are ignored):\n#   img_ID,bg_R,bg_G,bg_B\n#   Acanthurus_achilles,0.55,0.55,0.55\n#   ...\n# Use `img_ID = \"*\"` as a wildcard row that applies to every image\n# without an explicit entry (handy when all your photos share a\n# common background, e.g., a uniform white card).\n\nif (!file.exists(bg_csv)) {\n  stop(\n    \"Background-color CSV not found at:\\n  \", bg_csv,\n    \"\\n\\nCreate it by inspecting the swatch grid printed above and recording,\",\n    \" for each image (or `*` for all), the bg colour you saw. Schema:\\n\",\n    \"  img_ID,bg_R,bg_G,bg_B\\n  Acanthurus_achilles,0.55,0.55,0.55\\n  ...\\n\"\n  )\n}\n\nbg_map &lt;- read.csv(bg_csv, comment.char = \"#\", stringsAsFactors = FALSE)\nrequired_cols &lt;- c(\"img_ID\", \"bg_R\", \"bg_G\", \"bg_B\")\nmissing_cols  &lt;- setdiff(required_cols, names(bg_map))\nif (length(missing_cols)) {\n  stop(\"background-ids.csv is missing required column(s): \",\n       paste(missing_cols, collapse = \", \"),\n       \".\\nExpected schema: img_ID,bg_R,bg_G,bg_B\")\n}\n\n# Per-image bg lookup: explicit row beats wildcard row.\nwildcard &lt;- bg_map[bg_map$img_ID == \"*\", ]\nspecific &lt;- bg_map[bg_map$img_ID != \"*\", ]\n\n# Sanity check: every image must be covered by either a specific row\n# or a wildcard row.\ncovered_imgs &lt;- unique(c(specific$img_ID,\n                         if (nrow(wildcard)) unique(per_image$img_ID) else character(0)))\nuncovered    &lt;- setdiff(unique(per_image$img_ID), covered_imgs)\nextra_in_csv &lt;- setdiff(specific$img_ID, unique(per_image$img_ID))\nif (length(uncovered)) {\n  stop(\"background-ids.csv does not cover these images (no specific row \",\n       \"and no wildcard `*` row):\\n  \",\n       paste(uncovered, collapse = \", \"))\n}\nif (length(extra_in_csv)) {\n  warning(\"background-ids.csv lists images not in the image directory:\\n  \",\n          paste(extra_in_csv, collapse = \", \"))\n}\n\n# For each image, find the centroid closest to the recorded bg RGB.\nper_image$is_background &lt;- FALSE\nmatch_log &lt;- vector(\"list\", length(unique(per_image$img_ID)))\nfor (idx in seq_along(unique(per_image$img_ID))) {\n  im &lt;- unique(per_image$img_ID)[idx]\n  # Pick the bg target: specific row preferred, else wildcard.\n  hit &lt;- specific[specific$img_ID == im, ]\n  if (nrow(hit) == 0) hit &lt;- wildcard\n  bg_rgb &lt;- c(hit$bg_R[1], hit$bg_G[1], hit$bg_B[1])\n\n  rows &lt;- per_image[per_image$img_ID == im, ]\n  d &lt;- sqrt((rows$R - bg_rgb[1])^2 +\n            (rows$G - bg_rgb[2])^2 +\n            (rows$B - bg_rgb[3])^2)\n  bg_col_id &lt;- rows$col_ID[which.min(d)]\n  per_image$is_background[per_image$img_ID == im &\n                          per_image$col_ID == bg_col_id] &lt;- TRUE\n  match_log[[idx]] &lt;- data.frame(\n    img_ID    = im,\n    bg_R      = round(rows$R[which.min(d)], 3),\n    bg_G      = round(rows$G[which.min(d)], 3),\n    bg_B      = round(rows$B[which.min(d)], 3),\n    distance  = round(min(d), 3),\n    stringsAsFactors = FALSE\n  )\n}\nmatches &lt;- do.call(rbind, match_log)\n\ncat(\"Matched background centroids (nearest RGB to recorded bg colour):\\n\")\n\nMatched background centroids (nearest RGB to recorded bg colour):\n\nprint(matches, row.names = FALSE)\n\n                 img_ID  bg_R  bg_G  bg_B distance\n    Acanthurus_achilles 0.549 0.549 0.549    0.002\n   Acanthurus_coeruleus 0.549 0.549 0.549    0.002\n    Acanthurus_lineatus 0.549 0.549 0.549    0.002\n   Acanthurus_olivaceus 0.549 0.549 0.549    0.002\n Ctenochaetus_strigosus 0.549 0.549 0.549    0.002\n         Naso_lituratus 0.549 0.549 0.549    0.002\n  Paracanthurus_hepatus 0.549 0.549 0.549    0.002\n   Zebrasoma_flavescens 0.549 0.549 0.549    0.002\n\nforeground &lt;- per_image[!per_image$is_background, ]\ncat(\"\\nMarked \", sum(per_image$is_background), \" background centroids; \",\n    \"kept \", nrow(foreground), \" foreground centroids across \",\n    length(unique(foreground$species)), \" species.\\n\", sep = \"\")\n\n\nMarked 8 background centroids; kept 24 foreground centroids across 8 species.\n\n\n\n# ── 5. Tidy per-species centroid table (what you'd put in supp.) ──\nspecies_table &lt;- foreground[, c(\"species\", \"R\", \"G\", \"B\", \"proportion\")]\nspecies_table &lt;- species_table[order(species_table$species,\n                                     -species_table$proportion), ]\nknitr::kable(species_table, digits = 3,\n             caption = \"Foreground RGB centroids per species (background dropped).\")\n\n\nForeground RGB centroids per species (background dropped).\n\n\n\nspecies\nR\nG\nB\nproportion\n\n\n\n\n2\nAcanthurus_achilles\n0.784\n0.400\n0.518\n0.124\n\n\n3\nAcanthurus_achilles\n0.431\n0.788\n0.847\n0.091\n\n\n1\nAcanthurus_achilles\n0.859\n0.063\n0.196\n0.078\n\n\n6\nAcanthurus_coeruleus\n0.718\n0.271\n0.914\n0.124\n\n\n5\nAcanthurus_coeruleus\n0.314\n0.659\n0.702\n0.091\n\n\n7\nAcanthurus_coeruleus\n0.490\n0.714\n0.816\n0.078\n\n\n10\nAcanthurus_lineatus\n0.118\n0.671\n0.510\n0.124\n\n\n11\nAcanthurus_lineatus\n0.537\n0.824\n0.533\n0.091\n\n\n12\nAcanthurus_lineatus\n0.843\n0.741\n0.580\n0.078\n\n\n16\nAcanthurus_olivaceus\n0.573\n0.667\n0.345\n0.124\n\n\n13\nAcanthurus_olivaceus\n0.176\n0.153\n0.267\n0.091\n\n\n14\nAcanthurus_olivaceus\n0.365\n0.310\n0.510\n0.078\n\n\n17\nCtenochaetus_strigosus\n0.180\n0.180\n0.471\n0.124\n\n\n19\nCtenochaetus_strigosus\n0.541\n0.902\n0.075\n0.091\n\n\n18\nCtenochaetus_strigosus\n0.188\n0.482\n0.890\n0.078\n\n\n23\nNaso_lituratus\n0.796\n0.165\n0.780\n0.124\n\n\n21\nNaso_lituratus\n0.471\n0.945\n0.675\n0.091\n\n\n24\nNaso_lituratus\n0.235\n0.478\n0.729\n0.078\n\n\n25\nParacanthurus_hepatus\n0.314\n0.906\n0.420\n0.124\n\n\n28\nParacanthurus_hepatus\n0.259\n0.788\n0.780\n0.091\n\n\n26\nParacanthurus_hepatus\n0.584\n0.631\n0.765\n0.078\n\n\n32\nZebrasoma_flavescens\n0.800\n0.227\n0.208\n0.124\n\n\n30\nZebrasoma_flavescens\n0.827\n0.545\n0.173\n0.091\n\n\n29\nZebrasoma_flavescens\n0.714\n0.388\n0.384\n0.078\n\n\n\n\n\n\n# ── 6. Convex hull in RGB space + volume ──────────────────────────\npts &lt;- as.matrix(foreground[, c(\"R\", \"G\", \"B\")])\n\nhull &lt;- geometry::convhulln(pts, options = \"FA\")\ngamut_volume    &lt;- hull$vol\noccupancy_ratio &lt;- gamut_volume / 1   # unit cube has volume 1\n\ncat(sprintf(\"Clade gamut volume:    %.4f\\n\", gamut_volume))\n\nClade gamut volume:    0.2753\n\ncat(sprintf(\"RGB-cube occupancy:    %.1f%% of the unit cube\\n\",\n            100 * occupancy_ratio))\n\nRGB-cube occupancy:    27.5% of the unit cube\n\n\n\n# ── 7. Static 3-D scatter of centroids in RGB space ───────────────\npoint_cols &lt;- grDevices::rgb(foreground$R, foreground$G, foreground$B,\n                             maxColorValue = 1)\nscatterplot3d::scatterplot3d(\n  x = foreground$R, y = foreground$G, z = foreground$B,\n  pch = 19, cex.symbols = 1.8, color = point_cols,\n  xlim = c(0, 1), ylim = c(0, 1), zlim = c(0, 1),\n  xlab = \"R\", ylab = \"G\", zlab = \"B\",\n  main = sprintf(\"Clade gamut in RGB space  (volume = %.3f)\",\n                 gamut_volume)\n)\n\n\n\n\n\n\n\n\n\n# ── 8. Three 2-D projections of the points + hull ─────────────────\n# We compute a 2-D convex hull on each projection so the boundary is\n# easy to read. The 3-D volume above is the authoritative number;\n# these panels are for visualization only.\n\nplot_projection &lt;- function(x, y, xlab, ylab) {\n  hh &lt;- grDevices::chull(x, y)\n  hh &lt;- c(hh, hh[1])  # close the polygon\n  df_pts  &lt;- data.frame(x = x, y = y,\n                        col = grDevices::rgb(foreground$R,\n                                             foreground$G,\n                                             foreground$B,\n                                             maxColorValue = 1))\n  df_hull &lt;- data.frame(x = x[hh], y = y[hh])\n  ggplot(df_pts, aes(x, y)) +\n    geom_polygon(data = df_hull, aes(x, y),\n                 fill = NA, colour = \"grey30\", linewidth = 0.6) +\n    geom_point(aes(fill = col), shape = 21, size = 3,\n               colour = \"black\", stroke = 0.3) +\n    scale_fill_identity() +\n    coord_equal(xlim = c(0, 1), ylim = c(0, 1)) +\n    labs(x = xlab, y = ylab) +\n    theme_minimal(base_size = 11) +\n    theme(legend.position = \"none\",\n          panel.grid.minor = element_blank())\n}\n\np_rg &lt;- plot_projection(foreground$R, foreground$G, \"R\", \"G\")\np_rb &lt;- plot_projection(foreground$R, foreground$B, \"R\", \"B\")\np_gb &lt;- plot_projection(foreground$G, foreground$B, \"G\", \"B\")\n\n# Use patchwork if available, otherwise side-by-side via gridExtra fallback.\nif (requireNamespace(\"patchwork\", quietly = TRUE)) {\n  patchwork::wrap_plots(p_rg, p_rb, p_gb, nrow = 1)\n} else {\n  print(p_rg); print(p_rb); print(p_gb)\n}\n\n\n\n\n\n\n\n\n\n# ── 9. Sanity check: how many of your tree's tips are represented? ─\ntree &lt;- ape::read.nexus(tree_path)\nin_tree  &lt;- intersect(unique(foreground$species), tree$tip.label)\nmissing  &lt;- setdiff(unique(foreground$species), tree$tip.label)\ncat(\"Species in both tree and image set:\", length(in_tree), \"\\n\")\n\nSpecies in both tree and image set: 8 \n\ncat(\"Image species missing from tree:   \", length(missing), \"\\n\")\n\nImage species missing from tree:    0 \n\nif (length(missing)) cat(\"  -&gt; \", paste(missing, collapse = \", \"), \"\\n\")\n\n\n# ── 10. One-line interpretation ───────────────────────────────────\ncat(sprintf(\n  \"The %d-species sample occupies %.1f%% of the unit RGB cube (volume %.4f at k = %d).\\n\",\n  length(unique(foreground$species)),\n  100 * occupancy_ratio,\n  gamut_volume,\n  k\n))\n\nThe 8-species sample occupies 27.5% of the unit RGB cube (volume 0.2753 at k = 4).",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#from-the-literature",
+    "href": "recipes/core/color-gamut.html#from-the-literature",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "From the Literature",
+    "text": "From the Literature\n\nStoddard, M. C., & Prum, R. O. (2011) — Computed family-level gamut volumes for over 100 bird families in tetrahedral cone-receptor space and showed that gamut volumes vary by more than two orders of magnitude across birds, with the largest gamuts concentrated in lineages with sexual dichromatism and elaborate display. The conceptual template for the present recipe. Behavioral Ecology, 22(5), 1042–1052. DOI\n\n\nMaia, R., Eliason, C. M., Bitton, P.-P., Doucet, S. M., & Shawkey, M. D. (2013) — Introduced pavo, the R package whose classify() function does the per-image k-means classification underlying this recipe. Methods in Ecology and Evolution, 4(10), 906–913. DOI\n\n\nEndler, J. A., & Mielke, P. W. (2005) — Argued that comparative analyses of color should be done in a receptor-space appropriate to the viewer, not in human or device-RGB coordinates, and laid out the conceptual basis for volumetric color-space metrics. The motivation for the “this is camera RGB, not perceptual color” caveat above. Biological Journal of the Linnean Society, 86(4), 405–431. DOI",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "recipes/core/color-gamut.html#inputs",
+    "href": "recipes/core/color-gamut.html#inputs",
+    "title": "Foundation Recipe — Building a clade color gamut from images",
+    "section": "Inputs",
+    "text": "Inputs\nThis recipe expects:\n\nOne image directory with one representative image per species, the filename (minus extension) being the species’ tip label, exactly as it appears in your tree.\nA pruned tree for your clade (Newick or NEXUS), with tip labels matching your image filenames.\nA background-color CSV (background-ids.csv) listing, for each image (or * for “all images”), the approximate RGB centroid of the background you saw in your photos. You build this by eyeballing the centroid swatches the recipe prints in §3 below. The smoketest ships a pre-filled one. Why RGB and not a cluster index: pavo::classify() does not return stable cluster IDs across runs (a re-knit can re-number “cluster 3” to “cluster 1”), so we annotate the color we saw, not the index it was given.\n\n\n\n\n\n\n\nOne image per species — pick the representative\n\n\n\nUse exactly one image per species. If you have a males-and-females set, an adult-and-juvenile set, or three angles of the same fish, pick the single most representative image (usually: adult, dorsal-lateral, fully spread) and use just that one. The recipe will hard-stop with a clear error if it sees duplicate species labels in your image directory.\nMulti-image aggregation (averaging centroids, weighting by image count, modeling within-species variance) is a real question — it is being broken out into a separate follow-up recipe so the gamut workflow stays uncluttered.",
+    "crumbs": [
+      "Recipes",
+      "Core",
+      "Foundation Recipe — Building a clade color gamut from images"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html",
+    "href": "poster/final-project.html",
+    "title": "Final Project — Poster",
+    "section": "",
+    "text": "Poster Presentations\n\n\n\n\n\n\nDate\nGroup\n\n\n\n\nTue Jun 3\nGroup A\n\n\nThu Jun 5\nGroup B\n\n\n\nFull poster drafts due Sun Jun 1 on BruinLearn.",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#download-the-poster-template",
+    "href": "poster/final-project.html#download-the-poster-template",
+    "title": "Final Project — Poster",
+    "section": "Download the Poster Template",
+    "text": "Download the Poster Template\nYour poster should be 48 inches wide x 36 inches tall (landscape). This fits the Bruin Copy Center large-format printer at the $51 rate (up to 42” on the short side).\n\n\n\n\n\n\nTemplate\n\n\n\nDownload the PowerPoint template below. It has placeholder panels pre-sized to poster dimensions with labeled zones for each analysis figure. Replace the placeholders with your hero PDFs.\nDownload poster-template-48x36.pptx",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#workflow-bundle-to-poster",
+    "href": "poster/final-project.html#workflow-bundle-to-poster",
+    "title": "Final Project — Poster",
+    "section": "Workflow: Bundle to Poster",
+    "text": "Workflow: Bundle to Poster\n\n\n\n\n\nflowchart LR\n    A[\"FishView&lt;br/&gt;Export Bundle\"] --&gt; B[\"Run Recipes&lt;br/&gt;(color gamut,&lt;br/&gt;phyloPCA, ASR,&lt;br/&gt;PGLS)\"]\n    B --&gt; C[\"Generate&lt;br/&gt;Hero PDFs\"]\n    C --&gt; D[\"Drop into&lt;br/&gt;Poster Template\"]\n    D --&gt; E[\"Fill Text&lt;br/&gt;& Print\"]\n\n\n\n\n\n\n\nExport your bundle from the FishView dashboard. The HYBRID layout gives you flat PNGs at images/&lt;Genus_species&gt;.png and per-species replicate folders.\nRun recipes — at minimum the three required recipes, plus 1–2 electives.\nGenerate hero PDFs — each recipe ends with a “hero figure” code chunk that exports a poster-ready PDF at the right dimensions. Run those chunks.\nDrop hero PDFs into the template — open the PPTX, delete the placeholder image in each panel, insert your hero PDF (or PNG at 300 dpi).\nFill in the text — title, authors, introduction (3–4 sentences), methods (pipeline summary), conclusions (2–3 bullets), references (3–5), acknowledgments.",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#poster-panels",
+    "href": "poster/final-project.html#poster-panels",
+    "title": "Final Project — Poster",
+    "section": "Poster Panels",
+    "text": "Poster Panels\nThe template has four analysis panels arranged left-to-right across the poster:\n\n\n\nPanel\nWhat goes here\nRecipe source\nHero PDF name\n\n\n\n\nA — Color Gamut\n3D RGB convex hull showing your clade’s color diversity\nColor Gamut\ncolor-gamut-hero.pdf\n\n\nB — Phylomorphospace\nPC1 x PC2 biplot with fish images at each species point\nPhylomorphospace (core recipe)\nphylomorphospace-PC1-PC2-hero.pdf\n\n\nC — Phylogeny + Traits\nLadderized tree with PC1 ASR branches, tip images, and trait columns (PC1–3 circles + ecology variables)\nPhylogeny with Traits (core recipe)\nphylogeny-with-traits-hero.pdf\n\n\nD — PGLS Results\nPartial-residual scatter plots testing whether color predicts ecology\nRate–Trait Correlation or PGLS Color–Traits recipe\npgls-color-traits-hero.pdf\n\n\n\nPanel C is the visual hero — give it the most space. Panels A and B sit in the top row; D sits in the right column below B.",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#poster-layout-48-x-36-in",
+    "href": "poster/final-project.html#poster-layout-48-x-36-in",
+    "title": "Final Project — Poster",
+    "section": "Poster Layout (48 x 36 in)",
+    "text": "Poster Layout (48 x 36 in)\n+------------------------------------------------------------------+\n|                 TITLE  (72-96 pt bold)                            |\n|          Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026            |\n+---------------+------------------+-------------------------------+\n|               |                  |                               |\n|  PANEL A      |   PANEL B        |    PANEL D                    |\n|  Color Gamut  |   Phylomorph.    |    PGLS Scatters              |\n|  (~12 x 9\")   |   (~12 x 9\")     |    (~12 x 24\")                |\n|               |                  |                               |\n+---------------+------------------+                               |\n|                                  |                               |\n|  PANEL C                         |                               |\n|  Phylogeny + Traits              |                               |\n|  (~28 x 20\")                     +-------------------------------+\n|  THE BIG HERO                    |  References / Acknowledgments |\n|                                  |  Methods (compact)            |\n+----------------------------------+-------------------------------+",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#printing",
+    "href": "poster/final-project.html#printing",
+    "title": "Final Project — Poster",
+    "section": "Printing",
+    "text": "Printing\n\nWhere: Bruin Copy Center or any large-format printer\nCost: $51 for up to 42” on one side; $68 for up to 54”\nFormat: Export your finished PPTX as PDF, then print\nOne side must be ≤ 36” (our poster height); the other can be up to ~100” (never relevant)",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#what-makes-a-good-poster",
+    "href": "poster/final-project.html#what-makes-a-good-poster",
+    "title": "Final Project — Poster",
+    "section": "What Makes a Good Poster",
+    "text": "What Makes a Good Poster\nSee the full Poster Design Guide for:\n\nFont size hierarchy (title 72–96 pt, body 24–28 pt)\nColor palette options (reef warm, ocean cool, diverging)\nCommon mistakes and fixes\nggplot2 poster theme\nFigure export instructions\n\nSee the Milestone Checklist to track your progress.",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#swapping-hero-figures",
+    "href": "poster/final-project.html#swapping-hero-figures",
+    "title": "Final Project — Poster",
+    "section": "Swapping Hero Figures",
+    "text": "Swapping Hero Figures\nIf your analysis changes or you run additional recipes:\n\nRe-run the hero-PDF chunk in the relevant recipe\nIn the PPTX, right-click the panel image → Change Picture → select your new PDF/PNG\nResize to fill the panel (maintain aspect ratio)\n\nEach panel in the template is labeled so you know which recipe output goes where.\n\nEEB 187 — Ecology and Evolution of Color — Spring 2026 — Dr. Michael Alfaro",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#example-completed-poster-chaetodontidae",
+    "href": "poster/final-project.html#example-completed-poster-chaetodontidae",
+    "title": "Final Project — Poster",
+    "section": "Example: Completed Poster (Chaetodontidae)",
+    "text": "Example: Completed Poster (Chaetodontidae)\nHere is a completed example poster using the Chaetodontidae instructor dataset. Use it as a reference for layout, figure placement, and the level of detail expected in each text section.\n\n\n\n\n\n\nInstructor Example\n\n\n\nDownload poster-template-48x36-chaet-filled.pptx — filled poster with all four hero figures and complete text for butterflyfishes.",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
     ]
   }
 ]
