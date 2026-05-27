@@ -7,8 +7,15 @@
 # name to the right of the image.
 #
 # Bundle layouts supported:
-#   (a) per-species:  images/<Genus_species>/exemplar.png   (preferred)
-#   (b) flat:         images/<Genus_species>.png
+#   (a) HYBRID:       images/<Genus_species>.png            (flat, preferred)
+#                   + images/<Genus_species>/exemplar.png
+#                   + images/<Genus_species>/img-N.png      (replicates)
+#   (b) flat only:    images/<Genus_species>.png
+#   (c) nested only:  images/<Genus_species>/exemplar.png   (legacy)
+#
+# When BOTH a flat exemplar and a nested exemplar.png exist (the hybrid
+# layout), the flat file wins — it is the simpler entry point and is
+# guaranteed byte-identical to the nested exemplar.png.
 #
 # Required files (relative to bundle_dir):
 #   <family>-tree.tre               OR  any single *.tre file in the dir
@@ -125,9 +132,12 @@ plot_part2 <- function(family,
   }
   keys <- vapply(img_files, .image_key, character(1))
 
-  # Map each tip -> single image path. Prefer exemplar.png when multiple
-  # images exist under the same per-species directory.
+  # Map each tip -> single image path. Preference order:
+  #   1. flat exemplar: images/<Genus_species>.<ext> (parent dir = "images")
+  #   2. nested exemplar: images/<Genus_species>/exemplar.<ext>
+  #   3. any other matching file in the per-species folder
   exemplar_re <- "(^|/)exemplar\\.(png|jpe?g)$"
+  flat_re     <- "(^|/)[A-Z][a-z]+_[a-z]+\\.(png|jpe?g)$"
   tip_to_image <- character(length(sub_tree$tip.label))
   names(tip_to_image) <- sub_tree$tip.label
   for (tip in sub_tree$tip.label) {
@@ -139,9 +149,17 @@ plot_part2 <- function(family,
     if (length(hit) == 0) hit <- grep(canonical_l, tolower(img_files))
 
     if (length(hit) > 0) {
-      # Prefer exemplar.{png,jpg,jpeg} if present
-      ex <- grep(exemplar_re, img_files[hit], ignore.case = TRUE)
-      pick <- if (length(ex) > 0) hit[ex[1]] else hit[1]
+      # 1) Flat exemplar wins (file lives directly under images/)
+      flat_idx <- which(basename(dirname(img_files[hit])) == "images" &
+                        grepl(flat_re, img_files[hit], ignore.case = TRUE))
+      if (length(flat_idx) > 0) {
+        pick <- hit[flat_idx[1]]
+      } else {
+        # 2) Nested exemplar.png next
+        ex <- grep(exemplar_re, img_files[hit], ignore.case = TRUE)
+        # 3) Otherwise first match
+        pick <- if (length(ex) > 0) hit[ex[1]] else hit[1]
+      }
       tip_to_image[tip] <- img_files[pick]
     }
   }

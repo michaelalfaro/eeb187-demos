@@ -73,15 +73,21 @@ check_trait <- function(x, name = deparse(substitute(x)), tree = NULL) {
 }
 
 # ── load_bundle ──────────────────────────────────────────────────
+# Accepts both the legacy "-mini-tree.tre" name and the new "<family>-tree.tre"
+# name produced by the hybrid bundle exporter. If both exist, the newer
+# "<family>-tree.tre" wins.
 load_bundle <- function(bundle_dir) {
   if (!dir.exists(bundle_dir))
     stop("Bundle directory not found: ", bundle_dir)
-  tree_files <- list.files(bundle_dir, pattern = "-mini-tree\\.tre$",
+  tree_files <- list.files(bundle_dir, pattern = "-tree\\.tre$",
                            full.names = TRUE)
   if (length(tree_files) == 0)
-    stop("No *-mini-tree.tre file in ", bundle_dir)
-  tree <- tryCatch(ape::read.nexus(tree_files[1]),
-                   error = function(e) ape::read.tree(tree_files[1]))
+    stop("No *-tree.tre file in ", bundle_dir)
+  # Prefer the new "<family>-tree.tre" over the legacy "<family>-mini-tree.tre"
+  non_mini <- tree_files[!grepl("-mini-tree\\.tre$", tree_files)]
+  tree_file <- if (length(non_mini)) non_mini[1] else tree_files[1]
+  tree <- tryCatch(ape::read.nexus(tree_file),
+                   error = function(e) ape::read.tree(tree_file))
   if (inherits(tree, "multiPhylo")) tree <- tree[[1]]
   sp_file <- file.path(bundle_dir, "picked_species.txt")
   species <- if (file.exists(sp_file)) {
@@ -97,6 +103,81 @@ load_bundle <- function(bundle_dir) {
   }
   list(tree = tree, species = species, traits = traits,
        bundle_dir = bundle_dir)
+}
+
+# ── bundle_images ────────────────────────────────────────────────
+# Inventory a HYBRID-layout bundle's images/ directory.
+#
+# Expected layout (produced by the FishView /api/export-bundle endpoint):
+#   images/
+#     Genus_species.png            ← flat exemplar (the starred image)
+#     Genus_species/exemplar.png   ← same bytes as the flat exemplar
+#     Genus_species/img-1.png      ← additional replicates (oldest first)
+#     ...
+#
+# Returns a data.frame with one row per species:
+#   species        — "Genus_species"
+#   exemplar_path  — absolute path to the flat exemplar PNG
+#   n_images       — total images on disk for this species (incl. exemplar)
+#   all_paths      — list-column; first element is exemplar, then img-N replicates
+#
+# Use `exemplar_path` for single-image-per-species recipes (color-gamut,
+# discrete-trait scoring, etc.). Use `all_paths` to bootstrap over replicates.
+bundle_images <- function(bundle_dir) {
+  imgs_dir <- file.path(bundle_dir, "images")
+  if (!dir.exists(imgs_dir))
+    stop("No images/ directory in ", bundle_dir)
+  flat <- list.files(imgs_dir,
+                     pattern = "^[A-Z][a-z]+_[a-z]+\\.png$",
+                     full.names = TRUE)
+  if (length(flat) == 0) {
+    # Soft fallback for legacy nested-only bundles: build species list from
+    # subdirectories that contain an exemplar.png and synthesise the flat path.
+    subdirs <- list.dirs(imgs_dir, recursive = FALSE)
+    has_ex  <- subdirs[file.exists(file.path(subdirs, "exemplar.png"))]
+    if (length(has_ex) == 0)
+      stop("No flat exemplars and no nested exemplar.png under ", imgs_dir)
+    spp <- basename(has_ex)
+    exemplar_path <- file.path(has_ex, "exemplar.png")
+  } else {
+    spp <- tools::file_path_sans_ext(basename(flat))
+    exemplar_path <- flat
+  }
+  all_paths <- lapply(seq_along(spp), function(i) {
+    s <- spp[i]
+    folder <- file.path(imgs_dir, s)
+    if (dir.exists(folder)) {
+      ex   <- file.path(folder, "exemplar.png")
+      reps <- list.files(folder, pattern = "^img-\\d+\\.(png|jpe?g)$",
+                         ignore.case = TRUE, full.names = TRUE)
+      reps <- reps[order(as.integer(sub(".*img-(\\d+)\\..*", "\\1", reps)))]
+      c(if (file.exists(ex)) ex else exemplar_path[i], reps)
+    } else {
+      exemplar_path[i]
+    }
+  })
+  out <- data.frame(species       = spp,
+                    exemplar_path = exemplar_path,
+                    n_images      = vapply(all_paths, length, integer(1)),
+                    stringsAsFactors = FALSE)
+  out$all_paths <- I(all_paths)
+  out
+}
+
+# ── list_species_images ──────────────────────────────────────────
+# All on-disk images for one species (exemplar first, then img-N replicates).
+# Returns character(0) if the per-species folder does not exist.
+list_species_images <- function(bundle_dir, species) {
+  folder <- file.path(bundle_dir, "images", species)
+  if (!dir.exists(folder)) {
+    flat <- file.path(bundle_dir, "images", paste0(species, ".png"))
+    return(if (file.exists(flat)) flat else character(0))
+  }
+  ex   <- file.path(folder, "exemplar.png")
+  reps <- list.files(folder, pattern = "^img-\\d+\\.(png|jpe?g)$",
+                     ignore.case = TRUE, full.names = TRUE)
+  reps <- reps[order(as.integer(sub(".*img-(\\d+)\\..*", "\\1", reps)))]
+  c(if (file.exists(ex)) ex else character(0), reps)
 }
 
 # ── match_tree_data ──────────────────────────────────────────────
