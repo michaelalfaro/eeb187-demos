@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Functional Hypothesis — Conspicuousness vs Defense – EEB 187 — Instructor Walkthrough: Chaetodontidae</title>
+<title>Character Displacement in Color Space – EEB 187 — Instructor Walkthrough: Chaetodontidae</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -303,6 +305,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -315,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/pattern/discrete-trait-mapping.html">Pattern</a></li><li class="breadcrumb-item"><a href="../../recipes/pattern/functional-hypothesis.html">Functional Hypothesis — Conspicuousness vs Defense</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/pattern/discrete-trait-mapping.html">Pattern</a></li><li class="breadcrumb-item"><a href="../../recipes/pattern/functional-hypothesis.html">Character Displacement in Color Space</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -510,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -584,11 +590,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
-  <li><a href="#fetch-defense-status-from-rfishbase" id="toc-fetch-defense-status-from-rfishbase" class="nav-link" data-scroll-target="#fetch-defense-status-from-rfishbase">Fetch defense status from rfishbase</a></li>
-  <li><a href="#pgls-conspicuousness-vs-defense" id="toc-pgls-conspicuousness-vs-defense" class="nav-link" data-scroll-target="#pgls-conspicuousness-vs-defense">PGLS: conspicuousness vs defense</a></li>
+  <li><a href="#what-youre-computing" id="toc-what-youre-computing" class="nav-link active" data-scroll-target="#what-youre-computing">What you’re computing</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-sister-pair-data" id="toc-load-sister-pair-data" class="nav-link" data-scroll-target="#load-sister-pair-data">Load sister-pair data</a></li>
+  <li><a href="#why-not-defense-a-quick-check" id="toc-why-not-defense-a-quick-check" class="nav-link" data-scroll-target="#why-not-defense-a-quick-check">Why not defense? A quick check</a></li>
+  <li><a href="#wilcoxon-test-sympatric-vs-non-sympatric" id="toc-wilcoxon-test-sympatric-vs-non-sympatric" class="nav-link" data-scroll-target="#wilcoxon-test-sympatric-vs-non-sympatric">Wilcoxon test: sympatric vs non-sympatric</a></li>
   <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot">Boxplot</a></li>
+  <li><a href="#scatter-color-divergence-vs-range-overlap" id="toc-scatter-color-divergence-vs-range-overlap" class="nav-link" data-scroll-target="#scatter-color-divergence-vs-range-overlap">Scatter: color divergence vs range overlap</a></li>
+  <li><a href="#three-way-classification" id="toc-three-way-classification" class="nav-link" data-scroll-target="#three-way-classification">Three-way classification</a></li>
+  <li><a href="#hero-pdf" id="toc-hero-pdf" class="nav-link" data-scroll-target="#hero-pdf">Hero PDF</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
 </nav>
@@ -597,10 +608,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/pattern/discrete-trait-mapping.html">Pattern</a></li><li class="breadcrumb-item"><a href="../../recipes/pattern/functional-hypothesis.html">Functional Hypothesis — Conspicuousness vs Defense</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/pattern/discrete-trait-mapping.html">Pattern</a></li><li class="breadcrumb-item"><a href="../../recipes/pattern/functional-hypothesis.html">Character Displacement in Color Space</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Functional Hypothesis — Conspicuousness vs Defense</h1>
-<p class="subtitle lead">Are the most conspicuous butterflyfishes also the most defended?</p>
+<h1 class="title">Character Displacement in Color Space</h1>
+<p class="subtitle lead">Are sympatric sister species more divergent in color than allopatric pairs?</p>
 </div>
 
 
@@ -617,19 +628,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Data limitation.</strong> FishBase <code>Dangerous</code> field is not in <code>chaet_traits.csv</code>. This recipe shows the code structure but data-dependent chunks are <code>eval: false</code>. Chaetodontidae are generally classified as “harmless” in FishBase, so this recipe is primarily a structural template for Balistoidea (spines) and Acanthuridae (caudal scalpels) where defense variation is much greater.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -640,84 +638,319 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Pattern recipe.</strong> PGLS regression of chromatic contrast (m_dS) against a binary “defended vs harmless” variable from FishBase. Tests the aposematism hypothesis: defended species should be more conspicuous.</p>
+<p><strong>Pattern recipe.</strong> Tests the character displacement hypothesis using 33 sister pairs from the chaets-divergence project. For each pair, Mahalanobis distance in the 6-dimensional pavo color-pattern space quantifies how different their color patterns are. The prediction is that <strong>sympatric</strong> sister pairs (those whose ranges overlap) have evolved greater color divergence than <strong>allopatric</strong> pairs, driven by selection for species recognition or ecological partitioning.</p>
+<p>This replaces the original “defense vs conspicuousness” framing because FishBase classifies all chaetodontids as either “harmless” (123 spp) or “reports of ciguatera poisoning” (4 spp) – no defense variation exists for an aposematism test.</p>
+<p><strong>Poster outputs.</strong> <code>figures/functional-hypothesis-hero.pdf</code> – boxplot comparing Mahalanobis distance between sympatric and allopatric pairs, plus a scatter of color divergence vs range overlap.</p>
 </div>
 </div>
+<section id="what-youre-computing" class="level1">
+<h1>What you’re computing</h1>
+<ol type="1">
+<li>Load pre-computed sister-pair data from the chaets-divergence project: <code>sister_pair_mahalanobis_distances.csv</code> (Mahalanobis distance in pavo color space) and <code>sister_pairs_range_overlap.csv</code> (Simpson overlap coefficient).</li>
+<li>Classify pairs as sympatric (Simpson &gt; 0.05), parapatric, or allopatric.</li>
+<li>Wilcoxon rank-sum test: Mahalanobis distance in sympatric vs allopatric pairs.</li>
+<li>Boxplot + scatter of color divergence vs range overlap.</li>
+</ol>
+</section>
 <section id="setup" class="level1">
 <h1>Setup</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ape)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(phytools)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(nlme)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'knitr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>BUNDLE     <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>FIGDIR     <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CHAETS_DIR <span class="ot">&lt;-</span> <span class="st">"/Users/michaelalfaro/Dropbox/git/chaets-divergence-2026"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-data" class="level1">
-<h1>Load data</h1>
+<section id="load-sister-pair-data" class="level1">
+<h1>Load sister-pair data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pavo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaetodontidae-tree.tre"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(tree)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>maha <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(CHAETS_DIR,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"analysis/results/sister_pair_mahalanobis_distances.csv"</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>overlap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(CHAETS_DIR,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"analysis/results/sister_pairs_range_overlap.csv"</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge: key by sp1+sp2</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>maha<span class="sc">$</span>pair_id <span class="ot">&lt;-</span> <span class="fu">paste</span>(maha<span class="sc">$</span>sp1, maha<span class="sc">$</span>sp2, <span class="at">sep =</span> <span class="st">"_x_"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>overlap<span class="sc">$</span>pair_id <span class="ot">&lt;-</span> <span class="fu">paste</span>(overlap<span class="sc">$</span>species_1, overlap<span class="sc">$</span>species_2, <span class="at">sep =</span> <span class="st">"_x_"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">merge</span>(maha, overlap[, <span class="fu">c</span>(<span class="st">"pair_id"</span>, <span class="st">"simpson_coef"</span>, <span class="st">"computed_class"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"manual_classification"</span>)],</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"pair_id"</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Use sympatry_status from maha (already clean)</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sympatry_class <span class="ot">&lt;-</span> df<span class="sc">$</span>sympatry_status</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Collapse parapatric into allopatric for 2-group test</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sympatry_binary <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(df<span class="sc">$</span>sympatry_class <span class="sc">==</span> <span class="st">"Sympatric"</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Sympatric"</span>, <span class="st">"Non-sympatric"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sympatry_binary[df<span class="sc">$</span>sympatry_class <span class="sc">==</span> <span class="st">"Unknown"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Sister pairs: %d</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">nrow</span>(df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sister pairs: 33</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Sympatry classification:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sympatry classification:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(df<span class="sc">$</span>sympatry_class, <span class="at">useNA =</span> <span class="st">"ifany"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Allopatric Parapatric  Sympatric    Unknown 
+        12          7         13          1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Binary grouping for test:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Binary grouping for test:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(df<span class="sc">$</span>sympatry_binary, <span class="at">useNA =</span> <span class="st">"ifany"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Non-sympatric     Sympatric          &lt;NA&gt; 
+           19            13             1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Mahalanobis distance range: %.2f -- %.2f</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">min</span>(df<span class="sc">$</span>mahalanobis_dist, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">max</span>(df<span class="sc">$</span>mahalanobis_dist, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Mahalanobis distance range: 0.45 -- 9.65</code></pre>
+</div>
 </div>
 </section>
-<section id="fetch-defense-status-from-rfishbase" class="level1">
-<h1>Fetch defense status from rfishbase</h1>
+<section id="why-not-defense-a-quick-check" class="level1">
+<h1>Why not defense? A quick check</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rfishbase)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sp_names <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, pavo<span class="sc">$</span>species)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sp_info <span class="ot">&lt;-</span> <span class="fu">species</span>(sp_names, <span class="at">fields =</span> <span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"Dangerous"</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sp_info<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, sp_info<span class="sc">$</span>Species)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Collapse to binary</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>sp_info<span class="sc">$</span>defended <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  sp_info<span class="sc">$</span>Dangerous <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"venomous"</span>, <span class="st">"traumatogenic"</span>, <span class="st">"poisonous to eat"</span>),</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"defended"</span>, <span class="st">"harmless"</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>sp_info <span class="ot">&lt;-</span> sp_info[<span class="sc">!</span><span class="fu">is.na</span>(sp_info<span class="sc">$</span>defended), ]</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(pavo, sp_info[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"defended"</span>)], <span class="at">by =</span> <span class="st">"species"</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Defense categories:</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(merged<span class="sc">$</span>defended))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaet_master_traits.csv"</span>),</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"FishBase 'Dangerous' field for Chaetodontidae:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FishBase 'Dangerous' field for Chaetodontidae:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(traits<span class="sc">$</span>dangerous, <span class="at">useNA =</span> <span class="st">"ifany"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                      harmless reports of ciguatera poisoning 
+                           123                              4 
+                          &lt;NA&gt; 
+                             3 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">  -&gt; No defense variation; aposematism test is impossible.</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  -&gt; No defense variation; aposematism test is impossible.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  -&gt; Pivoting to character displacement (sympatric vs allopatric).</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  -&gt; Pivoting to character displacement (sympatric vs allopatric).</code></pre>
+</div>
 </div>
 </section>
-<section id="pgls-conspicuousness-vs-defense" class="level1">
-<h1>PGLS: conspicuousness vs defense</h1>
+<section id="wilcoxon-test-sympatric-vs-non-sympatric" class="level1">
+<h1>Wilcoxon test: sympatric vs non-sympatric</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shared <span class="ot">&lt;-</span> <span class="fu">intersect</span>(merged<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> merged[<span class="fu">match</span>(shared, merged<span class="sc">$</span>species), ]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tree_f <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(merged) <span class="ot">&lt;-</span> merged<span class="sc">$</span>species</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">gls</span>(m_dS <span class="sc">~</span> defended, <span class="at">data =</span> merged,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">correlation =</span> <span class="fu">corBrownian</span>(<span class="at">phy =</span> tree_f), <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: m_dS ~ defended</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(model)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df_test <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>sympatry_binary), ]</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>wt <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(mahalanobis_dist <span class="sc">~</span> sympatry_binary, <span class="at">data =</span> df_test)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Wilcoxon W = %.0f, p = %.4f</span><span class="sc">\n</span><span class="st">"</span>, wt<span class="sc">$</span>statistic, wt<span class="sc">$</span>p.value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wilcoxon W = 124, p = 1.0000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group summaries</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>agg <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(mahalanobis_dist <span class="sc">~</span> sympatry_binary, <span class="at">data =</span> df_test,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">median =</span> <span class="fu">median</span>(x),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">sd =</span> <span class="fu">sd</span>(x), <span class="at">n =</span> <span class="fu">length</span>(x)))</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>summary_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(data.frame, agg)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(summary_df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"Mean"</span>, <span class="st">"Median"</span>, <span class="st">"SD"</span>, <span class="st">"N"</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(summary_df,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Color divergence (Mahalanobis distance) by sympatry status."</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">digits =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Color divergence (Mahalanobis distance) by sympatry status.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Group</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Median</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SD</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Non-sympatric</td>
+<td style="text-align: right;">3.034</td>
+<td style="text-align: right;">1.968</td>
+<td style="text-align: right;">2.444</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sympatric</td>
+<td style="text-align: right;">2.709</td>
+<td style="text-align: right;">2.163</td>
+<td style="text-align: right;">1.612</td>
+<td style="text-align: right;">13</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>
 <section id="boxplot" class="level1">
 <h1>Boxplot</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(merged, <span class="fu">aes</span>(<span class="at">x =</span> defended, <span class="at">y =</span> m_dS, <span class="at">fill =</span> defended)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Defense Status"</span>, <span class="at">y =</span> <span class="st">"Chromatic Contrast (m_dS)"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Conspicuousness vs. defense (aposematism test)"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS with binary predictor"</span>) <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"defense-vs-conspicuousness.pdf"</span>),</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_test, <span class="fu">aes</span>(<span class="at">x =</span> sympatry_binary, <span class="at">y =</span> mahalanobis_dist,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">fill =</span> sympatry_binary)) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"grey25"</span>) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Sympatric"</span> <span class="ot">=</span> <span class="st">"#e76f51"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Non-sympatric"</span> <span class="ot">=</span> <span class="st">"#264653"</span>)) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">1.5</span>, <span class="at">y =</span> <span class="fu">max</span>(df_test<span class="sc">$</span>mahalanobis_dist) <span class="sc">+</span> <span class="fl">0.3</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"Wilcoxon p = %.3f"</span>, wt<span class="sc">$</span>p.value),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Range Overlap Status"</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mahalanobis Distance (6D color-pattern space)"</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Character displacement in butterflyfish color"</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Sister pairs: do sympatric species diverge more?"</span>) <span class="sc">+</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="functional-hypothesis_files/figure-html/boxplot-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Mahalanobis distance in color space between sister species, grouped by range overlap.</figcaption>
+</figure>
 </div>
+</div>
+</div>
+</section>
+<section id="scatter-color-divergence-vs-range-overlap" class="level1">
+<h1>Scatter: color divergence vs range overlap</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only include pairs with valid overlap data</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df_scatter <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>simpson_coef), ]</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_scatter, <span class="fu">aes</span>(<span class="at">x =</span> simpson_coef, <span class="at">y =</span> mahalanobis_dist)) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> sympatry_class), <span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">color =</span> <span class="st">"#e76f51"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth =</span> <span class="fl">1.1</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sympatric"</span>  <span class="ot">=</span> <span class="st">"#e76f51"</span>,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Allopatric"</span> <span class="ot">=</span> <span class="st">"#264653"</span>,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Parapatric"</span> <span class="ot">=</span> <span class="st">"#2a9d8f"</span>,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unknown"</span>    <span class="ot">=</span> <span class="st">"grey60"</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">name =</span> <span class="st">"Status"</span>) <span class="sc">+</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Simpson Range Overlap Coefficient"</span>,</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mahalanobis Distance (6D color-pattern space)"</span>,</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Color divergence vs. geographic overlap"</span>,</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Sister pairs — character displacement prediction"</span>) <span class="sc">+</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="functional-hypothesis_files/figure-html/scatter-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Mahalanobis color distance vs Simpson range overlap coefficient for 33 sister pairs.</figcaption>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation test</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ct <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(df_scatter<span class="sc">$</span>simpson_coef, df_scatter<span class="sc">$</span>mahalanobis_dist,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(df_scatter$simpson_coef,
+df_scatter$mahalanobis_dist, : Cannot compute exact p-value with ties</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Spearman rho = %.3f, p = %.4f</span><span class="sc">\n</span><span class="st">"</span>, ct<span class="sc">$</span>estimate, ct<span class="sc">$</span>p.value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Spearman rho = -0.210, p = 0.2488</code></pre>
+</div>
+</div>
+</section>
+<section id="three-way-classification" class="level1">
+<h1>Three-way classification</h1>
+<p>For a finer-grained view, compare across allopatric, parapatric, and sympatric categories.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> df[df<span class="sc">$</span>sympatry_class <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Allopatric"</span>, <span class="st">"Parapatric"</span>, <span class="st">"Sympatric"</span>), ]</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>df3<span class="sc">$</span>sympatry_class <span class="ot">&lt;-</span> <span class="fu">factor</span>(df3<span class="sc">$</span>sympatry_class,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Allopatric"</span>, <span class="st">"Parapatric"</span>, <span class="st">"Sympatric"</span>))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df3, <span class="fu">aes</span>(<span class="at">x =</span> sympatry_class, <span class="at">y =</span> mahalanobis_dist,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">fill =</span> sympatry_class)) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"grey25"</span>) <span class="sc">+</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Allopatric"</span> <span class="ot">=</span> <span class="st">"#264653"</span>,</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Parapatric"</span> <span class="ot">=</span> <span class="st">"#2a9d8f"</span>,</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sympatric"</span>  <span class="ot">=</span> <span class="st">"#e76f51"</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Geographic Relationship"</span>, <span class="at">y =</span> <span class="st">"Mahalanobis Distance"</span>,</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Color divergence by geographic relationship"</span>,</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"33 sister pairs from the chaetodontid phylogeny"</span>) <span class="sc">+</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="functional-hypothesis_files/figure-html/three-way-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Color divergence across three sympatry categories.</figcaption>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>kt <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(mahalanobis_dist <span class="sc">~</span> sympatry_class, <span class="at">data =</span> df3)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Kruskal-Wallis chi-sq = %.2f, p = %.4f</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>            kt<span class="sc">$</span>statistic, kt<span class="sc">$</span>p.value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Kruskal-Wallis chi-sq = 0.90, p = 0.6384</code></pre>
+</div>
+</div>
+</section>
+<section id="hero-pdf" class="level1">
+<h1>Hero PDF</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'Sister pairs — character displacement prediction' in 'mbcsToSbcs': -
+substituted for — (U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: ../../figures/functional-hypothesis-hero.pdf (11 KB)</code></pre>
+</div>
+</div>
+<p><a href="../../figures/functional-hypothesis-hero.pdf">Download hero PDF: <code>functional-hypothesis-hero.pdf</code></a></p>
+</section>
+<section id="interpretation" class="level1">
+<h1>Interpretation</h1>
+<p>Character displacement predicts that sympatric sister species evolve more divergent color patterns to facilitate species recognition on the reef. If the Wilcoxon test is significant, sympatric pairs have greater Mahalanobis distances than allopatric pairs in the 6D color space, supporting the hypothesis. The scatter of color divergence vs Simpson overlap tests whether the effect scales continuously with the degree of range overlap.</p>
+<p>Chaetodontidae are an ideal system for this test because many sister pairs span the sympatry/allopatry spectrum, and their conspicuous color patterns are thought to function partly in species recognition (Hemingson &amp; Bellwood 2018). The 33 pairs provide moderate power – cross-family meta-analyses would strengthen the result.</p>
 </section>
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
@@ -734,8 +967,8 @@ Tip
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>figures/defense-vs-conspicuousness.pdf</code></td>
-<td>Boxplot (when data available)</td>
+<td><code>figures/functional-hypothesis-hero.pdf</code></td>
+<td>2-panel: boxplot (sympatric vs allopatric) + scatter (divergence vs overlap)</td>
 </tr>
 </tbody>
 </table>

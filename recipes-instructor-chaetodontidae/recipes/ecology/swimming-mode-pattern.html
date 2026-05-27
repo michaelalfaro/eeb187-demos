@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -510,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -584,11 +586,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
-  <li><a href="#fetch-caudal-fin-aspect-ratio" id="toc-fetch-caudal-fin-aspect-ratio" class="nav-link" data-scroll-target="#fetch-caudal-fin-aspect-ratio">Fetch caudal fin aspect ratio</a></li>
-  <li><a href="#pgls-pattern-a-vs-caudal-ar" id="toc-pgls-pattern-a-vs-caudal-ar" class="nav-link" data-scroll-target="#pgls-pattern-a-vs-caudal-ar">PGLS: pattern A vs caudal AR</a></li>
-  <li><a href="#scatter-plot" id="toc-scatter-plot" class="nav-link" data-scroll-target="#scatter-plot">Scatter plot</a></li>
+  <li><a href="#what-youre-computing" id="toc-what-youre-computing" class="nav-link active" data-scroll-target="#what-youre-computing">What you’re computing</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-and-merge-data" id="toc-load-and-merge-data" class="nav-link" data-scroll-target="#load-and-merge-data">Load and merge data</a></li>
+  <li><a href="#pgls-models" id="toc-pgls-models" class="nav-link" data-scroll-target="#pgls-models">PGLS models</a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table">Summary table</a></li>
+  <li><a href="#scatter-plots" id="toc-scatter-plots" class="nav-link" data-scroll-target="#scatter-plots">Scatter plots</a></li>
+  <li><a href="#hero-pdf" id="toc-hero-pdf" class="nav-link" data-scroll-target="#hero-pdf">Hero PDF</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
 </nav>
@@ -617,19 +622,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Data limitation.</strong> Caudal fin aspect ratio is not included in <code>chaet_traits.csv</code>. This recipe shows the complete code structure but data-dependent chunks are set to <code>eval: false</code>. To run live, fetch AspectRatio from <code>rfishbase::morphometrics()</code>.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -640,9 +632,19 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Ecology recipe.</strong> PGLS regression of pavo pattern aspect ratio (A) against FishBase caudal fin aspect ratio. Tests the motion dazzle hypothesis: fast-swimming species (high caudal AR) should have more directional stripe patterns (high pavo A).</p>
+<p><strong>Ecology recipe.</strong> PGLS regression of pavo pattern metrics against FishBase caudal fin aspect ratio. The motion dazzle hypothesis predicts that faster-swimming species (higher caudal AR) display more directional stripe patterns. We test this with pavo’s pattern transition density (m) and pattern aspect ratio (A), as well as the phylogenetic PC axes.</p>
+<p><strong>Poster outputs.</strong> <code>figures/swimming-mode-hero.pdf</code> – a multi-panel scatter with PGLS regression lines.</p>
 </div>
 </div>
+<section id="what-youre-computing" class="level1">
+<h1>What you’re computing</h1>
+<ol type="1">
+<li>Load caudal fin aspect ratio from <code>chaet_master_traits.csv</code> (sourced from <code>rfishbase::morphometrics()</code>).</li>
+<li>Merge with pavo metrics and phylogenetic PC scores.</li>
+<li>Fit PGLS models: m ~ AspectRatio, A ~ AspectRatio, PC1 ~ AspectRatio.</li>
+<li>Scatter plots with regression lines.</li>
+</ol>
+</section>
 <section id="setup" class="level1">
 <h1>Setup</h1>
 <div class="cell">
@@ -651,67 +653,316 @@ Tip
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(phytools)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(nlme)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'knitr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-data" class="level1">
-<h1>Load data</h1>
+<section id="load-and-merge-data" class="level1">
+<h1>Load and merge data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pavo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaetodontidae-tree.tre"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(tree)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pp     <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tree   <span class="ot">&lt;-</span> pp<span class="sc">$</span>tree</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>S      <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca<span class="sc">$</span>S</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>eig    <span class="ot">&lt;-</span> <span class="fu">diag</span>(pp<span class="sc">$</span>ppca<span class="sc">$</span>Eval)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ve     <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> eig <span class="sc">/</span> <span class="fu">sum</span>(eig)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pavo   <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaet_master_traits.csv"</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Build merged data frame</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">species =</span> <span class="fu">rownames</span>(S),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">PC1 =</span> S[, <span class="dv">1</span>], <span class="at">PC2 =</span> S[, <span class="dv">2</span>],</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df, pavo[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"m"</span>, <span class="st">"A"</span>)], <span class="at">by =</span> <span class="st">"species"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df, traits[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"aspect_ratio"</span>)], <span class="at">by =</span> <span class="st">"species"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>aspect_ratio) <span class="sc">&amp;</span> df<span class="sc">$</span>aspect_ratio <span class="sc">&gt;</span> <span class="dv">0</span>, ]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>shared  <span class="ot">&lt;-</span> <span class="fu">intersect</span>(df<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>df      <span class="ot">&lt;-</span> df[<span class="fu">match</span>(shared, df<span class="sc">$</span>species), ]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>tree_sw <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df) <span class="ot">&lt;-</span> df<span class="sc">$</span>species</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Species with caudal AR + pattern data: %d</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">nrow</span>(df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Species with caudal AR + pattern data: 105</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Caudal AR range: %.2f -- %.2f</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">min</span>(df<span class="sc">$</span>aspect_ratio), <span class="fu">max</span>(df<span class="sc">$</span>aspect_ratio)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Caudal AR range: 1.50 -- 3.80</code></pre>
+</div>
 </div>
 </section>
-<section id="fetch-caudal-fin-aspect-ratio" class="level1">
-<h1>Fetch caudal fin aspect ratio</h1>
+<section id="pgls-models" class="level1">
+<h1>PGLS models</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rfishbase)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sp_names <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, pavo<span class="sc">$</span>species)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>morph <span class="ot">&lt;-</span> <span class="fu">morphometrics</span>(sp_names)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>morph_ar <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(AspectRatio <span class="sc">~</span> Species, <span class="at">data =</span> morph,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">FUN =</span> <span class="cf">function</span>(x) x[<span class="dv">1</span>])</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>morph_ar<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, morph_ar<span class="sc">$</span>Species)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(pavo, morph_ar[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"AspectRatio"</span>)], <span class="at">by =</span> <span class="st">"species"</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> merged[<span class="sc">!</span><span class="fu">is.na</span>(merged<span class="sc">$</span>AspectRatio) <span class="sc">&amp;</span> merged<span class="sc">$</span>AspectRatio <span class="sc">&gt;</span> <span class="dv">0</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit_pgls <span class="ot">&lt;-</span> <span class="cf">function</span>(response, predictor, df, tree) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(response, <span class="st">"~"</span>, predictor))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.99</span>, <span class="fl">0.01</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  ctrl <span class="ot">&lt;-</span> <span class="fu">glsControl</span>(<span class="at">opt =</span> <span class="st">"optim"</span>, <span class="at">maxIter =</span> <span class="dv">200</span>, <span class="at">msMaxIter =</span> <span class="dv">200</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (lam0 <span class="cf">in</span> starts) {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">gls</span>(f, <span class="at">data =</span> df,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">correlation =</span> <span class="fu">corPagel</span>(lam0, tree, <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) <span class="fu">return</span>(m)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gls</span>(f, <span class="at">data =</span> df,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">correlation =</span> <span class="fu">corPagel</span>(<span class="dv">1</span>, tree, <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>extract_lambda <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">coef</span>(m<span class="sc">$</span>modelStruct<span class="sc">$</span>corStruct, <span class="at">unconstrained =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fl">1.0</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>m_m   <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"m"</span>, <span class="st">"aspect_ratio"</span>, df, tree_sw)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>m_A   <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"A"</span>, <span class="st">"aspect_ratio"</span>, df, tree_sw)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>m_pc1 <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"PC1"</span>, <span class="st">"aspect_ratio"</span>, df, tree_sw)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>lam_m   <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_m)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>lam_A   <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_A)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>lam_pc1 <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_pc1)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: m (transition density) ~ aspect_ratio</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: m (transition density) ~ aspect_ratio</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_m)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Value  Std.Error    t-value    p-value
+(Intercept)   0.075978860 0.03346278  2.2705482 0.02525584
+aspect_ratio -0.001171215 0.01063575 -0.1101206 0.91252804</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n\n</span><span class="st">"</span>, lam_m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = 0.634</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: A (pattern aspect ratio) ~ aspect_ratio</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: A (pattern aspect ratio) ~ aspect_ratio</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_A)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Value  Std.Error   t-value      p-value
+(Intercept)   1.4533978 0.18869220  7.702479 8.549729e-12
+aspect_ratio -0.1014424 0.06399355 -1.585198 1.159870e-01</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n\n</span><span class="st">"</span>, lam_A))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = 0.509</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: PC1 ~ aspect_ratio</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: PC1 ~ aspect_ratio</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_pc1)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Value Std.Error    t-value   p-value
+(Intercept)  -1.4658738  3.318449 -0.4417346 0.6596073
+aspect_ratio  0.4545256  1.093653  0.4156030 0.6785651</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, lam_pc1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = 0.568</code></pre>
+</div>
 </div>
 </section>
-<section id="pgls-pattern-a-vs-caudal-ar" class="level1">
-<h1>PGLS: pattern A vs caudal AR</h1>
+<section id="summary-table" class="level1">
+<h1>Summary table</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shared <span class="ot">&lt;-</span> <span class="fu">intersect</span>(merged<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> merged[<span class="fu">match</span>(shared, merged<span class="sc">$</span>species), ]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tree_sw <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(merged) <span class="ot">&lt;-</span> merged<span class="sc">$</span>species</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">gls</span>(A <span class="sc">~</span> AspectRatio, <span class="at">data =</span> merged,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">correlation =</span> <span class="fu">corBrownian</span>(<span class="at">phy =</span> tree_sw), <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: A (pattern) ~ AspectRatio (caudal fin)</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(model)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(resp, m, lam, <span class="at">pred =</span> <span class="st">"aspect_ratio"</span>) {</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  tt <span class="ot">&lt;-</span> <span class="fu">summary</span>(m)<span class="sc">$</span>tTable</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Response =</span> resp,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope    =</span> <span class="fu">round</span>(tt[pred, <span class="st">"Value"</span>], <span class="dv">4</span>),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">SE       =</span> <span class="fu">round</span>(tt[pred, <span class="st">"Std.Error"</span>], <span class="dv">4</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">t        =</span> <span class="fu">round</span>(tt[pred, <span class="st">"t-value"</span>], <span class="dv">2</span>),</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">p        =</span> <span class="fu">signif</span>(tt[pred, <span class="st">"p-value"</span>], <span class="dv">3</span>),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lambda   =</span> <span class="fu">round</span>(lam, <span class="dv">3</span>),</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_row</span>(<span class="st">"m (transition density)"</span>, m_m, lam_m),</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_row</span>(<span class="st">"A (pattern aspect ratio)"</span>, m_A, lam_A),</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_row</span>(<span class="st">"PC1 (pattern density)"</span>, m_pc1, lam_pc1)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tab, <span class="at">caption =</span> <span class="st">"PGLS: pavo metrics ~ caudal fin aspect ratio."</span>,</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>PGLS: pavo metrics ~ caudal fin aspect ratio.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Response</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Slope</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lambda</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">m (transition density)</td>
+<td style="text-align: right;">-0.0012</td>
+<td style="text-align: right;">0.0106</td>
+<td style="text-align: right;">-0.11</td>
+<td style="text-align: right;">0.913</td>
+<td style="text-align: right;">0.634</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A (pattern aspect ratio)</td>
+<td style="text-align: right;">-0.1014</td>
+<td style="text-align: right;">0.0640</td>
+<td style="text-align: right;">-1.59</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">0.509</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PC1 (pattern density)</td>
+<td style="text-align: right;">0.4545</td>
+<td style="text-align: right;">1.0937</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.679</td>
+<td style="text-align: right;">0.568</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>
-<section id="scatter-plot" class="level1">
-<h1>Scatter plot</h1>
+<section id="scatter-plots" class="level1">
+<h1>Scatter plots</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(merged, <span class="fu">aes</span>(<span class="at">x =</span> AspectRatio, <span class="at">y =</span> A)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(model)[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(model)[<span class="dv">2</span>],</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Caudal Fin Aspect Ratio"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Pattern Aspect Ratio (A, pavo)"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Swimming mode vs. pattern orientation"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS — testing motion dazzle hypothesis"</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"swimming-vs-pattern.pdf"</span>), p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> aspect_ratio, <span class="at">y =</span> m)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(m_m)[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(m_m)[<span class="dv">2</span>],</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(df<span class="sc">$</span>aspect_ratio) <span class="sc">-</span> <span class="fl">0.1</span>, <span class="at">y =</span> <span class="fu">max</span>(df<span class="sc">$</span>m),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.4f, p = %.3f, lambda = %.2f"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">coef</span>(m_m)[<span class="dv">2</span>],</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">summary</span>(m_m)<span class="sc">$</span>tTable[<span class="st">"aspect_ratio"</span>, <span class="st">"p-value"</span>],</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                           lam_m),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Caudal Fin Aspect Ratio"</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Pattern Transition Density (m)"</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Swimming mode vs. pattern complexity"</span>,</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS — motion dazzle hypothesis"</span>) <span class="sc">+</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="swimming-mode-pattern_files/figure-html/scatter-m-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Pattern transition density (m) vs caudal fin aspect ratio.</figcaption>
+</figure>
 </div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> aspect_ratio, <span class="at">y =</span> A)) <span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(m_A)[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(m_A)[<span class="dv">2</span>],</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(df<span class="sc">$</span>aspect_ratio) <span class="sc">-</span> <span class="fl">0.1</span>, <span class="at">y =</span> <span class="fu">max</span>(df<span class="sc">$</span>A),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.4f, p = %.3f, lambda = %.2f"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">coef</span>(m_A)[<span class="dv">2</span>],</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">summary</span>(m_A)<span class="sc">$</span>tTable[<span class="st">"aspect_ratio"</span>, <span class="st">"p-value"</span>],</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>                           lam_A),</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Caudal Fin Aspect Ratio"</span>,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Pattern Aspect Ratio (A)"</span>,</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Stripe orientation vs. fin shape"</span>,</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS — do fast swimmers have directional stripes?"</span>) <span class="sc">+</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="swimming-mode-pattern_files/figure-html/scatter-A-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Pattern aspect ratio (A) vs caudal fin aspect ratio.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> aspect_ratio, <span class="at">y =</span> PC1)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(m_pc1)[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(m_pc1)[<span class="dv">2</span>],</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(df<span class="sc">$</span>aspect_ratio) <span class="sc">-</span> <span class="fl">0.1</span>, <span class="at">y =</span> <span class="fu">max</span>(df<span class="sc">$</span>PC1),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.3f, p = %.3f, lambda = %.2f"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">coef</span>(m_pc1)[<span class="dv">2</span>],</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">summary</span>(m_pc1)<span class="sc">$</span>tTable[<span class="st">"aspect_ratio"</span>, <span class="st">"p-value"</span>],</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                           lam_pc1),</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Caudal Fin Aspect Ratio"</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">sprintf</span>(<span class="st">"PhyloPC1 — pattern density (%.0f%% var)"</span>, ve[<span class="dv">1</span>]),</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Fin shape and the pattern density axis"</span>,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS with Pagel's lambda"</span>) <span class="sc">+</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="swimming-mode-pattern_files/figure-html/scatter-pc1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>PhyloPC1 (pattern density) vs caudal fin aspect ratio.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hero-pdf" class="level1">
+<h1>Hero PDF</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PGLS — motion dazzle hypothesis' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PGLS — do fast swimmers have directional stripes?' in 'mbcsToSbcs': -
+substituted for — (U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PhyloPC1 — pattern density (39% var)' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: ../../figures/swimming-mode-hero.pdf (25 KB)</code></pre>
+</div>
+</div>
+<p><a href="../../figures/swimming-mode-hero.pdf">Download hero PDF: <code>swimming-mode-hero.pdf</code></a></p>
+</section>
+<section id="interpretation" class="level1">
+<h1>Interpretation</h1>
+<p>Chaetodontidae are labriform swimmers with moderately low caudal fin aspect ratios (most between 1.5 and 3.8). The motion dazzle hypothesis predicts a positive relationship between caudal AR and pattern directionality (A), because faster-swimming species benefit more from stripes that create optical illusions during escape. Within butterflyfishes, the relationship may be weak because the family is ecologically constrained to reef-associated swimming modes. A significant slope on <strong>m</strong> or <strong>PC1</strong> would suggest that caudal shape is also linked to overall pattern complexity, not just stripe orientation.</p>
 </section>
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
@@ -728,8 +979,8 @@ Tip
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>figures/swimming-vs-pattern.pdf</code></td>
-<td>PGLS scatter (when data available)</td>
+<td><code>figures/swimming-mode-hero.pdf</code></td>
+<td>3-panel scatter: m, A, and PC1 vs caudal AR</td>
 </tr>
 </tbody>
 </table>

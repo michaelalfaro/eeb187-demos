@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -302,6 +304,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li class="nav-item">
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -510,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -584,11 +590,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
-  <li><a href="#fetch-schooling-behavior-from-rfishbase" id="toc-fetch-schooling-behavior-from-rfishbase" class="nav-link" data-scroll-target="#fetch-schooling-behavior-from-rfishbase">Fetch schooling behavior from rfishbase</a></li>
-  <li><a href="#pgls-achromatic-contrast-vs-schooling" id="toc-pgls-achromatic-contrast-vs-schooling" class="nav-link" data-scroll-target="#pgls-achromatic-contrast-vs-schooling">PGLS: achromatic contrast vs schooling</a></li>
-  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot">Boxplot</a></li>
+  <li><a href="#what-youre-computing" id="toc-what-youre-computing" class="nav-link active" data-scroll-target="#what-youre-computing">What you’re computing</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-and-merge-data" id="toc-load-and-merge-data" class="nav-link" data-scroll-target="#load-and-merge-data">Load and merge data</a></li>
+  <li><a href="#pgls-with-pagels-lambda" id="toc-pgls-with-pagels-lambda" class="nav-link" data-scroll-target="#pgls-with-pagels-lambda">PGLS with Pagel’s lambda</a></li>
+  <li><a href="#summary-table" id="toc-summary-table" class="nav-link" data-scroll-target="#summary-table">Summary table</a></li>
+  <li><a href="#scatter-plots" id="toc-scatter-plots" class="nav-link" data-scroll-target="#scatter-plots">Scatter plots</a></li>
+  <li><a href="#hero-pdf" id="toc-hero-pdf" class="nav-link" data-scroll-target="#hero-pdf">Hero PDF</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
 </nav>
@@ -600,7 +609,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/life-history/sexual-system-complexity.html">Life History</a></li><li class="breadcrumb-item"><a href="../../recipes/life-history/schooling-conspicuousness.html">Schooling and Conspicuousness</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Schooling and Conspicuousness</h1>
-<p class="subtitle lead">Do schooling butterflyfishes have different color patterns?</p>
+<p class="subtitle lead">Do butterflyfishes with more sympatric congeners differ in color?</p>
 </div>
 
 
@@ -617,19 +626,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Data limitation.</strong> Schooling behavior is not included in <code>chaet_traits.csv</code>. This recipe shows the code structure but data-dependent chunks are <code>eval: false</code>. Many Chaetodon species form pairs or small groups, making the schooling/solitary contrast potentially interesting for this family if the data can be sourced from FishBase ecology tables.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -640,9 +636,21 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Life-history recipe.</strong> Categorical PGLS testing whether schooling species have different achromatic contrast (m_dS) or chromatic complexity (Jc) compared to solitary/pair-living species. Tests confusion effect vs oddity effect predictions.</p>
+<p><strong>Life-history recipe.</strong> The FishBase <code>Schooling</code> field for Chaetodontidae is nearly invariant (105 species coded 0, only 2 coded -1), making a traditional schooling/solitary contrast uninformative. Instead, this recipe uses <strong>sympatric species count</strong> (n_sympatric) from the chaets-divergence project as a continuous proxy for social density: species living alongside many congeners face different selective pressures than species with few co-occurring relatives.</p>
+<p>PGLS tests whether the number of sympatric congeners predicts chromatic contrast (m_dS), color diversity (Jc), or the phylogenetic PC axes.</p>
+<p><strong>Poster outputs.</strong> <code>figures/schooling-conspicuousness-hero.pdf</code> – scatter plots of color metrics vs n_sympatric.</p>
 </div>
 </div>
+<section id="what-youre-computing" class="level1">
+<h1>What you’re computing</h1>
+<ol type="1">
+<li>Load <code>n_sympatric</code> from <code>species_sympatry_metrics.csv</code> (chaets-divergence project) and <code>schooling</code> from <code>chaet_master_traits.csv</code>.</li>
+<li>Demonstrate that Schooling is nearly invariant in this family.</li>
+<li>Pivot to n_sympatric as a continuous “social density” measure.</li>
+<li>Fit PGLS: m_dS ~ n_sympatric, Jc ~ n_sympatric, PC1 ~ n_sympatric.</li>
+<li>Scatter plots with regression lines.</li>
+</ol>
+</section>
 <section id="setup" class="level1">
 <h1>Setup</h1>
 <div class="cell">
@@ -651,75 +659,303 @@ Tip
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(phytools)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(nlme)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'knitr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>BUNDLE     <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>FIGDIR     <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CHAETS_DIR <span class="ot">&lt;-</span> <span class="st">"/Users/michaelalfaro/Dropbox/git/chaets-divergence-2026"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-data" class="level1">
-<h1>Load data</h1>
+<section id="load-and-merge-data" class="level1">
+<h1>Load and merge data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pavo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaetodontidae-tree.tre"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(tree)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="fetch-schooling-behavior-from-rfishbase" class="level1">
-<h1>Fetch schooling behavior from rfishbase</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rfishbase)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sp_names <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, pavo<span class="sc">$</span>species)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ecol <span class="ot">&lt;-</span> <span class="fu">ecology</span>(sp_names)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ecol_first <span class="ot">&lt;-</span> ecol[<span class="sc">!</span><span class="fu">duplicated</span>(ecol<span class="sc">$</span>Species), ]</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ecol_first<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, ecol_first<span class="sc">$</span>Species)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pp     <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tree   <span class="ot">&lt;-</span> pp<span class="sc">$</span>tree</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>S      <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca<span class="sc">$</span>S</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>eig    <span class="ot">&lt;-</span> <span class="fu">diag</span>(pp<span class="sc">$</span>ppca<span class="sc">$</span>Eval)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ve     <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> eig <span class="sc">/</span> <span class="fu">sum</span>(eig)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Collapse to binary</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ecol_first<span class="sc">$</span>schooling_binary <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grepl</span>(<span class="st">"school"</span>, ecol_first<span class="sc">$</span>Schooling, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"schooling"</span>, <span class="st">"solitary/pairs"</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ecol_first <span class="ot">&lt;-</span> ecol_first[<span class="sc">!</span><span class="fu">is.na</span>(ecol_first<span class="sc">$</span>schooling_binary), ]</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(pavo, ecol_first[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"schooling_binary"</span>)],</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">by =</span> <span class="st">"species"</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">table</span>(merged<span class="sc">$</span>schooling_binary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pavo   <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaet_master_traits.csv"</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Show that FishBase schooling is uninformative</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"FishBase Schooling values for Chaetodontidae:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FishBase Schooling values for Chaetodontidae:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(traits<span class="sc">$</span>schooling, <span class="at">useNA =</span> <span class="st">"ifany"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  -1    0 &lt;NA&gt; 
+   2  105   23 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  -&gt; Nearly all 0; only 2 species coded -1. Useless as a predictor.</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  -&gt; Nearly all 0; only 2 species coded -1. Useless as a predictor.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load sympatry metrics as a proxy</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sym <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(CHAETS_DIR,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"analysis/results/species_sympatry_metrics.csv"</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Build merged data frame</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">species =</span> <span class="fu">rownames</span>(S),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">PC1 =</span> S[, <span class="dv">1</span>], <span class="at">PC2 =</span> S[, <span class="dv">2</span>],</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df, pavo[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"Jc"</span>, <span class="st">"m_dS"</span>)], <span class="at">by =</span> <span class="st">"species"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df, sym[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"n_sympatric"</span>, <span class="st">"sympatry_pressure"</span>)],</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"species"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>n_sympatric), ]</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>shared  <span class="ot">&lt;-</span> <span class="fu">intersect</span>(df<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>df      <span class="ot">&lt;-</span> df[<span class="fu">match</span>(shared, df<span class="sc">$</span>species), ]</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>tree_sc <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df) <span class="ot">&lt;-</span> df<span class="sc">$</span>species</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Species with sympatry data + PC scores: %d</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">nrow</span>(df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Species with sympatry data + PC scores: 107</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"n_sympatric range: %d -- %d</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">min</span>(df<span class="sc">$</span>n_sympatric), <span class="fu">max</span>(df<span class="sc">$</span>n_sympatric)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n_sympatric range: 0 -- 87</code></pre>
+</div>
 </div>
 </section>
-<section id="pgls-achromatic-contrast-vs-schooling" class="level1">
-<h1>PGLS: achromatic contrast vs schooling</h1>
+<section id="pgls-with-pagels-lambda" class="level1">
+<h1>PGLS with Pagel’s lambda</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shared <span class="ot">&lt;-</span> <span class="fu">intersect</span>(merged<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> merged[<span class="fu">match</span>(shared, merged<span class="sc">$</span>species), ]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tree_sc <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(merged) <span class="ot">&lt;-</span> merged<span class="sc">$</span>species</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">gls</span>(m_dS <span class="sc">~</span> schooling_binary, <span class="at">data =</span> merged,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">correlation =</span> <span class="fu">corBrownian</span>(<span class="at">phy =</span> tree_sc), <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: m_dS ~ schooling_binary</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(model)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit_pgls <span class="ot">&lt;-</span> <span class="cf">function</span>(response, predictor, df, tree) {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(response, <span class="st">"~"</span>, predictor))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.99</span>, <span class="fl">0.01</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  ctrl <span class="ot">&lt;-</span> <span class="fu">glsControl</span>(<span class="at">opt =</span> <span class="st">"optim"</span>, <span class="at">maxIter =</span> <span class="dv">200</span>, <span class="at">msMaxIter =</span> <span class="dv">200</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (lam0 <span class="cf">in</span> starts) {</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">gls</span>(f, <span class="at">data =</span> df,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">correlation =</span> <span class="fu">corPagel</span>(lam0, tree, <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl),</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) <span class="fu">return</span>(m)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gls</span>(f, <span class="at">data =</span> df,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">correlation =</span> <span class="fu">corPagel</span>(<span class="dv">1</span>, tree, <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>extract_lambda <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">coef</span>(m<span class="sc">$</span>modelStruct<span class="sc">$</span>corStruct, <span class="at">unconstrained =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fl">1.0</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>m_dS  <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"m_dS"</span>, <span class="st">"n_sympatric"</span>, df, tree_sc)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>m_Jc  <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"Jc"</span>,   <span class="st">"n_sympatric"</span>, df, tree_sc)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>m_pc1 <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"PC1"</span>,  <span class="st">"n_sympatric"</span>, df, tree_sc)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>lam_dS  <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_dS)</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>lam_Jc  <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_Jc)</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>lam_pc1 <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_pc1)</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: m_dS ~ n_sympatric</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: m_dS ~ n_sympatric</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_dS)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Value    Std.Error   t-value      p-value
+(Intercept)  0.203758404 0.0195572152 10.418580 7.038148e-18
+n_sympatric -0.001119078 0.0005358913 -2.088256 3.919353e-02</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n\n</span><span class="st">"</span>, lam_dS))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = -0.079</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: Jc ~ n_sympatric</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: Jc ~ n_sympatric</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_Jc)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Value    Std.Error    t-value      p-value
+(Intercept) 0.8852774340 0.0170529947 51.9133120 1.084326e-76
+n_sympatric 0.0002865909 0.0004744086  0.6041014 5.470792e-01</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n\n</span><span class="st">"</span>, lam_Jc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = -0.057</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: PC1 ~ n_sympatric</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: PC1 ~ n_sympatric</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_pc1)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Value  Std.Error    t-value    p-value
+(Intercept)  1.49961793 1.83501822  0.8172224 0.41565181
+n_sympatric -0.06158209 0.02618288 -2.3519982 0.02053777</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, lam_pc1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = 0.473</code></pre>
+</div>
 </div>
 </section>
-<section id="boxplot" class="level1">
-<h1>Boxplot</h1>
+<section id="summary-table" class="level1">
+<h1>Summary table</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(merged, <span class="fu">aes</span>(<span class="at">x =</span> schooling_binary, <span class="at">y =</span> m_dS,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">fill =</span> schooling_binary)) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Behavioral Category"</span>, <span class="at">y =</span> <span class="st">"Achromatic Contrast (m_dS)"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Schooling and conspicuousness"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS: categorical predictor"</span>) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"schooling-vs-conspicuousness.pdf"</span>),</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>make_row <span class="ot">&lt;-</span> <span class="cf">function</span>(resp, m, lam, <span class="at">pred =</span> <span class="st">"n_sympatric"</span>) {</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  tt <span class="ot">&lt;-</span> <span class="fu">summary</span>(m)<span class="sc">$</span>tTable</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Response =</span> resp,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Slope    =</span> <span class="fu">round</span>(tt[pred, <span class="st">"Value"</span>], <span class="dv">5</span>),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">SE       =</span> <span class="fu">round</span>(tt[pred, <span class="st">"Std.Error"</span>], <span class="dv">5</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">t        =</span> <span class="fu">round</span>(tt[pred, <span class="st">"t-value"</span>], <span class="dv">2</span>),</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">p        =</span> <span class="fu">signif</span>(tt[pred, <span class="st">"p-value"</span>], <span class="dv">3</span>),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lambda   =</span> <span class="fu">round</span>(lam, <span class="dv">3</span>),</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_row</span>(<span class="st">"m_dS (chromatic contrast)"</span>, m_dS, lam_dS),</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_row</span>(<span class="st">"Jc (chromatic diversity)"</span>, m_Jc, lam_Jc),</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">make_row</span>(<span class="st">"PC1 (pattern density)"</span>, m_pc1, lam_pc1)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tab, <span class="at">caption =</span> <span class="st">"PGLS: color metrics ~ number of sympatric congeners."</span>,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>PGLS: color metrics ~ number of sympatric congeners.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Response</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Slope</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SE</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">t</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Lambda</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">m_dS (chromatic contrast)</td>
+<td style="text-align: right;">-0.00112</td>
+<td style="text-align: right;">0.00054</td>
+<td style="text-align: right;">-2.09</td>
+<td style="text-align: right;">0.0392</td>
+<td style="text-align: right;">-0.079</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jc (chromatic diversity)</td>
+<td style="text-align: right;">0.00029</td>
+<td style="text-align: right;">0.00047</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">0.5470</td>
+<td style="text-align: right;">-0.057</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PC1 (pattern density)</td>
+<td style="text-align: right;">-0.06158</td>
+<td style="text-align: right;">0.02618</td>
+<td style="text-align: right;">-2.35</td>
+<td style="text-align: right;">0.0205</td>
+<td style="text-align: right;">0.473</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+</section>
+<section id="scatter-plots" class="level1">
+<h1>Scatter plots</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> n_sympatric, <span class="at">y =</span> m_dS)) <span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(m_dS)[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(m_dS)[<span class="dv">2</span>],</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(df<span class="sc">$</span>n_sympatric) <span class="sc">-</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="fu">max</span>(df<span class="sc">$</span>m_dS),</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.4f, p = %.3f, lambda = %.2f"</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">coef</span>(m_dS)[<span class="dv">2</span>],</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">summary</span>(m_dS)<span class="sc">$</span>tTable[<span class="st">"n_sympatric"</span>, <span class="st">"p-value"</span>],</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>                           lam_dS),</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Sympatric Congeners"</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean Chromatic Contrast (m_dS)"</span>,</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Does congener density predict conspicuousness?"</span>,</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS — character displacement proxy"</span>) <span class="sc">+</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="schooling-conspicuousness_files/figure-html/scatter-dS-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Chromatic contrast (m_dS) vs number of sympatric congeners.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> n_sympatric, <span class="at">y =</span> Jc)) <span class="sc">+</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="fu">coef</span>(m_Jc)[<span class="dv">1</span>], <span class="at">slope =</span> <span class="fu">coef</span>(m_Jc)[<span class="dv">2</span>],</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">max</span>(df<span class="sc">$</span>n_sympatric) <span class="sc">-</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="fu">max</span>(df<span class="sc">$</span>Jc),</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"slope = %.4f, p = %.3f, lambda = %.2f"</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">coef</span>(m_Jc)[<span class="dv">2</span>],</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">summary</span>(m_Jc)<span class="sc">$</span>tTable[<span class="st">"n_sympatric"</span>, <span class="st">"p-value"</span>],</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>                           lam_Jc),</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">3.8</span>, <span class="at">color =</span> <span class="st">"grey30"</span>) <span class="sc">+</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of Sympatric Congeners"</span>,</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Chromatic Diversity (Jc)"</span>,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Congener density and color diversity"</span>,</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS with Pagel's lambda"</span>) <span class="sc">+</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="schooling-conspicuousness_files/figure-html/scatter-Jc-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Chromatic diversity (Jc) vs number of sympatric congeners.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hero-pdf" class="level1">
+<h1>Hero PDF</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PGLS — character displacement proxy' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: ../../figures/schooling-conspicuousness-hero.pdf (17 KB)</code></pre>
+</div>
+</div>
+<p><a href="../../figures/schooling-conspicuousness-hero.pdf">Download hero PDF: <code>schooling-conspicuousness-hero.pdf</code></a></p>
+</section>
+<section id="interpretation" class="level1">
+<h1>Interpretation</h1>
+<p>The FishBase Schooling field is nearly constant across Chaetodontidae (most species coded 0), confirming that butterflyfishes are uniformly pair-living or solitary – a well-known natural history fact. Rather than discard this recipe, we pivot to <strong>n_sympatric</strong> (number of congeners whose geographic ranges overlap), which captures a related but richer signal: species that co-occur with many congeners face stronger pressure for species-specific color signals (character displacement).</p>
+<p>A positive slope on m_dS or Jc would support the hypothesis that species under high sympatric pressure evolve more distinct color patterns. This is consistent with the broader character-displacement literature in coral reef fishes (e.g., Hemingson et al.&nbsp;2023).</p>
 </section>
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
@@ -736,8 +972,8 @@ Tip
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>figures/schooling-vs-conspicuousness.pdf</code></td>
-<td>Boxplot (when data available)</td>
+<td><code>figures/schooling-conspicuousness-hero.pdf</code></td>
+<td>2-panel scatter: m_dS and Jc vs n_sympatric</td>
 </tr>
 </tbody>
 </table>

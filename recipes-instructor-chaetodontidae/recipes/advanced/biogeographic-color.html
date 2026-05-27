@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -302,6 +304,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li class="nav-item">
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -510,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -584,11 +590,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
-  <li><a href="#basin-coding" id="toc-basin-coding" class="nav-link" data-scroll-target="#basin-coding">Basin coding</a></li>
-  <li><a href="#pgls-jc-vs-basin" id="toc-pgls-jc-vs-basin" class="nav-link" data-scroll-target="#pgls-jc-vs-basin">PGLS: Jc vs basin</a></li>
-  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot">Boxplot</a></li>
+  <li><a href="#what-youre-computing" id="toc-what-youre-computing" class="nav-link active" data-scroll-target="#what-youre-computing">What you’re computing</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-and-merge-data" id="toc-load-and-merge-data" class="nav-link" data-scroll-target="#load-and-merge-data">Load and merge data</a></li>
+  <li><a href="#region-color-palette" id="toc-region-color-palette" class="nav-link" data-scroll-target="#region-color-palette">Region color palette</a></li>
+  <li><a href="#ordination-pc1-x-pc2-by-region" id="toc-ordination-pc1-x-pc2-by-region" class="nav-link" data-scroll-target="#ordination-pc1-x-pc2-by-region">Ordination: PC1 x PC2 by region</a></li>
+  <li><a href="#pgls-region-as-categorical-predictor" id="toc-pgls-region-as-categorical-predictor" class="nav-link" data-scroll-target="#pgls-region-as-categorical-predictor">PGLS: region as categorical predictor</a></li>
+  <li><a href="#boxplots-by-region" id="toc-boxplots-by-region" class="nav-link" data-scroll-target="#boxplots-by-region">Boxplots by region</a></li>
+  <li><a href="#region-summary-table" id="toc-region-summary-table" class="nav-link" data-scroll-target="#region-summary-table">Region summary table</a></li>
+  <li><a href="#hero-pdf" id="toc-hero-pdf" class="nav-link" data-scroll-target="#hero-pdf">Hero PDF</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
 </nav>
@@ -617,19 +628,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Data limitation.</strong> Ocean basin assignments are not included in <code>chaet_traits.csv</code>. This recipe shows the code structure but data-dependent chunks are <code>eval: false</code>. To run live, either hand-code basin assignments from range maps or use <code>rfishbase::stocks()</code> bounding boxes. Chaetodontidae are predominantly Indo-Pacific with a handful of Atlantic endemics (Prognathodes + a few Chaetodon), making this a natural test.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -640,9 +638,20 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Advanced recipe.</strong> Categorical PGLS comparing chromatic diversity (Jc) between Atlantic and Indo-Pacific species. Tests whether the species-rich Indo-Pacific produces more diverse color patterns.</p>
+<p><strong>Advanced recipe.</strong> Uses the 8-region BioGeoBEARS coding from the chaets-divergence project (ATL, RED, WIO, CIP, NWP, CPA, HAW, TEP) to test whether biogeographic region predicts color-pattern variation. Each species is assigned to one or more regions; we use the primary region (first listed) for categorical tests and the full coding for a multi-region ordination overlay.</p>
+<p><strong>Poster outputs.</strong> <code>figures/biogeographic-color-hero.pdf</code> – PC1 vs PC2 ordination colored by primary region, plus boxplots of PC scores by region.</p>
 </div>
 </div>
+<section id="what-youre-computing" class="level1">
+<h1>What you’re computing</h1>
+<ol type="1">
+<li>Load 8-region assignments from <code>chaet_master_traits.csv</code> (sourced from the chaets-divergence BioGeoBEARS analysis).</li>
+<li>Merge with phylogenetic PC scores.</li>
+<li>Phylogenetic ANOVA: does primary region predict PC1 or PC2?</li>
+<li>Ordination plot: PC1 x PC2 colored by primary region.</li>
+<li>Boxplots of PC1 and PC2 by region.</li>
+</ol>
+</section>
 <section id="setup" class="level1">
 <h1>Setup</h1>
 <div class="cell">
@@ -651,78 +660,413 @@ Tip
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(phytools)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(nlme)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'knitr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="load-data" class="level1">
-<h1>Load data</h1>
+<section id="load-and-merge-data" class="level1">
+<h1>Load and merge data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pavo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaetodontidae-tree.tre"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(tree)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pp     <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tree   <span class="ot">&lt;-</span> pp<span class="sc">$</span>tree</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>S      <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca<span class="sc">$</span>S</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>eig    <span class="ot">&lt;-</span> <span class="fu">diag</span>(pp<span class="sc">$</span>ppca<span class="sc">$</span>Eval)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ve     <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> eig <span class="sc">/</span> <span class="fu">sum</span>(eig)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaet_master_traits.csv"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">species =</span> <span class="fu">rownames</span>(S),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">PC1 =</span> S[, <span class="dv">1</span>], <span class="at">PC2 =</span> S[, <span class="dv">2</span>],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df, traits[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"n_regions"</span>, <span class="st">"region_list"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"ATL"</span>, <span class="st">"RED"</span>, <span class="st">"WIO"</span>, <span class="st">"CIP"</span>, <span class="st">"NWP"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"CPA"</span>, <span class="st">"HAW"</span>, <span class="st">"TEP"</span>)],</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"species"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df[<span class="sc">!</span><span class="fu">is.na</span>(df<span class="sc">$</span>region_list), ]</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign primary region (first in list)</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>primary_region <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">+.*$"</span>, <span class="st">""</span>, df<span class="sc">$</span>region_list)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>shared  <span class="ot">&lt;-</span> <span class="fu">intersect</span>(df<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>df      <span class="ot">&lt;-</span> df[<span class="fu">match</span>(shared, df<span class="sc">$</span>species), ]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>tree_b  <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df) <span class="ot">&lt;-</span> df<span class="sc">$</span>species</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Species with region data + PC scores: %d</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">nrow</span>(df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Species with region data + PC scores: 108</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Primary region distribution:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Primary region distribution:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(df<span class="sc">$</span>primary_region))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ATL CIP CPA HAW NWP RED TEP WIO 
+ 12  41   3   4   1  19   3  25 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Number of regions per species: %d--%d (median %.0f)</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">min</span>(df<span class="sc">$</span>n_regions), <span class="fu">max</span>(df<span class="sc">$</span>n_regions), <span class="fu">median</span>(df<span class="sc">$</span>n_regions)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Number of regions per species: 1--5 (median 2)</code></pre>
+</div>
 </div>
 </section>
-<section id="basin-coding" class="level1">
-<h1>Basin coding</h1>
+<section id="region-color-palette" class="level1">
+<h1>Region color palette</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hand-coded basin assignments for Chaetodontidae</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Atlantic endemics: Prognathodes + a few Caribbean Chaetodon</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>atlantic_spp <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Prognathodes_aculeatus"</span>, <span class="st">"Prognathodes_aya"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Prognathodes_brasiliensis"</span>, <span class="st">"Prognathodes_guyanensis"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Prognathodes_marcellae"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chaetodon_capistratus"</span>, <span class="st">"Chaetodon_ocellatus"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chaetodon_sedentarius"</span>, <span class="st">"Chaetodon_striatus"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chaetodon_humeralis"</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>basin <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(pavo<span class="sc">$</span>species <span class="sc">%in%</span> atlantic_spp,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"Atlantic"</span>, <span class="st">"Indo-Pacific"</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude species with both basins (none expected for chaets)</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> pavo[pavo<span class="sc">$</span>basin <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Atlantic"</span>, <span class="st">"Indo-Pacific"</span>), ]</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Basin counts:</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(merged<span class="sc">$</span>basin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>region_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ATL =</span> <span class="st">"#2a7fff"</span>, <span class="at">RED =</span> <span class="st">"#e63946"</span>, <span class="at">WIO =</span> <span class="st">"#457b9d"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">CIP =</span> <span class="st">"#f4a261"</span>, <span class="at">NWP =</span> <span class="st">"#2a9d8f"</span>, <span class="at">CPA =</span> <span class="st">"#e9c46a"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">HAW =</span> <span class="st">"#9b5de5"</span>, <span class="at">TEP =</span> <span class="st">"#00b4d8"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="pgls-jc-vs-basin" class="level1">
-<h1>PGLS: Jc vs basin</h1>
+<section id="ordination-pc1-x-pc2-by-region" class="level1">
+<h1>Ordination: PC1 x PC2 by region</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shared <span class="ot">&lt;-</span> <span class="fu">intersect</span>(merged<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> merged[<span class="fu">match</span>(shared, merged<span class="sc">$</span>species), ]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tree_b <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(merged) <span class="ot">&lt;-</span> merged<span class="sc">$</span>species</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">gls</span>(Jc <span class="sc">~</span> basin, <span class="at">data =</span> merged,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">correlation =</span> <span class="fu">corBrownian</span>(<span class="at">phy =</span> tree_b), <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: Jc ~ basin</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(model)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p_ord <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> primary_region)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">3.5</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> region_pal, <span class="at">name =</span> <span class="st">"Primary Region"</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">sprintf</span>(<span class="st">"PhyloPC1 — pattern density (%.0f%% var)"</span>, ve[<span class="dv">1</span>]),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">sprintf</span>(<span class="st">"PhyloPC2 — color diversity (%.0f%% var)"</span>, ve[<span class="dv">2</span>]),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Color-pattern morphospace by biogeographic region"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Chaetodontidae — 8-region BioGeoBEARS assignment"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p_ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="biogeographic-color_files/figure-html/ordination-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>PhyloPC1 x PC2 colored by primary biogeographic region.</figcaption>
+</figure>
+</div>
+</div>
 </div>
 </section>
-<section id="boxplot" class="level1">
-<h1>Boxplot</h1>
+<section id="pgls-region-as-categorical-predictor" class="level1">
+<h1>PGLS: region as categorical predictor</h1>
+<p>We fit PGLS with primary region as a factor. Because some regions have very few species (e.g., HAW, TEP), we group small regions into an “Other” category for the statistical test to avoid singular fits.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(merged, <span class="fu">aes</span>(<span class="at">x =</span> basin, <span class="at">y =</span> Jc, <span class="at">fill =</span> basin)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Atlantic"</span> <span class="ot">=</span> <span class="st">"#2a7fff"</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Indo-Pacific"</span> <span class="ot">=</span> <span class="st">"#e9c46a"</span>)) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Ocean Basin"</span>, <span class="at">y =</span> <span class="st">"Chromatic Diversity (Jc)"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Biogeographic comparison of color diversity"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"PGLS with basin as categorical predictor"</span>) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"biogeographic-color.pdf"</span>), p, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group rare regions</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>region_counts <span class="ot">&lt;-</span> <span class="fu">table</span>(df<span class="sc">$</span>primary_region)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>major_regions <span class="ot">&lt;-</span> <span class="fu">names</span>(region_counts[region_counts <span class="sc">&gt;=</span> <span class="dv">5</span>])</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>region_group <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(df<span class="sc">$</span>primary_region <span class="sc">%in%</span> major_regions,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                           df<span class="sc">$</span>primary_region, <span class="st">"Other"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>region_group <span class="ot">&lt;-</span> <span class="fu">factor</span>(df<span class="sc">$</span>region_group)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Region grouping for PGLS:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Region grouping for PGLS:</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(df<span class="sc">$</span>region_group))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  ATL   CIP Other   RED   WIO 
+   12    41    11    19    25 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fit_pgls_cat <span class="ot">&lt;-</span> <span class="cf">function</span>(response, df, tree) {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(response, <span class="st">"~ region_group"</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.99</span>, <span class="fl">0.01</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  ctrl <span class="ot">&lt;-</span> <span class="fu">glsControl</span>(<span class="at">opt =</span> <span class="st">"optim"</span>, <span class="at">maxIter =</span> <span class="dv">200</span>, <span class="at">msMaxIter =</span> <span class="dv">200</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (lam0 <span class="cf">in</span> starts) {</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">gls</span>(f, <span class="at">data =</span> df,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">correlation =</span> <span class="fu">corPagel</span>(lam0, tree, <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) <span class="fu">return</span>(m)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gls</span>(f, <span class="at">data =</span> df,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">correlation =</span> <span class="fu">corPagel</span>(<span class="dv">1</span>, tree, <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>extract_lambda <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">coef</span>(m<span class="sc">$</span>modelStruct<span class="sc">$</span>corStruct, <span class="at">unconstrained =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fl">1.0</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>m_pc1 <span class="ot">&lt;-</span> <span class="fu">fit_pgls_cat</span>(<span class="st">"PC1"</span>, df, tree_b)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>m_pc2 <span class="ot">&lt;-</span> <span class="fu">fit_pgls_cat</span>(<span class="st">"PC2"</span>, df, tree_b)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>lam_pc1 <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_pc1)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>lam_pc2 <span class="ot">&lt;-</span> <span class="fu">extract_lambda</span>(m_pc2)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">PGLS: PC1 ~ region_group</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+PGLS: PC1 ~ region_group</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_pc1)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      Value Std.Error   t-value     p-value
+(Intercept)        3.589685  2.170052  1.654193 0.101132665
+region_groupCIP   -4.539431  1.851843 -2.451305 0.015917150
+region_groupOther -6.400255  2.127473 -3.008384 0.003301457
+region_groupRED   -5.164507  2.036102 -2.536467 0.012698329
+region_groupWIO   -4.430156  1.960982 -2.259152 0.025980444</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n\n</span><span class="st">"</span>, lam_pc1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = 0.480</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"PGLS: PC2 ~ region_group</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PGLS: PC2 ~ region_group</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(m_pc2)<span class="sc">$</span>tTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       Value Std.Error    t-value    p-value
+(Intercept)       -0.3441227 0.6329151 -0.5437107 0.58781548
+region_groupCIP    1.0600471 0.6353753  1.6683794 0.09827772
+region_groupOther  2.1893503 1.1077197  1.9764480 0.05077792
+region_groupRED   -0.7604928 0.9572440 -0.7944608 0.42875394
+region_groupWIO   -0.3101620 0.8003023 -0.3875560 0.69914431</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  lambda = %.3f</span><span class="sc">\n</span><span class="st">"</span>, lam_pc2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lambda = -0.263</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Omnibus F-test via anova</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Omnibus ANOVA for PC1:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Omnibus ANOVA for PC1:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">anova</span>(m_pc1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Denom. DF: 103 
+             numDF   F-value p-value
+(Intercept)      1 0.0284674  0.8663
+region_group     4 2.4908734  0.0477</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Omnibus ANOVA for PC2:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Omnibus ANOVA for PC2:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">anova</span>(m_pc2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Denom. DF: 103 
+             numDF  F-value p-value
+(Intercept)      1 38597958  &lt;.0001
+region_group     4        9  &lt;.0001</code></pre>
+</div>
+</div>
+</section>
+<section id="boxplots-by-region" class="level1">
+<h1>Boxplots by region</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>p_box1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(primary_region,</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>                                       PC1, <span class="at">FUN =</span> median),</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y =</span> PC1, <span class="at">fill =</span> primary_region)) <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"grey25"</span>) <span class="sc">+</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> region_pal) <span class="sc">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Primary Biogeographic Region"</span>,</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">sprintf</span>(<span class="st">"PhyloPC1 — pattern density (%.0f%% var)"</span>, ve[<span class="dv">1</span>]),</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Pattern complexity by ocean basin"</span>,</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Ordered by median PC1"</span>) <span class="sc">+</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p_box1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="biogeographic-color_files/figure-html/boxplot-pc1-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>PhyloPC1 (pattern density) by primary biogeographic region.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>p_box2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(primary_region,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                                       PC2, <span class="at">FUN =</span> median),</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y =</span> PC2, <span class="at">fill =</span> primary_region)) <span class="sc">+</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"grey25"</span>) <span class="sc">+</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> region_pal) <span class="sc">+</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Primary Biogeographic Region"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">sprintf</span>(<span class="st">"PhyloPC2 — color diversity (%.0f%% var)"</span>, ve[<span class="dv">2</span>]),</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Color diversity by ocean basin"</span>,</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Ordered by median PC2"</span>) <span class="sc">+</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p_box2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="biogeographic-color_files/figure-html/boxplot-pc2-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>PhyloPC2 (color diversity) by primary biogeographic region.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="region-summary-table" class="level1">
+<h1>Region summary table</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>region_summary <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(PC1, PC2) <span class="sc">~</span> primary_region, <span class="at">data =</span> df,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(x), <span class="dv">3</span>),</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sd   =</span> <span class="fu">round</span>(<span class="fu">sd</span>(x), <span class="dv">3</span>),</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">n    =</span> <span class="fu">length</span>(x))</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Region    =</span> region_summary<span class="sc">$</span>primary_region,</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">N         =</span> region_summary<span class="sc">$</span>PC1[, <span class="st">"n"</span>],</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">PC1 mean</span><span class="st">`</span> <span class="ot">=</span> region_summary<span class="sc">$</span>PC1[, <span class="st">"mean"</span>],</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">PC1 sd</span><span class="st">`</span>   <span class="ot">=</span> region_summary<span class="sc">$</span>PC1[, <span class="st">"sd"</span>],</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">PC2 mean</span><span class="st">`</span> <span class="ot">=</span> region_summary<span class="sc">$</span>PC2[, <span class="st">"mean"</span>],</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">PC2 sd</span><span class="st">`</span>   <span class="ot">=</span> region_summary<span class="sc">$</span>PC2[, <span class="st">"sd"</span>],</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> rs[<span class="fu">order</span>(<span class="sc">-</span>rs<span class="sc">$</span>N), ]</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(rs, <span class="at">caption =</span> <span class="st">"Per-region summary of phylogenetic PC scores."</span>,</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">row.names =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Per-region summary of phylogenetic PC scores.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Region</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">PC1 mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">PC1 sd</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">PC2 mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">PC2 sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CIP</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">-2.182</td>
+<td style="text-align: right;">5.091</td>
+<td style="text-align: right;">1.150</td>
+<td style="text-align: right;">2.952</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WIO</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">-1.733</td>
+<td style="text-align: right;">5.397</td>
+<td style="text-align: right;">-0.351</td>
+<td style="text-align: right;">2.955</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RED</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">-3.860</td>
+<td style="text-align: right;">4.078</td>
+<td style="text-align: right;">0.469</td>
+<td style="text-align: right;">2.622</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ATL</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2.867</td>
+<td style="text-align: right;">4.050</td>
+<td style="text-align: right;">-0.260</td>
+<td style="text-align: right;">4.251</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HAW</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">-5.961</td>
+<td style="text-align: right;">7.018</td>
+<td style="text-align: right;">0.141</td>
+<td style="text-align: right;">1.871</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CPA</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-3.647</td>
+<td style="text-align: right;">8.145</td>
+<td style="text-align: right;">-0.192</td>
+<td style="text-align: right;">1.016</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TEP</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.247</td>
+<td style="text-align: right;">3.391</td>
+<td style="text-align: right;">4.317</td>
+<td style="text-align: right;">3.344</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NWP</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-8.024</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.331</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="hero-pdf" class="level1">
+<h1>Hero PDF</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PhyloPC1 — pattern density (39% var)' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PhyloPC2 — color diversity (19% var)' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'Chaetodontidae — 8-region BioGeoBEARS assignment' in 'mbcsToSbcs': -
+substituted for — (U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PhyloPC1 — pattern density (39% var)' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'PhyloPC2 — color diversity (19% var)' in 'mbcsToSbcs': - substituted for —
+(U+2014)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: ../../figures/biogeographic-color-hero.pdf (27 KB)</code></pre>
+</div>
+</div>
+<p><a href="../../figures/biogeographic-color-hero.pdf">Download hero PDF: <code>biogeographic-color-hero.pdf</code></a></p>
+</section>
+<section id="interpretation" class="level1">
+<h1>Interpretation</h1>
+<p>Chaetodontidae are predominantly Indo-Pacific, with a handful of Atlantic endemics (Prognathodes + a few Caribbean Chaetodon). The 8-region coding from BioGeoBEARS allows a finer decomposition than the binary Atlantic/Indo-Pacific split used in simpler analyses.</p>
+<p>If the omnibus PGLS F-test is significant for PC1, it indicates that pattern complexity differs across ocean basins after controlling for phylogeny. Atlantic Prognathodes tend to be deep-water, less colorful species, which may drive a region effect on PC2 (color diversity).</p>
+<p>The ordination overlay reveals whether region-based clusters emerge in color space, or whether phylogenetic history dominates the pattern (i.e., closely related species are near each other regardless of region). A strong region signal after phylogenetic correction would suggest convergent evolution of color phenotypes within basins.</p>
 </section>
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
@@ -739,8 +1083,8 @@ Tip
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>figures/biogeographic-color.pdf</code></td>
-<td>Basin comparison boxplot (when coded)</td>
+<td><code>figures/biogeographic-color-hero.pdf</code></td>
+<td>3-panel: ordination colored by region + boxplots of PC1 and PC2 by region</td>
 </tr>
 </tbody>
 </table>
