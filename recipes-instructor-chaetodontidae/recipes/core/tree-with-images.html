@@ -303,6 +303,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -510,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -586,6 +590,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#load-tree-and-match-to-images" id="toc-load-tree-and-match-to-images" class="nav-link" data-scroll-target="#load-tree-and-match-to-images">Load tree and match to images</a></li>
+  <li><a href="#rectangular-tree-helper-staggered-images-geologic-time-axis" id="toc-rectangular-tree-helper-staggered-images-geologic-time-axis" class="nav-link" data-scroll-target="#rectangular-tree-helper-staggered-images-geologic-time-axis">Rectangular tree helper (staggered images + geologic time axis)</a></li>
   <li><a href="#rectangular-tree-with-images" id="toc-rectangular-tree-with-images" class="nav-link" data-scroll-target="#rectangular-tree-with-images">Rectangular tree with images</a></li>
   <li><a href="#hero-pdf-rectangular" id="toc-hero-pdf-rectangular" class="nav-link" data-scroll-target="#hero-pdf-rectangular">Hero PDF (rectangular)</a></li>
   <li><a href="#fan-tree-with-images" id="toc-fan-tree-with-images" class="nav-link" data-scroll-target="#fan-tree-with-images">Fan tree with images</a></li>
@@ -601,7 +606,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/core/color-gamut.html">Core</a></li><li class="breadcrumb-item"><a href="../../recipes/core/tree-with-images.html">Tree with Species Images</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Tree with Species Images</h1>
-<p class="subtitle lead">Chaetodontidae phylogeny with fish photos at the tips</p>
+<p class="subtitle lead">Chaetodontidae phylogeny with staggered fish photos, geologic time axis</p>
 </div>
 
 
@@ -629,6 +634,7 @@ Tip
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Core recipe.</strong> Plots the Chaetodontidae chronogram with exemplar photos at each tip in both rectangular and fan layouts. This is usually the first figure on a poster — it grounds every other result in the biology.</p>
+<p>The rectangular layout uses <strong>staggered image columns</strong> (odd/even tips) so every species gets a correctly-proportioned fish image without vertical crowding, plus abbreviated species names and a <strong>geologic time axis</strong>.</p>
 <p><strong>Poster outputs.</strong> <code>figures/tree-rectangular-hero.pdf</code> and <code>figures/tree-fan-hero.pdf</code>.</p>
 </div>
 </div>
@@ -657,7 +663,23 @@ Tip
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    img[,,<span class="dv">4</span>][mag] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  img</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Shortened species label: "Chae. auri" for Chaetodon_auriga</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>short_label <span class="ot">&lt;-</span> <span class="cf">function</span>(sp) {</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  parts <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(<span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, sp), <span class="st">" "</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(parts) <span class="sc">&lt;</span> <span class="dv">2</span>) <span class="fu">return</span>(sp)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="fu">substr</span>(parts[<span class="dv">1</span>], <span class="dv">1</span>, <span class="dv">4</span>), <span class="st">". "</span>, <span class="fu">substr</span>(parts[<span class="dv">2</span>], <span class="dv">1</span>, <span class="dv">4</span>))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Geologic epochs (ages in Ma)</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>EPOCHS <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">name  =</span> <span class="fu">c</span>(<span class="st">"Eocene"</span>, <span class="st">"Oligocene"</span>, <span class="st">"Miocene"</span>, <span class="st">"Pliocene"</span>, <span class="st">"Pleist."</span>),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">start =</span> <span class="fu">c</span>(<span class="fl">56.0</span>,      <span class="fl">33.9</span>,        <span class="fl">23.03</span>,     <span class="fl">5.33</span>,       <span class="fl">2.58</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">end   =</span> <span class="fu">c</span>(<span class="fl">33.9</span>,      <span class="fl">23.03</span>,       <span class="fl">5.33</span>,      <span class="fl">2.58</span>,       <span class="fl">0.012</span>),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">col   =</span> <span class="fu">c</span>(<span class="st">"#f5f0cc"</span>,  <span class="st">"#d6eacc"</span>,  <span class="st">"#c5dde8"</span>, <span class="st">"#e2d4e8"</span>,  <span class="st">"#f0e0d0"</span>),</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-tree-and-match-to-images" class="level1">
@@ -685,38 +707,119 @@ Tip
 </div>
 </div>
 </section>
+<section id="rectangular-tree-helper-staggered-images-geologic-time-axis" class="level1">
+<h1>Rectangular tree helper (staggered images + geologic time axis)</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_rect_staggered <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">out_pdf  =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">w =</span> <span class="dv">14</span>, <span class="at">h =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">img_col_w_in =</span> <span class="fl">2.5</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                                <span class="at">name_col_w_in =</span> <span class="fl">1.6</span>) {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(h)) h <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="dv">8</span>, n_tips <span class="sc">*</span> <span class="fl">0.55</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  open_dev <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.null</span>(out_pdf)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (open_dev) { <span class="fu">pdf</span>(out_pdf, <span class="at">width =</span> w, <span class="at">height =</span> h); <span class="fu">on.exit</span>(<span class="fu">dev.off</span>(), <span class="at">add =</span> <span class="cn">TRUE</span>) }</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Right margin = 2 image cols + name col + padding</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  right_margin_in <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> img_col_w_in <span class="sc">+</span> name_col_w_in <span class="sc">+</span> <span class="fl">0.6</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">3</span>, right_margin_in), <span class="at">xpd =</span> <span class="cn">NA</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  tree_xlim <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, tree_depth <span class="sc">*</span> <span class="fl">1.05</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(tree_img, <span class="at">show.tip.label =</span> <span class="cn">FALSE</span>, <span class="at">no.margin =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x.lim =</span> tree_xlim, <span class="at">y.lim =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, n_tips <span class="sc">+</span> <span class="fl">0.5</span>),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">edge.width =</span> <span class="fl">2.5</span>, <span class="at">edge.color =</span> <span class="st">"#333333"</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="st">"Chaetodontidae — rectangular tree with images"</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  pp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  tip_xs <span class="ot">&lt;-</span> pp<span class="sc">$</span>xx[<span class="fu">seq_len</span>(n_tips)]</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  tip_ys <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[<span class="fu">seq_len</span>(n_tips)]</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  dy     <span class="ot">&lt;-</span> <span class="cf">if</span> (n_tips <span class="sc">&gt;</span> <span class="dv">1</span>) (<span class="fu">max</span>(tip_ys) <span class="sc">-</span> <span class="fu">min</span>(tip_ys)) <span class="sc">/</span> (n_tips <span class="sc">-</span> <span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Data units per inch</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  panel_in_w  <span class="ot">&lt;-</span> w <span class="sc">-</span> <span class="fu">par</span>(<span class="st">"mai"</span>)[<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">par</span>(<span class="st">"mai"</span>)[<span class="dv">4</span>]</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  data_per_in <span class="ot">&lt;-</span> <span class="fu">diff</span>(tree_xlim) <span class="sc">/</span> panel_in_w</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- Geologic time axis -------------------------------------------------</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  epoch_band_y_bot <span class="ot">&lt;-</span> <span class="fu">min</span>(tip_ys) <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">2.5</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  epoch_band_y_top <span class="ot">&lt;-</span> <span class="fu">min</span>(tip_ys) <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.5</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (e <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(EPOCHS))) {</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    ep <span class="ot">&lt;-</span> EPOCHS[e, ]</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    x0 <span class="ot">&lt;-</span> tree_depth <span class="sc">-</span> <span class="fu">min</span>(ep<span class="sc">$</span>start, tree_depth)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    x1 <span class="ot">&lt;-</span> tree_depth <span class="sc">-</span> <span class="fu">max</span>(ep<span class="sc">$</span>end, <span class="dv">0</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (x1 <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">||</span> x0 <span class="sc">&gt;</span> tree_depth) <span class="cf">next</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    x0 <span class="ot">&lt;-</span> <span class="fu">max</span>(x0, <span class="dv">0</span>); x1 <span class="ot">&lt;-</span> <span class="fu">min</span>(x1, tree_depth)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rect</span>(x0, epoch_band_y_bot, x1, epoch_band_y_top,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> ep<span class="sc">$</span>col, <span class="at">border =</span> <span class="st">"grey70"</span>, <span class="at">lwd =</span> <span class="fl">0.4</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>((x0 <span class="sc">+</span> x1) <span class="sc">/</span> <span class="dv">2</span>, (epoch_band_y_bot <span class="sc">+</span> epoch_band_y_top) <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>         ep<span class="sc">$</span>name, <span class="at">cex =</span> <span class="fl">0.65</span>, <span class="at">col =</span> <span class="st">"grey30"</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  tick_ages <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">floor</span>(tree_depth <span class="sc">/</span> <span class="dv">5</span>) <span class="sc">*</span> <span class="dv">5</span>, <span class="at">by =</span> <span class="dv">5</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  tick_x    <span class="ot">&lt;-</span> tree_depth <span class="sc">-</span> tick_ages</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">segments</span>(tick_x, epoch_band_y_bot, tick_x, epoch_band_y_bot <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.3</span>,</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>           <span class="at">col =</span> <span class="st">"grey50"</span>, <span class="at">lwd =</span> <span class="fl">0.6</span>)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(tick_x, epoch_band_y_bot <span class="sc">-</span> dy <span class="sc">*</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste0</span>(tick_ages, <span class="st">" Ma"</span>), <span class="at">cex =</span> <span class="fl">0.50</span>, <span class="at">col =</span> <span class="st">"grey40"</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- Column anchors ------------------------------------------------------</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  x_right_edge <span class="ot">&lt;-</span> <span class="fu">max</span>(tip_xs) <span class="sc">+</span> tree_depth <span class="sc">*</span> <span class="fl">0.012</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  col_A_left   <span class="ot">&lt;-</span> x_right_edge</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>  col_B_left   <span class="ot">&lt;-</span> col_A_left <span class="sc">+</span> img_col_w_in <span class="sc">*</span> data_per_in</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  col_name_ctr <span class="ot">&lt;-</span> col_B_left <span class="sc">+</span> img_col_w_in <span class="sc">*</span> data_per_in <span class="sc">+</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                  (name_col_w_in <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">*</span> data_per_in</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  img_w_alloc  <span class="ot">&lt;-</span> img_col_w_in <span class="sc">*</span> data_per_in <span class="sc">*</span> <span class="fl">0.92</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Headers</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  header_y <span class="ot">&lt;-</span> <span class="fu">max</span>(tip_ys) <span class="sc">+</span> dy <span class="sc">*</span> <span class="fl">1.3</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(col_A_left <span class="sc">+</span> img_w_alloc <span class="sc">/</span> <span class="dv">2</span>, header_y, <span class="st">"Image (odd)"</span>,</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>       <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.75</span>, <span class="at">font =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"grey30"</span>)</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(col_B_left <span class="sc">+</span> img_w_alloc <span class="sc">/</span> <span class="dv">2</span>, header_y, <span class="st">"Image (even)"</span>,</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>       <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.75</span>, <span class="at">font =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"grey30"</span>)</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(col_name_ctr, header_y, <span class="st">"Species"</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>       <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.75</span>, <span class="at">font =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"grey30"</span>)</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --- Per-tip rendering ---------------------------------------------------</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    tip    <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    y_c    <span class="ot">&lt;-</span> tip_ys[i]</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    is_odd <span class="ot">&lt;-</span> (i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    img_x_left <span class="ot">&lt;-</span> <span class="cf">if</span> (is_odd) col_A_left <span class="cf">else</span> col_B_left</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    png_path <span class="ot">&lt;-</span> img_paths[tip]</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">file.exists</span>(png_path)) {</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>      img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(png_path)</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>      img_aspect <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">dim</span>(img)[<span class="dv">1</span>]</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>      img_w_data <span class="ot">&lt;-</span> img_w_alloc</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>      img_h_data <span class="ot">&lt;-</span> img_w_data <span class="sc">/</span> img_aspect</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>      max_h <span class="ot">&lt;-</span> dy <span class="sc">*</span> <span class="fl">0.92</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (img_h_data <span class="sc">&gt;</span> max_h) {</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>        img_h_data <span class="ot">&lt;-</span> max_h</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>        img_w_data <span class="ot">&lt;-</span> img_h_data <span class="sc">*</span> img_aspect</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rasterImage</span>(img,</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>                  img_x_left, y_c <span class="sc">-</span> img_h_data <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>                  img_x_left <span class="sc">+</span> img_w_data, y_c <span class="sc">+</span> img_h_data <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>                  <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">text</span>(col_name_ctr, y_c, <span class="fu">short_label</span>(tip),</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>         <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">cex =</span> <span class="fl">0.45</span>, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"grey15"</span>)</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(out_pdf)</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
 <section id="rectangular-tree-with-images" class="level1">
 <h1>Rectangular tree with images</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x_max <span class="ot">&lt;-</span> tree_depth <span class="sc">*</span> <span class="fl">1.65</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="at">xpd =</span> <span class="cn">NA</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_img, <span class="at">show.tip.label =</span> <span class="cn">FALSE</span>, <span class="at">no.margin =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">x.lim =</span> <span class="fu">c</span>(<span class="dv">0</span>, x_max), <span class="at">y.lim =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, n_tips <span class="sc">+</span> <span class="fl">0.5</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width =</span> <span class="fl">2.5</span>, <span class="at">edge.color =</span> <span class="st">"#333333"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Chaetodontidae — rectangular tree with images"</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>img_h <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fl">0.85</span>, <span class="fl">0.9</span> <span class="sc">*</span> <span class="fu">max</span>(<span class="dv">1</span>, <span class="dv">3</span> <span class="sc">/</span> n_tips))</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>img_w <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> tree_depth</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>x_left <span class="ot">&lt;-</span> tree_depth <span class="sc">+</span> <span class="fl">0.04</span> <span class="sc">*</span> tree_depth</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>x_right <span class="ot">&lt;-</span> x_left <span class="sc">+</span> img_w</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  png_path <span class="ot">&lt;-</span> img_paths[tip]</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(png_path)) <span class="cf">next</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(png_path)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  tip_y <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[i]</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img, x_left, tip_y <span class="sc">-</span> img_h<span class="sc">/</span><span class="dv">2</span>, x_right, tip_y <span class="sc">+</span> img_h<span class="sc">/</span><span class="dv">2</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>((x_left <span class="sc">+</span> x_right)<span class="sc">/</span><span class="dv">2</span>, tip_y <span class="sc">-</span> img_h<span class="sc">/</span><span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.08</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>       <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip), <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rect_staggered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="tree-with-images_files/figure-html/rectangular-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Chaetodontidae rectangular tree with exemplar photos at each tip.</figcaption>
+<figcaption>Chaetodontidae rectangular tree with staggered exemplar photos at each tip.</figcaption>
 </figure>
 </div>
 </div>
@@ -731,11 +834,7 @@ Tip
 substituted for — (U+2014)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>quartz_off_screen 
-                2 </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/tree-rectangular-hero.pdf</code></pre>
+<pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/tree-rectangular-hero.pdf  (43.9 MB)</code></pre>
 </div>
 </div>
 </section>
