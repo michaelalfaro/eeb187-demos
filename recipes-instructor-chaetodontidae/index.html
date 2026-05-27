@@ -268,6 +268,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -285,7 +289,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#whats-in-the-bundle" id="toc-whats-in-the-bundle" class="nav-link active" data-scroll-target="#whats-in-the-bundle">What’s in the bundle</a></li>
+  <li><a href="#ta-poster-guide" id="toc-ta-poster-guide" class="nav-link active" data-scroll-target="#ta-poster-guide">TA Poster Guide</a></li>
+  <li><a href="#whats-in-the-bundle" id="toc-whats-in-the-bundle" class="nav-link" data-scroll-target="#whats-in-the-bundle">What’s in the bundle</a></li>
   <li><a href="#cached-intermediates" id="toc-cached-intermediates" class="nav-link" data-scroll-target="#cached-intermediates">Cached intermediates</a></li>
   <li><a href="#recipe-inventory" id="toc-recipe-inventory" class="nav-link" data-scroll-target="#recipe-inventory">Recipe inventory</a>
   <ul class="collapse">
@@ -296,6 +301,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#advanced-7-recipes" id="toc-advanced-7-recipes" class="nav-link" data-scroll-target="#advanced-7-recipes">Advanced (7 recipes)</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#master-traits-csv" id="toc-master-traits-csv" class="nav-link" data-scroll-target="#master-traits-csv">Master traits CSV</a></li>
   </ul>
 </nav>
     </div>
@@ -336,6 +342,14 @@ Note
 <p>This site mirrors the <strong>student experience</strong> of receiving a FishView bundle and running it through the project recipe book. The clade is <strong>Chaetodontidae</strong> (butterflyfishes). It exists so the TA and instructor can inspect <strong>recipe fidelity, step ordering, and figure quality</strong> without spinning up a student account on FishView. No student group is assigned to Chaetodontidae — this is purely instructor-facing.</p>
 </div>
 </div>
+<section id="ta-poster-guide" class="level2">
+<h2 class="anchored" data-anchor-id="ta-poster-guide">TA Poster Guide</h2>
+<p>Rosamari: use the <a href="slides/ta-poster-guide.html">Poster Recipe Walkthrough slides</a> to guide students through the four core poster recipes. Each recipe section shows the actual code, connects the output to a poster panel, and provides fill-in-the-blank caption templates.</p>
+<ul>
+<li><a href="slides/ta-poster-guide.html">HTML slides</a> (53 slides, best viewed in browser)</li>
+<li><a href="slides/ta-poster-guide.pdf">PDF version</a> (for printing or sharing)</li>
+</ul>
+</section>
 <section id="whats-in-the-bundle" class="level2">
 <h2 class="anchored" data-anchor-id="whats-in-the-bundle">What’s in the bundle</h2>
 <p>The <code>bundle/</code> directory matches the FishView “Export Bundle” layout that students get from their dashboard, plus cached intermediates so recipes render fast.</p>
@@ -347,6 +361,7 @@ Note
 ├── picked_tip_labels.txt        &lt;- tree tips matching exemplars
 ├── pavo_metrics.csv             &lt;- full pavo adjacency statistics
 ├── chaet_traits.csv             &lt;- body_size_cm, trophic_level, depth from FishBase
+├── chaet_master_traits.csv      &lt;- extended traits: vulnerability, K, AR, lat, regions
 ├── species_k_bg.csv             &lt;- gestalt_k and bg_class_id per species
 ├── README.txt
 ├── pavo_classify.rds            &lt;- cached pavo::classify (run once)
@@ -422,7 +437,7 @@ Note
 </section>
 <section id="ecology-8-recipes" class="level3">
 <h3 class="anchored" data-anchor-id="ecology-8-recipes">Ecology (8 recipes)</h3>
-<p>Recipes using <code>chaet_traits.csv</code> data are fully rendered. Recipes needing additional FishBase fields show the code structure only.</p>
+<p>All fully rendered. The first four use <code>chaet_traits.csv</code>; the remaining four use <code>chaet_master_traits.csv</code> (extended rfishbase + chaets-divergence data).</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -454,30 +469,29 @@ Note
 </tr>
 <tr class="odd">
 <td><a href="./recipes/ecology/vulnerability-crypsis.html">Vulnerability and Crypsis</a></td>
-<td>PGLS of m_dS vs vulnerability index</td>
-<td>Code only (needs rfishbase)</td>
+<td>PGLS of PC1, PC2 vs vulnerability index</td>
+<td>Fully rendered (109 spp)</td>
 </tr>
 <tr class="even">
 <td><a href="./recipes/ecology/growth-rate-color.html">Growth Rate and Color</a></td>
-<td>PGLS of m_dS vs von Bertalanffy K</td>
-<td>Code only (needs rfishbase)</td>
+<td>PGLS of PC1, PC2 vs von Bertalanffy K</td>
+<td>Fully rendered (109 spp)</td>
 </tr>
 <tr class="odd">
 <td><a href="./recipes/ecology/swimming-mode-pattern.html">Swimming Mode and Pattern</a></td>
-<td>PGLS of A vs caudal fin aspect ratio</td>
-<td>Code only (needs rfishbase)</td>
+<td>PGLS of m, A, PC1 vs caudal fin aspect ratio</td>
+<td>Fully rendered (105 spp)</td>
 </tr>
 <tr class="even">
 <td><a href="./recipes/ecology/latitude-gradient.html">Latitude Gradient</a></td>
-<td>PGLS of Jc vs absolute midpoint latitude</td>
-<td>Code only (needs rfishbase)</td>
+<td>PGLS of PC1, PC2 vs latitudinal range, colored by region</td>
+<td>Fully rendered (63 spp)</td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="life-history-2-recipes" class="level3">
 <h3 class="anchored" data-anchor-id="life-history-2-recipes">Life History (2 recipes)</h3>
-<p>Both require FishBase fields not in the bundle. Code structure only.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -494,8 +508,8 @@ Note
 </tr>
 <tr class="even">
 <td><a href="./recipes/life-history/schooling-conspicuousness.html">Schooling and Conspicuousness</a></td>
-<td>Categorical PGLS: schooling vs solitary</td>
-<td>Code only (needs rfishbase)</td>
+<td>Sympatric congener count vs m_dS and Jc (FishBase schooling invariant)</td>
+<td>Fully rendered (107 spp)</td>
 </tr>
 </tbody>
 </table>
@@ -517,9 +531,9 @@ Note
 <td>Fully rendered</td>
 </tr>
 <tr class="even">
-<td><a href="./recipes/pattern/functional-hypothesis.html">Functional Hypothesis</a></td>
-<td>Aposematism test: conspicuousness vs defense</td>
-<td>Code only (needs rfishbase)</td>
+<td><a href="./recipes/pattern/functional-hypothesis.html">Character Displacement</a></td>
+<td>Sister-pair color divergence: sympatric vs allopatric (33 pairs)</td>
+<td>Fully rendered</td>
 </tr>
 <tr class="odd">
 <td><a href="./recipes/pattern/stripe-orientation.html">Stripe Orientation</a></td>
@@ -572,8 +586,8 @@ Note
 </tr>
 <tr class="odd">
 <td><a href="./recipes/advanced/biogeographic-color.html">Biogeographic Color</a></td>
-<td>Atlantic vs Indo-Pacific Jc comparison</td>
-<td>Code only (needs basin coding)</td>
+<td>8-region PGLS + ordination colored by region</td>
+<td>Fully rendered (108 spp)</td>
 </tr>
 </tbody>
 </table>
@@ -583,10 +597,52 @@ Note
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <ul>
 <li><strong>Total recipes:</strong> 32 (12 Core + 8 Ecology + 2 Life History + 3 Pattern + 7 Advanced)</li>
-<li><strong>Fully rendered with chaet data:</strong> 20</li>
-<li><strong>Code structure only (missing data):</strong> 12</li>
+<li><strong>Fully rendered with chaet data:</strong> 27</li>
+<li><strong>Code structure only (missing data or long runtime):</strong> 5</li>
 <li><strong>All recipes have the same structure:</strong> callout header, narrative, executable chunks, interpretation, output-files table</li>
 </ul>
+</section>
+<section id="master-traits-csv" class="level2">
+<h2 class="anchored" data-anchor-id="master-traits-csv">Master traits CSV</h2>
+<p>The extended <code>bundle/chaet_master_traits.csv</code> was built by <code>recipes/advanced/build_chaet_master_traits.R</code>, layering rfishbase fields (vulnerability, growth K, caudal AR, schooling, latitude) and chaets-divergence data (8-region biogeography, range area) on top of the original <code>chaet_traits.csv</code>. Coverage:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Trait</th>
+<th>Species with data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vulnerability</td>
+<td>127/130</td>
+</tr>
+<tr class="even">
+<td>growth_K</td>
+<td>127/130</td>
+</tr>
+<tr class="odd">
+<td>aspect_ratio</td>
+<td>121/130</td>
+</tr>
+<tr class="even">
+<td>schooling</td>
+<td>107/130</td>
+</tr>
+<tr class="odd">
+<td>lat_north / lat_range</td>
+<td>69/130</td>
+</tr>
+<tr class="even">
+<td>n_regions / region_list</td>
+<td>108/130</td>
+</tr>
+<tr class="odd">
+<td>range_area_km2</td>
+<td>125/130</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
