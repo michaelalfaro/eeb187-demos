@@ -4,9 +4,9 @@
     "href": "poster/poster-tips.html",
     "title": "Poster Design Guide",
     "section": "",
-    "text": "+--------------------------------------------------------------------+\n|                     TITLE  (72-96 pt bold)                         |\n|              Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026          |\n+--------------------------------------------------------------------+\n|                |                          |                        |\n| INTRODUCTION   |      RESULTS             |   CONCLUSIONS          |\n| (3-4 sentences)|                          |   (2-3 bullets)        |\n|                |   HERO FIGURE            |                        |\n|                |   (phyloPCA biplot       |   FUTURE DIRECTIONS    |\n| METHODS        |    with fish photos)     |   (1-2 bullets)        |\n| (pavo pipeline |                          |                        |\n|  + PCM summary)|   Supporting figure      |   ACKNOWLEDGMENTS      |\n|                |   (contMap or K table)   |   (Dickey, TLC, staff) |\n|                |                          |                        |\n+--------------------------------------------------------------------+\n|                        REFERENCES (3-5 citations)                  |\n+--------------------------------------------------------------------+\nRead left-to-right, top-to-bottom. A viewer’s eye should follow: Title → Hero Figure → Conclusions.",
+    "text": "+--------------------------------------------------------------------+\n|                     TITLE  (72-96 pt bold)                         |\n|              Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026          |\n+--------------------------------------------------------------------+\n|                |                          |                        |\n| INTRODUCTION   |      RESULTS             |   CONCLUSIONS          |\n| (3-4 sentences)|                          |   (2-3 bullets)        |\n|                |   HERO FIGURE            |                        |\n|                |   (phyloPCA biplot       |   FUTURE DIRECTIONS    |\n| METHODS        |    with fish photos)     |   (1-2 bullets)        |\n| (pavo pipeline |                          |                        |\n|  + PCM summary)|   Supporting figure      |   ACKNOWLEDGMENTS      |\n|                |   (contMap or K table)   |   (Rosamari, TLC Grant)|\n|                |                          |                        |\n+--------------------------------------------------------------------+\n|                        REFERENCES (3-5 citations)                  |\n+--------------------------------------------------------------------+\nRead left-to-right, top-to-bottom. A viewer’s eye should follow: Title → Hero Figure → Conclusions.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -15,9 +15,9 @@
     "href": "poster/poster-tips.html#poster-layout-36-x-48-in-landscape",
     "title": "Poster Design Guide",
     "section": "",
-    "text": "+--------------------------------------------------------------------+\n|                     TITLE  (72-96 pt bold)                         |\n|              Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026          |\n+--------------------------------------------------------------------+\n|                |                          |                        |\n| INTRODUCTION   |      RESULTS             |   CONCLUSIONS          |\n| (3-4 sentences)|                          |   (2-3 bullets)        |\n|                |   HERO FIGURE            |                        |\n|                |   (phyloPCA biplot       |   FUTURE DIRECTIONS    |\n| METHODS        |    with fish photos)     |   (1-2 bullets)        |\n| (pavo pipeline |                          |                        |\n|  + PCM summary)|   Supporting figure      |   ACKNOWLEDGMENTS      |\n|                |   (contMap or K table)   |   (Dickey, TLC, staff) |\n|                |                          |                        |\n+--------------------------------------------------------------------+\n|                        REFERENCES (3-5 citations)                  |\n+--------------------------------------------------------------------+\nRead left-to-right, top-to-bottom. A viewer’s eye should follow: Title → Hero Figure → Conclusions.",
+    "text": "+--------------------------------------------------------------------+\n|                     TITLE  (72-96 pt bold)                         |\n|              Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026          |\n+--------------------------------------------------------------------+\n|                |                          |                        |\n| INTRODUCTION   |      RESULTS             |   CONCLUSIONS          |\n| (3-4 sentences)|                          |   (2-3 bullets)        |\n|                |   HERO FIGURE            |                        |\n|                |   (phyloPCA biplot       |   FUTURE DIRECTIONS    |\n| METHODS        |    with fish photos)     |   (1-2 bullets)        |\n| (pavo pipeline |                          |                        |\n|  + PCM summary)|   Supporting figure      |   ACKNOWLEDGMENTS      |\n|                |   (contMap or K table)   |   (Rosamari, TLC Grant)|\n|                |                          |                        |\n+--------------------------------------------------------------------+\n|                        REFERENCES (3-5 citations)                  |\n+--------------------------------------------------------------------+\nRead left-to-right, top-to-bottom. A viewer’s eye should follow: Title → Hero Figure → Conclusions.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -28,7 +28,7 @@
     "section": "The Two Distance Rules",
     "text": "The Two Distance Rules\n3-foot rule: Title, section headers, and figure titles must be readable from 3 feet away.\n6-foot rule: The main message of the poster — communicated by the hero figure and conclusion bullets — should be clear from 6 feet away, before anyone reads a word of body text.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -39,7 +39,7 @@
     "section": "Hero Figure by Recipe",
     "text": "Hero Figure by Recipe\nPick the figure type that best matches your analysis. This should be the largest element in your Results panel.\n\n\n\nRecipe\nBest poster figure\nWhy\n\n\n\n\n1. Phylogenetic Signal\ncontMap of PC1 on tree\nShows trait distribution across phylogeny\n\n\n3. Axis of Diversification\nphyloPCA biplot with genus colors\nShows species in color morphospace\n\n\n6. Depth and Color\nPGLS scatter with regression line\nShows ecology-color relationship\n\n\n15. Discrete Traits\nAncestral state reconstruction with pie nodes\nShows evolutionary history of trait\n\n\n19. DTT\nDisparity-through-time plot\nShows tempo of diversification\n\n\n\nYour hero figure comes from the recipe that addresses your main question. For most groups, that will be Recipe 3 (the phyloPCA biplot) paired with Recipe 1 (the contMap) as a supporting figure.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -50,7 +50,7 @@
     "section": "Font Hierarchy",
     "text": "Font Hierarchy\n\n\n\n\n\n\n\n\nElement\nSize\nNotes\n\n\n\n\nTitle\n72–96 pt\nBold. Under 15 words. Include family name + key question.\n\n\nSection headers\n36–48 pt\nBold. All caps or title case — pick one, be consistent.\n\n\nBody text\n24–28 pt\nRegular. Keep paragraphs to 3–4 sentences max.\n\n\nFigure captions\n18–20 pt\nItalic or regular. Must explain the figure without reading the text.\n\n\nAxis labels\n18–24 pt\nMust be legible in the printed/displayed figure.\n\n\nReferences\n16–18 pt\nSmallest text on the poster.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -61,7 +61,7 @@
     "section": "Color Palette Options",
     "text": "Color Palette Options\nPick ONE and apply it to figures, headers, and accents consistently.\nReef palette (warm):  #264653  #2a9d8f  #e9c46a  #f4a261  #e76f51\nOcean palette (cool):  #03045e  #0077b6  #00b4d8  #90e0ef  #caf0f8\nDiverging (two-group contrast):  #d73027  #fc8d59  #fee090  #91bfdb  #4575b4\nUse a white or very light background for the poster body. Dark backgrounds look dramatic but reduce readability and waste ink.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -72,7 +72,7 @@
     "section": "Common Mistakes",
     "text": "Common Mistakes\n\n\n\n\n\n\n\nMistake\nFix\n\n\n\n\nWall of text\nCut to 3–4 sentences per section. Let figures carry the story.\n\n\nToo many figures\nPick 2–3 strong ones. A K-value table is not a figure.\n\n\nUnlabeled axes\nEvery axis gets a name + units. “PC1” alone is not enough — say “PC1 (chromatic boundary strength, 68% var.)”\n\n\nDefault R styling\nUse the poster theme (below). Remove gray backgrounds.\n\n\nTiny figure text\nRe-export with base_size = 20 or larger. Check at actual poster dimensions.\n\n\nBuried key result\nState your main finding in the title or as a callout box in Results.\n\n\nInconsistent colors\nSame genus = same color in every figure. Pick a palette, stick to it.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -83,7 +83,7 @@
     "section": "ggplot2 Poster Theme",
     "text": "ggplot2 Poster Theme\nCopy this block into your R script and apply + theme_poster to every ggplot figure.\ntheme_poster &lt;- theme_minimal(base_size = 20) +\n  theme(\n    plot.title    = element_text(size = 28, face = \"bold\", hjust = 0,\n                                margin = margin(b = 12)),\n    plot.subtitle = element_text(size = 22, color = \"gray30\",\n                                 margin = margin(b = 16)),\n    axis.title    = element_text(size = 22, face = \"bold\"),\n    axis.text     = element_text(size = 18),\n    legend.title  = element_text(size = 20, face = \"bold\"),\n    legend.text   = element_text(size = 18),\n    legend.position = \"bottom\",\n    panel.grid.minor = element_blank(),\n    panel.grid.major = element_line(color = \"gray85\", linewidth = 0.4),\n    panel.border = element_rect(color = \"gray50\", fill = NA,\n                                linewidth = 0.5),\n    plot.margin  = margin(20, 20, 20, 20)\n  )",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -94,7 +94,7 @@
     "section": "Exporting Figures",
     "text": "Exporting Figures\n# ggplot figures\nggsave(\"my-figure.png\", width = 10, height = 8, dpi = 300, bg = \"white\")\n\n# Base R figures (contMap, plotTree)\npng(\"my-figure.png\", width = 3000, height = 2400, res = 300)\nplot(...)\ndev.off()\n\n# PDF (vector, scales perfectly but can be large)\npdf(\"my-figure.pdf\", width = 10, height = 8)\nplot(...)\ndev.off()\nRule of thumb: PNG at 300 dpi for poster insertion. PDF for archival or zoom-and-print.",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -103,9 +103,9 @@
     "href": "poster/poster-tips.html#acknowledgments-template",
     "title": "Poster Design Guide",
     "section": "Acknowledgments Template",
-    "text": "Acknowledgments Template\n\nWe thank Dr. Michael Alfaro and the EEB 187 teaching team (Rosamari [TA name]) for instruction and guidance. Fish images were sourced from [FishBase / Randall’s Bishop Museum collection / FishView server]. Phylogenetic trees were derived from [Brownstein et al. 2025 / Frederich et al. 2026 / Rabosky et al. Fish Tree of Life]. Specimen access was provided by the Dickey Collection, UCLA. This project was supported by a TLC Seed Grant to M. Alfaro.\n\n\nEEB 187 — Ecology and Evolution of Color — Spring 2026 — Dr. Michael Alfaro",
+    "text": "Acknowledgments Template\n\nWe thank Rosamari Hurtado for guidance during the project. Fish images were sourced from [FishBase / the Bishop Museum ichthyology collection (J.E. Randall photographs) / FishView server]. Phylogenetic trees were derived from [Brownstein et al. 2025 / Frederich et al. 2026 / Rabosky et al. Fish Tree of Life]. This project was supported by a TLC Seed Grant to M. Alfaro.\n\n\nEEB 187 — Ecology and Evolution of Color — Spring 2026 — Dr. Michael Alfaro",
     "crumbs": [
-      "Poster",
+      "Final Project",
       "Poster Design Guide"
     ]
   },
@@ -4174,7 +4174,7 @@
     "href": "poster/final-project.html#printing",
     "title": "Final Project — Poster",
     "section": "Printing",
-    "text": "Printing\n\nWhere: Bruin Copy Center or any large-format printer\nCost: $51 for up to 42” on one side; $68 for up to 54”\nFormat: Export your finished PPTX as PDF, then print\nOne side must be ≤ 36” (our poster height); the other can be up to ~100” (never relevant)",
+    "text": "Printing\n\n\n\n\n\n\nPoster printing is FREE — but follow these steps exactly\n\n\n\nPrinting is paid for by the course. You do not need to pay out of pocket.\n\nDo NOT resize the poster. The template is already set to 48” × 36” (landscape) — the correct dimensions for the printer and for standard conference presentations. Just fill in your content and export.\nExport your finished PPTX as PDF (File → Save As → PDF). The PDF will be 48” × 36” automatically.\nSubmit your PDF at: https://admin.lifesci.ucla.edu/poster-printing/\nSelect “EEB 187 Ecology Evo Color” as the payment account\nDeadlines:\n\nSubmit by Friday → pickup Tuesday morning\nSubmit by Monday → pickup Thursday morning\n\nPickup: Rosamari will provide pickup location and instructions\n\n\n\nDo not go to Bruin Copy Center or pay for printing yourself — use the Life Sciences form above.",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"
