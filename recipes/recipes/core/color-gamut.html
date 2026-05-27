@@ -107,6 +107,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -287,6 +316,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../poster/final-project.html"> 
+<span class="menu-text">Final Project</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
@@ -576,7 +609,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#inputs" id="toc-inputs" class="nav-link" data-scroll-target="#inputs">Inputs</a></li>
   <li><a href="#the-method" id="toc-the-method" class="nav-link" data-scroll-target="#the-method">The Method</a></li>
   <li><a href="#how-to-interpret-results" id="toc-how-to-interpret-results" class="nav-link" data-scroll-target="#how-to-interpret-results">How to Interpret Results</a></li>
-  <li><a href="#the-code" id="toc-the-code" class="nav-link" data-scroll-target="#the-code">The Code</a></li>
+  <li><a href="#the-code" id="toc-the-code" class="nav-link" data-scroll-target="#the-code">The Code</a>
+  <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#point-to-your-bundle" id="toc-point-to-your-bundle" class="nav-link" data-scroll-target="#point-to-your-bundle">Point to YOUR bundle</a></li>
+  </ul></li>
   <li><a href="#from-the-literature" id="toc-from-the-literature" class="nav-link" data-scroll-target="#from-the-literature">From the Literature</a></li>
   </ul>
 </nav>
@@ -588,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../recipes/core/color-gamut.html">Core</a></li><li class="breadcrumb-item"><a href="../../recipes/core/color-gamut.html">Foundation Recipe — Building a clade color gamut from images</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Foundation Recipe — Building a clade color gamut from images</h1>
-<p class="subtitle lead">How much of color space does my clade actually occupy?</p>
+<p class="subtitle lead">How much of perceptual color space does my clade actually occupy?</p>
 </div>
 
 
@@ -621,7 +658,7 @@ Start here
 <section id="the-big-question" class="level2">
 <h2 class="anchored" data-anchor-id="the-big-question">The Big Question</h2>
 <blockquote class="blockquote">
-<p><strong>If we drop every color my clade uses into a 3-D color space, how big is the cloud — and how does that cloud compare to other clades?</strong></p>
+<p><strong>If we drop every color my clade uses into a perceptually uniform color space, how big is the cloud — and how does that cloud compare to other clades?</strong></p>
 </blockquote>
 </section>
 <section id="this-is-an-instance-of" class="level2">
@@ -637,13 +674,56 @@ Color gamut quantification
 </div>
 <div class="callout-body-container callout-body">
 <p>A <strong>color gamut</strong> is the convex hull of all colors a clade realizes in some color space. Stoddard and Prum (2011) put avian plumage colors into the tetrahedral space defined by bird cone-photoreceptor responses and showed that, across birds, the family-level tetrahedral volumes vary by more than two orders of magnitude — some lineages fill a tiny corner of avian color space, others sprawl across it. The gamut volume is the single most common summary statistic for “how colorful is this clade”.</p>
-<p>We cannot replicate the avian-tetrahedron setup for our reef-fish images (no reflectance spectra, no quantum catches, no patch-level standardized photography). What we <em>can</em> do is build the same conceptual object — a 3-D convex hull — in <strong>camera RGB</strong> space from the colors that <code>pavo::classify()</code> extracts via k-means clustering on each species’ image. This is qualitatively the same exercise as the avian tetrahedron, but with three blunt caveats spelled out at the bottom of this recipe.</p>
+<p>We cannot replicate the avian-tetrahedron setup for our reef-fish images (no reflectance spectra, no quantum catches, no patch-level standardized photography). What we <em>can</em> do is build the same conceptual object — a 3-D convex hull — in <strong>CIELAB color space</strong> from the colors that <code>pavo::classify()</code> extracts via k-means clustering on each species’ image. CIELAB is <strong>perceptually uniform</strong>: equal distances in the space correspond to equal perceived color differences. This makes it the standard choice for quantifying color diversity from photographic data when spectral reflectance is unavailable (Endler &amp; Mielke, 2005).</p>
+<p>The three CIELAB axes map directly onto the <strong>opponent-channel model</strong> from lecture:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 20%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Axis</th>
+<th>Range</th>
+<th>Meaning</th>
+<th>Biological connection</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>L*</strong></td>
+<td>0 (black) – 100 (white)</td>
+<td>Lightness</td>
+<td>Luminance channel — the achromatic signal</td>
+</tr>
+<tr class="even">
+<td><strong>a*</strong></td>
+<td>negative (green) – positive (red)</td>
+<td>Red–green opponency</td>
+<td>Corresponds to the L-minus-M cone opponency channel</td>
+</tr>
+<tr class="odd">
+<td><strong>b*</strong></td>
+<td>negative (blue) – positive (yellow)</td>
+<td>Yellow–blue opponency</td>
+<td>Corresponds to the S-minus-(L+M) cone opponency channel</td>
+</tr>
+</tbody>
+</table>
+<p>Two derived quantities are also useful:</p>
+<ul>
+<li><strong>Chroma</strong> = <span class="math inline">\(\sqrt{a^{*2} + b^{*2}}\)</span> — how vivid/saturated the color is. Zero chroma = pure gray. High chroma = intensely colored.</li>
+<li><strong>Hue angle</strong> = <span class="math inline">\(\mathrm{atan2}(b^*, a^*)\)</span> — the “what color” dimension. 0 degrees = red, 90 degrees = yellow, 180 degrees = green, 270 degrees = blue.</li>
+</ul>
+<p>The <strong>a*–b* plane</strong> is a natural chromaticity diagram: hue is the angle from the origin and chroma (saturation) is the distance from the origin. Collapsing L* onto this plane separates lightness from chromatic content — crucial for clades where the black-bar-vs-white-body axis dominates the raw RGB cloud.</p>
 </div>
 </div>
 </section>
 <section id="why-this-matters-for-your-clade" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-matters-for-your-clade">Why This Matters for Your Clade</h2>
-<p>Every poster eventually asks the reader: “is my clade colorful?” That word does a lot of work. Color <em>richness</em> (how many distinct colors a species shows), color <em>contrast</em> (how far apart neighboring colors are), and color <em>space coverage</em> (how much of the possible palette a clade collectively uses) are all “colorful” in plain English but they measure different things. The gamut volume is the answer to the third question: across all your species, how much of the available RGB cube does the clade actually occupy?</p>
+<p>Every poster eventually asks the reader: “is my clade colorful?” That word does a lot of work. Color <em>richness</em> (how many distinct colors a species shows), color <em>contrast</em> (how far apart neighboring colors are), and color <em>space coverage</em> (how much of the possible palette a clade collectively uses) are all “colorful” in plain English but they measure different things. The gamut volume is the answer to the third question: across all your species, how much of the available perceptual color space does the clade actually occupy?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -655,7 +735,7 @@ Clade-specific tips
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Acanthuridae (surgeonfishes):</strong> A genus-by-genus or subfamily-by-subfamily comparison of gamut volume is the natural follow-up — <em>Acanthurus</em> species span a wide gamut; <em>Ctenochaetus</em> species are mostly clustered in the brown/olive corner; <em>Zebrasoma</em> and <em>Paracanthurus</em> extend into bright yellows and blues that pull the hull out toward the cube’s vertices.</li>
+<li><strong>Acanthuridae (surgeonfishes):</strong> A genus-by-genus or subfamily-by-subfamily comparison of gamut volume is the natural follow-up — <em>Acanthurus</em> species span a wide gamut; <em>Ctenochaetus</em> species are mostly clustered in the brown/olive corner; <em>Zebrasoma</em> and <em>Paracanthurus</em> extend into bright yellows and blues that pull the hull outward.</li>
 <li><strong>Pomacanthidae (angelfishes):</strong> Juvenile and adult color phases can almost double a species’ contribution to the gamut. Decide up front whether each species is represented by its adult, its juvenile, or both — and report that choice. Mixing is fine; pretending you didn’t is not.</li>
 <li><strong>Cirrhilabrini (fairy wrasses):</strong> Strong sexual dichromatism means a males-only gamut will look very different from a females-only or mixed gamut. The male display gamut is the more interesting one for most signaling-evolution questions.</li>
 <li><strong>Balistoidea (triggerfishes + filefishes):</strong> Two-family comparison is built in — compute the gamut for Balistidae and Monacanthidae separately and put them on the same axes.</li>
@@ -669,7 +749,7 @@ Clade-specific tips
 <ul>
 <li><strong>One image directory</strong> with <strong>one representative image per species</strong>, the filename (minus extension) being the species’ tip label, exactly as it appears in your tree.</li>
 <li><strong>A pruned tree</strong> for your clade (Newick or NEXUS), with tip labels matching your image filenames.</li>
-<li><strong>A background-color CSV</strong> (<code>background-ids.csv</code>) listing, for each image (or <code>*</code> for “all images”), the approximate <strong>RGB centroid</strong> of the background you saw in your photos. You build this by eyeballing the centroid swatches the recipe prints in §3 below. The smoketest ships a pre-filled one. <strong>Why RGB and not a cluster index:</strong> <code>pavo::classify()</code> does not return stable cluster IDs across runs (a re-knit can re-number “cluster 3” to “cluster 1”), so we annotate the <em>color we saw</em>, not the index it was given.</li>
+<li><strong>A background-color CSV</strong> (<code>background-ids.csv</code>) listing, for each image (or <code>*</code> for “all images”), the approximate <strong>RGB centroid</strong> of the background you saw in your photos. You build this by eyeballing the centroid swatches the recipe prints in section 3 below. The smoketest ships a pre-filled one. <strong>Why RGB and not a cluster index:</strong> <code>pavo::classify()</code> does not return stable cluster IDs across runs (a re-knit can re-number “cluster 3” to “cluster 1”), so we annotate the <em>color we saw</em>, not the index it was given.</li>
 </ul>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -690,44 +770,69 @@ One image per species — pick the representative
 <h2 class="anchored" data-anchor-id="the-method">The Method</h2>
 <p>For each species’ image, <code>pavo::classify()</code> runs k-means on the pixel RGB values and returns <code>k</code> cluster centroids plus the pixel-count proportion that each cluster occupies. One of those clusters is almost always the background (or fin-clipped negative space, or solid white card behind the fish). The standard pavo workflow is to flag that cluster and drop it from any downstream analysis.</p>
 <p><strong>How we flag the background:</strong> the recipe prints a swatch grid of every cluster centroid for every image, with the centroid’s RGB triple labeled. You (the human) look at the swatches, decide what the background color of your photographs is (e.g., “blue water around RGB(0.20, 0.45, 0.65)” or “white card around RGB(0.95, 0.95, 0.95)”), and record those RGB values in <code>background-ids.csv</code>. For each image, the recipe then finds the cluster whose centroid is <em>closest in Euclidean RGB distance</em> to the bg color you recorded, and drops that cluster. <strong>This is the canonical workflow for the recipe book</strong> — it is more pedagogically transparent than any automatic heuristic, and the failure modes (“fish fills the frame”, “background is a mottled reef”, “white card is brighter than the brightest fin”) become impossible to silently miss because you’ve inspected the swatches yourself. It is also robust to k-means cluster-ID instability: a re-knit may renumber the clusters, but the bg color you recorded still matches the same centroid by nearest-neighbour.</p>
-<p>Once backgrounds are stripped, we are left with a per-species set of foreground cluster centroids in RGB space. We pool these centroids across the whole clade and compute the 3-D <strong>convex hull</strong> with <code>geometry::convhulln(..., options = "FA")</code>, which returns both the hull facets and the hull <em>volume</em>. The volume is the headline number — the clade gamut size.</p>
-<p>Because RGB lives in the unit cube <code>[0,1]^3</code> (or <code>[0,255]^3</code> if you prefer; we use <code>[0,1]</code>), the hull volume divided by 1 is the <strong>occupancy ratio</strong>: the fraction of the available RGB cube the clade fills. A clade with a gamut volume of <code>0.10</code> fills 10% of the possible RGB color space; a value of <code>0.30</code> is a third.</p>
-<p>We then plot the points and hull from three angles: a static 3-D scatter (via <code>scatterplot3d</code>, since <code>rgl</code> is not available on the workbench), plus three 2-D projections (R vs G, R vs B, G vs B), each with points colored by their actual RGB value.</p>
+<p>Once backgrounds are stripped, we are left with a per-species set of foreground cluster centroids in RGB space. We then <strong>convert each RGB triple to CIELAB</strong> via the <code>colorspace</code> R package (sRGB -&gt; XYZ -&gt; L*a*b*, assuming D65 illuminant). We pool these CIELAB centroids across the whole clade and compute the 3-D <strong>convex hull</strong> with <code>geometry::convhulln(..., options = "FA")</code>, which returns both the hull facets and the hull <em>volume</em>. The volume is the headline number — the clade gamut size.</p>
+<p>To make the volume interpretable as a percentage, we compute the volume of the <strong>entire sRGB gamut mapped into CIELAB</strong> (a reference boundary) and report the clade’s volume as a fraction of that reference. A clade with an occupancy of 10% fills 10% of the achievable camera-color space in perceptual units.</p>
+<p>We then plot a <strong>2-panel hero figure</strong>: (A) the a*–b* chromaticity diagram showing the clade’s chromatic diversity with a convex hull outline and concentric chroma circles, and (B) an L* vs chroma scatter showing the joint distribution of lightness and saturation.</p>
 </section>
 <section id="how-to-interpret-results" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-interpret-results">How to Interpret Results</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 29%">
-<col style="width: 54%">
+<col style="width: 23%">
+<col style="width: 26%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Result</th>
-<th>Interpretation</th>
+<th>What you see</th>
+<th>What it means</th>
 <th>What to say on your poster</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Gamut volume <code>&lt; 0.05</code></td>
-<td>The clade fills less than 5% of RGB space; tightly clustered colors</td>
-<td>“The clade occupies a narrow region of color space — its species converge on a shared palette.”</td>
+<td>Points clustered near the center of the a*-b* plot</td>
+<td>Desaturated, grayish colors (low chroma)</td>
+<td>“The clade’s colors are predominantly unsaturated, near neutral gray.”</td>
 </tr>
 <tr class="even">
-<td>Gamut volume <code>0.05 – 0.20</code></td>
-<td>Moderate coverage typical of many reef-fish families</td>
-<td>“Color diversity is moderate; the clade explores a few corners of RGB space but does not span the cube.”</td>
+<td>Points far from the center</td>
+<td>Vivid, saturated colors (high chroma)</td>
+<td>“The clade includes strongly saturated, vivid hues.”</td>
 </tr>
 <tr class="odd">
-<td>Gamut volume <code>&gt; 0.20</code></td>
-<td>Broad coverage; species range from drab to saturated and span hues</td>
-<td>“The clade fills a large region of RGB color space, with species at multiple extremes of hue and saturation.”</td>
+<td>Points in one quadrant only (e.g., +a*/+b*)</td>
+<td>Clade dominated by that color category (warm reds/yellows in this case)</td>
+<td>“The clade is chromatically specialized in the red-yellow sector.”</td>
 </tr>
 <tr class="even">
+<td>Points spread across multiple quadrants</td>
+<td>High chromatic diversity</td>
+<td>“The clade realizes a wide range of hue categories.”</td>
+</tr>
+<tr class="odd">
+<td>Wide L* range in Panel B</td>
+<td>Large lightness contrast (e.g., black bars + white body)</td>
+<td>“The clade spans a broad lightness range, from dark melanin patterns to bright pale body colors.”</td>
+</tr>
+<tr class="even">
+<td>Gamut occupancy <code>&lt; 5%</code></td>
+<td>Tightly clustered in perceptual color space</td>
+<td>“The clade occupies a narrow region of perceptual color space — its species converge on a shared palette.”</td>
+</tr>
+<tr class="odd">
+<td>Gamut occupancy <code>5% -- 25%</code></td>
+<td>Moderate coverage typical of many reef-fish families</td>
+<td>“Color diversity is moderate; the clade explores a portion of the achievable color space.”</td>
+</tr>
+<tr class="even">
+<td>Gamut occupancy <code>&gt; 25%</code></td>
+<td>Broad coverage; species range from drab to saturated and span hues</td>
+<td>“The clade fills a large region of perceptual color space, with species at multiple extremes of hue and saturation.”</td>
+</tr>
+<tr class="odd">
 <td>Gamut volume changes a lot when you change <code>k</code></td>
-<td>The gamut is sensitive to the granularity of classification</td>
+<td>Sensitive to classification granularity</td>
 <td>Report the gamut for at least two values of <code>k</code> (e.g., <code>k = 4</code> and <code>k = 6</code>) and discuss which more honestly summarizes your species’ patterns.</td>
 </tr>
 </tbody>
@@ -743,10 +848,10 @@ Common pitfalls and honest caveats
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>This is camera RGB, not perceptual color.</strong> Reef fish do not see the way a camera does — they have UV-sensitive cones, different spectral tuning, and view their world through water that filters wavelengths. The gamut you compute here is “how much of camera RGB the clade fills”, not “how much of fish color space”.</li>
+<li><strong>This is camera-derived color, not fish-perceived color.</strong> Reef fish do not see the way a camera does — they have UV-sensitive cones, different spectral tuning, and view their world through water that filters wavelengths. CIELAB is perceptually uniform for <em>human viewers</em> (which is the poster’s audience), but it does not capture what the fish themselves perceive. The gamut you compute here is “how much of human-perceptual color space the clade fills”, not “how much of fish color space”.</li>
 <li><strong>Backgrounds matter a lot.</strong> If your images have inconsistent backgrounds (blue water vs.&nbsp;white card vs.&nbsp;mottled reef), the “background cluster” may not be a clean single class and your foreground centroids will be contaminated. Crop tightly when you can, and inspect every image’s swatch grid before you write its bg cluster into <code>background-ids.csv</code>.</li>
-<li><strong><code>k</code> is a knob.</strong> Choosing <code>k = 3</code> gives you very coarse summary colors; <code>k = 8</code> gives you fine ones. Larger <code>k</code> almost always inflates the gamut volume because more centroids span more of the cube. Pick a <code>k</code> that matches the actual chromatic structure of your species (most reef fish: 3 to 6 patches) and report the choice.</li>
-<li><strong>One image per species is a sample of one.</strong> The recipe enforces one image per species (see §Inputs). A second image of the same species — different lighting, different angle, different life stage — will give you slightly different centroids. The gamut is a property of <em>your image set</em>, not a population estimate. Two groups using two different image sets for the same clade will get different volumes. Multi-image aggregation will be addressed in a follow-up recipe.</li>
+<li><strong><code>k</code> is a knob.</strong> Choosing <code>k = 3</code> gives you very coarse summary colors; <code>k = 8</code> gives you fine ones. Larger <code>k</code> almost always inflates the gamut volume because more centroids span more of the space. Pick a <code>k</code> that matches the actual chromatic structure of your species (most reef fish: 3 to 6 patches) and report the choice.</li>
+<li><strong>One image per species is a sample of one.</strong> The recipe enforces one image per species (see Inputs above). A second image of the same species — different lighting, different angle, different life stage — will give you slightly different centroids. The gamut is a property of <em>your image set</em>, not a population estimate. Two groups using two different image sets for the same clade will get different volumes. Multi-image aggregation will be addressed in a follow-up recipe.</li>
 <li><strong>Cluster centroids hide within-patch variation.</strong> A patch that is a smooth gradient from yellow to orange gets summarized by a single yellow-orange centroid. If a clade’s “color story” is about gradients, the centroid-and-hull approach undersells it.</li>
 </ul>
 </div>
@@ -754,591 +859,466 @@ Common pitfalls and honest caveats
 </section>
 <section id="the-code" class="level2">
 <h2 class="anchored" data-anchor-id="the-code">The Code</h2>
-<p>The smoketest dataset lives under <code>code/smoketest-color-gamut/</code> and is regeneratable from <code>generate-smoketest-data.R</code>. The recipe below runs end-to-end on that dataset and produces a gamut plot plus a single volume number.</p>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(pavo)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(geometry)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(scatterplot3d)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(colorspace)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ape)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(grDevices)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(patchwork)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(grDevices)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="point-to-your-bundle" class="level3">
+<h3 class="anchored" data-anchor-id="point-to-your-bundle">Point to YOUR bundle</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Change these paths to match your bundle location.</strong> Your FishView bundle has <code>images/</code> with one PNG per species and a tree file ending in <code>-tree.tre</code> or <code>-mini-tree.tre</code>. If you’re using the Workbench, your bundle is in the <code>data/</code> folder of your project.</p>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Inputs ────────────────────────────────────────────────────────</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Path to your image directory (ONE image per species; filename = tip label).</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For your real project replace these with your Workbench data paths.</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>img_dir   <span class="ot">&lt;-</span> <span class="st">"../../code/smoketest-color-gamut/images"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>tree_path <span class="ot">&lt;-</span> <span class="st">"../../code/smoketest-color-gamut/acanthuridae.tre"</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>bg_csv    <span class="ot">&lt;-</span> <span class="st">"../../code/smoketest-color-gamut/background-ids.csv"</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># k for the k-means classification. Reef-fish species typically have</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 3-6 distinct color patches plus a background, so k = 4 is a sensible</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># default. Try k = 3 and k = 5 to see how sensitive your gamut is.</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">4</span>L</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── YOUR BUNDLE ─────────────────────────────────────────────────</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Change this ONE path to point to your FishView bundle directory:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>bundle_dir <span class="ot">&lt;-</span> <span class="st">"path/to/your/bundle"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Everything else is derived automatically:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>img_dir   <span class="ot">&lt;-</span> <span class="fu">file.path</span>(bundle_dir, <span class="st">"images"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>tree_file <span class="ot">&lt;-</span> <span class="fu">list.files</span>(bundle_dir, <span class="at">pattern =</span> <span class="st">"-tree</span><span class="sc">\\</span><span class="st">.tre$"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Background-color CSV: if you haven't built one yet, the recipe will</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create a template after the swatch-inspection step below.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>bg_csv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(bundle_dir, <span class="st">"background-ids.csv"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># k for the k-means classification. Reef-fish species typically have</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 3-6 distinct color patches plus a background, so k = 4 is a sensible</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># default. Try k = 3 and k = 5 to see how sensitive your gamut is.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">4</span>L</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively, if your bundle has a species_k_bg.csv with per-species</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># gestalt_k values from the FishView dashboard, load those:</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>k_csv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(bundle_dir, <span class="st">"species_k_bg.csv"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(k_csv)) {</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Found per-species k values in species_k_bg.csv — will use those.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Using fixed k ="</span>, k, <span class="st">"for all species.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 1a. Enforce one-image-per-species policy ──────────────────────</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 1a. Enforce one-image-per-species policy -----------------------------</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Every image filename (sans extension) must map to a unique species.</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you have multiple images of a species, pick the most representative</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and use just that one. Multi-image aggregation is a follow-up recipe.</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>img_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(img_dir,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.(png|jpg|jpeg|tif|tiff)$"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>species_labels <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(img_files)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>dup_species    <span class="ot">&lt;-</span> species_labels[<span class="fu">duplicated</span>(species_labels)]</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(dup_species)) {</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Duplicate species labels detected in image directory:</span><span class="sc">\n</span><span class="st">  "</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="fu">unique</span>(dup_species), <span class="at">collapse =</span> <span class="st">", "</span>),</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n\n</span><span class="st">The color-gamut recipe requires ONE representative image per species.</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pick the most representative image for each duplicated species and "</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"remove the others from `"</span>, img_dir, <span class="st">"`. Multi-image aggregation will "</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"be addressed in a follow-up recipe."</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"OK: "</span>, <span class="fu">length</span>(img_files), <span class="st">" images, all unique species labels.</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>OK: 8 images, all unique species labels.</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 1b. Load all species images and classify each one with k-means ─</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We set a seed before classify() so the swatch grid you inspect (§3)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and the centroid table (§5) are byte-identical run-to-run. k-means</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cluster indices may still shuffle if you change `k` or your image</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set; the bg-by-RGB-distance match in §4 is robust to that.</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260526</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">&lt;-</span> pavo<span class="sc">::</span><span class="fu">getimg</span>(img_dir)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Loaded"</span>, <span class="fu">length</span>(imgs), <span class="st">"images</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Loaded 8 images</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> pavo<span class="sc">::</span><span class="fu">classify</span>(imgs, <span class="at">kcols =</span> k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'future' was built under R version 4.5.2</code></pre>
-</div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># IMPORTANT — HYBRID bundle layout: a FishView-exported bundle now contains</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># BOTH flat exemplars (images/Genus_species.png) and per-species replicate</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># folders (images/Genus_species/exemplar.png, img-1.png, ...). For the</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># one-image-per-species color-gamut analysis we use ONLY the flat files:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the pattern below matches "Genus_species.png" directly under `img_dir`</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># (not recursive), which both layouts satisfy and which never picks up</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># `exemplar.png` or `img-N.png` from per-species subfolders.</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>img_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  img_dir,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">pattern =</span> <span class="st">"^[A-Z][a-z]+_[a-z]+</span><span class="sc">\\</span><span class="st">.(png|jpg|jpeg|tif|tiff)$"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">ignore.case =</span> <span class="cn">FALSE</span>, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(img_files) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fall back to the broader pattern for old flat-only smoketest data.</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  img_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(img_dir,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                          <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.(png|jpg|jpeg|tif|tiff)$"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                          <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>species_labels <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(img_files)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>dup_species    <span class="ot">&lt;-</span> species_labels[<span class="fu">duplicated</span>(species_labels)]</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(dup_species)) {</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Duplicate species labels detected in image directory:</span><span class="sc">\n</span><span class="st">  "</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="fu">unique</span>(dup_species), <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n\n</span><span class="st">The color-gamut recipe requires ONE representative image per species.</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pick the most representative image for each duplicated species and "</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"remove the others from `"</span>, img_dir, <span class="st">"`. Multi-image aggregation will "</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"be addressed in a follow-up recipe."</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"OK: "</span>, <span class="fu">length</span>(img_files), <span class="st">" images, all unique species labels.</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 2. Pull per-image cluster centroids (RGB) and proportions ─────</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(cl) gives the RGB centroid of every cluster in every image,</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># but does NOT include the proportion (pixel share). We compute the</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># proportions from the classified pixel matrices directly.</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>centroids <span class="ot">&lt;-</span> <span class="fu">summary</span>(cl)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(centroids)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"img_ID"</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>prop_rows <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(cl), <span class="cf">function</span>(i) {</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  m   <span class="ot">&lt;-</span> cl[[i]]</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">as.vector</span>(m)))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">img_ID     =</span> <span class="fu">attr</span>(m, <span class="st">"imgname"</span>),</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_ID     =</span> <span class="fu">as.integer</span>(<span class="fu">names</span>(tab)),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">proportion =</span> <span class="fu">as.numeric</span>(tab),</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, prop_rows)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>per_image <span class="ot">&lt;-</span> <span class="fu">merge</span>(centroids, props, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"img_ID"</span>, <span class="st">"col_ID"</span>))</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>per_image<span class="sc">$</span>species <span class="ot">&lt;-</span> per_image<span class="sc">$</span>img_ID  <span class="co"># filename was set to tip label</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(per_image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                img_ID col_ID name         R         G         B proportion
-1  Acanthurus_achilles      1    1 0.8588235 0.0627451 0.1960784   0.077775
-2  Acanthurus_achilles      2    2 0.7843137 0.4000000 0.5176471   0.123525
-3  Acanthurus_achilles      3    3 0.4313725 0.7882353 0.8470588   0.090525
-4  Acanthurus_achilles      4    4 0.5490196 0.5490196 0.5490196   0.708175
-5 Acanthurus_coeruleus      1    1 0.3137255 0.6588235 0.7019608   0.090525
-6 Acanthurus_coeruleus      2    2 0.7176471 0.2705882 0.9137255   0.123525
-               species
-1  Acanthurus_achilles
-2  Acanthurus_achilles
-3  Acanthurus_achilles
-4  Acanthurus_achilles
-5 Acanthurus_coeruleus
-6 Acanthurus_coeruleus</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 1b. Load all species images and classify each one with k-means ------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We set a seed before classify() so the swatch grid you inspect (section 3)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and the centroid table (section 5) are byte-identical run-to-run. k-means</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cluster indices may still shuffle if you change `k` or your image</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># set; the bg-by-RGB-distance match in section 4 is robust to that.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load each flat file one-by-one so we never recurse into per-species</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># replicate folders. (pavo::getimg() accepts a single path or a directory,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># but not a vector of paths -- so we lapply over the flat list and combine.)</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20260526</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>img_full <span class="ot">&lt;-</span> <span class="fu">file.path</span>(img_dir, img_files)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>imgs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(img_full, <span class="cf">function</span>(p) pavo<span class="sc">::</span><span class="fu">getimg</span>(p))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(imgs) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"rimg"</span>, <span class="st">"list"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Loaded"</span>, <span class="fu">length</span>(imgs), <span class="st">"images</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> pavo<span class="sc">::</span><span class="fu">classify</span>(imgs, <span class="at">kcols =</span> k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 3. Print a swatch grid of every centroid for every image ──────</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the picture you read while filling in `background-ids.csv`.</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Each row is one image; each cell shows the cluster's centroid colour</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># with its col_ID printed on top in contrasting text. The student's</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># job: for each row, decide which col_ID is the background and write</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># that pair into the CSV.</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>swatch_df <span class="ot">&lt;-</span> per_image</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>swatch_df<span class="sc">$</span>hex <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">rgb</span>(swatch_df<span class="sc">$</span>R, swatch_df<span class="sc">$</span>G, swatch_df<span class="sc">$</span>B,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                                <span class="at">maxColorValue =</span> <span class="dv">1</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># pick a readable text colour per swatch (white on dark, black on light)</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>swatch_df<span class="sc">$</span>text_col <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  (<span class="fl">0.299</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>R <span class="sc">+</span> <span class="fl">0.587</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>G <span class="sc">+</span> <span class="fl">0.114</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>B) <span class="sc">&gt;</span> <span class="fl">0.55</span>,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"black"</span>, <span class="st">"white"</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>swatch_df<span class="sc">$</span>label <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"(%.2f, %.2f, %.2f)</span><span class="sc">\n</span><span class="st">%.0f%%"</span>,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                          swatch_df<span class="sc">$</span>R, swatch_df<span class="sc">$</span>G, swatch_df<span class="sc">$</span>B,</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">100</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>proportion)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 2. Pull per-image cluster centroids (RGB) and proportions -----------</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(cl) gives the RGB centroid of every cluster in every image,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># but does NOT include the proportion (pixel share). We compute the</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># proportions from the classified pixel matrices directly.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>centroids <span class="ot">&lt;-</span> <span class="fu">summary</span>(cl)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(centroids)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"img_ID"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>prop_rows <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_along</span>(cl), <span class="cf">function</span>(i) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  m   <span class="ot">&lt;-</span> cl[[i]]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">prop.table</span>(<span class="fu">table</span>(<span class="fu">as.vector</span>(m)))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">img_ID     =</span> <span class="fu">attr</span>(m, <span class="st">"imgname"</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">col_ID     =</span> <span class="fu">as.integer</span>(<span class="fu">names</span>(tab)),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">proportion =</span> <span class="fu">as.numeric</span>(tab),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, prop_rows)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>per_image <span class="ot">&lt;-</span> <span class="fu">merge</span>(centroids, props, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"img_ID"</span>, <span class="st">"col_ID"</span>))</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>per_image<span class="sc">$</span>species <span class="ot">&lt;-</span> per_image<span class="sc">$</span>img_ID  <span class="co"># filename was set to tip label</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(per_image)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 3. Print a swatch grid of every centroid for every image ------------</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the picture you read while filling in `background-ids.csv`.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Each row is one image; each cell shows the cluster's centroid colour</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># with its col_ID printed on top in contrasting text. The student's</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># job: for each row, decide which col_ID is the background and write</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># that pair into the CSV.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>swatch_df <span class="ot">&lt;-</span> per_image</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>swatch_df<span class="sc">$</span>hex <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">rgb</span>(swatch_df<span class="sc">$</span>R, swatch_df<span class="sc">$</span>G, swatch_df<span class="sc">$</span>B,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                                <span class="at">maxColorValue =</span> <span class="dv">1</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># pick a readable text colour per swatch (white on dark, black on light)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>swatch_df<span class="sc">$</span>text_col <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  (<span class="fl">0.299</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>R <span class="sc">+</span> <span class="fl">0.587</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>G <span class="sc">+</span> <span class="fl">0.114</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>B) <span class="sc">&gt;</span> <span class="fl">0.55</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"black"</span>, <span class="st">"white"</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>swatch_df<span class="sc">$</span>label <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"(%.2f, %.2f, %.2f)</span><span class="sc">\n</span><span class="st">%.0f%%"</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                          swatch_df<span class="sc">$</span>R, swatch_df<span class="sc">$</span>G, swatch_df<span class="sc">$</span>B,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">100</span> <span class="sc">*</span> swatch_df<span class="sc">$</span>proportion)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(swatch_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(col_ID), <span class="at">y =</span> img_ID, <span class="at">fill =</span> hex)) <span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">colour =</span> <span class="st">"grey20"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> label, <span class="at">colour =</span> text_col), <span class="at">size =</span> <span class="fl">2.6</span>, <span class="at">lineheight =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_identity</span>() <span class="sc">+</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cluster (this run's index)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Centroid swatches per image"</span>,</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Identify the background COLOR (RGB triple) and record it in background-ids.csv"</span>) <span class="sc">+</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"mono"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 4. Drop the background cluster for each image, via nearest-RGB ------</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convention (recipe-book canonical): you (the student) inspect the</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># swatch grid above and record, for each image, the approximate RGB</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># triple of the background colour you saw. For each image we then</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># drop the cluster whose centroid is closest in Euclidean RGB distance</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># to your recorded bg colour. This is robust to k-means cluster-index</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># instability across knits.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Schema for background-ids.csv (lines starting with `#` are ignored):</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   img_ID,bg_R,bg_G,bg_B</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   Acanthurus_achilles,0.55,0.55,0.55</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   ...</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Use `img_ID = "*"` as a wildcard row that applies to every image</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># without an explicit entry (handy when all your photos share a</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># common background, e.g., a uniform white card).</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(bg_csv)) {</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Background-color CSV not found at:</span><span class="sc">\n</span><span class="st">  "</span>, bg_csv,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n\n</span><span class="st">Create it by inspecting the swatch grid printed above and recording,"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">" for each image (or `*` for all), the bg colour you saw. Schema:</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"  img_ID,bg_R,bg_G,bg_B</span><span class="sc">\n</span><span class="st">  Acanthurus_achilles,0.55,0.55,0.55</span><span class="sc">\n</span><span class="st">  ...</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>bg_map <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(bg_csv, <span class="at">comment.char =</span> <span class="st">"#"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>required_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"img_ID"</span>, <span class="st">"bg_R"</span>, <span class="st">"bg_G"</span>, <span class="st">"bg_B"</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>missing_cols  <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(required_cols, <span class="fu">names</span>(bg_map))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing_cols)) {</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"background-ids.csv is missing required column(s): "</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste</span>(missing_cols, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>       <span class="st">".</span><span class="sc">\n</span><span class="st">Expected schema: img_ID,bg_R,bg_G,bg_B"</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Per-image bg lookup: explicit row beats wildcard row.</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>wildcard <span class="ot">&lt;-</span> bg_map[bg_map<span class="sc">$</span>img_ID <span class="sc">==</span> <span class="st">"*"</span>, ]</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>specific <span class="ot">&lt;-</span> bg_map[bg_map<span class="sc">$</span>img_ID <span class="sc">!=</span> <span class="st">"*"</span>, ]</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity check: every image must be covered by either a specific row</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># or a wildcard row.</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>covered_imgs <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(specific<span class="sc">$</span>img_ID,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">if</span> (<span class="fu">nrow</span>(wildcard)) <span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID) <span class="cf">else</span> <span class="fu">character</span>(<span class="dv">0</span>)))</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>uncovered    <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID), covered_imgs)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>extra_in_csv <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(specific<span class="sc">$</span>img_ID, <span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID))</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(uncovered)) {</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"background-ids.csv does not cover these images (no specific row "</span>,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>       <span class="st">"and no wildcard `*` row):</span><span class="sc">\n</span><span class="st">  "</span>,</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste</span>(uncovered, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(extra_in_csv)) {</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"background-ids.csv lists images not in the image directory:</span><span class="sc">\n</span><span class="st">  "</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>          <span class="fu">paste</span>(extra_in_csv, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co"># For each image, find the centroid closest to the recorded bg RGB.</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>per_image<span class="sc">$</span>is_background <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>match_log <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID)))</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx <span class="cf">in</span> <span class="fu">seq_along</span>(<span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID))) {</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>  im <span class="ot">&lt;-</span> <span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID)[idx]</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pick the bg target: specific row preferred, else wildcard.</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>  hit <span class="ot">&lt;-</span> specific[specific<span class="sc">$</span>img_ID <span class="sc">==</span> im, ]</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(hit) <span class="sc">==</span> <span class="dv">0</span>) hit <span class="ot">&lt;-</span> wildcard</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>  bg_rgb <span class="ot">&lt;-</span> <span class="fu">c</span>(hit<span class="sc">$</span>bg_R[<span class="dv">1</span>], hit<span class="sc">$</span>bg_G[<span class="dv">1</span>], hit<span class="sc">$</span>bg_B[<span class="dv">1</span>])</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>  rows <span class="ot">&lt;-</span> per_image[per_image<span class="sc">$</span>img_ID <span class="sc">==</span> im, ]</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((rows<span class="sc">$</span>R <span class="sc">-</span> bg_rgb[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>            (rows<span class="sc">$</span>G <span class="sc">-</span> bg_rgb[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>            (rows<span class="sc">$</span>B <span class="sc">-</span> bg_rgb[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  bg_col_id <span class="ot">&lt;-</span> rows<span class="sc">$</span>col_ID[<span class="fu">which.min</span>(d)]</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>  per_image<span class="sc">$</span>is_background[per_image<span class="sc">$</span>img_ID <span class="sc">==</span> im <span class="sc">&amp;</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>                          per_image<span class="sc">$</span>col_ID <span class="sc">==</span> bg_col_id] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>  match_log[[idx]] <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">img_ID    =</span> im,</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg_R      =</span> <span class="fu">round</span>(rows<span class="sc">$</span>R[<span class="fu">which.min</span>(d)], <span class="dv">3</span>),</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg_G      =</span> <span class="fu">round</span>(rows<span class="sc">$</span>G[<span class="fu">which.min</span>(d)], <span class="dv">3</span>),</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg_B      =</span> <span class="fu">round</span>(rows<span class="sc">$</span>B[<span class="fu">which.min</span>(d)], <span class="dv">3</span>),</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance  =</span> <span class="fu">round</span>(<span class="fu">min</span>(d), <span class="dv">3</span>),</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>matches <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, match_log)</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Matched background centroids (nearest RGB to recorded bg colour):</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(matches, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>foreground <span class="ot">&lt;-</span> per_image[<span class="sc">!</span>per_image<span class="sc">$</span>is_background, ]</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Marked "</span>, <span class="fu">sum</span>(per_image<span class="sc">$</span>is_background), <span class="st">" background centroids; "</span>,</span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kept "</span>, <span class="fu">nrow</span>(foreground), <span class="st">" foreground centroids across "</span>,</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species)), <span class="st">" species.</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 5. Tidy per-species centroid table (what you'd put in supp.) --------</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>species_table <span class="ot">&lt;-</span> foreground[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"R"</span>, <span class="st">"G"</span>, <span class="st">"B"</span>, <span class="st">"proportion"</span>)]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>species_table <span class="ot">&lt;-</span> species_table[<span class="fu">order</span>(species_table<span class="sc">$</span>species,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="sc">-</span>species_table<span class="sc">$</span>proportion), ]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(species_table, <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Foreground RGB centroids per species (background dropped)."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 6. Convert RGB to CIELAB --------------------------------------------</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The colorspace package converts sRGB (gamma-corrected camera RGB) to</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># CIELAB via the XYZ intermediate, assuming D65 illuminant. This is the</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># standard conversion for photographs stored as sRGB JPEG/PNG.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>pts_rgb <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(foreground[, <span class="fu">c</span>(<span class="st">"R"</span>, <span class="st">"G"</span>, <span class="st">"B"</span>)])</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>srgb_obj <span class="ot">&lt;-</span> colorspace<span class="sc">::</span><span class="fu">sRGB</span>(pts_rgb[, <span class="st">"R"</span>], pts_rgb[, <span class="st">"G"</span>], pts_rgb[, <span class="st">"B"</span>])</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lab_obj  <span class="ot">&lt;-</span> <span class="fu">as</span>(srgb_obj, <span class="st">"LAB"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>lab_pts  <span class="ot">&lt;-</span> colorspace<span class="sc">::</span><span class="fu">coords</span>(lab_obj)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(lab_pts) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"L"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Attach CIELAB coordinates to the foreground data</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>foreground<span class="sc">$</span>L <span class="ot">&lt;-</span> lab_pts[, <span class="st">"L"</span>]</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>foreground<span class="sc">$</span>a <span class="ot">&lt;-</span> lab_pts[, <span class="st">"a"</span>]</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>foreground<span class="sc">$</span>b <span class="ot">&lt;-</span> lab_pts[, <span class="st">"b"</span>]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>foreground<span class="sc">$</span>chroma <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(foreground<span class="sc">$</span>a<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> foreground<span class="sc">$</span>b<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>foreground<span class="sc">$</span>hue_deg <span class="ot">&lt;-</span> (<span class="fu">atan2</span>(foreground<span class="sc">$</span>b, foreground<span class="sc">$</span>a) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi) <span class="sc">%%</span> <span class="dv">360</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"L* range: [%.1f, %.1f]</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">min</span>(lab_pts[, <span class="st">"L"</span>]), <span class="fu">max</span>(lab_pts[, <span class="st">"L"</span>])))</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"a* range: [%.1f, %.1f]</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">min</span>(lab_pts[, <span class="st">"a"</span>]), <span class="fu">max</span>(lab_pts[, <span class="st">"a"</span>])))</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"b* range: [%.1f, %.1f]</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">min</span>(lab_pts[, <span class="st">"b"</span>]), <span class="fu">max</span>(lab_pts[, <span class="st">"b"</span>])))</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Chroma range: [%.1f, %.1f]</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">min</span>(foreground<span class="sc">$</span>chroma), <span class="fu">max</span>(foreground<span class="sc">$</span>chroma)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 7. Convex hull in CIELAB space + volume -----------------------------</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hull_lab <span class="ot">&lt;-</span> geometry<span class="sc">::</span><span class="fu">convhulln</span>(lab_pts, <span class="at">options =</span> <span class="st">"FA"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>vol_lab  <span class="ot">&lt;-</span> hull_lab<span class="sc">$</span>vol</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Reference volume: the entire sRGB gamut boundary mapped into CIELAB.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We sample the sRGB cube on a fine grid and compute its convex hull.</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>srgb_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">R =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.05</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">G =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.05</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">B =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.05</span>))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>ref_srgb  <span class="ot">&lt;-</span> colorspace<span class="sc">::</span><span class="fu">sRGB</span>(srgb_grid<span class="sc">$</span>R, srgb_grid<span class="sc">$</span>G, srgb_grid<span class="sc">$</span>B)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ref_lab   <span class="ot">&lt;-</span> colorspace<span class="sc">::</span><span class="fu">coords</span>(<span class="fu">as</span>(ref_srgb, <span class="st">"LAB"</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>hull_ref  <span class="ot">&lt;-</span> geometry<span class="sc">::</span><span class="fu">convhulln</span>(ref_lab, <span class="at">options =</span> <span class="st">"FA"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>vol_ref   <span class="ot">&lt;-</span> hull_ref<span class="sc">$</span>vol</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>occupancy_lab <span class="ot">&lt;-</span> vol_lab <span class="sc">/</span> vol_ref</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Clade CIELAB gamut volume:       %.0f cubic CIELAB units</span><span class="sc">\n</span><span class="st">"</span>, vol_lab))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"sRGB reference volume in CIELAB: %.0f cubic CIELAB units</span><span class="sc">\n</span><span class="st">"</span>, vol_ref))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Occupancy (vs sRGB gamut):       %.1f%%</span><span class="sc">\n</span><span class="st">"</span>, <span class="dv">100</span> <span class="sc">*</span> occupancy_lab))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 8. Hero figure: a*-b* chromaticity + L* vs chroma ------------------</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel A: a*-b* chromaticity diagram with convex hull + chroma circles</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel B: L* vs chroma scatter showing lightness distribution</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">species =</span> foreground<span class="sc">$</span>species,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">L       =</span> foreground<span class="sc">$</span>L,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">a       =</span> foreground<span class="sc">$</span>a,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">b       =</span> foreground<span class="sc">$</span>b,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chroma  =</span> foreground<span class="sc">$</span>chroma,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">hue_deg =</span> foreground<span class="sc">$</span>hue_deg,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">hex     =</span> grDevices<span class="sc">::</span><span class="fu">rgb</span>(pts_rgb[, <span class="st">"R"</span>], pts_rgb[, <span class="st">"G"</span>], pts_rgb[, <span class="st">"B"</span>])</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2D convex hull on a*-b* plane</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>hull_ab_idx <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">chull</span>(plot_df<span class="sc">$</span>a, plot_df<span class="sc">$</span>b)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>hull_ab_idx <span class="ot">&lt;-</span> <span class="fu">c</span>(hull_ab_idx, hull_ab_idx[<span class="dv">1</span>])</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>hull_ab_df  <span class="ot">&lt;-</span> plot_df[hull_ab_idx, ]</span>
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(swatch_df, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(col_ID), <span class="at">y =</span> img_ID, <span class="at">fill =</span> hex)) <span class="sc">+</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">colour =</span> <span class="st">"grey20"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> label, <span class="at">colour =</span> text_col), <span class="at">size =</span> <span class="fl">2.6</span>, <span class="at">lineheight =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_identity</span>() <span class="sc">+</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Cluster (this run's index)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>,</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Centroid swatches per image"</span>,</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Identify the background COLOR (RGB triple) and record it in background-ids.csv"</span>) <span class="sc">+</span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"mono"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="color-gamut_files/figure-html/inspect-centroids-1.png" class="img-fluid figure-img" width="864"></p>
-</figure>
-</div>
-</div>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Concentric chroma circles for saturation reference</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>circle_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">40</span>, <span class="dv">60</span>), <span class="cf">function</span>(r) {</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">2</span> <span class="sc">*</span> pi, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">a =</span> r <span class="sc">*</span> <span class="fu">cos</span>(theta), <span class="at">b =</span> r <span class="sc">*</span> <span class="fu">sin</span>(theta), <span class="at">radius =</span> r)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel A: a* vs b* chromaticity diagram</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>p_ab <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> a, <span class="at">y =</span> b)) <span class="sc">+</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Chroma reference circles</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">data =</span> circle_df, <span class="fu">aes</span>(<span class="at">x =</span> a, <span class="at">y =</span> b, <span class="at">group =</span> radius),</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">colour =</span> <span class="st">"grey85"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Label the chroma circles</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">22</span>, <span class="at">y =</span> <span class="dv">2</span>, <span class="at">label =</span> <span class="st">"20"</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">42</span>, <span class="at">y =</span> <span class="dv">2</span>, <span class="at">label =</span> <span class="st">"40"</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">62</span>, <span class="at">y =</span> <span class="dv">2</span>, <span class="at">label =</span> <span class="st">"60"</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"italic"</span>) <span class="sc">+</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convex hull polygon</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> hull_ab_df, <span class="at">fill =</span> <span class="st">"grey92"</span>, <span class="at">colour =</span> <span class="st">"grey30"</span>,</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>               <span class="at">linewidth =</span> <span class="fl">0.6</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Origin crosshairs (neutral gray)</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">"grey70"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Data points</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> hex), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"grey20"</span>, <span class="at">stroke =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Origin marker</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"point"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">colour =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">60</span>, <span class="dv">80</span>, <span class="at">by =</span> <span class="dv">20</span>)) <span class="sc">+</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">80</span>, <span class="dv">80</span>, <span class="at">by =</span> <span class="dv">20</span>)) <span class="sc">+</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(a, <span class="st">"* "</span>, <span class="st">" (\u2190 green | red \u2192)"</span>)),</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(b, <span class="st">"* "</span>, <span class="st">" (\u2190 blue | yellow \u2192)"</span>)),</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="fu">sprintf</span>(<span class="st">"A. Chromaticity (a*-b*) — %.1f%% of sRGB gamut"</span>,</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>                        <span class="dv">100</span> <span class="sc">*</span> occupancy_lab)) <span class="sc">+</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Panel B: L* vs chroma scatter</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>p_Lc <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> chroma, <span class="at">y =</span> L)) <span class="sc">+</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> hex), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"grey20"</span>, <span class="at">stroke =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="dv">20</span>)) <span class="sc">+</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Chroma (saturation)"</span>,</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(L, <span class="st">"* (lightness)"</span>)),</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"B. Lightness vs saturation"</span>) <span class="sc">+</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine: Panel A takes ~70%, Panel B takes ~30%</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>p_ab <span class="sc">+</span> p_Lc <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 4. Drop the background cluster for each image, via nearest-RGB ─</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convention (recipe-book canonical): you (the student) inspect the</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># swatch grid above and record, for each image, the approximate RGB</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># triple of the background colour you saw. For each image we then</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># drop the cluster whose centroid is closest in Euclidean RGB distance</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># to your recorded bg colour. This is robust to k-means cluster-index</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># instability across knits.</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Schema for background-ids.csv (lines starting with `#` are ignored):</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   img_ID,bg_R,bg_G,bg_B</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   Acanthurus_achilles,0.55,0.55,0.55</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   ...</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Use `img_ID = "*"` as a wildcard row that applies to every image</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># without an explicit entry (handy when all your photos share a</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># common background, e.g., a uniform white card).</span></span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 9. Per-species gamut sizes in CIELAB --------------------------------</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sp_gamuts <span class="ot">&lt;-</span> foreground <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span>        <span class="co"># need 4+ non-bg clusters for 3D hull</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_clust =</span> <span class="fu">n</span>(),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">vol =</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      geometry<span class="sc">::</span><span class="fu">convhulln</span>(<span class="fu">cbind</span>(L, a, b), <span class="at">options =</span> <span class="st">"FA"</span>)<span class="sc">$</span>vol,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NA_real_</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_chroma =</span> <span class="fu">mean</span>(chroma),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">L_range =</span> <span class="fu">max</span>(L) <span class="sc">-</span> <span class="fu">min</span>(L),</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(vol))</span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(bg_csv)) {</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Background-color CSV not found at:</span><span class="sc">\n</span><span class="st">  "</span>, bg_csv,</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n\n</span><span class="st">Create it by inspecting the swatch grid printed above and recording,"</span>,</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">" for each image (or `*` for all), the bg colour you saw. Schema:</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"  img_ID,bg_R,bg_G,bg_B</span><span class="sc">\n</span><span class="st">  Acanthurus_achilles,0.55,0.55,0.55</span><span class="sc">\n</span><span class="st">  ...</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>bg_map <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(bg_csv, <span class="at">comment.char =</span> <span class="st">"#"</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>required_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"img_ID"</span>, <span class="st">"bg_R"</span>, <span class="st">"bg_G"</span>, <span class="st">"bg_B"</span>)</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>missing_cols  <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(required_cols, <span class="fu">names</span>(bg_map))</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing_cols)) {</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"background-ids.csv is missing required column(s): "</span>,</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste</span>(missing_cols, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>       <span class="st">".</span><span class="sc">\n</span><span class="st">Expected schema: img_ID,bg_R,bg_G,bg_B"</span>)</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Per-image bg lookup: explicit row beats wildcard row.</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>wildcard <span class="ot">&lt;-</span> bg_map[bg_map<span class="sc">$</span>img_ID <span class="sc">==</span> <span class="st">"*"</span>, ]</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>specific <span class="ot">&lt;-</span> bg_map[bg_map<span class="sc">$</span>img_ID <span class="sc">!=</span> <span class="st">"*"</span>, ]</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity check: every image must be covered by either a specific row</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co"># or a wildcard row.</span></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>covered_imgs <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">c</span>(specific<span class="sc">$</span>img_ID,</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>                         <span class="cf">if</span> (<span class="fu">nrow</span>(wildcard)) <span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID) <span class="cf">else</span> <span class="fu">character</span>(<span class="dv">0</span>)))</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>uncovered    <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID), covered_imgs)</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>extra_in_csv <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(specific<span class="sc">$</span>img_ID, <span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID))</span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(uncovered)) {</span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"background-ids.csv does not cover these images (no specific row "</span>,</span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>       <span class="st">"and no wildcard `*` row):</span><span class="sc">\n</span><span class="st">  "</span>,</span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>       <span class="fu">paste</span>(uncovered, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(extra_in_csv)) {</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">warning</span>(<span class="st">"background-ids.csv lists images not in the image directory:</span><span class="sc">\n</span><span class="st">  "</span>,</span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>          <span class="fu">paste</span>(extra_in_csv, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="co"># For each image, find the centroid closest to the recorded bg RGB.</span></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>per_image<span class="sc">$</span>is_background <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>match_log <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">length</span>(<span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID)))</span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx <span class="cf">in</span> <span class="fu">seq_along</span>(<span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID))) {</span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  im <span class="ot">&lt;-</span> <span class="fu">unique</span>(per_image<span class="sc">$</span>img_ID)[idx]</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pick the bg target: specific row preferred, else wildcard.</span></span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>  hit <span class="ot">&lt;-</span> specific[specific<span class="sc">$</span>img_ID <span class="sc">==</span> im, ]</span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(hit) <span class="sc">==</span> <span class="dv">0</span>) hit <span class="ot">&lt;-</span> wildcard</span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>  bg_rgb <span class="ot">&lt;-</span> <span class="fu">c</span>(hit<span class="sc">$</span>bg_R[<span class="dv">1</span>], hit<span class="sc">$</span>bg_G[<span class="dv">1</span>], hit<span class="sc">$</span>bg_B[<span class="dv">1</span>])</span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>  rows <span class="ot">&lt;-</span> per_image[per_image<span class="sc">$</span>img_ID <span class="sc">==</span> im, ]</span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((rows<span class="sc">$</span>R <span class="sc">-</span> bg_rgb[<span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>            (rows<span class="sc">$</span>G <span class="sc">-</span> bg_rgb[<span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span></span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>            (rows<span class="sc">$</span>B <span class="sc">-</span> bg_rgb[<span class="dv">3</span>])<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>  bg_col_id <span class="ot">&lt;-</span> rows<span class="sc">$</span>col_ID[<span class="fu">which.min</span>(d)]</span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>  per_image<span class="sc">$</span>is_background[per_image<span class="sc">$</span>img_ID <span class="sc">==</span> im <span class="sc">&amp;</span></span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>                          per_image<span class="sc">$</span>col_ID <span class="sc">==</span> bg_col_id] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>  match_log[[idx]] <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">img_ID    =</span> im,</span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg_R      =</span> <span class="fu">round</span>(rows<span class="sc">$</span>R[<span class="fu">which.min</span>(d)], <span class="dv">3</span>),</span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg_G      =</span> <span class="fu">round</span>(rows<span class="sc">$</span>G[<span class="fu">which.min</span>(d)], <span class="dv">3</span>),</span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">bg_B      =</span> <span class="fu">round</span>(rows<span class="sc">$</span>B[<span class="fu">which.min</span>(d)], <span class="dv">3</span>),</span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance  =</span> <span class="fu">round</span>(<span class="fu">min</span>(d), <span class="dv">3</span>),</span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>matches <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, match_log)</span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Matched background centroids (nearest RGB to recorded bg colour):</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Matched background centroids (nearest RGB to recorded bg colour):</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(matches, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                 img_ID  bg_R  bg_G  bg_B distance
-    Acanthurus_achilles 0.549 0.549 0.549    0.002
-   Acanthurus_coeruleus 0.549 0.549 0.549    0.002
-    Acanthurus_lineatus 0.549 0.549 0.549    0.002
-   Acanthurus_olivaceus 0.549 0.549 0.549    0.002
- Ctenochaetus_strigosus 0.549 0.549 0.549    0.002
-         Naso_lituratus 0.549 0.549 0.549    0.002
-  Paracanthurus_hepatus 0.549 0.549 0.549    0.002
-   Zebrasoma_flavescens 0.549 0.549 0.549    0.002</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>foreground <span class="ot">&lt;-</span> per_image[<span class="sc">!</span>per_image<span class="sc">$</span>is_background, ]</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Marked "</span>, <span class="fu">sum</span>(per_image<span class="sc">$</span>is_background), <span class="st">" background centroids; "</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kept "</span>, <span class="fu">nrow</span>(foreground), <span class="st">" foreground centroids across "</span>,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">length</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species)), <span class="st">" species.</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Marked 8 background centroids; kept 24 foreground centroids across 8 species.</code></pre>
-</div>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Per-species gamut volumes available for %d species (those with k&gt;=5):</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">nrow</span>(sp_gamuts)))</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sp_gamuts, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 5. Tidy per-species centroid table (what you'd put in supp.) ──</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>species_table <span class="ot">&lt;-</span> foreground[, <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"R"</span>, <span class="st">"G"</span>, <span class="st">"B"</span>, <span class="st">"proportion"</span>)]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>species_table <span class="ot">&lt;-</span> species_table[<span class="fu">order</span>(species_table<span class="sc">$</span>species,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="sc">-</span>species_table<span class="sc">$</span>proportion), ]</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(species_table, <span class="at">digits =</span> <span class="dv">3</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Foreground RGB centroids per species (background dropped)."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Foreground RGB centroids per species (background dropped).</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">species</th>
-<th style="text-align: right;">R</th>
-<th style="text-align: right;">G</th>
-<th style="text-align: right;">B</th>
-<th style="text-align: right;">proportion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">2</td>
-<td style="text-align: left;">Acanthurus_achilles</td>
-<td style="text-align: right;">0.784</td>
-<td style="text-align: right;">0.400</td>
-<td style="text-align: right;">0.518</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">3</td>
-<td style="text-align: left;">Acanthurus_achilles</td>
-<td style="text-align: right;">0.431</td>
-<td style="text-align: right;">0.788</td>
-<td style="text-align: right;">0.847</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">Acanthurus_achilles</td>
-<td style="text-align: right;">0.859</td>
-<td style="text-align: right;">0.063</td>
-<td style="text-align: right;">0.196</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">6</td>
-<td style="text-align: left;">Acanthurus_coeruleus</td>
-<td style="text-align: right;">0.718</td>
-<td style="text-align: right;">0.271</td>
-<td style="text-align: right;">0.914</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">5</td>
-<td style="text-align: left;">Acanthurus_coeruleus</td>
-<td style="text-align: right;">0.314</td>
-<td style="text-align: right;">0.659</td>
-<td style="text-align: right;">0.702</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">7</td>
-<td style="text-align: left;">Acanthurus_coeruleus</td>
-<td style="text-align: right;">0.490</td>
-<td style="text-align: right;">0.714</td>
-<td style="text-align: right;">0.816</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">10</td>
-<td style="text-align: left;">Acanthurus_lineatus</td>
-<td style="text-align: right;">0.118</td>
-<td style="text-align: right;">0.671</td>
-<td style="text-align: right;">0.510</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">11</td>
-<td style="text-align: left;">Acanthurus_lineatus</td>
-<td style="text-align: right;">0.537</td>
-<td style="text-align: right;">0.824</td>
-<td style="text-align: right;">0.533</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">12</td>
-<td style="text-align: left;">Acanthurus_lineatus</td>
-<td style="text-align: right;">0.843</td>
-<td style="text-align: right;">0.741</td>
-<td style="text-align: right;">0.580</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">16</td>
-<td style="text-align: left;">Acanthurus_olivaceus</td>
-<td style="text-align: right;">0.573</td>
-<td style="text-align: right;">0.667</td>
-<td style="text-align: right;">0.345</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">13</td>
-<td style="text-align: left;">Acanthurus_olivaceus</td>
-<td style="text-align: right;">0.176</td>
-<td style="text-align: right;">0.153</td>
-<td style="text-align: right;">0.267</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">14</td>
-<td style="text-align: left;">Acanthurus_olivaceus</td>
-<td style="text-align: right;">0.365</td>
-<td style="text-align: right;">0.310</td>
-<td style="text-align: right;">0.510</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">17</td>
-<td style="text-align: left;">Ctenochaetus_strigosus</td>
-<td style="text-align: right;">0.180</td>
-<td style="text-align: right;">0.180</td>
-<td style="text-align: right;">0.471</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">19</td>
-<td style="text-align: left;">Ctenochaetus_strigosus</td>
-<td style="text-align: right;">0.541</td>
-<td style="text-align: right;">0.902</td>
-<td style="text-align: right;">0.075</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">18</td>
-<td style="text-align: left;">Ctenochaetus_strigosus</td>
-<td style="text-align: right;">0.188</td>
-<td style="text-align: right;">0.482</td>
-<td style="text-align: right;">0.890</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">23</td>
-<td style="text-align: left;">Naso_lituratus</td>
-<td style="text-align: right;">0.796</td>
-<td style="text-align: right;">0.165</td>
-<td style="text-align: right;">0.780</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">21</td>
-<td style="text-align: left;">Naso_lituratus</td>
-<td style="text-align: right;">0.471</td>
-<td style="text-align: right;">0.945</td>
-<td style="text-align: right;">0.675</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">24</td>
-<td style="text-align: left;">Naso_lituratus</td>
-<td style="text-align: right;">0.235</td>
-<td style="text-align: right;">0.478</td>
-<td style="text-align: right;">0.729</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">25</td>
-<td style="text-align: left;">Paracanthurus_hepatus</td>
-<td style="text-align: right;">0.314</td>
-<td style="text-align: right;">0.906</td>
-<td style="text-align: right;">0.420</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">28</td>
-<td style="text-align: left;">Paracanthurus_hepatus</td>
-<td style="text-align: right;">0.259</td>
-<td style="text-align: right;">0.788</td>
-<td style="text-align: right;">0.780</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">26</td>
-<td style="text-align: left;">Paracanthurus_hepatus</td>
-<td style="text-align: right;">0.584</td>
-<td style="text-align: right;">0.631</td>
-<td style="text-align: right;">0.765</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">32</td>
-<td style="text-align: left;">Zebrasoma_flavescens</td>
-<td style="text-align: right;">0.800</td>
-<td style="text-align: right;">0.227</td>
-<td style="text-align: right;">0.208</td>
-<td style="text-align: right;">0.124</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">30</td>
-<td style="text-align: left;">Zebrasoma_flavescens</td>
-<td style="text-align: right;">0.827</td>
-<td style="text-align: right;">0.545</td>
-<td style="text-align: right;">0.173</td>
-<td style="text-align: right;">0.091</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">29</td>
-<td style="text-align: left;">Zebrasoma_flavescens</td>
-<td style="text-align: right;">0.714</td>
-<td style="text-align: right;">0.388</td>
-<td style="text-align: right;">0.384</td>
-<td style="text-align: right;">0.078</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 10. Distribution of per-species gamut volumes -----------------------</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sp_gamuts, <span class="fu">aes</span>(vol)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">24</span>, <span class="at">fill =</span> <span class="st">"#1f77b4"</span>, <span class="at">colour =</span> <span class="st">"grey90"</span>) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Per-species gamut volume (CIELAB cubic units)"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of species"</span>) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 6. Convex hull in RGB space + volume ──────────────────────────</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pts <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(foreground[, <span class="fu">c</span>(<span class="st">"R"</span>, <span class="st">"G"</span>, <span class="st">"B"</span>)])</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>hull <span class="ot">&lt;-</span> geometry<span class="sc">::</span><span class="fu">convhulln</span>(pts, <span class="at">options =</span> <span class="st">"FA"</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>gamut_volume    <span class="ot">&lt;-</span> hull<span class="sc">$</span>vol</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>occupancy_ratio <span class="ot">&lt;-</span> gamut_volume <span class="sc">/</span> <span class="dv">1</span>   <span class="co"># unit cube has volume 1</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Clade gamut volume:    %.4f</span><span class="sc">\n</span><span class="st">"</span>, gamut_volume))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Clade gamut volume:    0.2753</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"RGB-cube occupancy:    %.1f%% of the unit cube</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>            <span class="dv">100</span> <span class="sc">*</span> occupancy_ratio))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>RGB-cube occupancy:    27.5% of the unit cube</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 7. Static 3-D scatter of centroids in RGB space ───────────────</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>point_cols <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">rgb</span>(foreground<span class="sc">$</span>R, foreground<span class="sc">$</span>G, foreground<span class="sc">$</span>B,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">maxColorValue =</span> <span class="dv">1</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>scatterplot3d<span class="sc">::</span><span class="fu">scatterplot3d</span>(</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> foreground<span class="sc">$</span>R, <span class="at">y =</span> foreground<span class="sc">$</span>G, <span class="at">z =</span> foreground<span class="sc">$</span>B,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex.symbols =</span> <span class="fl">1.8</span>, <span class="at">color =</span> point_cols,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">zlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"R"</span>, <span class="at">ylab =</span> <span class="st">"G"</span>, <span class="at">zlab =</span> <span class="st">"B"</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="fu">sprintf</span>(<span class="st">"Clade gamut in RGB space  (volume = %.3f)"</span>,</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                 gamut_volume)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="color-gamut_files/figure-html/scatter-3d-1.png" class="img-fluid figure-img" width="576"></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 11. Species at the extremes of the gamut ----------------------------</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>extremes <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Most red (+a*)</span><span class="st">`</span>   <span class="ot">=</span> foreground[<span class="fu">which.max</span>(foreground<span class="sc">$</span>a), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)],</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Most green (-a*)</span><span class="st">`</span> <span class="ot">=</span> foreground[<span class="fu">which.min</span>(foreground<span class="sc">$</span>a), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)],</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Most yellow (+b*)</span><span class="st">`</span><span class="ot">=</span> foreground[<span class="fu">which.max</span>(foreground<span class="sc">$</span>b), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)],</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Most blue (-b*)</span><span class="st">`</span>  <span class="ot">=</span> foreground[<span class="fu">which.min</span>(foreground<span class="sc">$</span>b), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)],</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Brightest (L*)</span><span class="st">`</span>   <span class="ot">=</span> foreground[<span class="fu">which.max</span>(foreground<span class="sc">$</span>L), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)],</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Darkest (L*)</span><span class="st">`</span>     <span class="ot">=</span> foreground[<span class="fu">which.min</span>(foreground<span class="sc">$</span>L), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)],</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Highest chroma</span><span class="st">`</span>   <span class="ot">=</span> foreground[<span class="fu">which.max</span>(foreground<span class="sc">$</span>chroma), <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"L"</span>)]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>extremes_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, extremes)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>extremes_df<span class="sc">$</span>category <span class="ot">&lt;-</span> <span class="fu">names</span>(extremes)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(extremes_df[, <span class="fu">c</span>(<span class="st">"category"</span>, <span class="st">"species"</span>, <span class="st">"L"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>)],</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">digits =</span> <span class="dv">1</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Species at the extremes of the CIELAB gamut."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 8. Three 2-D projections of the points + hull ─────────────────</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We compute a 2-D convex hull on each projection so the boundary is</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># easy to read. The 3-D volume above is the authoritative number;</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># these panels are for visualization only.</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>plot_projection <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, xlab, ylab) {</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  hh <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">chull</span>(x, y)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  hh <span class="ot">&lt;-</span> <span class="fu">c</span>(hh, hh[<span class="dv">1</span>])  <span class="co"># close the polygon</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  df_pts  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> y,</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">col =</span> grDevices<span class="sc">::</span><span class="fu">rgb</span>(foreground<span class="sc">$</span>R,</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                                             foreground<span class="sc">$</span>G,</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>                                             foreground<span class="sc">$</span>B,</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">maxColorValue =</span> <span class="dv">1</span>))</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  df_hull <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x[hh], <span class="at">y =</span> y[hh])</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(df_pts, <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_polygon</span>(<span class="at">data =</span> df_hull, <span class="fu">aes</span>(x, y),</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"grey30"</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill =</span> col), <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">stroke =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_identity</span>() <span class="sc">+</span></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> xlab, <span class="at">y =</span> ylab) <span class="sc">+</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>          <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>p_rg <span class="ot">&lt;-</span> <span class="fu">plot_projection</span>(foreground<span class="sc">$</span>R, foreground<span class="sc">$</span>G, <span class="st">"R"</span>, <span class="st">"G"</span>)</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>p_rb <span class="ot">&lt;-</span> <span class="fu">plot_projection</span>(foreground<span class="sc">$</span>R, foreground<span class="sc">$</span>B, <span class="st">"R"</span>, <span class="st">"B"</span>)</span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>p_gb <span class="ot">&lt;-</span> <span class="fu">plot_projection</span>(foreground<span class="sc">$</span>G, foreground<span class="sc">$</span>B, <span class="st">"G"</span>, <span class="st">"B"</span>)</span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Use patchwork if available, otherwise side-by-side via gridExtra fallback.</span></span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">"patchwork"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>  patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(p_rg, p_rb, p_gb, <span class="at">nrow =</span> <span class="dv">1</span>)</span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(p_rg); <span class="fu">print</span>(p_rb); <span class="fu">print</span>(p_gb)</span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="color-gamut_files/figure-html/hull-projections-1.png" class="img-fluid figure-img" width="864"></p>
-</figure>
-</div>
-</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 12. Sanity check: how many of your tree's tips are represented? -----</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.nexus</span>(tree_path)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>in_tree  <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species), tree<span class="sc">$</span>tip.label)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>missing  <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species), tree<span class="sc">$</span>tip.label)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Species in both tree and image set:"</span>, <span class="fu">length</span>(in_tree), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Image species missing from tree:   "</span>, <span class="fu">length</span>(missing), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing)) <span class="fu">cat</span>(<span class="st">"  -&gt; "</span>, <span class="fu">paste</span>(missing, <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 9. Sanity check: how many of your tree's tips are represented? ─</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> ape<span class="sc">::</span><span class="fu">read.nexus</span>(tree_path)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>in_tree  <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species), tree<span class="sc">$</span>tip.label)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>missing  <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species), tree<span class="sc">$</span>tip.label)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Species in both tree and image set:"</span>, <span class="fu">length</span>(in_tree), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Species in both tree and image set: 8 </code></pre>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- 13. One-line interpretation -----------------------------------------</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"The %d-species sample occupies %.1f%% of the achievable sRGB gamut in CIELAB (volume %.0f at k = %d).</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species)),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span> <span class="sc">*</span> occupancy_lab,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  vol_lab,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  k</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Image species missing from tree:   "</span>, <span class="fu">length</span>(missing), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Image species missing from tree:    0 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(missing)) <span class="fu">cat</span>(<span class="st">"  -&gt; "</span>, <span class="fu">paste</span>(missing, <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 10. One-line interpretation ───────────────────────────────────</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"The %d-species sample occupies %.1f%% of the unit RGB cube (volume %.4f at k = %d).</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(<span class="fu">unique</span>(foreground<span class="sc">$</span>species)),</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span> <span class="sc">*</span> occupancy_ratio,</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  gamut_volume,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  k</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>The 8-species sample occupies 27.5% of the unit RGB cube (volume 0.2753 at k = 4).</code></pre>
-</div>
-</div>
+</section>
 </section>
 <section id="from-the-literature" class="level2">
 <h2 class="anchored" data-anchor-id="from-the-literature">From the Literature</h2>
@@ -1349,7 +1329,7 @@ Marked 8 background centroids; kept 24 foreground centroids across 8 species.</c
 <p><strong>Maia, R., Eliason, C. M., Bitton, P.-P., Doucet, S. M., &amp; Shawkey, M. D. (2013)</strong> — Introduced <code>pavo</code>, the R package whose <code>classify()</code> function does the per-image k-means classification underlying this recipe. <em>Methods in Ecology and Evolution</em>, 4(10), 906–913. <a href="https://doi.org/10.1111/2041-210X.12069">DOI</a></p>
 </blockquote>
 <blockquote class="blockquote">
-<p><strong>Endler, J. A., &amp; Mielke, P. W. (2005)</strong> — Argued that comparative analyses of color should be done in a receptor-space appropriate to the viewer, not in human or device-RGB coordinates, and laid out the conceptual basis for volumetric color-space metrics. The motivation for the “this is camera RGB, not perceptual color” caveat above. <em>Biological Journal of the Linnean Society</em>, 86(4), 405–431. <a href="https://doi.org/10.1111/j.1095-8312.2005.00540.x">DOI</a></p>
+<p><strong>Endler, J. A., &amp; Mielke, P. W. (2005)</strong> — Argued that comparative analyses of color should be done in a receptor-space appropriate to the viewer, not in human or device-RGB coordinates, and laid out the conceptual basis for volumetric color-space metrics. CIELAB is the recommended space for camera-derived data when spectral reflectance is unavailable. <em>Biological Journal of the Linnean Society</em>, 86(4), 405–431. <a href="https://doi.org/10.1111/j.1095-8312.2005.00540.x">DOI</a></p>
 </blockquote>
 
 
