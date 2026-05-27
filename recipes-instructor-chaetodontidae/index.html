@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -321,9 +286,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#whats-in-the-bundle" id="toc-whats-in-the-bundle" class="nav-link active" data-scroll-target="#whats-in-the-bundle">What’s in the bundle</a></li>
-  <li><a href="#how-a-student-would-use-this" id="toc-how-a-student-would-use-this" class="nav-link" data-scroll-target="#how-a-student-would-use-this">How a student would use this</a></li>
-  <li><a href="#why-these-two-recipes-are-built-into-the-walkthrough" id="toc-why-these-two-recipes-are-built-into-the-walkthrough" class="nav-link" data-scroll-target="#why-these-two-recipes-are-built-into-the-walkthrough">Why these two recipes are built into the walkthrough</a></li>
-  <li><a href="#how-the-cached-intermediates-work" id="toc-how-the-cached-intermediates-work" class="nav-link" data-scroll-target="#how-the-cached-intermediates-work">How the cached intermediates work</a></li>
+  <li><a href="#cached-intermediates" id="toc-cached-intermediates" class="nav-link" data-scroll-target="#cached-intermediates">Cached intermediates</a></li>
+  <li><a href="#recipe-inventory" id="toc-recipe-inventory" class="nav-link" data-scroll-target="#recipe-inventory">Recipe inventory</a>
+  <ul class="collapse">
+  <li><a href="#core-12-recipes" id="toc-core-12-recipes" class="nav-link" data-scroll-target="#core-12-recipes">Core (12 recipes)</a></li>
+  <li><a href="#ecology-8-recipes" id="toc-ecology-8-recipes" class="nav-link" data-scroll-target="#ecology-8-recipes">Ecology (8 recipes)</a></li>
+  <li><a href="#life-history-2-recipes" id="toc-life-history-2-recipes" class="nav-link" data-scroll-target="#life-history-2-recipes">Life History (2 recipes)</a></li>
+  <li><a href="#pattern-3-recipes" id="toc-pattern-3-recipes" class="nav-link" data-scroll-target="#pattern-3-recipes">Pattern (3 recipes)</a></li>
+  <li><a href="#advanced-7-recipes" id="toc-advanced-7-recipes" class="nav-link" data-scroll-target="#advanced-7-recipes">Advanced (7 recipes)</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -361,56 +333,260 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This site mirrors the <strong>student experience</strong> of receiving a FishView bundle and running it through the project recipe book. The clade is <strong>Chaetodontidae</strong> (butterflyfishes), the same dataset used for the published divergence analysis <a href="file:///Users/michaelalfaro/Dropbox/git/chaets-divergence-2026/analysis/chaet_divergence_analysis_enhanced.html">here</a>.</p>
-<p>It exists so the TA and you can inspect <strong>recipe fidelity, step ordering, and figure quality</strong> without spinning up a student account on FishView. No student group is assigned to Chaetodontidae — this is purely instructor-facing.</p>
+<p>This site mirrors the <strong>student experience</strong> of receiving a FishView bundle and running it through the project recipe book. The clade is <strong>Chaetodontidae</strong> (butterflyfishes). It exists so the TA and instructor can inspect <strong>recipe fidelity, step ordering, and figure quality</strong> without spinning up a student account on FishView. No student group is assigned to Chaetodontidae — this is purely instructor-facing.</p>
 </div>
 </div>
 <section id="whats-in-the-bundle" class="level2">
 <h2 class="anchored" data-anchor-id="whats-in-the-bundle">What’s in the bundle</h2>
-<p>The <code>bundle/</code> directory matches the FishView “Export Bundle” layout that students get from their dashboard, plus two cached intermediates so the recipes render fast.</p>
+<p>The <code>bundle/</code> directory matches the FishView “Export Bundle” layout that students get from their dashboard, plus cached intermediates so recipes render fast.</p>
 <pre><code>bundle/
 ├── images/
-│   └── &lt;Genus_species&gt;.png      ← 130 exemplar PNGs
-├── chaetodontidae-tree.tre      ← 109-tip chronogram (crown ~43 Ma)
-├── picked_species.txt           ← exemplar list
-├── picked_tip_labels.txt        ← tree tips matching exemplars
+│   └── &lt;Genus_species&gt;.png      &lt;- 130 exemplar PNGs
+├── chaetodontidae-tree.tre      &lt;- 109-tip chronogram (crown ~43 Ma)
+├── picked_species.txt           &lt;- exemplar list
+├── picked_tip_labels.txt        &lt;- tree tips matching exemplars
+├── pavo_metrics.csv             &lt;- full pavo adjacency statistics
+├── chaet_traits.csv             &lt;- body_size_cm, trophic_level, depth from FishBase
+├── species_k_bg.csv             &lt;- gestalt_k and bg_class_id per species
 ├── README.txt
-├── pavo_classify.rds            ← cached pavo::classify (run once)
-└── phylo_pca.rds                ← cached phytools::phyl.pca (run once)</code></pre>
+├── pavo_classify.rds            &lt;- cached pavo::classify (run once)
+└── phylo_pca.rds                &lt;- cached phytools::phyl.pca (run once)</code></pre>
 </section>
-<section id="how-a-student-would-use-this" class="level2">
-<h2 class="anchored" data-anchor-id="how-a-student-would-use-this">How a student would use this</h2>
-<ol type="1">
-<li><strong>Know Your Clade</strong> → read the <a href="./clades/chaetodontidae.html">Chaetodontidae profile</a> for natural history context.</li>
-<li><strong>Recipes</strong> → run at minimum the three MVP recipes:
+<section id="cached-intermediates" class="level2">
+<h2 class="anchored" data-anchor-id="cached-intermediates">Cached intermediates</h2>
+<p>The recipes show the <strong>canonical pavo call</strong> as a code chunk, then load the cached <code>.rds</code>. To re-run from scratch, uncomment the live call and delete the matching <code>.rds</code>.</p>
+</section>
+<section id="recipe-inventory" class="level2">
+<h2 class="anchored" data-anchor-id="recipe-inventory">Recipe inventory</h2>
+<section id="core-12-recipes" class="level3">
+<h3 class="anchored" data-anchor-id="core-12-recipes">Core (12 recipes)</h3>
+<p>All fully rendered with Chaetodontidae data.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Recipe</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="./recipes/core/color-gamut.html">Color Gamut</a></td>
+<td>RGB gamut from pavo::classify cluster centers</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/core/phylogenetic-signal.html">Phylogenetic Signal</a></td>
+<td>Blomberg’s K + Pagel’s lambda on pavo metrics and PC axes</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/core/rates-of-evolution.html">Rates of Evolution</a></td>
+<td>K values compared to published Alfaro et al.&nbsp;2019 benchmarks</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/core/axis-of-diversification.html">Axis of Diversification</a></td>
+<td>PhyloPCA biplot (PC1 x PC2) colored by genus with loading arrows</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/core/cross-family-comparison.html">Cross-Family Comparison</a></td>
+<td>Self-consistency check against published per-variable K values</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/core/measurement-robustness.html">Measurement Robustness</a></td>
+<td>Monte Carlo perturbation: 200 iterations of measurement noise</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/core/continuous-asr.html">Continuous ASR</a></td>
+<td>Ancestral state reconstruction of PhyloPC 1-3 with hero PDFs</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/core/phylomorphospace.html">Phylomorphospace</a></td>
+<td>Morphospace projection of species + ancestral nodes</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/core/phylogeny-with-traits.html">Phylogeny with Traits</a></td>
+<td>Tree with tip-colored trait bars</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/core/tree-with-images.html">Tree with Images</a></td>
+<td>Rectangular + fan tree layouts with exemplar photos at tips</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/core/node-heights-test.html">Node Heights Test</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/core/ggtree-visualization.html">ggtree Visualization</a></td>
+<td>Four ggtree sub-recipes: trait-colored, fan, clade highlight, tree+bar</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ecology-8-recipes" class="level3">
+<h3 class="anchored" data-anchor-id="ecology-8-recipes">Ecology (8 recipes)</h3>
+<p>Recipes using <code>chaet_traits.csv</code> data are fully rendered. Recipes needing additional FishBase fields show the code structure only.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Recipe</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="./recipes/ecology/depth-and-color.html">Depth and Color</a></td>
+<td>PGLS of Jc and m_dS vs log(depth)</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/ecology/body-size-complexity.html">Body Size and Complexity</a></td>
+<td>PGLS + Murray diagnostic: m vs body size</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/ecology/size-corrected-residuals.html">Size-Corrected Residuals</a></td>
+<td>Size correction then depth test on residuals</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/ecology/diet-conspicuousness.html">Diet and Conspicuousness</a></td>
+<td>PGLS of m_dS vs trophic level</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/ecology/vulnerability-crypsis.html">Vulnerability and Crypsis</a></td>
+<td>PGLS of m_dS vs vulnerability index</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/ecology/growth-rate-color.html">Growth Rate and Color</a></td>
+<td>PGLS of m_dS vs von Bertalanffy K</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/ecology/swimming-mode-pattern.html">Swimming Mode and Pattern</a></td>
+<td>PGLS of A vs caudal fin aspect ratio</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/ecology/latitude-gradient.html">Latitude Gradient</a></td>
+<td>PGLS of Jc vs absolute midpoint latitude</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="life-history-2-recipes" class="level3">
+<h3 class="anchored" data-anchor-id="life-history-2-recipes">Life History (2 recipes)</h3>
+<p>Both require FishBase fields not in the bundle. Code structure only.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Recipe</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="./recipes/life-history/sexual-system-complexity.html">Sexual System and Complexity</a></td>
+<td>Categorical PGLS: protogyny vs gonochorism</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/life-history/schooling-conspicuousness.html">Schooling and Conspicuousness</a></td>
+<td>Categorical PGLS: schooling vs solitary</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pattern-3-recipes" class="level3">
+<h3 class="anchored" data-anchor-id="pattern-3-recipes">Pattern (3 recipes)</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Recipe</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="./recipes/pattern/discrete-trait-mapping.html">Discrete Trait Mapping</a></td>
+<td>Eyespot presence mapped with ace() ASR</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/pattern/functional-hypothesis.html">Functional Hypothesis</a></td>
+<td>Aposematism test: conspicuousness vs defense</td>
+<td>Code only (needs rfishbase)</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/pattern/stripe-orientation.html">Stripe Orientation</a></td>
+<td>PGLS of pavo A vs depth</td>
+<td>Fully rendered</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="advanced-7-recipes" class="level3">
+<h3 class="anchored" data-anchor-id="advanced-7-recipes">Advanced (7 recipes)</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Recipe</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="./recipes/advanced/pgls-color-traits.html">PGLS Color-Traits</a></td>
+<td>Full PGLS regression of pavo vs ecological traits</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/advanced/evolutionary-model-comparison.html">Evolutionary Model Comparison</a></td>
+<td>BM vs OU vs EB on PC1 via geiger</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/advanced/expanded-model-comparison.html">Expanded Model Comparison</a></td>
+<td>8 models: BM, OU, EB, lambda, kappa, delta, trend, white</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/advanced/disparity-through-time.html">Disparity Through Time</a></td>
+<td>DTT analysis on 6 pavo metrics with MDI</td>
+<td>Fully rendered</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/advanced/clads-diversification.html">ClaDS Diversification</a></td>
+<td>ClaDS1 lineage-specific speciation rates</td>
+<td>Code only (long runtime)</td>
+</tr>
+<tr class="even">
+<td><a href="./recipes/advanced/rate-trait-correlation.html">Rate-Trait Correlation</a></td>
+<td>PGLS of color vs log(speciation rate)</td>
+<td>Code only (needs ClaDS output)</td>
+</tr>
+<tr class="odd">
+<td><a href="./recipes/advanced/biogeographic-color.html">Biogeographic Color</a></td>
+<td>Atlantic vs Indo-Pacific Jc comparison</td>
+<td>Code only (needs basin coding)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <ul>
-<li><strong>Foundation Recipe</strong>: <a href="./recipes/core/color-gamut.html">Color Gamut</a></li>
-<li><strong>R1</strong>: Phylogenetic Signal <em>(not built into this walkthrough — students run on student site)</em></li>
-<li><strong>R3</strong>: Axis of Diversification <em>(not built into this walkthrough — students run on student site)</em></li>
-</ul></li>
-<li><strong>Plus 1-2 electives.</strong> This walkthrough shows <a href="./recipes/core/continuous-asr.html">Continuous ASR</a> as an elective example.</li>
-<li><strong>Workbench</strong> → upload qmd + bundle, render, and pull the rendered HTML + figures into a poster.</li>
-</ol>
-</section>
-<section id="why-these-two-recipes-are-built-into-the-walkthrough" class="level2">
-<h2 class="anchored" data-anchor-id="why-these-two-recipes-are-built-into-the-walkthrough">Why these two recipes are built into the walkthrough</h2>
-<p>The user asked specifically to see:</p>
-<ol type="1">
-<li><strong>A color gamut in RGB space</strong> built from the <code>pavo::classify</code> cluster centers (background excluded), and</li>
-<li><strong>Ancestral state reconstruction of PhyloPC 1–3</strong> on the pavo metrics, on the exemplar tree.</li>
-</ol>
-<p>These touch the two ends of the project workflow — gamut sits at the “what colors are in the clade?” end, ASR sits at the “how have those colors evolved?” end.</p>
-</section>
-<section id="how-the-cached-intermediates-work" class="level2">
-<h2 class="anchored" data-anchor-id="how-the-cached-intermediates-work">How the cached intermediates work</h2>
-<p>The recipes show the <strong>canonical pavo call</strong> as a code chunk, then comment it out and load the cached <code>.rds</code>. To re-run from scratch (e.g., if you change the exemplar set), uncomment the live call and delete the matching <code>.rds</code>. This keeps recipe code visible without paying the ~15-minute classify cost on every knit.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Canonical call (commented in recipe; run once to seed the cache):</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># classified &lt;- lapply(seq_len(nrow(inv)), function(i) {</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   img &lt;- pavo::getimg(file.path("bundle/images", paste0(inv$species_dir[i], ".png")))</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   pavo::classify(img, kcols = inv$gestalt_k[i])</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(classified, "bundle/pavo_classify.rds")</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>classified <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"bundle/pavo_classify.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li><strong>Total recipes:</strong> 32 (12 Core + 8 Ecology + 2 Life History + 3 Pattern + 7 Advanced)</li>
+<li><strong>Fully rendered with chaet data:</strong> 20</li>
+<li><strong>Code structure only (missing data):</strong> 12</li>
+<li><strong>All recipes have the same structure:</strong> callout header, narrative, executable chunks, interpretation, output-files table</li>
+</ul>
 
 
 </section>
