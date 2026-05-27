@@ -4130,7 +4130,7 @@
     "href": "poster/final-project.html#download-the-poster-template",
     "title": "Final Project — Poster",
     "section": "Download the Poster Template",
-    "text": "Download the Poster Template\nYour poster should be 48 inches wide x 36 inches tall (landscape). This fits the Bruin Copy Center large-format printer at the $51 rate (up to 42” on the short side).\n\n\n\n\n\n\nTemplate\n\n\n\nDownload the PowerPoint template below. It has placeholder panels pre-sized to poster dimensions with labeled zones for each analysis figure. Replace the placeholders with your hero PDFs.\nDownload poster-template-48x36.pptx",
+    "text": "Download the Poster Template\nYour poster should be 48 inches wide x 36 inches tall (landscape). This fits the Bruin Copy Center large-format printer at the $51 rate (up to 42” on the short side).\n\n\n\n\n\n\nTemplate\n\n\n\nDownload the PowerPoint template below. It uses UCLA brand colors and has the standard scientific poster layout with labeled placeholder zones for each section and figure. Replace the placeholders with your own text and hero PDFs.\nDownload poster-template-48x36.pptx",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"
@@ -4141,7 +4141,7 @@
     "href": "poster/final-project.html#workflow-bundle-to-poster",
     "title": "Final Project — Poster",
     "section": "Workflow: Bundle to Poster",
-    "text": "Workflow: Bundle to Poster\n\n\n\n\n\nflowchart LR\n    A[\"FishView&lt;br/&gt;Export Bundle\"] --&gt; B[\"Run Recipes&lt;br/&gt;(color gamut,&lt;br/&gt;phyloPCA, ASR,&lt;br/&gt;PGLS)\"]\n    B --&gt; C[\"Generate&lt;br/&gt;Hero PDFs\"]\n    C --&gt; D[\"Drop into&lt;br/&gt;Poster Template\"]\n    D --&gt; E[\"Fill Text&lt;br/&gt;& Print\"]\n\n\n\n\n\n\n\nExport your bundle from the FishView dashboard. The HYBRID layout gives you flat PNGs at images/&lt;Genus_species&gt;.png and per-species replicate folders.\nRun recipes — at minimum the three required recipes, plus 1–2 electives.\nGenerate hero PDFs — each recipe ends with a “hero figure” code chunk that exports a poster-ready PDF at the right dimensions. Run those chunks.\nDrop hero PDFs into the template — open the PPTX, delete the placeholder image in each panel, insert your hero PDF (or PNG at 300 dpi).\nFill in the text — title, authors, introduction (3–4 sentences), methods (pipeline summary), conclusions (2–3 bullets), references (3–5), acknowledgments.",
+    "text": "Workflow: Bundle to Poster\n\n\n\n\n\nflowchart LR\n    A[\"FishView&lt;br/&gt;Export Bundle\"] --&gt; B[\"Run Recipes&lt;br/&gt;(color gamut,&lt;br/&gt;phyloPCA, ASR,&lt;br/&gt;PGLS)\"]\n    B --&gt; C[\"Generate&lt;br/&gt;Hero PDFs\"]\n    C --&gt; D[\"Drop into&lt;br/&gt;Poster Template\"]\n    D --&gt; E[\"Fill Text&lt;br/&gt;& Print\"]\n\n\n\n\n\n\n\nExport your bundle from the FishView dashboard. The HYBRID layout gives you flat PNGs at images/&lt;Genus_species&gt;.png and per-species replicate folders.\nRun recipes — at minimum the three required recipes, plus 1–2 electives.\nGenerate hero PDFs — each recipe ends with a “hero figure” code chunk that exports a poster-ready PDF at the right dimensions. Run those chunks.\nDrop hero PDFs into the template — open the PPTX, delete the gray placeholder in the Results column, insert your hero PDF (or PNG at 300 dpi).\nFill in all text sections — title, authors, introduction, hypothesis, methods, figure captions, discussion, conclusions, future directions, references, acknowledgments.",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"
@@ -4163,7 +4163,7 @@
     "href": "poster/final-project.html#poster-layout-48-x-36-in",
     "title": "Final Project — Poster",
     "section": "Poster Layout (48 x 36 in)",
-    "text": "Poster Layout (48 x 36 in)\n+------------------------------------------------------------------+\n|                 TITLE  (72-96 pt bold)                            |\n|          Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026            |\n+---------------+------------------+-------------------------------+\n|               |                  |                               |\n|  PANEL A      |   PANEL B        |    PANEL D                    |\n|  Color Gamut  |   Phylomorph.    |    PGLS Scatters              |\n|  (~12 x 9\")   |   (~12 x 9\")     |    (~12 x 24\")                |\n|               |                  |                               |\n+---------------+------------------+                               |\n|                                  |                               |\n|  PANEL C                         |                               |\n|  Phylogeny + Traits              |                               |\n|  (~28 x 20\")                     +-------------------------------+\n|  THE BIG HERO                    |  References / Acknowledgments |\n|                                  |  Methods (compact)            |\n+----------------------------------+-------------------------------+",
+    "text": "Poster Layout (48 x 36 in)\n+====================================================================+\n|  [UCLA LOGO]    TITLE (72pt white on UCLA Blue)     [EEB 187 2026] |\n|                 Authors · Dept of EEB · UCLA                       |\n+============================ GOLD STRIPE ===========================+\n|                    |                        |                      |\n|  INTRODUCTION      |  RESULTS               |  DISCUSSION          |\n|  (3-4 bullets)     |                        |  (3-4 sentences)     |\n|                    |  ┌──────┐  ┌────────┐  |                      |\n|  RESEARCH QUESTION |  │Fig 1 │  │ Fig 2  │  |  CONCLUSIONS         |\n|  (1-2 sentences)   |  │Gamut │  │PhyloPC │  |  (2-3 bullets)       |\n|                    |  └──────┘  └────────┘  |                      |\n|  HYPOTHESIS        |                        |  FUTURE DIRECTIONS   |\n|  (2-3 predictions) |  ┌────────────────────┐|  (1-2 sentences)     |\n|                    |  │                    │|                      |\n|  METHODS           |  │   Fig 3            │|  REFERENCES          |\n|  (pipeline         |  │   Phylogeny +      │|  (3-5 citations)     |\n|   summary)         |  │   Traits (HERO)    │|                      |\n|                    |  │                    │|                      |\n|                    |  └────────────────────┘|  ┌────────────────┐  |\n|                    |                        |  │ Fig 4: PGLS    │  |\n|                    |                        |  │ scatters       │  |\n|                    |                        |  └────────────────┘  |\n+====================================================================+\n|  ACKNOWLEDGMENTS (white text on UCLA Blue)                         |\n+====================================================================+",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"
@@ -4185,7 +4185,7 @@
     "href": "poster/final-project.html#what-makes-a-good-poster",
     "title": "Final Project — Poster",
     "section": "What Makes a Good Poster",
-    "text": "What Makes a Good Poster\nSee the full Poster Design Guide for:\n\nFont size hierarchy (title 72–96 pt, body 24–28 pt)\nColor palette options (reef warm, ocean cool, diverging)\nCommon mistakes and fixes\nggplot2 poster theme\nFigure export instructions\n\nSee the Milestone Checklist to track your progress.",
+    "text": "What Makes a Good Poster\nSee the full Poster Design Guide for:\n\nFont size hierarchy (title 72pt, headers 36pt, body 24pt, captions 20pt)\nColor palette options\nCommon mistakes and fixes\nggplot2 poster theme\nFigure export instructions\n\nSee the Milestone Checklist to track your progress.",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"
@@ -4196,7 +4196,7 @@
     "href": "poster/final-project.html#swapping-hero-figures",
     "title": "Final Project — Poster",
     "section": "Swapping Hero Figures",
-    "text": "Swapping Hero Figures\nIf your analysis changes or you run additional recipes:\n\nRe-run the hero-PDF chunk in the relevant recipe\nIn the PPTX, right-click the panel image → Change Picture → select your new PDF/PNG\nResize to fill the panel (maintain aspect ratio)\n\nEach panel in the template is labeled so you know which recipe output goes where.\n\nEEB 187 — Ecology and Evolution of Color — Spring 2026 — Dr. Michael Alfaro",
+    "text": "Swapping Hero Figures\nIf your analysis changes or you run additional recipes:\n\nRe-run the hero-PDF chunk in the relevant recipe\nIn the PPTX, right-click the figure image in the Results column → Change Picture → select your new PDF/PNG\nResize to fill the placeholder area (maintain aspect ratio)\n\nEach placeholder in the template is labeled with gray text so you know which figure goes where.\n\nEEB 187 — Ecology and Evolution of Color — Spring 2026 — Dr. Michael Alfaro",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"
@@ -4208,6 +4208,28 @@
     "title": "Final Project — Poster",
     "section": "Example: Completed Poster (Chaetodontidae)",
     "text": "Example: Completed Poster (Chaetodontidae)\nHere is a completed example poster using the Chaetodontidae instructor dataset. Use it as a reference for layout, figure placement, and the level of detail expected in each text section.\n\n\n\n\n\n\nInstructor Example\n\n\n\nDownload poster-template-48x36-chaet-filled.pptx — filled poster with all four hero figures and complete text for butterflyfishes.",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#poster-sections",
+    "href": "poster/final-project.html#poster-sections",
+    "title": "Final Project — Poster",
+    "section": "Poster Sections",
+    "text": "Poster Sections\nThe template follows the standard UCLA scientific poster format with three columns:\n\nColumn 1 — Left (Text)\n\n\n\n\n\n\n\n\nSection\nWhat to write\nLength\n\n\n\n\nINTRODUCTION\nBackground on your clade + why color matters + what’s known\n3–4 bullet points\n\n\nRESEARCH QUESTION\nSingle sentence framing your central question\n1–2 sentences\n\n\nHYPOTHESIS\nTestable predictions with expected outcomes\n2–3 predictions\n\n\nMETHODS\npavo pipeline, PCM approach, tree source, R packages\n5–6 bullet points\n\n\n\n\n\nColumn 2 — Center (Results / Figures)\nThis is the visual core of the poster. Drop your hero PDFs here.\n\n\n\nFigure\nRecipe source\nHero PDF name\n\n\n\n\nFig 1: Color Gamut\nColor Gamut\ncolor-gamut-hero.pdf\n\n\nFig 2: Phylomorphospace\nPhylomorphospace (core recipe)\nphylomorphospace-PC1-PC2-hero.pdf\n\n\nFig 3: Phylogeny + Traits\nPhylogeny with Traits (core recipe)\nphylogeny-with-traits-hero.pdf\n\n\nFig 4: PGLS\nRate–Trait Correlation\npgls-color-traits-hero.pdf\n\n\n\nEach figure needs a caption below it (italic, 20pt) explaining what is shown.\n\n\nColumn 3 — Right (Interpretation)\n\n\n\n\n\n\n\n\nSection\nWhat to write\nLength\n\n\n\n\nDISCUSSION\nInterpret results, compare to other clades, explain patterns\n3–4 sentences\n\n\nCONCLUSIONS\nKey takeaway bullets\n2–3 bullets\n\n\nFUTURE DIRECTIONS\nNext steps or new questions raised\n1–2 sentences\n\n\nREFERENCES\nKey citations in APA format\n3–5 references\n\n\n\n\n\nHeader and Footer\n\n\n\n\n\n\n\nElement\nDetails\n\n\n\n\nHeader (UCLA Blue bar)\nTitle (72pt white bold), authors, “Dept of EEB, UCLA”\n\n\nGold accent stripe\nThin UCLA Gold line below header\n\n\nFooter (UCLA Blue bar)\nAcknowledgments in white text",
+    "crumbs": [
+      "Final Project",
+      "Final Project — Poster"
+    ]
+  },
+  {
+    "objectID": "poster/final-project.html#ucla-brand-colors",
+    "href": "poster/final-project.html#ucla-brand-colors",
+    "title": "Final Project — Poster",
+    "section": "UCLA Brand Colors",
+    "text": "UCLA Brand Colors\nThe template uses the official UCLA color palette:\n\n\n\n\n\n\n\n\nColor\nHex\nUsed for\n\n\n\n\nUCLA Blue (dark)\n#003B5C\nHeader bar, footer bar, section headers\n\n\nUCLA Blue (medium)\n#2774AE\nAccents\n\n\nUCLA Gold\n#FFD100\nAccent stripe, section underlines\n\n\nWhite\n#FFFFFF\nBody background, header/footer text\n\n\nBody text\n#333333\nAll body text\n\n\n\nUse a white background for the poster body. Dark backgrounds reduce readability and waste ink.",
     "crumbs": [
       "Final Project",
       "Final Project — Poster"

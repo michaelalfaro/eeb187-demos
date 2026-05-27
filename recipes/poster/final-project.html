@@ -334,8 +334,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#download-the-poster-template" id="toc-download-the-poster-template" class="nav-link active" data-scroll-target="#download-the-poster-template">Download the Poster Template</a></li>
   <li><a href="#example-completed-poster-chaetodontidae" id="toc-example-completed-poster-chaetodontidae" class="nav-link" data-scroll-target="#example-completed-poster-chaetodontidae">Example: Completed Poster (Chaetodontidae)</a></li>
   <li><a href="#workflow-bundle-to-poster" id="toc-workflow-bundle-to-poster" class="nav-link" data-scroll-target="#workflow-bundle-to-poster">Workflow: Bundle to Poster</a></li>
-  <li><a href="#poster-panels" id="toc-poster-panels" class="nav-link" data-scroll-target="#poster-panels">Poster Panels</a></li>
+  <li><a href="#poster-sections" id="toc-poster-sections" class="nav-link" data-scroll-target="#poster-sections">Poster Sections</a>
+  <ul class="collapse">
+  <li><a href="#column-1-left-text" id="toc-column-1-left-text" class="nav-link" data-scroll-target="#column-1-left-text">Column 1 — Left (Text)</a></li>
+  <li><a href="#column-2-center-results-figures" id="toc-column-2-center-results-figures" class="nav-link" data-scroll-target="#column-2-center-results-figures">Column 2 — Center (Results / Figures)</a></li>
+  <li><a href="#column-3-right-interpretation" id="toc-column-3-right-interpretation" class="nav-link" data-scroll-target="#column-3-right-interpretation">Column 3 — Right (Interpretation)</a></li>
+  <li><a href="#header-and-footer" id="toc-header-and-footer" class="nav-link" data-scroll-target="#header-and-footer">Header and Footer</a></li>
+  </ul></li>
   <li><a href="#poster-layout-48-x-36-in" id="toc-poster-layout-48-x-36-in" class="nav-link" data-scroll-target="#poster-layout-48-x-36-in">Poster Layout (48 x 36 in)</a></li>
+  <li><a href="#ucla-brand-colors" id="toc-ucla-brand-colors" class="nav-link" data-scroll-target="#ucla-brand-colors">UCLA Brand Colors</a></li>
   <li><a href="#printing" id="toc-printing" class="nav-link" data-scroll-target="#printing">Printing</a></li>
   <li><a href="#what-makes-a-good-poster" id="toc-what-makes-a-good-poster" class="nav-link" data-scroll-target="#what-makes-a-good-poster">What Makes a Good Poster</a></li>
   <li><a href="#swapping-hero-figures" id="toc-swapping-hero-figures" class="nav-link" data-scroll-target="#swapping-hero-figures">Swapping Hero Figures</a></li>
@@ -410,7 +417,7 @@ Template
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Download the PowerPoint template below. It has placeholder panels pre-sized to poster dimensions with labeled zones for each analysis figure. Replace the placeholders with your hero PDFs.</p>
+<p>Download the PowerPoint template below. It uses <strong>UCLA brand colors</strong> and has the standard scientific poster layout with labeled placeholder zones for each section and figure. Replace the placeholders with your own text and hero PDFs.</p>
 <p><strong><a href="poster-template-48x36.pptx">Download poster-template-48x36.pptx</a></strong></p>
 </div>
 </div>
@@ -454,70 +461,230 @@ Instructor Example
 <li><strong>Export your bundle</strong> from the FishView dashboard. The HYBRID layout gives you flat PNGs at <code>images/&lt;Genus_species&gt;.png</code> and per-species replicate folders.</li>
 <li><strong>Run recipes</strong> — at minimum the <a href="../index.html#minimum-viable-project">three required recipes</a>, plus 1–2 electives.</li>
 <li><strong>Generate hero PDFs</strong> — each recipe ends with a “hero figure” code chunk that exports a poster-ready PDF at the right dimensions. Run those chunks.</li>
-<li><strong>Drop hero PDFs into the template</strong> — open the PPTX, delete the placeholder image in each panel, insert your hero PDF (or PNG at 300 dpi).</li>
-<li><strong>Fill in the text</strong> — title, authors, introduction (3–4 sentences), methods (pipeline summary), conclusions (2–3 bullets), references (3–5), acknowledgments.</li>
+<li><strong>Drop hero PDFs into the template</strong> — open the PPTX, delete the gray placeholder in the Results column, insert your hero PDF (or PNG at 300 dpi).</li>
+<li><strong>Fill in all text sections</strong> — title, authors, introduction, hypothesis, methods, figure captions, discussion, conclusions, future directions, references, acknowledgments.</li>
 </ol>
 </section>
-<section id="poster-panels" class="level2">
-<h2 class="anchored" data-anchor-id="poster-panels">Poster Panels</h2>
-<p>The template has <strong>four analysis panels</strong> arranged left-to-right across the poster:</p>
+<section id="poster-sections" class="level2">
+<h2 class="anchored" data-anchor-id="poster-sections">Poster Sections</h2>
+<p>The template follows the <strong>standard UCLA scientific poster format</strong> with three columns:</p>
+<section id="column-1-left-text" class="level3">
+<h3 class="anchored" data-anchor-id="column-1-left-text">Column 1 — Left (Text)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 45%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Section</th>
+<th>What to write</th>
+<th>Length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>INTRODUCTION</strong></td>
+<td>Background on your clade + why color matters + what’s known</td>
+<td>3–4 bullet points</td>
+</tr>
+<tr class="even">
+<td><strong>RESEARCH QUESTION</strong></td>
+<td>Single sentence framing your central question</td>
+<td>1–2 sentences</td>
+</tr>
+<tr class="odd">
+<td><strong>HYPOTHESIS</strong></td>
+<td>Testable predictions with expected outcomes</td>
+<td>2–3 predictions</td>
+</tr>
+<tr class="even">
+<td><strong>METHODS</strong></td>
+<td>pavo pipeline, PCM approach, tree source, R packages</td>
+<td>5–6 bullet points</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="column-2-center-results-figures" class="level3">
+<h3 class="anchored" data-anchor-id="column-2-center-results-figures">Column 2 — Center (Results / Figures)</h3>
+<p>This is the visual core of the poster. Drop your hero PDFs here.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Panel</th>
-<th>What goes here</th>
+<th>Figure</th>
 <th>Recipe source</th>
 <th>Hero PDF name</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>A</strong> — Color Gamut</td>
-<td>3D RGB convex hull showing your clade’s color diversity</td>
+<td><strong>Fig 1: Color Gamut</strong></td>
 <td><a href="../recipes/core/color-gamut.html">Color Gamut</a></td>
 <td><code>color-gamut-hero.pdf</code></td>
 </tr>
 <tr class="even">
-<td><strong>B</strong> — Phylomorphospace</td>
-<td>PC1 x PC2 biplot with fish images at each species point</td>
+<td><strong>Fig 2: Phylomorphospace</strong></td>
 <td>Phylomorphospace (core recipe)</td>
 <td><code>phylomorphospace-PC1-PC2-hero.pdf</code></td>
 </tr>
 <tr class="odd">
-<td><strong>C</strong> — Phylogeny + Traits</td>
-<td>Ladderized tree with PC1 ASR branches, tip images, and trait columns (PC1–3 circles + ecology variables)</td>
+<td><strong>Fig 3: Phylogeny + Traits</strong></td>
 <td>Phylogeny with Traits (core recipe)</td>
 <td><code>phylogeny-with-traits-hero.pdf</code></td>
 </tr>
 <tr class="even">
-<td><strong>D</strong> — PGLS Results</td>
-<td>Partial-residual scatter plots testing whether color predicts ecology</td>
-<td><a href="../recipes/advanced/rate-trait-correlation.html">Rate–Trait Correlation</a> or PGLS Color–Traits recipe</td>
+<td><strong>Fig 4: PGLS</strong></td>
+<td><a href="../recipes/advanced/rate-trait-correlation.html">Rate–Trait Correlation</a></td>
 <td><code>pgls-color-traits-hero.pdf</code></td>
 </tr>
 </tbody>
 </table>
-<p>Panel <strong>C</strong> is the visual hero — give it the most space. Panels A and B sit in the top row; D sits in the right column below B.</p>
+<p>Each figure needs a caption below it (italic, 20pt) explaining what is shown.</p>
+</section>
+<section id="column-3-right-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="column-3-right-interpretation">Column 3 — Right (Interpretation)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 45%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Section</th>
+<th>What to write</th>
+<th>Length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>DISCUSSION</strong></td>
+<td>Interpret results, compare to other clades, explain patterns</td>
+<td>3–4 sentences</td>
+</tr>
+<tr class="even">
+<td><strong>CONCLUSIONS</strong></td>
+<td>Key takeaway bullets</td>
+<td>2–3 bullets</td>
+</tr>
+<tr class="odd">
+<td><strong>FUTURE DIRECTIONS</strong></td>
+<td>Next steps or new questions raised</td>
+<td>1–2 sentences</td>
+</tr>
+<tr class="even">
+<td><strong>REFERENCES</strong></td>
+<td>Key citations in APA format</td>
+<td>3–5 references</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="header-and-footer" class="level3">
+<h3 class="anchored" data-anchor-id="header-and-footer">Header and Footer</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Header</strong> (UCLA Blue bar)</td>
+<td>Title (72pt white bold), authors, “Dept of EEB, UCLA”</td>
+</tr>
+<tr class="even">
+<td><strong>Gold accent stripe</strong></td>
+<td>Thin UCLA Gold line below header</td>
+</tr>
+<tr class="odd">
+<td><strong>Footer</strong> (UCLA Blue bar)</td>
+<td>Acknowledgments in white text</td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 <section id="poster-layout-48-x-36-in" class="level2">
 <h2 class="anchored" data-anchor-id="poster-layout-48-x-36-in">Poster Layout (48 x 36 in)</h2>
-<pre><code>+------------------------------------------------------------------+
-|                 TITLE  (72-96 pt bold)                            |
-|          Authors  ·  EEB 187  ·  UCLA  ·  Spring 2026            |
-+---------------+------------------+-------------------------------+
-|               |                  |                               |
-|  PANEL A      |   PANEL B        |    PANEL D                    |
-|  Color Gamut  |   Phylomorph.    |    PGLS Scatters              |
-|  (~12 x 9")   |   (~12 x 9")     |    (~12 x 24")                |
-|               |                  |                               |
-+---------------+------------------+                               |
-|                                  |                               |
-|  PANEL C                         |                               |
-|  Phylogeny + Traits              |                               |
-|  (~28 x 20")                     +-------------------------------+
-|  THE BIG HERO                    |  References / Acknowledgments |
-|                                  |  Methods (compact)            |
-+----------------------------------+-------------------------------+</code></pre>
+<pre><code>+====================================================================+
+|  [UCLA LOGO]    TITLE (72pt white on UCLA Blue)     [EEB 187 2026] |
+|                 Authors · Dept of EEB · UCLA                       |
++============================ GOLD STRIPE ===========================+
+|                    |                        |                      |
+|  INTRODUCTION      |  RESULTS               |  DISCUSSION          |
+|  (3-4 bullets)     |                        |  (3-4 sentences)     |
+|                    |  ┌──────┐  ┌────────┐  |                      |
+|  RESEARCH QUESTION |  │Fig 1 │  │ Fig 2  │  |  CONCLUSIONS         |
+|  (1-2 sentences)   |  │Gamut │  │PhyloPC │  |  (2-3 bullets)       |
+|                    |  └──────┘  └────────┘  |                      |
+|  HYPOTHESIS        |                        |  FUTURE DIRECTIONS   |
+|  (2-3 predictions) |  ┌────────────────────┐|  (1-2 sentences)     |
+|                    |  │                    │|                      |
+|  METHODS           |  │   Fig 3            │|  REFERENCES          |
+|  (pipeline         |  │   Phylogeny +      │|  (3-5 citations)     |
+|   summary)         |  │   Traits (HERO)    │|                      |
+|                    |  │                    │|                      |
+|                    |  └────────────────────┘|  ┌────────────────┐  |
+|                    |                        |  │ Fig 4: PGLS    │  |
+|                    |                        |  │ scatters       │  |
+|                    |                        |  └────────────────┘  |
++====================================================================+
+|  ACKNOWLEDGMENTS (white text on UCLA Blue)                         |
++====================================================================+</code></pre>
+</section>
+<section id="ucla-brand-colors" class="level2">
+<h2 class="anchored" data-anchor-id="ucla-brand-colors">UCLA Brand Colors</h2>
+<p>The template uses the official UCLA color palette:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 22%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Color</th>
+<th>Hex</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>UCLA Blue (dark)</td>
+<td><code>#003B5C</code></td>
+<td>Header bar, footer bar, section headers</td>
+</tr>
+<tr class="even">
+<td>UCLA Blue (medium)</td>
+<td><code>#2774AE</code></td>
+<td>Accents</td>
+</tr>
+<tr class="odd">
+<td>UCLA Gold</td>
+<td><code>#FFD100</code></td>
+<td>Accent stripe, section underlines</td>
+</tr>
+<tr class="even">
+<td>White</td>
+<td><code>#FFFFFF</code></td>
+<td>Body background, header/footer text</td>
+</tr>
+<tr class="odd">
+<td>Body text</td>
+<td><code>#333333</code></td>
+<td>All body text</td>
+</tr>
+</tbody>
+</table>
+<p>Use a <strong>white background</strong> for the poster body. Dark backgrounds reduce readability and waste ink.</p>
 </section>
 <section id="printing" class="level2">
 <h2 class="anchored" data-anchor-id="printing">Printing</h2>
@@ -532,8 +699,8 @@ Instructor Example
 <h2 class="anchored" data-anchor-id="what-makes-a-good-poster">What Makes a Good Poster</h2>
 <p>See the full <a href="../poster/poster-tips.html">Poster Design Guide</a> for:</p>
 <ul>
-<li>Font size hierarchy (title 72–96 pt, body 24–28 pt)</li>
-<li>Color palette options (reef warm, ocean cool, diverging)</li>
+<li>Font size hierarchy (title 72pt, headers 36pt, body 24pt, captions 20pt)</li>
+<li>Color palette options</li>
 <li>Common mistakes and fixes</li>
 <li>ggplot2 poster theme</li>
 <li>Figure export instructions</li>
@@ -545,10 +712,10 @@ Instructor Example
 <p>If your analysis changes or you run additional recipes:</p>
 <ol type="1">
 <li>Re-run the hero-PDF chunk in the relevant recipe</li>
-<li>In the PPTX, right-click the panel image → <strong>Change Picture</strong> → select your new PDF/PNG</li>
-<li>Resize to fill the panel (maintain aspect ratio)</li>
+<li>In the PPTX, right-click the figure image in the Results column → <strong>Change Picture</strong> → select your new PDF/PNG</li>
+<li>Resize to fill the placeholder area (maintain aspect ratio)</li>
 </ol>
-<p>Each panel in the template is labeled so you know which recipe output goes where.</p>
+<p>Each placeholder in the template is labeled with gray text so you know which figure goes where.</p>
 <hr>
 <p><em>EEB 187 — Ecology and Evolution of Color — Spring 2026 — Dr.&nbsp;Michael Alfaro</em></p>
 
