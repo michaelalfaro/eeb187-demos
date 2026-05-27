@@ -352,20 +352,57 @@ Note
 </section>
 <section id="whats-in-the-bundle" class="level2">
 <h2 class="anchored" data-anchor-id="whats-in-the-bundle">What’s in the bundle</h2>
-<p>The <code>bundle/</code> directory matches the FishView “Export Bundle” layout that students get from their dashboard, plus cached intermediates so recipes render fast.</p>
-<pre><code>bundle/
-├── images/
-│   └── &lt;Genus_species&gt;.png      &lt;- 130 exemplar PNGs
-├── chaetodontidae-tree.tre      &lt;- 109-tip chronogram (crown ~43 Ma)
-├── picked_species.txt           &lt;- exemplar list
-├── picked_tip_labels.txt        &lt;- tree tips matching exemplars
-├── pavo_metrics.csv             &lt;- full pavo adjacency statistics
-├── chaet_traits.csv             &lt;- body_size_cm, trophic_level, depth from FishBase
-├── chaet_master_traits.csv      &lt;- extended traits: vulnerability, K, AR, lat, regions
-├── species_k_bg.csv             &lt;- gestalt_k and bg_class_id per species
-├── README.txt
-├── pavo_classify.rds            &lt;- cached pavo::classify (run once)
-└── phylo_pca.rds                &lt;- cached phytools::phyl.pca (run once)</code></pre>
+<p>The <code>bundle/</code> directory matches the FishView “Export Bundle” layout that students get from their dashboard, plus cached intermediates so recipes render fast. Click any file to download.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="bundle/chaetodontidae-tree.tre"><code>chaetodontidae-tree.tre</code></a></td>
+<td>109-tip chronogram (crown ~43 Ma)</td>
+</tr>
+<tr class="even">
+<td><a href="bundle/picked_species.txt"><code>picked_species.txt</code></a></td>
+<td>Exemplar species list (130 species)</td>
+</tr>
+<tr class="odd">
+<td><a href="bundle/picked_tip_labels.txt"><code>picked_tip_labels.txt</code></a></td>
+<td>Tree tips matching exemplars</td>
+</tr>
+<tr class="even">
+<td><a href="bundle/pavo_metrics.csv"><code>pavo_metrics.csv</code></a></td>
+<td>Full pavo adjacency statistics</td>
+</tr>
+<tr class="odd">
+<td><a href="bundle/chaet_traits.csv"><code>chaet_traits.csv</code></a></td>
+<td>Body size, trophic level, depth from FishBase</td>
+</tr>
+<tr class="even">
+<td><a href="bundle/chaet_master_traits.csv"><code>chaet_master_traits.csv</code></a></td>
+<td>Extended traits: vulnerability, K, AR, latitude, regions</td>
+</tr>
+<tr class="odd">
+<td><a href="bundle/README.txt"><code>README.txt</code></a></td>
+<td>Bundle contents and provenance</td>
+</tr>
+<tr class="even">
+<td><code>pavo_classify.rds</code></td>
+<td>Cached <code>pavo::classify</code> output (run once)</td>
+</tr>
+<tr class="odd">
+<td><code>phylo_pca.rds</code></td>
+<td>Cached <code>phytools::phyl.pca</code> output (run once)</td>
+</tr>
+<tr class="even">
+<td><code>images/&lt;Genus_species&gt;.png</code></td>
+<td>130 exemplar PNGs (one per species)</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="cached-intermediates" class="level2">
 <h2 class="anchored" data-anchor-id="cached-intermediates">Cached intermediates</h2>
