@@ -187,6 +187,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -213,10 +216,68 @@ Ecology and Evolution of Color | Spring 2026
 <p><br></p>
 <p><span class="gold"><strong>Spring 2026</strong></span></p>
 <p>Dr.&nbsp;Michael Alfaro | UCLA Ecology &amp; Evolutionary Biology</p>
+<aside class="notes">
+<p><strong>Pacing note:</strong> Slides marked OPTIONAL can be skipped in a 25-minute session. These are the “In-Recipe Rendered Output” slides that duplicate information already on the “What the Output Looks Like” slides.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
-<section id="the-big-picture" class="slide level2 smaller" data-background-color="#1a1d2e">
-<h2>The Big Picture</h2>
-<p>Your poster tells a <span class="gold"><strong>STORY</strong></span>: Question -&gt; Data -&gt; Analysis -&gt; Answer</p>
+<section id="your-poster-tells-a-story" class="slide level2" data-background-color="#1a1d2e">
+<h2>Your Poster Tells a Story</h2>
+<div class="frame-panel">
+<p><span class="gold"><strong>Question</strong></span> → <span class="coral"><strong>Data</strong></span> → <span class="teal"><strong>Analysis</strong></span> → <span class="blue"><strong>Answer</strong></span></p>
+</div>
+<p><br></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 37%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Story beat</th>
+<th>Poster section</th>
+<th>Hero figure</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="gold"><strong>Question</strong></span></td>
+<td>Introduction + Hypothesis</td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td><span class="coral"><strong>Data</strong></span></td>
+<td>Panel A (Color Gamut)</td>
+<td>What colors does the clade have?</td>
+</tr>
+<tr class="odd">
+<td><span class="teal"><strong>Analysis</strong></span></td>
+<td>Panels B + C (Morphospace, Phylogeny)</td>
+<td>How is color structured?</td>
+</tr>
+<tr class="even">
+<td><span class="blue"><strong>Answer</strong></span></td>
+<td>Panel D (PGLS) + Discussion</td>
+<td>Does ecology predict color?</td>
+</tr>
+</tbody>
+</table>
+<div class="key-point">
+<p>A viewer should grasp the main finding from the hero figure + conclusion bullets alone (the <span class="coral"><strong>6-foot rule</strong></span>).</p>
+</div>
+</section>
+<section id="poster-layout" class="slide level2 smaller" data-background-color="#1a1d2e">
+<h2>Poster Layout</h2>
 <div class="poster-layout-ascii">
 <pre><code>0           13          26    29.5         48
 +-------------+-----------+-+-------------+   0
@@ -237,7 +298,7 @@ Ecology and Evolution of Color | Spring 2026
 |     FOOTER STRIP (methods, fe callouts)  |
 +---------------------+------+-------------+ 36</code></pre>
 </div>
-<p>The poster is 48” wide x 36” tall. Four hero figure panels fill the Results section. The text sections (Intro, Methods, Discussion, Conclusions) <strong>frame</strong> the figures.</p>
+<p>The poster is 48” wide x 36” tall. Four hero figure panels fill the Results section. The text sections (Intro, Methods, Discussion, Conclusions) <span class="gold"><strong>frame</strong></span> the figures.</p>
 </section>
 <section id="the-four-hero-figures" class="slide level2 smaller" data-background-color="#1a1d2e">
 <h2>The Four Hero Figures</h2>
@@ -305,10 +366,27 @@ Ecology and Evolution of Color | Spring 2026
 </section>
 <section id="workflow-overview" class="slide level2" data-background-color="#1a1d2e">
 <h2>Workflow Overview</h2>
-<div class="workflow-arrow">
-<p>Bundle Export -&gt; pavo classify (cached) -&gt; Run 4 Recipes -&gt; Hero PDFs -&gt; Poster</p>
+<div class="cell" data-reveal="true" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    A["FishView&lt;br/&gt;Export Bundle"] --&gt; B["Cached pavo&lt;br/&gt;classify + PCA"]
+    B --&gt; C["Run 4&lt;br/&gt;Recipes"]
+    C --&gt; D["Generate&lt;br/&gt;Hero PDFs"]
+    D --&gt; E["Drop into&lt;br/&gt;Template"]
+    E --&gt; F["Fill Text&lt;br/&gt;&amp; Print"]
+    style A fill:#d4a853,color:#1a1d2e
+    style C fill:#81b29a,color:#1a1d2e
+    style D fill:#6fa8dc,color:#1a1d2e
+    style F fill:#e07a5f,color:#1a1d2e
+</pre>
 </div>
-<p><br></p>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <ol type="1">
 <li><span class="gold"><strong>Bundle export</strong></span> — Students download their clade’s FishView bundle (HYBRID layout)</li>
 <li><span class="coral"><strong>pavo classify</strong></span> — Already cached as <code>pavo_classify.rds</code> and <code>phylo_pca.rds</code> (saves ~15 min)</li>
@@ -368,26 +446,20 @@ Ecology and Evolution of Color | Spring 2026
 </section>
 <section id="panel-a-code-load-pavo-data-extract-cluster-centers" class="slide level2" data-background-color="#1a1d2e">
 <h2>Panel A: Code — Load pavo Data + Extract Cluster Centers</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="do">## Load packages and the per-species annotation file</span></span>
-<span id="cb2-2"><a></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(pavo)</span>
-<span id="cb2-3"><a></a><span class="fu">library</span>(geometry);  <span class="fu">library</span>(scatterplot3d)</span>
-<span id="cb2-4"><a></a>BUNDLE <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb2-5"><a></a></span>
-<span id="cb2-6"><a></a>ann <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"species_k_bg.csv"</span>),</span>
-<span id="cb2-7"><a></a>                <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb2-8"><a></a>bg  <span class="ot">&lt;-</span> <span class="fu">setNames</span>(ann<span class="sc">$</span>bg_class_id, ann<span class="sc">$</span>species_dir)</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(pavo)</span>
+<span id="cb2-2"><a></a><span class="fu">library</span>(geometry);  <span class="fu">library</span>(scatterplot3d)</span>
+<span id="cb2-3"><a></a>BUNDLE <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb2-4"><a></a></span>
+<span id="cb2-5"><a></a><span class="do">## Load annotation + cached classify output</span></span>
+<span id="cb2-6"><a></a>ann        <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"species_k_bg.csv"</span>))</span>
+<span id="cb2-7"><a></a>bg         <span class="ot">&lt;-</span> <span class="fu">setNames</span>(ann<span class="sc">$</span>bg_class_id, ann<span class="sc">$</span>species_dir)</span>
+<span id="cb2-8"><a></a>classified <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_classify.rds"</span>))</span>
 <span id="cb2-9"><a></a></span>
-<span id="cb2-10"><a></a><span class="do">## Load the CACHED classify output -- students do NOT re-run pavo</span></span>
-<span id="cb2-11"><a></a>classified <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_classify.rds"</span>))</span>
-<span id="cb2-12"><a></a></span>
-<span id="cb2-13"><a></a><span class="do">## Extract non-background cluster centers as RGB triples</span></span>
-<span id="cb2-14"><a></a>get_palette <span class="ot">&lt;-</span> <span class="cf">function</span>(rimg_obj, bg_id) {</span>
-<span id="cb2-15"><a></a>  rgb_mat <span class="ot">&lt;-</span> <span class="fu">attr</span>(rimg_obj, <span class="st">"classRGB"</span>)   <span class="co"># k x 3 matrix</span></span>
-<span id="cb2-16"><a></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(rgb_mat)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb2-17"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(bg_id) <span class="sc">&amp;&amp;</span> bg_id <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> bg_id <span class="sc">&lt;=</span> <span class="fu">nrow</span>(rgb_mat))</span>
-<span id="cb2-18"><a></a>    rgb_mat <span class="ot">&lt;-</span> rgb_mat[<span class="sc">-</span>bg_id, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]  <span class="co"># DROP background</span></span>
-<span id="cb2-19"><a></a>  rgb_mat</span>
-<span id="cb2-20"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-10"><a></a><span class="do">## get_palette() extracts non-background cluster centers</span></span>
+<span id="cb2-11"><a></a><span class="do">## (see the full recipe for the helper function)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="muted">
+<p><span class="muted">See the full recipe for helper functions and setup code</span></p>
+</div>
 <div class="key-point">
 <p>This reads the cached <code>pavo::classify</code> output. Students do NOT need to re-run pavo. Each species contributes <code>k - 1</code> color points (minus the magenta background).</p>
 </div>
@@ -427,6 +499,10 @@ Ecology and Evolution of Color | Spring 2026
 <p><strong>Look for:</strong> Where in the cube does the clade live? Is the hull compact (narrow palette) or spread out (chromatic diversity)? For Chaetodontidae, the clade lives mostly in the <strong>yellow-orange-brown</strong> corner with extensions into bright <strong>white</strong> and dark <strong>black</strong>.</p>
 </div>
 </section>
+<section class="slide level2">
+
+<!-- OPTIONAL — skip in a 25-minute session -->
+</section>
 <section id="panel-a-rendered-in-document-output" class="slide level2" data-background-color="#1a1d2e">
 <h2>Panel A: Rendered In-Document Output</h2>
 <div class="hero-figure">
@@ -456,7 +532,16 @@ Ecology and Evolution of Color | Spring 2026
 <p>Run this chunk -&gt; get <code>color-gamut-hero.pdf</code> -&gt; drop into Panel A</p>
 </div>
 <div class="caption-template">
-<p><strong>Caption template:</strong> “Figure 1. Color gamut of [YOUR FAMILY] in RGB color space. Each point represents a non-background cluster center from pavo::classify. The semi-transparent polyhedron is the convex hull of the pooled cluster centers (gamut volume = [X.XXX], [X.X]% of the unit RGB cube). Wireframe = theoretical maximum.”</p>
+<p><strong>Caption template:</strong> “Figure 1. Color gamut of <span class="gold">[YOUR FAMILY]</span> in RGB color space. Each point represents a non-background cluster center from pavo::classify. The semi-transparent polyhedron is the convex hull of the pooled cluster centers (gamut volume = <span class="gold">[X.XXX]</span>, <span class="gold">[X.X]</span>% of the unit RGB cube). Wireframe = theoretical maximum.”</p>
+</div>
+</section>
+<section id="panel-a-complete" class="slide level2" data-background-color="#1a1d2e">
+<h2>✓ Panel A Complete</h2>
+<div class="key-point">
+<p><strong>Success:</strong> <code>figures/color-gamut-hero.pdf</code> exists and is 50–200 KB.</p>
+</div>
+<div class="muted">
+<p>If the file is missing or empty, re-run the hero-PDF chunk in the recipe.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -485,28 +570,20 @@ Ecology and Evolution of Color | Spring 2026
 <section id="panel-b-code-load-phylopca-reconstruct-ancestors" class="slide level2" data-background-color="#1a1d2e">
 <h2>Panel B: Code — Load PhyloPCA + Reconstruct Ancestors</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">library</span>(ape); <span class="fu">library</span>(phytools); <span class="fu">library</span>(png)</span>
-<span id="cb5-2"><a></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb5-3"><a></a>IMG_DIR <span class="ot">&lt;-</span> <span class="fu">file.path</span>(BUNDLE, <span class="st">"images"</span>)</span>
-<span id="cb5-4"><a></a></span>
-<span id="cb5-5"><a></a><span class="do">## Load cached PCA + tree</span></span>
-<span id="cb5-6"><a></a>pp   <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
-<span id="cb5-7"><a></a>ppca <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca;  tree <span class="ot">&lt;-</span> pp<span class="sc">$</span>tree</span>
-<span id="cb5-8"><a></a>S    <span class="ot">&lt;-</span> ppca<span class="sc">$</span>S</span>
-<span id="cb5-9"><a></a>PC1  <span class="ot">&lt;-</span> <span class="fu">setNames</span>(S[, <span class="dv">1</span>], <span class="fu">rownames</span>(S))</span>
-<span id="cb5-10"><a></a>PC2  <span class="ot">&lt;-</span> <span class="fu">setNames</span>(S[, <span class="dv">2</span>], <span class="fu">rownames</span>(S))</span>
-<span id="cb5-11"><a></a>eig  <span class="ot">&lt;-</span> <span class="fu">diag</span>(ppca<span class="sc">$</span>Eval);  ve <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> eig <span class="sc">/</span> <span class="fu">sum</span>(eig)</span>
-<span id="cb5-12"><a></a></span>
-<span id="cb5-13"><a></a><span class="do">## Brownian ASR for each axis</span></span>
-<span id="cb5-14"><a></a>anc1 <span class="ot">&lt;-</span> <span class="fu">fastAnc</span>(tree, PC1)</span>
-<span id="cb5-15"><a></a>anc2 <span class="ot">&lt;-</span> <span class="fu">fastAnc</span>(tree, PC2)</span>
-<span id="cb5-16"><a></a></span>
-<span id="cb5-17"><a></a><span class="do">## Combine tip + node coordinates</span></span>
-<span id="cb5-18"><a></a>n_tips <span class="ot">&lt;-</span> <span class="fu">length</span>(tree<span class="sc">$</span>tip.label)</span>
-<span id="cb5-19"><a></a>coords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA_real_</span>, <span class="at">nrow =</span> n_tips <span class="sc">+</span> tree<span class="sc">$</span>Nnode, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb5-20"><a></a>coords[<span class="dv">1</span><span class="sc">:</span>n_tips, <span class="dv">1</span>] <span class="ot">&lt;-</span> PC1[tree<span class="sc">$</span>tip.label]</span>
-<span id="cb5-21"><a></a>coords[<span class="dv">1</span><span class="sc">:</span>n_tips, <span class="dv">2</span>] <span class="ot">&lt;-</span> PC2[tree<span class="sc">$</span>tip.label]</span>
-<span id="cb5-22"><a></a>coords[(n_tips<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(coords), <span class="dv">1</span>] <span class="ot">&lt;-</span> anc1[<span class="fu">as.character</span>((n_tips<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(n_tips<span class="sc">+</span>tree<span class="sc">$</span>Nnode))]</span>
-<span id="cb5-23"><a></a>coords[(n_tips<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(coords), <span class="dv">2</span>] <span class="ot">&lt;-</span> anc2[<span class="fu">as.character</span>((n_tips<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(n_tips<span class="sc">+</span>tree<span class="sc">$</span>Nnode))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a></a>BUNDLE <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a><span class="do">## Load cached PCA + tree</span></span>
+<span id="cb5-5"><a></a>pp   <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb5-6"><a></a>tree <span class="ot">&lt;-</span> pp<span class="sc">$</span>tree;  S <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca<span class="sc">$</span>S</span>
+<span id="cb5-7"><a></a>PC1  <span class="ot">&lt;-</span> <span class="fu">setNames</span>(S[, <span class="dv">1</span>], <span class="fu">rownames</span>(S))</span>
+<span id="cb5-8"><a></a>PC2  <span class="ot">&lt;-</span> <span class="fu">setNames</span>(S[, <span class="dv">2</span>], <span class="fu">rownames</span>(S))</span>
+<span id="cb5-9"><a></a></span>
+<span id="cb5-10"><a></a><span class="do">## Brownian ASR for each axis</span></span>
+<span id="cb5-11"><a></a>anc1 <span class="ot">&lt;-</span> <span class="fu">fastAnc</span>(tree, PC1)</span>
+<span id="cb5-12"><a></a>anc2 <span class="ot">&lt;-</span> <span class="fu">fastAnc</span>(tree, PC2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="muted">
+<p><span class="muted">See the full recipe for coordinate assembly and image-loading helpers</span></p>
+</div>
 <div class="key-point">
 <p>PC1 and PC2 together capture ~60% of variation in pavo color-pattern metrics. The <code>fastAnc</code> call reconstructs where internal nodes sit in morphospace under Brownian motion.</p>
 </div>
@@ -555,6 +632,10 @@ Ecology and Evolution of Color | Spring 2026
 <p><strong>Look for:</strong> Clusters of similar-looking fish far from the center = convergent evolution on extreme color patterns. Isolated species connected by long edges = evolutionary outliers. Crossing edges are expected (2D projection of a high-dimensional process).</p>
 </div>
 </section>
+<section class="slide level2">
+
+<!-- OPTIONAL — skip in a 25-minute session -->
+</section>
 <section id="panel-b-in-recipe-rendered-output" class="slide level2" data-background-color="#1a1d2e">
 <h2>Panel B: In-Recipe Rendered Output</h2>
 <div class="hero-figure">
@@ -578,7 +659,16 @@ Ecology and Evolution of Color | Spring 2026
 <p>Run this chunk -&gt; get <code>phylomorphospace-PC1-PC2-hero.pdf</code> -&gt; drop into Panel B</p>
 </div>
 <div class="caption-template">
-<p><strong>Caption template:</strong> “Figure 2. Phylomorphospace of [YOUR FAMILY] color patterns in PC1 x PC2 space (PC1: [X.X]%, PC2: [X.X]% variance). Each tip is plotted as the species’ exemplar image; grey lines connect species through Brownian-motion reconstructed internal nodes (fastAnc). Top PC1 loaders: [list]. Top PC2 loaders: [list]. n = [N] species.”</p>
+<p><strong>Caption template:</strong> “Figure 2. Phylomorphospace of <span class="gold">[YOUR FAMILY]</span> color patterns in PC1 x PC2 space (PC1: <span class="gold">[X.X]</span>%, PC2: <span class="gold">[X.X]</span>% variance). Each tip is plotted as the species’ exemplar image; grey lines connect species through Brownian-motion reconstructed internal nodes (fastAnc). Top PC1 loaders: <span class="gold">[list]</span>. Top PC2 loaders: <span class="gold">[list]</span>. n = <span class="gold">[N]</span> species.”</p>
+</div>
+</section>
+<section id="panel-b-complete" class="slide level2" data-background-color="#1a1d2e">
+<h2>✓ Panel B Complete</h2>
+<div class="key-point">
+<p><strong>Success:</strong> <code>figures/phylomorphospace-PC1-PC2-hero.pdf</code> exists and is 1–50 MB.</p>
+</div>
+<div class="muted">
+<p>If the file is missing or empty, re-run the hero-PDF chunk in the recipe.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -707,7 +797,16 @@ Ecology and Evolution of Color | Spring 2026
 <p>Run this chunk -&gt; get <code>phylogeny-with-traits-hero.pdf</code> -&gt; drop into Panel C (28”x24”)</p>
 </div>
 <div class="caption-template">
-<p><strong>Caption template:</strong> “Figure 3. Phylogeny of [YOUR FAMILY] (n = [N] species) with PhyloPC1 ancestral state reconstruction mapped onto branches (blue = low pattern density, red = high). Exemplar images shown at every other tip. Trait columns (right): PC1-PC3 scores (diverging palette), trophic level (warm palette), and body size in cm (sequential blue). Tree from Brownstein et al.; traits from FishBase via rfishbase.”</p>
+<p><strong>Caption template:</strong> “Figure 3. Phylogeny of <span class="gold">[YOUR FAMILY]</span> (n = <span class="gold">[N]</span> species) with PhyloPC1 ancestral state reconstruction mapped onto branches (blue = low pattern density, red = high). Exemplar images shown at every other tip. Trait columns (right): PC1-PC3 scores (diverging palette), trophic level (warm palette), and body size in cm (sequential blue). Tree from Brownstein et al.; traits from FishBase via rfishbase.”</p>
+</div>
+</section>
+<section id="panel-c-complete" class="slide level2" data-background-color="#1a1d2e">
+<h2>✓ Panel C Complete</h2>
+<div class="key-point">
+<p><strong>Success:</strong> <code>figures/phylogeny-with-traits-hero.pdf</code> exists and is 1–30 MB.</p>
+</div>
+<div class="muted">
+<p>If the file is missing or empty, re-run the hero-PDF chunk in the recipe.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -752,29 +851,20 @@ Ecology and Evolution of Color | Spring 2026
 <h2>Panel D: Code — Fitting PGLS Models</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">library</span>(nlme)</span>
 <span id="cb11-2"><a></a></span>
-<span id="cb11-3"><a></a>fit_pgls <span class="ot">&lt;-</span> <span class="cf">function</span>(response_col) {</span>
-<span id="cb11-4"><a></a>  f <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(</span>
-<span id="cb11-5"><a></a>    <span class="fu">sprintf</span>(<span class="st">"%s ~ trophic_level + log_body"</span>, response_col))</span>
-<span id="cb11-6"><a></a>  <span class="do">## Try several lambda starting values (optimizer is fragile)</span></span>
-<span id="cb11-7"><a></a>  starts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.99</span>, <span class="fl">0.0</span>)</span>
-<span id="cb11-8"><a></a>  ctrl   <span class="ot">&lt;-</span> nlme<span class="sc">::</span><span class="fu">glsControl</span>(<span class="at">opt =</span> <span class="st">"optim"</span>, <span class="at">maxIter =</span> <span class="dv">200</span>,</span>
-<span id="cb11-9"><a></a>                              <span class="at">msMaxIter =</span> <span class="dv">200</span>)</span>
-<span id="cb11-10"><a></a>  <span class="cf">for</span> (lam0 <span class="cf">in</span> starts) {</span>
-<span id="cb11-11"><a></a>    m <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
-<span id="cb11-12"><a></a>      nlme<span class="sc">::</span><span class="fu">gls</span>(f, <span class="at">data =</span> df_use,</span>
-<span id="cb11-13"><a></a>                <span class="at">correlation =</span> ape<span class="sc">::</span><span class="fu">corPagel</span>(lam0, tree_use,</span>
-<span id="cb11-14"><a></a>                                 <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb11-15"><a></a>                <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl),</span>
-<span id="cb11-16"><a></a>      <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>)</span>
-<span id="cb11-17"><a></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(m)) <span class="fu">return</span>(m)</span>
-<span id="cb11-18"><a></a>  }</span>
-<span id="cb11-19"><a></a>  <span class="do">## Last resort: pure Brownian (lambda fixed at 1)</span></span>
-<span id="cb11-20"><a></a>  nlme<span class="sc">::</span><span class="fu">gls</span>(f, <span class="at">data =</span> df_use,</span>
-<span id="cb11-21"><a></a>            <span class="at">correlation =</span> ape<span class="sc">::</span><span class="fu">corPagel</span>(<span class="dv">1</span>, tree_use,</span>
-<span id="cb11-22"><a></a>                              <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb11-23"><a></a>            <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl)</span>
-<span id="cb11-24"><a></a>}</span>
-<span id="cb11-25"><a></a>m_pc1 <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"PC1"</span>);  m_pc2 <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"PC2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-3"><a></a><span class="do">## fit_pgls() tries multiple lambda starts, falls back to BM</span></span>
+<span id="cb11-4"><a></a><span class="do">## (see recipe for full error-handling wrapper)</span></span>
+<span id="cb11-5"><a></a>m_pc1 <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"PC1"</span>)</span>
+<span id="cb11-6"><a></a>m_pc2 <span class="ot">&lt;-</span> <span class="fu">fit_pgls</span>(<span class="st">"PC2"</span>)</span>
+<span id="cb11-7"><a></a></span>
+<span id="cb11-8"><a></a><span class="do">## Core call inside the helper:</span></span>
+<span id="cb11-9"><a></a>nlme<span class="sc">::</span><span class="fu">gls</span>(PC1 <span class="sc">~</span> trophic_level <span class="sc">+</span> log_body,</span>
+<span id="cb11-10"><a></a>          <span class="at">data =</span> df_use,</span>
+<span id="cb11-11"><a></a>          <span class="at">correlation =</span> ape<span class="sc">::</span><span class="fu">corPagel</span>(<span class="fl">0.5</span>, tree_use,</span>
+<span id="cb11-12"><a></a>                           <span class="at">form =</span> <span class="sc">~</span>species, <span class="at">fixed =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb11-13"><a></a>          <span class="at">method =</span> <span class="st">"ML"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="muted">
+<p><span class="muted">See the full recipe for the <code>fit_pgls()</code> helper with multi-start convergence logic</span></p>
+</div>
 <div class="key-point">
 <p>If the model fails to converge, the recipe tries multiple starting values automatically. If ALL fail, it falls back to fixed lambda = 1 (Brownian).</p>
 </div>
@@ -810,7 +900,7 @@ Ecology and Evolution of Color | Spring 2026
 <div class="hero-figure">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/pgls-hero.png" style="width:35.0%"></p>
+<p><img data-src="images/pgls-hero.png" style="width:60.0%"></p>
 <figcaption>PGLS Hero – 4-panel partial-residual scatter stack</figcaption>
 </figure>
 </div>
@@ -818,6 +908,10 @@ Ecology and Evolution of Color | Spring 2026
 <div class="look-for">
 <p><strong>Look for:</strong> (1) <strong>Significant slopes</strong> (p &lt; 0.05) – the relationship is real after controlling for phylogeny. (2) <strong>Lambda near 1</strong> = strong phylogenetic structure in residuals. (3) <strong>One genus dominating</strong> a cluster = check for Simpson’s paradox.</p>
 </div>
+</section>
+<section class="slide level2">
+
+<!-- OPTIONAL — skip in a 25-minute session -->
 </section>
 <section id="panel-d-rendered-in-recipe-output" class="slide level2" data-background-color="#1a1d2e">
 <h2>Panel D: Rendered In-Recipe Output</h2>
@@ -846,10 +940,34 @@ Ecology and Evolution of Color | Spring 2026
 <p>Run this chunk -&gt; get <code>pgls-color-traits-hero.pdf</code> -&gt; drop into Panel D</p>
 </div>
 <div class="caption-template">
-<p><strong>Caption template:</strong> “Figure 4. PGLS partial-residual scatters testing associations between color-pattern PCs and ecological predictors in [YOUR FAMILY] (n = [N] species). Each panel shows the partial effect of one predictor after removing the other, fitted with corPagel (lambda estimated by ML). Points colored by genus. Slope, p-value, and lambda annotated in each panel.”</p>
+<p><strong>Caption template:</strong> “Figure 4. PGLS partial-residual scatters testing associations between color-pattern PCs and ecological predictors in <span class="gold">[YOUR FAMILY]</span> (n = <span class="gold">[N]</span> species). Each panel shows the partial effect of one predictor after removing the other, fitted with corPagel (lambda estimated by ML). Points colored by genus. Slope, p-value, and lambda annotated in each panel.”</p>
 </div>
 <div class="key-point">
 <p><strong>If p &lt; 0.05, the relationship is significant after controlling for phylogeny. State this clearly in your Discussion section.</strong></p>
+</div>
+</section>
+<section id="panel-d-complete" class="slide level2" data-background-color="#1a1d2e">
+<h2>✓ Panel D Complete</h2>
+<div class="key-point">
+<p><strong>Success:</strong> <code>figures/pgls-color-traits-hero.pdf</code> exists and is 10–100 KB.</p>
+</div>
+<div class="muted">
+<p>If the file is missing or empty, re-run the hero-PDF chunk in the recipe.</p>
+</div>
+</section>
+<section id="four-hero-pdfs-done" class="slide level2" data-background-color="#1a1d2e">
+<h2>Four Hero PDFs – Done</h2>
+<div class="frame-panel">
+<p>You now have <strong>four poster-ready figures</strong>:</p>
+<ol type="1">
+<li><span class="gold">Color gamut</span> → Panel A</li>
+<li><span class="teal">Phylomorphospace</span> → Panel B</li>
+<li><span class="coral">Phylogeny + traits</span> → Panel C</li>
+<li><span class="blue">PGLS scatters</span> → Panel D</li>
+</ol>
+</div>
+<div style="margin-top: 1em;">
+<p><span class="gold"><strong>Next: the text that frames them.</strong></span></p>
 </div>
 </section>
 <section class="slide level2">
@@ -925,7 +1043,7 @@ Ecology and Evolution of Color | Spring 2026
 <h2>Introduction Template</h2>
 <div class="text-template">
 <p><strong>Fill in the blanks:</strong></p>
-<p>“[YOUR FAMILY] ([common name]) are a family of [N] species distributed across [geographic range]. They exhibit [describe color pattern variation in 1 sentence]. Color patterns in fishes serve multiple ecological functions including [2-3 functions: crypsis, aposematism, mate recognition, species recognition, social signaling]. We used quantitative image analysis (pavo) and phylogenetic comparative methods to investigate [1-sentence version of your question].”</p>
+<p>“<span class="gold">[YOUR FAMILY]</span> (<span class="gold">[common name]</span>) are a family of <span class="gold">[N]</span> species distributed across <span class="gold">[geographic range]</span>. They exhibit <span class="gold">[describe color pattern variation in 1 sentence]</span>. Color patterns in fishes serve multiple ecological functions including <span class="gold">[2-3 functions: crypsis, aposematism, mate recognition, species recognition, social signaling]</span>. We used quantitative image analysis (pavo) and phylogenetic comparative methods to investigate <span class="gold">[1-sentence version of your question]</span>.”</p>
 </div>
 <p><strong>Tips:</strong></p>
 <ul>
@@ -938,14 +1056,14 @@ Ecology and Evolution of Color | Spring 2026
 <section id="research-question-hypothesis" class="slide level2" data-background-color="#1a1d2e">
 <h2>Research Question + Hypothesis</h2>
 <div class="text-template">
-<p><strong>Research Question:</strong> “How are color patterns distributed across the phylogeny of [YOUR FAMILY], and do ecological traits (trophic level, body size) predict color-pattern variation after controlling for shared ancestry?”</p>
+<p><strong>Research Question:</strong> “How are color patterns distributed across the phylogeny of <span class="gold">[YOUR FAMILY]</span>, and do ecological traits (trophic level, body size) predict color-pattern variation after controlling for shared ancestry?”</p>
 </div>
 <div class="text-template">
-<p><strong>Hypothesis:</strong> “If color patterns in [YOUR FAMILY] are primarily shaped by [ecological selection / drift / phylogenetic conservatism], then we predict:</p>
+<p><strong>Hypothesis:</strong> “If color patterns in <span class="gold">[YOUR FAMILY]</span> are primarily shaped by <span class="gold">[ecological selection / drift / phylogenetic conservatism]</span>, then we predict:</p>
 <ol type="1">
-<li>Phylogenetic signal in color PCs will be [high (K &gt; 1) / moderate (K ~ 1) / low (K &lt; 1)]</li>
-<li>[Trophic level / body size] will [significantly / not significantly] predict color-pattern variation in PGLS</li>
-<li>The gamut volume will be [large / small] relative to other reef fish families”</li>
+<li>Phylogenetic signal in color PCs will be <span class="gold">[high (K &gt; 1) / moderate (K ~ 1) / low (K &lt; 1)]</span></li>
+<li><span class="gold">[Trophic level / body size]</span> will <span class="gold">[significantly / not significantly]</span> predict color-pattern variation in PGLS</li>
+<li>The gamut volume will be <span class="gold">[large / small]</span> relative to other reef fish families”</li>
 </ol>
 </div>
 <div class="key-point">
@@ -957,12 +1075,12 @@ Ecology and Evolution of Color | Spring 2026
 <div class="text-template">
 <p><strong>Methods (as a bullet list):</strong></p>
 <ul>
-<li><strong>Image source:</strong> Standardized exemplar images from FishView (n = [N] species), exported as HYBRID-layout PNGs</li>
-<li><strong>Color analysis:</strong> pavo::classify with k = [range] clusters per species; cluster centers pooled for gamut computation</li>
-<li><strong>Phylogenetic PCA:</strong> phytools::phyl.pca on [X] pavo adjacency metrics under Brownian correlation</li>
+<li><strong>Image source:</strong> Standardized exemplar images from FishView (n = <span class="gold">[N]</span> species), exported as HYBRID-layout PNGs</li>
+<li><strong>Color analysis:</strong> pavo::classify with k = <span class="gold">[range]</span> clusters per species; cluster centers pooled for gamut computation</li>
+<li><strong>Phylogenetic PCA:</strong> phytools::phyl.pca on <span class="gold">[X]</span> pavo adjacency metrics under Brownian correlation</li>
 <li><strong>Phylogenetic signal:</strong> Blomberg’s K and Pagel’s lambda for PC1-PC3 (phytools::phylosig)</li>
 <li><strong>PGLS:</strong> nlme::gls with corPagel correlation structure; PC1 and PC2 regressed on trophic level + log(body size)</li>
-<li><strong>Tree:</strong> [N]-tip chronogram from Brownstein et al.&nbsp;(2025), pruned to exemplar species</li>
+<li><strong>Tree:</strong> <span class="gold">[N]</span>-tip chronogram from Brownstein et al.&nbsp;(2025), pruned to exemplar species</li>
 </ul>
 </div>
 <p>Keep it to 5-6 bullets. The code is in the recipes – the poster just summarizes.</p>
@@ -971,27 +1089,35 @@ Ecology and Evolution of Color | Spring 2026
 <h2>Discussion + Conclusions</h2>
 <div class="text-template">
 <p><strong>Discussion (lead with your main finding):</strong></p>
-<p>“Color patterns in [YOUR FAMILY] show [strong/moderate/weak] phylogenetic signal (K = [value] for PC1, lambda = [value]). The gamut volume of [X.XXX] indicates a [narrow/broad] chromatic range compared to [other families / Alfaro et al.&nbsp;2019 benchmarks]. [Trophic level / body size] [was / was not] a significant predictor of color-pattern variation after controlling for phylogeny (PGLS: coef = [value], p = [value], lambda = [value]). This suggests that [ecological selection / phylogenetic conservatism / neutral evolution] plays a [primary / secondary] role in shaping color patterns in this family.”</p>
+<p>“Color patterns in <span class="gold">[YOUR FAMILY]</span> show <span class="gold">[strong/moderate/weak]</span> phylogenetic signal (K = <span class="gold">[value]</span> for PC1, lambda = <span class="gold">[value]</span>). The gamut volume of <span class="gold">[X.XXX]</span> indicates a <span class="gold">[narrow/broad]</span> chromatic range compared to <span class="gold">[other families / Alfaro et al.&nbsp;2019 benchmarks]</span>. <span class="gold">[Trophic level / body size]</span> <span class="gold">[was / was not]</span> a significant predictor of color-pattern variation after controlling for phylogeny (PGLS: coef = <span class="gold">[value]</span>, p = <span class="gold">[value]</span>, lambda = <span class="gold">[value]</span>). This suggests that <span class="gold">[ecological selection / phylogenetic conservatism / neutral evolution]</span> plays a <span class="gold">[primary / secondary]</span> role in shaping color patterns in this family.”</p>
 </div>
 <div class="text-template">
 <p><strong>Conclusions (2-3 bullets):</strong></p>
 <ul>
-<li>Color patterns in [FAMILY] are [conserved/labile], with [K interpretation]</li>
-<li>[Trait] [does/does not] predict color after controlling for phylogeny (p = [value])</li>
-<li>Compared to butterflyfishes (Alfaro et al.&nbsp;2019), [FAMILY] shows [more/less/similar] color diversity</li>
+<li>Color patterns in <span class="gold">[FAMILY]</span> are <span class="gold">[conserved/labile]</span>, with <span class="gold">[K interpretation]</span></li>
+<li><span class="gold">[Trait]</span> <span class="gold">[does/does not]</span> predict color after controlling for phylogeny (p = <span class="gold">[value]</span>)</li>
+<li>Compared to butterflyfishes (Alfaro et al.&nbsp;2019), <span class="gold">[FAMILY]</span> shows <span class="gold">[more/less/similar]</span> color diversity</li>
 </ul>
 </div>
 </section>
-<section id="references-every-poster-should-cite-these" class="slide level2" data-background-color="#1a1d2e">
-<h2>References — Every Poster Should Cite These</h2>
+<section id="core-references-every-poster-cites-these" class="slide level2 smaller" data-background-color="#1a1d2e">
+<h2>Core References (every poster cites these)</h2>
 <ol type="1">
 <li><p><strong>Alfaro, M. E., Karan, E. A., Schwartz, S. T., &amp; Shultz, A. J. (2019).</strong> The evolution of color pattern in butterflyfishes (Chaetodontidae). <em>Integrative and Comparative Biology</em>, 59(3), 604–615. <a href="https://doi.org/10.1093/icb/icz119" class="uri">https://doi.org/10.1093/icb/icz119</a> – The benchmark comparison for all reef fish color-pattern analyses in this course.</p></li>
 <li><p><strong>Blomberg, S. P., Garland, T., &amp; Ives, A. R. (2003).</strong> Testing for phylogenetic signal in comparative data: behavioral traits are more labile. <em>Evolution</em>, 57(4), 717–745. <a href="https://doi.org/10.1111/j.0014-3820.2003.tb00285.x" class="uri">https://doi.org/10.1111/j.0014-3820.2003.tb00285.x</a> – K statistic: the standard measure of phylogenetic signal for continuous traits.</p></li>
 <li><p><strong>Revell, L. J. (2012).</strong> phytools: an R package for phylogenetic comparative biology (and other things). <em>Methods in Ecology and Evolution</em>, 3(2), 217–223. <a href="https://doi.org/10.1111/j.2041-210X.2011.00169.x" class="uri">https://doi.org/10.1111/j.2041-210X.2011.00169.x</a> – The software behind contMap, phyl.pca, phylosig, fastAnc.</p></li>
+</ol>
+</section>
+<section id="software-clade-specific-references" class="slide level2 smaller" data-background-color="#1a1d2e">
+<h2>Software + Clade-Specific References</h2>
+<ol start="4" type="1">
 <li><p><strong>Endler, J. A. (2012).</strong> A framework for analysing colour pattern geometry: adjacent colours. <em>Biological Journal of the Linnean Society</em>, 107(2), 233–253. <a href="https://doi.org/10.1111/j.1095-8312.2012.01937.x" class="uri">https://doi.org/10.1111/j.1095-8312.2012.01937.x</a> – Theoretical basis for the pavo adjacency metrics.</p></li>
 <li><p><strong>Maia, R., Gruson, H., Endler, J. A., &amp; White, T. E. (2019).</strong> pavo 2: New tools for the spectral and spatial analysis of colour in R. <em>Methods in Ecology and Evolution</em>, 10(7), 1097–1107. <a href="https://doi.org/10.1111/2041-210X.13174" class="uri">https://doi.org/10.1111/2041-210X.13174</a> – The software for image classification and color-pattern quantification.</p></li>
-<li><p><strong>[Your clade-specific paper]</strong> – e.g., the primary systematics or color-ecology paper for your family.</p></li>
+<li><p><span class="gold">[Your clade-specific paper]</span> – e.g., the primary systematics or color-ecology paper for your family.</p></li>
 </ol>
+<div class="key-point">
+<p>Ask Rosamari or Dr.&nbsp;Alfaro for help finding the right clade-specific paper for your family.</p>
+</div>
 </section>
 <section class="slide level2">
 
@@ -1096,7 +1222,7 @@ Ecology and Evolution of Color | Spring 2026
 </ul>
 </div>
 </section>
-<section id="common-mistakes" class="slide level2" data-background-color="#1a1d2e">
+<section id="common-mistakes" class="slide level2 smaller" data-background-color="#1a1d2e">
 <h2>Common Mistakes</h2>
 <div class="mistake-table">
 <table class="caption-top">
@@ -1112,20 +1238,20 @@ Ecology and Evolution of Color | Spring 2026
 </thead>
 <tbody>
 <tr class="odd">
-<td>Wall of text</td>
+<td><span class="coral"><strong>Wall of text</strong></span></td>
 <td>Cut to 3-4 sentences per section. Let figures carry the story.</td>
+</tr>
+<tr class="even">
+<td><span class="coral"><strong>Unlabeled axes</strong></span></td>
+<td>Every axis gets name + units. “PC1” alone is not enough.</td>
+</tr>
+<tr class="odd">
+<td><span class="coral"><strong>Default R styling</strong></span></td>
+<td>Use poster-sized fonts (<code>base_size = 20</code>). Remove gray backgrounds.</td>
 </tr>
 <tr class="even">
 <td>Too many figures</td>
 <td>Stick to the 4 hero panels. A K-value table is not a figure.</td>
-</tr>
-<tr class="odd">
-<td>Unlabeled axes</td>
-<td>Every axis gets name + units. “PC1” alone is not enough – say “PC1 (chromatic boundary strength, 68% var)”</td>
-</tr>
-<tr class="even">
-<td>Default R styling</td>
-<td>Use poster-sized fonts (<code>base_size = 20</code>). Remove gray backgrounds.</td>
 </tr>
 <tr class="odd">
 <td>Tiny figure text</td>
@@ -1157,6 +1283,29 @@ Ecology and Evolution of Color | Spring 2026
 </tr>
 </tbody>
 </table>
+</div>
+</section>
+<section id="common-mistakes-before-after" class="slide level2" data-background-color="#1a1d2e">
+<h2>Common Mistakes – Before &amp; After</h2>
+<div class="frame-panel">
+<p><span class="coral"><strong>Wall of text</strong></span></p>
+<p><span class="muted">Before:</span> “We analyzed 109 species of butterflyfishes using pavo to extract adjacency metrics including transition density, color diversity, boundary strength, aspect ratio, Simpson diversity indices…”</p>
+<p><span class="teal">After:</span></p>
+<ul>
+<li>109 species analyzed with pavo</li>
+<li>10 adjacency metrics → phyloPCA</li>
+<li>PGLS against 2 ecological traits</li>
+</ul>
+</div>
+<div class="frame-panel">
+<p><span class="coral"><strong>Unlabeled axes</strong></span></p>
+<p><span class="muted">Before:</span> <code>plot(x, y)</code></p>
+<p><span class="teal">After:</span> <code>plot(x, y, xlab = "Trophic level", ylab = "PC1 (partial residual)")</code></p>
+</div>
+<div class="frame-panel">
+<p><span class="coral"><strong>Default R styling</strong></span></p>
+<p><span class="muted">Before:</span> <code>plot(tree)</code> – gray background, tiny text</p>
+<p><span class="teal">After:</span> <code>+ theme_poster</code> – white background, 20pt base size</p>
 </div>
 </section>
 <section id="timeline" class="slide level2" data-background-color="#1a1d2e">
