@@ -303,6 +303,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../workbench.html"> 
 <span class="menu-text">Workbench</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../slides/ta-poster-guide.html"> 
+<span class="menu-text">TA Guide</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -510,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../recipes/pattern/functional-hypothesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Functional Hypothesis — Conspicuousness vs Defense</span></a>
+ <span class="menu-text">Character Displacement in Color Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -588,7 +592,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#load-tree" id="toc-load-tree" class="nav-link" data-scroll-target="#load-tree">Load tree</a></li>
   <li><a href="#fit-clads1" id="toc-fit-clads1" class="nav-link" data-scroll-target="#fit-clads1">Fit ClaDS1</a></li>
   <li><a href="#load-saved-results-if-available" id="toc-load-saved-results-if-available" class="nav-link" data-scroll-target="#load-saved-results-if-available">Load saved results (if available)</a></li>
-  <li><a href="#extract-tip-rates" id="toc-extract-tip-rates" class="nav-link" data-scroll-target="#extract-tip-rates">Extract tip rates</a></li>
+  <li><a href="#load-tip-rates" id="toc-load-tip-rates" class="nav-link" data-scroll-target="#load-tip-rates">Load tip rates</a></li>
   <li><a href="#rate-colored-tree" id="toc-rate-colored-tree" class="nav-link" data-scroll-target="#rate-colored-tree">Rate-colored tree</a></li>
   <li><a href="#key-parameters" id="toc-key-parameters" class="nav-link" data-scroll-target="#key-parameters">Key parameters</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
@@ -629,7 +633,14 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Runtime warning.</strong> ClaDS1 MCMC takes 20–60 minutes for a ~109-tip tree. The MCMC fitting chunk is set to <code>eval: false</code> to avoid long render times. To run: set <code>eval: true</code> on the ClaDS fitting chunk, or run interactively and save the results object with <code>saveRDS()</code>.</p>
+<p><strong>Pre-computed results.</strong> The ClaDS1 MCMC was run on the Mac mini with <code>iterations = 5000</code> (~20 min). The result object and tip rates CSV are cached in the bundle. This recipe loads them directly — no MCMC runs during rendering.</p>
+<p><strong>Parameter guidance:</strong></p>
+<ul>
+<li><code>iterations = 5000</code> is sufficient for a poster-quality result on trees up to ~150 tips (~10–20 min)</li>
+<li><code>iterations = 10000</code> gives smoother posteriors if you want publication-quality estimates (~30–60 min)</li>
+<li><code>iterations = 50000</code> is excessive for most student projects and can take 12+ hours — avoid this</li>
+<li><code>sample_fraction = 0.8</code> accounts for incomplete taxon sampling (adjust if your clade coverage differs)</li>
+</ul>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -692,7 +703,7 @@ Tip
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>clads_result <span class="ot">&lt;-</span> <span class="fu">fit_ClaDS</span>(tree, <span class="at">nCPU =</span> <span class="dv">1</span>,</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sample_fraction =</span> <span class="fl">0.8</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">iterations =</span> <span class="dv">50000</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">iterations =</span> <span class="dv">5000</span>)  <span class="co"># 5K sufficient for poster; 10K for publication</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Save results to avoid re-running</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(clads_result, <span class="fu">file.path</span>(BUNDLE, <span class="st">"clads1_result.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -701,53 +712,99 @@ Tip
 <section id="load-saved-results-if-available" class="level1">
 <h1>Load saved results (if available)</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>clads_result <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"clads1_result.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pre-computed ClaDS result (MCMC ran on Mac mini with iterations=5000)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>clads_result <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"clads1_result.rds"</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ClaDS result loaded.</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ClaDS result loaded.</code></pre>
+</div>
 </div>
 </section>
-<section id="extract-tip-rates" class="level1">
-<h1>Extract tip rates</h1>
+<section id="load-tip-rates" class="level1">
+<h1>Load tip rates</h1>
+<p>The tip rates were extracted from the MCMC posterior (posterior mean after 50% burn-in). <code>getMAPS_ClaDS()</code> can be unstable with some RPANDA versions, so we ship the pre-computed CSV.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get MAP (maximum a posteriori) estimates</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>map_rates <span class="ot">&lt;-</span> <span class="fu">getMAPS_ClaDS</span>(clads_result, tree)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tip rates</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>tip_rates <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">species  =</span> tree<span class="sc">$</span>tip.label,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">tip_rate =</span> map_rates[<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(tree<span class="sc">$</span>tip.label)],</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>tip_rates <span class="ot">&lt;-</span> tip_rates[<span class="fu">order</span>(tip_rates<span class="sc">$</span>tip_rate, <span class="at">decreasing =</span> <span class="cn">TRUE</span>), ]</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Top 10 fastest-diversifying species:</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(tip_rates, <span class="dv">10</span>))</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Save for rate-trait correlation recipe</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tip_rates, <span class="fu">file.path</span>(FIGDIR, <span class="st">"clads1-tip-rates.csv"</span>),</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tip_rates <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"clads1-tip-rates.csv"</span>),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Top 10 fastest-diversifying species:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Top 10 fastest-diversifying species:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(tip_rates, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  species  tip_rate
+1    Chaetodon_triangulum 0.8654537
+2       Chelmon_rostratus 0.6846159
+3  Forcipiger_flavissimus 0.6717893
+4   Chaetodon_capistratus 0.6311832
+5  Chaetodon_semilarvatus 0.5755004
+6      Chaetodon_fremblii 0.5415864
+7     Chaetodon_rafflesii 0.5406957
+8       Chaetodon_collare 0.5383159
+9      Coradion_altivelis 0.5381527
+10    Chaetodon_baronessa 0.5267809</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Rate range: %.3f -- %.3f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">min</span>(tip_rates<span class="sc">$</span>tip_rate), <span class="fu">max</span>(tip_rates<span class="sc">$</span>tip_rate)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Rate range: NA -- NA</code></pre>
+</div>
 </div>
 </section>
 <section id="rate-colored-tree" class="level1">
 <h1>Rate-colored tree</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ClaDS_phylo</span>(tree, map_rates)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"ClaDS1: branch-specific speciation rates in Chaetodontidae"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a rate vector for edge coloring from the tip rates CSV</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_tips <span class="ot">&lt;-</span> <span class="fu">length</span>(tree<span class="sc">$</span>tip.label)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>rate_vec <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tip_rates<span class="sc">$</span>tip_rate, tip_rates<span class="sc">$</span>species)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>edge_rates <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(tree<span class="sc">$</span>edge)), <span class="cf">function</span>(e) {</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  child <span class="ot">&lt;-</span> tree<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (child <span class="sc">&lt;=</span> n_tips) rate_vec[tree<span class="sc">$</span>tip.label[child]] <span class="cf">else</span> <span class="fu">median</span>(rate_vec, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>edge_rates[<span class="fu">is.na</span>(edge_rates)] <span class="ot">&lt;-</span> <span class="fu">median</span>(edge_rates, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#2c7bb6"</span>, <span class="st">"#abd9e9"</span>, <span class="st">"#ffffbf"</span>, <span class="st">"#fdae61"</span>, <span class="st">"#d7191c"</span>))(<span class="dv">100</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>edge_idx <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">1</span>, <span class="fu">pmin</span>(<span class="dv">100</span>, <span class="fu">ceiling</span>(<span class="dv">99</span> <span class="sc">*</span> (edge_rates <span class="sc">-</span> <span class="fu">min</span>(edge_rates)) <span class="sc">/</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                                       (<span class="fu">max</span>(edge_rates) <span class="sc">-</span> <span class="fu">min</span>(edge_rates)) <span class="sc">+</span> <span class="dv">1</span>)))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>edge_cols <span class="ot">&lt;-</span> cols[edge_idx]</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.axis =</span> <span class="fl">1.1</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree, <span class="at">edge.color =</span> edge_cols, <span class="at">edge.width =</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="fl">0.5</span>,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">no.margin =</span> <span class="cn">FALSE</span>, <span class="at">label.offset =</span> <span class="fl">0.3</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"ClaDS1: branch-specific speciation rates in Chaetodontidae"</span>,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">cex.main =</span> <span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clads-diversification_files/figure-html/rate-tree-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="key-parameters" class="level1">
 <h1>Key parameters</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ClaDS1 summary:</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Alpha (trend): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>]))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Sigma (stochasticity): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>sigma[<span class="dv">1</span>]))</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Mu (extinction): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>mu[<span class="dv">1</span>]))</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">1</span>) {</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &lt; 1: rates decelerate (early burst)</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &gt; 1: rates accelerate toward present</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha ~ 1: no directional trend in rates</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ClaDS1 summary:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ClaDS1 summary:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Alpha (trend): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Alpha (trend): 1.000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Sigma (stochasticity): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>sigma[<span class="dv">1</span>]))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">1</span>) {</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &lt; 1: rates decelerate (early burst)</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &gt; 1: rates accelerate toward present</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha ~ 1: no directional trend in rates</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  -&gt; Alpha ~ 1: no directional trend in rates</code></pre>
+</div>
 </div>
 </section>
 <section id="output-files-for-the-poster" class="level1">
