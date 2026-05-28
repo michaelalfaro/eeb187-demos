@@ -592,10 +592,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
+  <li><a href="#add-phylopca-scores" id="toc-add-phylopca-scores" class="nav-link" data-scroll-target="#add-phylopca-scores">Add phyloPCA scores</a></li>
   <li><a href="#node-heights-test-for-transition-density-m" id="toc-node-heights-test-for-transition-density-m" class="nav-link" data-scroll-target="#node-heights-test-for-transition-density-m">Node heights test for transition density (m)</a></li>
   <li><a href="#node-heights-scatter-m" id="toc-node-heights-scatter-m" class="nav-link" data-scroll-target="#node-heights-scatter-m">Node heights scatter: m</a></li>
-  <li><a href="#all-six-variables" id="toc-all-six-variables" class="nav-link" data-scroll-target="#all-six-variables">All six variables</a></li>
-  <li><a href="#six-panel-scatter-plot" id="toc-six-panel-scatter-plot" class="nav-link" data-scroll-target="#six-panel-scatter-plot">Six-panel scatter plot</a></li>
+  <li><a href="#all-variables-pavo-metrics-phylopca" id="toc-all-variables-pavo-metrics-phylopca" class="nav-link" data-scroll-target="#all-variables-pavo-metrics-phylopca">All variables (pavo metrics + phyloPCA)</a></li>
+  <li><a href="#nine-panel-scatter-plot" id="toc-nine-panel-scatter-plot" class="nav-link" data-scroll-target="#nine-panel-scatter-plot">Nine-panel scatter plot</a></li>
   <li><a href="#hero-pdf" id="toc-hero-pdf" class="nav-link" data-scroll-target="#hero-pdf">Hero PDF</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
@@ -635,8 +636,8 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Core recipe.</strong> Regresses absolute phylogenetic independent contrasts against node ages for each pavo variable. A negative slope = early burst (deceleration); positive slope = late burst (acceleration); flat = constant Brownian rate.</p>
-<p><strong>Poster outputs.</strong> <code>figures/node-heights-all.pdf</code> — six-panel scatter plot with regression lines for all pavo variables.</p>
+<p><strong>Core recipe.</strong> Regresses absolute phylogenetic independent contrasts against node ages for each pavo variable and phyloPCA axis. A negative slope = early burst (deceleration); positive slope = late burst (acceleration); flat = constant Brownian rate.</p>
+<p><strong>Poster outputs.</strong> <code>figures/node-heights-all.pdf</code> — nine-panel scatter plot with regression lines for all pavo variables and PC1–PC3.</p>
 </div>
 </div>
 <section id="setup" class="level1">
@@ -691,28 +692,48 @@ Tip
 </div>
 </div>
 </section>
+<section id="add-phylopca-scores" class="level1">
+<h1>Add phyloPCA scores</h1>
+<p>PhyloPCA axes capture multivariate color variation in a phylogenetically informed coordinate system. PC1–PC3 often provide cleaner signals than individual pavo metrics because they integrate across correlated variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>S  <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca<span class="sc">$</span>S</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add PC1-3 to the trait data</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>pavo_cc<span class="sc">$</span>PC1 <span class="ot">&lt;-</span> S[<span class="fu">match</span>(pavo_cc<span class="sc">$</span>species, <span class="fu">rownames</span>(S)), <span class="dv">1</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pavo_cc<span class="sc">$</span>PC2 <span class="ot">&lt;-</span> S[<span class="fu">match</span>(pavo_cc<span class="sc">$</span>species, <span class="fu">rownames</span>(S)), <span class="dv">2</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>pavo_cc<span class="sc">$</span>PC3 <span class="ot">&lt;-</span> S[<span class="fu">match</span>(pavo_cc<span class="sc">$</span>species, <span class="fu">rownames</span>(S)), <span class="dv">3</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extend the variable list to include PC scores</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>all_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(pavo_vars, <span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Variables for node heights test: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">paste</span>(all_vars, <span class="at">collapse =</span> <span class="st">", "</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Variables for node heights test: m, A, Jc, Jt, m_dS, m_dL, PC1, PC2, PC3</code></pre>
+</div>
+</div>
+</section>
 <section id="node-heights-test-for-transition-density-m" class="level1">
 <h1>Node heights test for transition density (m)</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trait_vec <span class="ot">&lt;-</span> <span class="fu">setNames</span>(pavo_cc<span class="sc">$</span>m, pavo_cc<span class="sc">$</span>species)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>trait_vec <span class="ot">&lt;-</span> trait_vec[tree_nh<span class="sc">$</span>tip.label]</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">pic</span>(trait_vec, tree_nh)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>node_ages  <span class="ot">&lt;-</span> <span class="fu">branching.times</span>(tree_nh)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ages       <span class="ot">&lt;-</span> node_ages[<span class="fu">names</span>(contrasts)]</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">abs</span>(contrasts) <span class="sc">~</span> ages)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>s     <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Slope: %.4f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">coef</span>(model)[<span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>trait_vec <span class="ot">&lt;-</span> <span class="fu">setNames</span>(pavo_cc<span class="sc">$</span>m, pavo_cc<span class="sc">$</span>species)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>trait_vec <span class="ot">&lt;-</span> trait_vec[tree_nh<span class="sc">$</span>tip.label]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">pic</span>(trait_vec, tree_nh)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>node_ages  <span class="ot">&lt;-</span> <span class="fu">branching.times</span>(tree_nh)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ages       <span class="ot">&lt;-</span> node_ages[<span class="fu">names</span>(contrasts)]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">abs</span>(contrasts) <span class="sc">~</span> ages)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>s     <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Slope: %.4f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">coef</span>(model)[<span class="dv">2</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Slope: -0.0006</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"p-value: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format.pval</span>(s<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">digits =</span> <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"p-value: %s</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">format.pval</span>(s<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">digits =</span> <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>p-value: 0.000185</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"R-squared: %.3f</span><span class="sc">\n</span><span class="st">"</span>, s<span class="sc">$</span>r.squared))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"R-squared: %.3f</span><span class="sc">\n</span><span class="st">"</span>, s<span class="sc">$</span>r.squared))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R-squared: 0.124</code></pre>
 </div>
@@ -721,16 +742,16 @@ Tip
 <section id="node-heights-scatter-m" class="level1">
 <h1>Node heights scatter: m</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pic_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">age =</span> ages, <span class="at">abs_pic =</span> <span class="fu">abs</span>(contrasts))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pic_df, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> abs_pic)) <span class="sc">+</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Node Heights Test: transition density (m)"</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Slope = "</span>, <span class="fu">round</span>(<span class="fu">coef</span>(model)[<span class="dv">2</span>], <span class="dv">4</span>),</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">", p = "</span>, <span class="fu">format.pval</span>(s<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">digits =</span> <span class="dv">3</span>)),</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Node age (Ma)"</span>, <span class="at">y =</span> <span class="st">"|Phylogenetic independent contrast|"</span>) <span class="sc">+</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pic_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">age =</span> ages, <span class="at">abs_pic =</span> <span class="fu">abs</span>(contrasts))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pic_df, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> abs_pic)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Node Heights Test: transition density (m)"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="fu">paste0</span>(<span class="st">"Slope = "</span>, <span class="fu">round</span>(<span class="fu">coef</span>(model)[<span class="dv">2</span>], <span class="dv">4</span>),</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">", p = "</span>, <span class="fu">format.pval</span>(s<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="at">digits =</span> <span class="dv">3</span>)),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Node age (Ma)"</span>, <span class="at">y =</span> <span class="st">"|Phylogenetic independent contrast|"</span>) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -744,45 +765,47 @@ Tip
 </div>
 </div>
 </section>
-<section id="all-six-variables" class="level1">
-<h1>All six variables</h1>
+<section id="all-variables-pavo-metrics-phylopca" class="level1">
+<h1>All variables (pavo metrics + phyloPCA)</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nh_summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable  =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Slope     =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value   =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">R_sq      =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Direction =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> pavo_vars) {</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">setNames</span>(pavo_cc[[v]], pavo_cc<span class="sc">$</span>species)</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[tree_nh<span class="sc">$</span>tip.label]</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  con    <span class="ot">&lt;-</span> <span class="fu">pic</span>(x, tree_nh)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  n_ages <span class="ot">&lt;-</span> <span class="fu">branching.times</span>(tree_nh)[<span class="fu">names</span>(con)]</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  mod    <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">abs</span>(con) <span class="sc">~</span> n_ages)</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  sm     <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  sl     <span class="ot">&lt;-</span> <span class="fu">coef</span>(mod)[<span class="dv">2</span>]</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  pv     <span class="ot">&lt;-</span> sm<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>]</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  direction <span class="ot">&lt;-</span> <span class="st">"No trend"</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sl <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> pv <span class="sc">&lt;</span> <span class="fl">0.05</span>) direction <span class="ot">&lt;-</span> <span class="st">"Deceleration"</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sl <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> pv <span class="sc">&lt;</span> <span class="fl">0.05</span>) direction <span class="ot">&lt;-</span> <span class="st">"Acceleration"</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  nh_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(nh_summary, <span class="fu">data.frame</span>(</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> v, <span class="at">Slope =</span> <span class="fu">round</span>(sl, <span class="dv">4</span>), <span class="at">p_value =</span> <span class="fu">round</span>(pv, <span class="dv">4</span>),</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">R_sq =</span> <span class="fu">round</span>(sm<span class="sc">$</span>r.squared, <span class="dv">3</span>), <span class="at">Direction =</span> direction,</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(nh_summary,</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Node heights test for all 6 pavo variables."</span>,</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>             <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"l"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>nh_summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variable  =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Slope     =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value   =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">R_sq      =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Direction =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> all_vars) {</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">setNames</span>(pavo_cc[[v]], pavo_cc<span class="sc">$</span>species)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[tree_nh<span class="sc">$</span>tip.label]</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Skip if all NA</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(x))) <span class="cf">next</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  con    <span class="ot">&lt;-</span> <span class="fu">pic</span>(x, tree_nh)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  n_ages <span class="ot">&lt;-</span> <span class="fu">branching.times</span>(tree_nh)[<span class="fu">names</span>(con)]</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  mod    <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">abs</span>(con) <span class="sc">~</span> n_ages)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  sm     <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  sl     <span class="ot">&lt;-</span> <span class="fu">coef</span>(mod)[<span class="dv">2</span>]</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  pv     <span class="ot">&lt;-</span> sm<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>]</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  direction <span class="ot">&lt;-</span> <span class="st">"No trend"</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sl <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> pv <span class="sc">&lt;</span> <span class="fl">0.05</span>) direction <span class="ot">&lt;-</span> <span class="st">"Deceleration"</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sl <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> pv <span class="sc">&lt;</span> <span class="fl">0.05</span>) direction <span class="ot">&lt;-</span> <span class="st">"Acceleration"</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  nh_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(nh_summary, <span class="fu">data.frame</span>(</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> v, <span class="at">Slope =</span> <span class="fu">round</span>(sl, <span class="dv">4</span>), <span class="at">p_value =</span> <span class="fu">round</span>(pv, <span class="dv">4</span>),</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">R_sq =</span> <span class="fu">round</span>(sm<span class="sc">$</span>r.squared, <span class="dv">3</span>), <span class="at">Direction =</span> direction,</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(nh_summary,</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"Node heights test for all 9 variables (6 pavo metrics + PC1--PC3)."</span>,</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>             <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"l"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
-<caption>Node heights test for all 6 pavo variables.</caption>
+<caption>Node heights test for all 9 variables (6 pavo metrics + PC1--PC3).</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -842,36 +865,63 @@ Tip
 <td style="text-align: right;">0.090</td>
 <td style="text-align: left;">Deceleration</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">n_ages6</td>
+<td style="text-align: left;">PC1</td>
+<td style="text-align: right;">-0.0607</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.141</td>
+<td style="text-align: left;">Deceleration</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n_ages7</td>
+<td style="text-align: left;">PC2</td>
+<td style="text-align: right;">-0.0453</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.152</td>
+<td style="text-align: left;">Deceleration</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">n_ages8</td>
+<td style="text-align: left;">PC3</td>
+<td style="text-align: right;">-0.0337</td>
+<td style="text-align: right;">0.0002</td>
+<td style="text-align: right;">0.125</td>
+<td style="text-align: left;">Deceleration</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
 </section>
-<section id="six-panel-scatter-plot" class="level1">
-<h1>Six-panel scatter plot</h1>
+<section id="nine-panel-scatter-plot" class="level1">
+<h1>Nine-panel scatter plot</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> pavo_vars) {</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">setNames</span>(pavo_cc[[v]], pavo_cc<span class="sc">$</span>species)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[tree_nh<span class="sc">$</span>tip.label]</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  con    <span class="ot">&lt;-</span> <span class="fu">pic</span>(x, tree_nh)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  n_ages <span class="ot">&lt;-</span> <span class="fu">branching.times</span>(tree_nh)[<span class="fu">names</span>(con)]</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  mod    <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">abs</span>(con) <span class="sc">~</span> n_ages)</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  sm     <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(n_ages, <span class="fu">abs</span>(con),</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"#264653"</span>, <span class="at">cex =</span> <span class="fl">1.5</span>,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Node age (Ma)"</span>, <span class="at">ylab =</span> <span class="st">"|PIC|"</span>, <span class="at">main =</span> v,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.axis =</span> <span class="fl">1.1</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(mod, <span class="at">col =</span> <span class="st">"#e76f51"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(<span class="fu">paste0</span>(<span class="st">"slope="</span>, <span class="fu">round</span>(<span class="fu">coef</span>(mod)[<span class="dv">2</span>], <span class="dv">3</span>),</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>               <span class="st">" p="</span>, <span class="fu">round</span>(sm<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="dv">3</span>)),</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">side =</span> <span class="dv">3</span>, <span class="at">line =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">adj =</span> <span class="fl">0.05</span>, <span class="at">cex =</span> <span class="fl">1.0</span>)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>pc_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">PC1 =</span> <span class="st">"#7570b3"</span>, <span class="at">PC2 =</span> <span class="st">"#1b9e77"</span>, <span class="at">PC3 =</span> <span class="st">"#d95f02"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> all_vars) {</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">setNames</span>(pavo_cc[[v]], pavo_cc<span class="sc">$</span>species)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[tree_nh<span class="sc">$</span>tip.label]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(x))) <span class="cf">next</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  con    <span class="ot">&lt;-</span> <span class="fu">pic</span>(x, tree_nh)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  n_ages <span class="ot">&lt;-</span> <span class="fu">branching.times</span>(tree_nh)[<span class="fu">names</span>(con)]</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  mod    <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">abs</span>(con) <span class="sc">~</span> n_ages)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  sm     <span class="ot">&lt;-</span> <span class="fu">summary</span>(mod)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  pt_col <span class="ot">&lt;-</span> <span class="cf">if</span> (v <span class="sc">%in%</span> <span class="fu">names</span>(pc_colors)) pc_colors[v] <span class="cf">else</span> <span class="st">"#264653"</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(n_ages, <span class="fu">abs</span>(con),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> pt_col, <span class="at">cex =</span> <span class="fl">1.5</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Node age (Ma)"</span>, <span class="at">ylab =</span> <span class="st">"|PIC|"</span>, <span class="at">main =</span> v,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.axis =</span> <span class="fl">1.1</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abline</span>(mod, <span class="at">col =</span> <span class="st">"#e76f51"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(<span class="fu">paste0</span>(<span class="st">"slope="</span>, <span class="fu">round</span>(<span class="fu">coef</span>(mod)[<span class="dv">2</span>], <span class="dv">3</span>),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>               <span class="st">" p="</span>, <span class="fu">round</span>(sm<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">4</span>], <span class="dv">3</span>)),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">side =</span> <span class="dv">3</span>, <span class="at">line =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">adj =</span> <span class="fl">0.05</span>, <span class="at">cex =</span> <span class="fl">1.0</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="node-heights-test_files/figure-html/six-panel-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption>Node heights test for all six pavo variables.</figcaption>
+<p><img src="node-heights-test_files/figure-html/nine-panel-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Node heights test for all 9 variables (6 pavo metrics + PC1–PC3). Blue points = |PIC|; red line = OLS regression.</figcaption>
 </figure>
 </div>
 </div>
@@ -893,6 +943,10 @@ Tip
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 76%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>File</th>
@@ -902,7 +956,7 @@ Tip
 <tbody>
 <tr class="odd">
 <td><code>figures/node-heights-all.pdf</code></td>
-<td>Six-panel scatter plot for poster</td>
+<td>Nine-panel scatter plot (6 pavo + PC1–PC3) for poster</td>
 </tr>
 <tr class="even">
 <td>Summary table above</td>

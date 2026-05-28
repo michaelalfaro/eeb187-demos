@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -592,9 +594,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#load-tree" id="toc-load-tree" class="nav-link" data-scroll-target="#load-tree">Load tree</a></li>
   <li><a href="#fit-clads1" id="toc-fit-clads1" class="nav-link" data-scroll-target="#fit-clads1">Fit ClaDS1</a></li>
   <li><a href="#load-saved-results-if-available" id="toc-load-saved-results-if-available" class="nav-link" data-scroll-target="#load-saved-results-if-available">Load saved results (if available)</a></li>
+  <li><a href="#check-mcmc-convergence" id="toc-check-mcmc-convergence" class="nav-link" data-scroll-target="#check-mcmc-convergence">Check MCMC convergence</a></li>
   <li><a href="#load-tip-rates" id="toc-load-tip-rates" class="nav-link" data-scroll-target="#load-tip-rates">Load tip rates</a></li>
   <li><a href="#rate-colored-tree" id="toc-rate-colored-tree" class="nav-link" data-scroll-target="#rate-colored-tree">Rate-colored tree</a></li>
   <li><a href="#key-parameters" id="toc-key-parameters" class="nav-link" data-scroll-target="#key-parameters">Key parameters</a></li>
+  <li><a href="#speciation-rate-histogram" id="toc-speciation-rate-histogram" class="nav-link" data-scroll-target="#speciation-rate-histogram">Speciation rate histogram</a></li>
+  <li><a href="#rate-vs-phylopca-scatter-plots" id="toc-rate-vs-phylopca-scatter-plots" class="nav-link" data-scroll-target="#rate-vs-phylopca-scatter-plots">Rate vs phyloPCA scatter plots</a></li>
+  <li><a href="#mean-speciation-rate-through-time" id="toc-mean-speciation-rate-through-time" class="nav-link" data-scroll-target="#mean-speciation-rate-through-time">Mean speciation rate through time</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
 </nav>
@@ -663,9 +669,10 @@ Tip
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ape)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(phytools)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(nlme)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
 </div>
@@ -720,17 +727,132 @@ Tip
 </div>
 </div>
 </section>
+<section id="check-mcmc-convergence" class="level1">
+<h1>Check MCMC convergence</h1>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>ESS matters.</strong> Effective sample size (ESS) tells you how many independent draws the MCMC actually produced. ESS &lt; 100 means the chain has not explored the posterior well. If your ESS values are low, increase <code>iterations</code> (e.g., 10000 or 20000) and re-run.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ch <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(clads_result<span class="sc">$</span>chains, as.matrix))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>param_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"sigma"</span>, <span class="st">"alpha"</span>, <span class="st">"mu"</span>, <span class="st">"l_0"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>burn <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fu">nrow</span>(ch) <span class="sc">*</span> <span class="fl">0.5</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> ch[(burn <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(ch), ]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ess_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parameter =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Mean      =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">SD        =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">ESS       =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> param_cols) {</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (p <span class="sc">%in%</span> <span class="fu">colnames</span>(post)) {</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    vals <span class="ot">&lt;-</span> post[, p]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Autocorrelation-based ESS estimate</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(vals)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    acf_vals <span class="ot">&lt;-</span> <span class="fu">acf</span>(vals, <span class="at">lag.max =</span> <span class="fu">min</span>(n <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">100</span>), <span class="at">plot =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>acf[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sum positive autocorrelation pairs (Geyer's initial positive sequence)</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    pos_sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(acf_vals) <span class="sc">-</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="dv">2</span>)) {</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>      pair_sum <span class="ot">&lt;-</span> acf_vals[k] <span class="sc">+</span> <span class="cf">if</span> (k <span class="sc">+</span> <span class="dv">1</span> <span class="sc">&lt;=</span> <span class="fu">length</span>(acf_vals)) acf_vals[k <span class="sc">+</span> <span class="dv">1</span>] <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (pair_sum <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="cf">break</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>      pos_sum <span class="ot">&lt;-</span> pos_sum <span class="sc">+</span> pair_sum</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    ess_est <span class="ot">&lt;-</span> n <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> pos_sum)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    ess_table <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ess_table, <span class="fu">data.frame</span>(</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">Parameter =</span> p,</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">Mean      =</span> <span class="fu">round</span>(<span class="fu">mean</span>(vals), <span class="dv">4</span>),</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">SD        =</span> <span class="fu">round</span>(<span class="fu">sd</span>(vals), <span class="dv">4</span>),</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">ESS       =</span> <span class="fu">round</span>(ess_est, <span class="dv">0</span>),</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  %s: mean=%.4f, SD=%.4f, ESS~%.0f</span><span class="sc">\n</span><span class="st">"</span>, p, <span class="fu">mean</span>(vals), <span class="fu">sd</span>(vals), ess_est))</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  sigma: mean=-0.5627, SD=0.2998, ESS~4
+  alpha: mean=0.0039, SD=0.0255, ESS~3
+  mu: mean=0.0792, SD=0.0628, ESS~10
+  l_0: mean=-2.2082, SD=0.1867, ESS~7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(ess_table,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"MCMC convergence diagnostics (after 50% burn-in)."</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>MCMC convergence diagnostics (after 50% burn-in).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">SD</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">ESS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: right;">-0.5627</td>
+<td style="text-align: right;">0.2998</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">alpha</td>
+<td style="text-align: right;">0.0039</td>
+<td style="text-align: right;">0.0255</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mu</td>
+<td style="text-align: right;">0.0792</td>
+<td style="text-align: right;">0.0628</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">l_0</td>
+<td style="text-align: right;">-2.2082</td>
+<td style="text-align: right;">0.1867</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(ess_table<span class="sc">$</span>ESS <span class="sc">&lt;</span> <span class="dv">100</span>)) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">*** WARNING: ESS &lt; 100 for some parameters. Consider re-running with</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"    iterations = 10000 or 20000 for more reliable estimates. ***</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+*** WARNING: ESS &lt; 100 for some parameters. Consider re-running with
+    iterations = 10000 or 20000 for more reliable estimates. ***</code></pre>
+</div>
+</div>
+</section>
 <section id="load-tip-rates" class="level1">
 <h1>Load tip rates</h1>
 <p>The tip rates were extracted from the MCMC posterior (posterior mean after 50% burn-in). <code>getMAPS_ClaDS()</code> can be unstable with some RPANDA versions, so we ship the pre-computed CSV.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tip_rates <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"clads1-tip-rates.csv"</span>),</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Top 10 fastest-diversifying species:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tip_rates <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(FIGDIR, <span class="st">"clads1-tip-rates.csv"</span>),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Top 10 fastest-diversifying species:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Top 10 fastest-diversifying species:</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(tip_rates, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(tip_rates, <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  species  tip_rate
 1    Chaetodon_triangulum 0.8654537
@@ -744,7 +866,7 @@ Tip
 9      Coradion_altivelis 0.5381527
 10    Chaetodon_baronessa 0.5267809</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Rate range: %.3f -- %.3f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">min</span>(tip_rates<span class="sc">$</span>tip_rate), <span class="fu">max</span>(tip_rates<span class="sc">$</span>tip_rate)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Rate range: %.3f -- %.3f</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">min</span>(tip_rates<span class="sc">$</span>tip_rate), <span class="fu">max</span>(tip_rates<span class="sc">$</span>tip_rate)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Rate range: NA -- NA</code></pre>
@@ -754,25 +876,25 @@ Rate range: NA -- NA</code></pre>
 <section id="rate-colored-tree" class="level1">
 <h1>Rate-colored tree</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a rate vector for edge coloring from the tip rates CSV</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>n_tips <span class="ot">&lt;-</span> <span class="fu">length</span>(tree<span class="sc">$</span>tip.label)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>rate_vec <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tip_rates<span class="sc">$</span>tip_rate, tip_rates<span class="sc">$</span>species)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>edge_rates <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(tree<span class="sc">$</span>edge)), <span class="cf">function</span>(e) {</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  child <span class="ot">&lt;-</span> tree<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (child <span class="sc">&lt;=</span> n_tips) rate_vec[tree<span class="sc">$</span>tip.label[child]] <span class="cf">else</span> <span class="fu">median</span>(rate_vec, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>edge_rates[<span class="fu">is.na</span>(edge_rates)] <span class="ot">&lt;-</span> <span class="fu">median</span>(edge_rates, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#2c7bb6"</span>, <span class="st">"#abd9e9"</span>, <span class="st">"#ffffbf"</span>, <span class="st">"#fdae61"</span>, <span class="st">"#d7191c"</span>))(<span class="dv">100</span>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>edge_idx <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">1</span>, <span class="fu">pmin</span>(<span class="dv">100</span>, <span class="fu">ceiling</span>(<span class="dv">99</span> <span class="sc">*</span> (edge_rates <span class="sc">-</span> <span class="fu">min</span>(edge_rates)) <span class="sc">/</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                                       (<span class="fu">max</span>(edge_rates) <span class="sc">-</span> <span class="fu">min</span>(edge_rates)) <span class="sc">+</span> <span class="dv">1</span>)))</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>edge_cols <span class="ot">&lt;-</span> cols[edge_idx]</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.axis =</span> <span class="fl">1.1</span>)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree, <span class="at">edge.color =</span> edge_cols, <span class="at">edge.width =</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="fl">0.5</span>,</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">no.margin =</span> <span class="cn">FALSE</span>, <span class="at">label.offset =</span> <span class="fl">0.3</span>)</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"ClaDS1: branch-specific speciation rates in Chaetodontidae"</span>,</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">cex.main =</span> <span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a rate vector for edge coloring from the tip rates CSV</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>n_tips <span class="ot">&lt;-</span> <span class="fu">length</span>(tree<span class="sc">$</span>tip.label)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>rate_vec <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tip_rates<span class="sc">$</span>tip_rate, tip_rates<span class="sc">$</span>species)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>edge_rates <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(tree<span class="sc">$</span>edge)), <span class="cf">function</span>(e) {</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  child <span class="ot">&lt;-</span> tree<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (child <span class="sc">&lt;=</span> n_tips) rate_vec[tree<span class="sc">$</span>tip.label[child]] <span class="cf">else</span> <span class="fu">median</span>(rate_vec, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>edge_rates[<span class="fu">is.na</span>(edge_rates)] <span class="ot">&lt;-</span> <span class="fu">median</span>(edge_rates, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#2c7bb6"</span>, <span class="st">"#abd9e9"</span>, <span class="st">"#ffffbf"</span>, <span class="st">"#fdae61"</span>, <span class="st">"#d7191c"</span>))(<span class="dv">100</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>edge_idx <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">1</span>, <span class="fu">pmin</span>(<span class="dv">100</span>, <span class="fu">ceiling</span>(<span class="dv">99</span> <span class="sc">*</span> (edge_rates <span class="sc">-</span> <span class="fu">min</span>(edge_rates)) <span class="sc">/</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                                       (<span class="fu">max</span>(edge_rates) <span class="sc">-</span> <span class="fu">min</span>(edge_rates)) <span class="sc">+</span> <span class="dv">1</span>)))</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>edge_cols <span class="ot">&lt;-</span> cols[edge_idx]</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.axis =</span> <span class="fl">1.1</span>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree, <span class="at">edge.color =</span> edge_cols, <span class="at">edge.width =</span> <span class="dv">2</span>, <span class="at">cex =</span> <span class="fl">0.5</span>,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">no.margin =</span> <span class="cn">FALSE</span>, <span class="at">label.offset =</span> <span class="fl">0.3</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"ClaDS1: branch-specific speciation rates in Chaetodontidae"</span>,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">cex.main =</span> <span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -785,27 +907,292 @@ Rate range: NA -- NA</code></pre>
 <section id="key-parameters" class="level1">
 <h1>Key parameters</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ClaDS1 summary:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ClaDS1 summary:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ClaDS1 summary:</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Alpha (trend): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Alpha (trend): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Alpha (trend): 1.000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Sigma (stochasticity): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>sigma[<span class="dv">1</span>]))</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">1</span>) {</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &lt; 1: rates decelerate (early burst)</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &gt; 1: rates accelerate toward present</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha ~ 1: no directional trend in rates</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  Sigma (stochasticity): %.3f</span><span class="sc">\n</span><span class="st">"</span>, clads_result<span class="sc">$</span>sigma[<span class="dv">1</span>]))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&lt;</span> <span class="dv">1</span>) {</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &lt; 1: rates decelerate (early burst)</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (clads_result<span class="sc">$</span>alpha[<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha &gt; 1: rates accelerate toward present</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"  -&gt; Alpha ~ 1: no directional trend in rates</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  -&gt; Alpha ~ 1: no directional trend in rates</code></pre>
 </div>
 </div>
+</section>
+<section id="speciation-rate-histogram" class="level1">
+<h1>Speciation rate histogram</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tip_rates, <span class="fu">aes</span>(<span class="at">x =</span> tip_rate)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">25</span>, <span class="at">fill =</span> <span class="st">"#2c7bb6"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(tip_rates<span class="sc">$</span>tip_rate),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"#d7191c"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tip-specific speciation rate"</span>, <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Distribution of ClaDS1 speciation rates"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="fu">sprintf</span>(<span class="st">"Median = %.3f, range = %.3f \u2013 %.3f"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">median</span>(tip_rates<span class="sc">$</span>tip_rate),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">min</span>(tip_rates<span class="sc">$</span>tip_rate),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">max</span>(tip_rates<span class="sc">$</span>tip_rate))) <span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 4 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values or values outside the scale range
+(`geom_vline()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="clads-diversification_files/figure-html/rate-histogram-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Distribution of ClaDS1 tip-specific speciation rates across Chaetodontidae.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 4 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values or values outside the scale range
+(`geom_vline()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+for 'Median = NA, range = NA – NA' in 'mbcsToSbcs': - substituted for –
+(U+2013)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/clads1-rate-histogram.pdf</code></pre>
+</div>
+</div>
+</section>
+<section id="rate-vs-phylopca-scatter-plots" class="level1">
+<h1>Rate vs phyloPCA scatter plots</h1>
+<p>Merge tip-specific speciation rates with phylogenetic PCA scores to ask: do fast-diversifying lineages occupy different regions of color space?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>S  <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pp<span class="sc">$</span>ppca<span class="sc">$</span>S[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>S<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">rownames</span>(S)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>rate_pca <span class="ot">&lt;-</span> <span class="fu">merge</span>(tip_rates, S, <span class="at">by =</span> <span class="st">"species"</span>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>rate_pca<span class="sc">$</span>log_rate <span class="ot">&lt;-</span> <span class="fu">log</span>(rate_pca<span class="sc">$</span>tip_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in log(rate_pca$tip_rate): NaNs produced</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset tree to shared species</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>shared_rp <span class="ot">&lt;-</span> <span class="fu">intersect</span>(rate_pca<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>rate_pca  <span class="ot">&lt;-</span> rate_pca[rate_pca<span class="sc">$</span>species <span class="sc">%in%</span> shared_rp, ]</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>tree_rp   <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared_rp)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.ultrametric</span>(tree_rp)) {</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  tree_rp <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(tree_rp, <span class="at">method =</span> <span class="st">"extend"</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>rate_pca <span class="ot">&lt;-</span> rate_pca[<span class="fu">match</span>(tree_rp<span class="sc">$</span>tip.label, rate_pca<span class="sc">$</span>species), ]</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(rate_pca) <span class="ot">&lt;-</span> rate_pca<span class="sc">$</span>species</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co"># PGLS for each PC axis</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>pgls_results <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pc <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)) {</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  frm <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">"log_rate ~"</span>, pc))</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  fit <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gls</span>(frm, <span class="at">data =</span> rate_pca,</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">correlation =</span> <span class="fu">corBrownian</span>(<span class="at">phy =</span> tree_rp)),</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(fit)) {</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    pgls_results[[pc]] <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">slope =</span> <span class="fu">round</span>(<span class="fu">coef</span>(fit)[<span class="dv">2</span>], <span class="dv">4</span>),</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">pval  =</span> <span class="fu">round</span>(s<span class="sc">$</span>tTable[<span class="dv">2</span>, <span class="dv">4</span>], <span class="dv">4</span>)</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>    pgls_results[[pc]] <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">slope =</span> <span class="cn">NA</span>, <span class="at">pval =</span> <span class="cn">NA</span>)</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Build 3-panel figure</span></span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pc <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)) {</span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>  pg <span class="ot">&lt;-</span> pgls_results[[pc]]</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>  label <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"PGLS slope=%.3f, p=%.3f"</span>, pg<span class="sc">$</span>slope, pg<span class="sc">$</span>pval)</span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(rate_pca, <span class="fu">aes_string</span>(<span class="at">x =</span> pc, <span class="at">y =</span> <span class="st">"log_rate"</span>)) <span class="sc">+</span></span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"#264653"</span>) <span class="sc">+</span></span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"#e76f51"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> pc, <span class="at">y =</span> <span class="st">"log(tip rate)"</span>,</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="fu">paste</span>(pc, <span class="st">"vs speciation rate"</span>),</span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> label) <span class="sc">+</span></span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a>  plots[[pc]] <span class="ot">&lt;-</span> p</span>
+<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette("ggplot2-in-packages")` for more information.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>gridExtra<span class="sc">::</span><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> plots, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="clads-diversification_files/figure-html/rate-vs-pca-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Tip-specific speciation rate (log) vs phyloPCA scores (PC1–PC3) with PGLS regression lines.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 42 rows containing non-finite outside the scale range
+(`stat_smooth()`).
+Removed 42 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/clads-rate-vs-pca-hero.pdf</code></pre>
+</div>
+</div>
+<p><a href="../../figures/clads-rate-vs-pca-hero.pdf">Download hero PDF: <code>clads-rate-vs-pca-hero.pdf</code></a></p>
+</section>
+<section id="mean-speciation-rate-through-time" class="level1">
+<h1>Mean speciation rate through time</h1>
+<p>Compute the mean speciation rate at each time slice by averaging the rates of all branches alive at that time. This shows whether diversification has been accelerating, decelerating, or approximately constant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build branch-rate vector</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>n_tips <span class="ot">&lt;-</span> <span class="fu">length</span>(tree<span class="sc">$</span>tip.label)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>rate_vec <span class="ot">&lt;-</span> <span class="fu">setNames</span>(tip_rates<span class="sc">$</span>tip_rate, tip_rates<span class="sc">$</span>species)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co"># For each edge, assign rate: tip edges use tip rate; internal edges use mean of descendant tip rates</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>edge_rate_vec <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(tree<span class="sc">$</span>edge)), <span class="cf">function</span>(e) {</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  child <span class="ot">&lt;-</span> tree<span class="sc">$</span>edge[e, <span class="dv">2</span>]</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (child <span class="sc">&lt;=</span> n_tips) {</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    rate_vec[tree<span class="sc">$</span>tip.label[child]]</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get all descendant tips of this internal node</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>    desc <span class="ot">&lt;-</span> <span class="fu">getDescendants</span>(tree, child)</span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>    desc_tips <span class="ot">&lt;-</span> desc[desc <span class="sc">&lt;=</span> n_tips]</span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(rate_vec[tree<span class="sc">$</span>tip.label[desc_tips]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Get node heights (start and end time of each edge)</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>nh <span class="ot">&lt;-</span> <span class="fu">nodeHeights</span>(tree)</span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>crown_age <span class="ot">&lt;-</span> <span class="fu">max</span>(nh)</span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create time slices</span></span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>n_slices <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a>time_pts <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, crown_age, <span class="at">length.out =</span> n_slices)</span>
+<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a>mean_rate_at_t <span class="ot">&lt;-</span> <span class="fu">sapply</span>(time_pts, <span class="cf">function</span>(t) {</span>
+<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a>  alive <span class="ot">&lt;-</span> <span class="fu">which</span>(nh[, <span class="dv">1</span>] <span class="sc">&lt;=</span> t <span class="sc">&amp;</span> nh[, <span class="dv">2</span>] <span class="sc">&gt;</span> t)</span>
+<span id="cb57-28"><a href="#cb57-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(alive) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb57-29"><a href="#cb57-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(edge_rate_vec[alive], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-30"><a href="#cb57-30" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb57-31"><a href="#cb57-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-32"><a href="#cb57-32" aria-hidden="true" tabindex="-1"></a>rtt_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb57-33"><a href="#cb57-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_before_present =</span> crown_age <span class="sc">-</span> time_pts,</span>
+<span id="cb57-34"><a href="#cb57-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_rate =</span> mean_rate_at_t</span>
+<span id="cb57-35"><a href="#cb57-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb57-36"><a href="#cb57-36" aria-hidden="true" tabindex="-1"></a>rtt_df <span class="ot">&lt;-</span> rtt_df[<span class="sc">!</span><span class="fu">is.na</span>(rtt_df<span class="sc">$</span>mean_rate), ]</span>
+<span id="cb57-37"><a href="#cb57-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-38"><a href="#cb57-38" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rtt_df, <span class="fu">aes</span>(<span class="at">x =</span> time_before_present, <span class="at">y =</span> mean_rate)) <span class="sc">+</span></span>
+<span id="cb57-39"><a href="#cb57-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#2c7bb6"</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb57-40"><a href="#cb57-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"#2c7bb6"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb57-41"><a href="#cb57-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span></span>
+<span id="cb57-42"><a href="#cb57-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Time before present (Ma)"</span>, <span class="at">y =</span> <span class="st">"Mean branch speciation rate"</span>,</span>
+<span id="cb57-43"><a href="#cb57-43" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Speciation rate through time (ClaDS1)"</span>,</span>
+<span id="cb57-44"><a href="#cb57-44" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Average of branch rates alive at each time slice"</span>) <span class="sc">+</span></span>
+<span id="cb57-45"><a href="#cb57-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="clads-diversification_files/figure-html/rate-through-time-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Mean branch-specific speciation rate through time. Time runs from crown age (left) to present (right).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/clads1-rate-through-time.pdf</code></pre>
+</div>
+</div>
+<p><a href="../../figures/clads1-rate-through-time.pdf">Download hero PDF: <code>clads1-rate-through-time.pdf</code></a></p>
 </section>
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
@@ -826,6 +1213,18 @@ Rate range: NA -- NA</code></pre>
 <td>Tip rates for rate-trait correlation recipe</td>
 </tr>
 <tr class="even">
+<td><code>figures/clads1-rate-histogram.pdf</code></td>
+<td>Distribution of speciation rates across the clade</td>
+</tr>
+<tr class="odd">
+<td><code>figures/clads-rate-vs-pca-hero.pdf</code></td>
+<td>Three-panel rate vs phyloPCA scatter (PC1–PC3)</td>
+</tr>
+<tr class="even">
+<td><code>figures/clads1-rate-through-time.pdf</code></td>
+<td>Mean speciation rate through time curve</td>
+</tr>
+<tr class="odd">
 <td>Rate-colored tree (run interactively)</td>
 <td>Hero figure for diversification panel</td>
 </tr>

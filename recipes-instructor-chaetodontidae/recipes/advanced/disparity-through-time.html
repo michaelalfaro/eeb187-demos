@@ -106,6 +106,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -590,9 +592,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
+  <li><a href="#load-phylopca-scores" id="toc-load-phylopca-scores" class="nav-link" data-scroll-target="#load-phylopca-scores">Load phyloPCA scores</a></li>
   <li><a href="#dtt-analysis" id="toc-dtt-analysis" class="nav-link" data-scroll-target="#dtt-analysis">DTT analysis</a></li>
   <li><a href="#mdi-summary" id="toc-mdi-summary" class="nav-link" data-scroll-target="#mdi-summary">MDI summary</a></li>
   <li><a href="#hero-pdf" id="toc-hero-pdf" class="nav-link" data-scroll-target="#hero-pdf">Hero PDF</a></li>
+  <li><a href="#dtt-for-phylopca-axes-pc1pc3" id="toc-dtt-for-phylopca-axes-pc1pc3" class="nav-link" data-scroll-target="#dtt-for-phylopca-axes-pc1pc3">DTT for phyloPCA axes (PC1–PC3)</a></li>
   <li><a href="#output-files-for-the-poster" id="toc-output-files-for-the-poster" class="nav-link" data-scroll-target="#output-files-for-the-poster">Output files for the poster</a></li>
   </ul>
 </nav>
@@ -631,8 +635,8 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Advanced recipe.</strong> Runs DTT analysis on the six pavo metrics using the <code>geiger</code> package. Compares the observed disparity trajectory to a Brownian motion null and computes the morphological disparity index (MDI).</p>
-<p><strong>Poster outputs.</strong> <code>figures/dtt-hero.pdf</code> — DTT curve with BM null envelope.</p>
+<p><strong>Advanced recipe.</strong> Runs DTT analysis on the six pavo metrics and phyloPCA axes (PC1–PC3) using the <code>geiger</code> package. Compares the observed disparity trajectory to a Brownian motion null and computes the morphological disparity index (MDI).</p>
+<p><strong>Poster outputs.</strong> <code>figures/dtt-hero.pdf</code> — DTT curve with BM null envelope; <code>figures/dtt-pca-hero.pdf</code> — 3-panel DTT for PC1–PC3.</p>
 </div>
 </div>
 <section id="setup" class="level1">
@@ -643,55 +647,91 @@ Tip
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(phytools)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(geiger)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(knitr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'knitr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>BUNDLE  <span class="ot">&lt;-</span> <span class="st">"../../bundle"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>FIGDIR  <span class="ot">&lt;-</span> <span class="st">"../../figures"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(FIGDIR, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-data" class="level1">
 <h1>Load data</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pavo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaetodontidae-tree.tre"</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(tree)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>pavo_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"m"</span>, <span class="st">"A"</span>, <span class="st">"Jc"</span>, <span class="st">"Jt"</span>, <span class="st">"m_dS"</span>, <span class="st">"m_dL"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>shared <span class="ot">&lt;-</span> <span class="fu">intersect</span>(pavo<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>pavo   <span class="ot">&lt;-</span> pavo[<span class="fu">match</span>(shared, pavo<span class="sc">$</span>species), ]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>tree_d <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Build trait matrix</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>trait_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(pavo[, pavo_vars])</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(trait_mat) <span class="ot">&lt;-</span> pavo<span class="sc">$</span>species</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>complete <span class="ot">&lt;-</span> <span class="fu">complete.cases</span>(trait_mat)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>trait_mat <span class="ot">&lt;-</span> trait_mat[complete, ]</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>tree_d   <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree_d, <span class="fu">rownames</span>(trait_mat))</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>trait_mat <span class="ot">&lt;-</span> trait_mat[tree_d<span class="sc">$</span>tip.label, ]</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.ultrametric</span>(tree_d)) {</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  tree_d <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(tree_d, <span class="at">method =</span> <span class="st">"extend"</span>)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"DTT analysis on %d species x %d traits</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>            <span class="fu">nrow</span>(trait_mat), <span class="fu">ncol</span>(trait_mat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pavo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"pavo_metrics.csv"</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">read.tree</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"chaetodontidae-tree.tre"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>tree <span class="ot">&lt;-</span> <span class="fu">ladderize</span>(tree)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>pavo<span class="sc">$</span>species <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" "</span>, <span class="st">"_"</span>, pavo<span class="sc">$</span>species)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pavo_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"m"</span>, <span class="st">"A"</span>, <span class="st">"Jc"</span>, <span class="st">"Jt"</span>, <span class="st">"m_dS"</span>, <span class="st">"m_dL"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>shared <span class="ot">&lt;-</span> <span class="fu">intersect</span>(pavo<span class="sc">$</span>species, tree<span class="sc">$</span>tip.label)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>pavo   <span class="ot">&lt;-</span> pavo[<span class="fu">match</span>(shared, pavo<span class="sc">$</span>species), ]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>tree_d <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree, shared)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Build trait matrix</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>trait_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(pavo[, pavo_vars])</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(trait_mat) <span class="ot">&lt;-</span> pavo<span class="sc">$</span>species</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>complete <span class="ot">&lt;-</span> <span class="fu">complete.cases</span>(trait_mat)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>trait_mat <span class="ot">&lt;-</span> trait_mat[complete, ]</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>tree_d   <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree_d, <span class="fu">rownames</span>(trait_mat))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>trait_mat <span class="ot">&lt;-</span> trait_mat[tree_d<span class="sc">$</span>tip.label, ]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.ultrametric</span>(tree_d)) {</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  tree_d <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(tree_d, <span class="at">method =</span> <span class="st">"extend"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"DTT analysis on %d species x %d traits</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            <span class="fu">nrow</span>(trait_mat), <span class="fu">ncol</span>(trait_mat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DTT analysis on 109 species x 6 traits</code></pre>
+</div>
+</div>
+</section>
+<section id="load-phylopca-scores" class="level1">
+<h1>Load phyloPCA scores</h1>
+<p>PhyloPCA axes capture multivariate color variation. PC1 is often the best single “color pattern” variable for DTT because it integrates across correlated pavo metrics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">file.path</span>(BUNDLE, <span class="st">"phylo_pca.rds"</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>S  <span class="ot">&lt;-</span> pp<span class="sc">$</span>ppca<span class="sc">$</span>S[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(S) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Match to shared species in the DTT tree</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>shared_pc <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">rownames</span>(S), tree_d<span class="sc">$</span>tip.label)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>pc_mat <span class="ot">&lt;-</span> S[shared_pc, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pc_mat <span class="ot">&lt;-</span> pc_mat[tree_d<span class="sc">$</span>tip.label[tree_d<span class="sc">$</span>tip.label <span class="sc">%in%</span> shared_pc], , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># If some species in tree_d lack PC scores, prune</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(shared_pc) <span class="sc">&lt;</span> <span class="fu">length</span>(tree_d<span class="sc">$</span>tip.label)) {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  tree_pc <span class="ot">&lt;-</span> <span class="fu">keep.tip</span>(tree_d, shared_pc)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.ultrametric</span>(tree_pc)) {</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    tree_pc <span class="ot">&lt;-</span> <span class="fu">force.ultrametric</span>(tree_pc, <span class="at">method =</span> <span class="st">"extend"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  pc_mat <span class="ot">&lt;-</span> pc_mat[tree_pc<span class="sc">$</span>tip.label, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  tree_pc <span class="ot">&lt;-</span> tree_d</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  pc_mat  <span class="ot">&lt;-</span> pc_mat[tree_pc<span class="sc">$</span>tip.label, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"PhyloPCA DTT on %d species x %d axes</span><span class="sc">\n</span><span class="st">"</span>, <span class="fu">nrow</span>(pc_mat), <span class="fu">ncol</span>(pc_mat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PhyloPCA DTT on 109 species x 3 axes</code></pre>
 </div>
 </div>
 </section>
 <section id="dtt-analysis" class="level1">
 <h1>DTT analysis</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dtt_result <span class="ot">&lt;-</span> <span class="fu">dtt</span>(tree_d, trait_mat, <span class="at">nsim =</span> <span class="dv">500</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">calculateMDIp =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Chaetodontidae — Disparity Through Time (6 pavo metrics)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dtt_result <span class="ot">&lt;-</span> <span class="fu">dtt</span>(tree_d, trait_mat, <span class="at">nsim =</span> <span class="dv">500</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">calculateMDIp =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Chaetodontidae — Disparity Through Time (6 pavo metrics)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -705,19 +745,19 @@ Tip
 <section id="mdi-summary" class="level1">
 <h1>MDI summary</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"MDI: %.4f</span><span class="sc">\n</span><span class="st">"</span>, dtt_result<span class="sc">$</span>MDI))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"MDI: %.4f</span><span class="sc">\n</span><span class="st">"</span>, dtt_result<span class="sc">$</span>MDI))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MDI: 0.3916</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(dtt_result<span class="sc">$</span>MDI.pvalue)) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"MDI p-value: %.4f</span><span class="sc">\n</span><span class="st">"</span>, dtt_result<span class="sc">$</span>MDI.pvalue))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (dtt_result<span class="sc">$</span>MDI <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Positive MDI: subclades overlap in color space (ongoing diversification)</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Negative MDI: subclades partitioned color space (early-burst pattern)</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(dtt_result<span class="sc">$</span>MDI.pvalue)) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"MDI p-value: %.4f</span><span class="sc">\n</span><span class="st">"</span>, dtt_result<span class="sc">$</span>MDI.pvalue))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (dtt_result<span class="sc">$</span>MDI <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Positive MDI: subclades overlap in color space (ongoing diversification)</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Negative MDI: subclades partitioned color space (early-burst pattern)</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Positive MDI: subclades overlap in color space (ongoing diversification)</code></pre>
 </div>
@@ -10036,9 +10076,111 @@ for — (U+2014)</code></pre>
 </div>
 <p><a href="../../figures/dtt-hero.pdf">Download hero PDF</a></p>
 </section>
+<section id="dtt-for-phylopca-axes-pc1pc3" class="level1">
+<h1>DTT for phyloPCA axes (PC1–PC3)</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pc_dtt_results <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">1</span>))</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pc <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)) {</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  pc_trait <span class="ot">&lt;-</span> pc_mat[, pc, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  dtt_pc <span class="ot">&lt;-</span> <span class="fu">dtt</span>(tree_pc, pc_trait, <span class="at">nsim =</span> <span class="dv">500</span>, <span class="at">plot =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">calculateMDIp =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">title</span>(<span class="fu">sprintf</span>(<span class="st">"%s (MDI = %.4f)"</span>, pc, dtt_pc<span class="sc">$</span>MDI), <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  pc_dtt_results[[pc]] <span class="ot">&lt;-</span> dtt_pc</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="disparity-through-time_files/figure-html/dtt-pca-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>DTT curves for phyloPCA axes PC1–PC3. Black = observed; grey = 95% CI from 500 BM simulations.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dtt_pc_summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Axis   =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">MDI    =</span> <span class="fu">numeric</span>(<span class="dv">0</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pattern =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (pc <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>, <span class="st">"PC3"</span>)) {</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> pc_dtt_results[[pc]]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(d<span class="sc">$</span>MDI.pvalue)) d<span class="sc">$</span>MDI.pvalue <span class="cf">else</span> <span class="cn">NA</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  pattern <span class="ot">&lt;-</span> <span class="cf">if</span> (d<span class="sc">$</span>MDI <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="st">"Overlap (ongoing)"</span> <span class="cf">else</span> <span class="st">"Partitioned (early burst)"</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  dtt_pc_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dtt_pc_summary, <span class="fu">data.frame</span>(</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Axis    =</span> pc,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">MDI     =</span> <span class="fu">round</span>(d<span class="sc">$</span>MDI, <span class="dv">4</span>),</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_value =</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(pval)) <span class="fu">format.pval</span>(pval, <span class="at">digits =</span> <span class="dv">3</span>) <span class="cf">else</span> <span class="st">"n/a"</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pattern =</span> pattern,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(dtt_pc_summary,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">"DTT results for phyloPCA axes."</span>,</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>, <span class="st">"r"</span>, <span class="st">"l"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>                            <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>DTT results for phyloPCA axes.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Axis</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">MDI</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p_value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">avg.sq</td>
+<td style="text-align: left;">PC1</td>
+<td style="text-align: right;">0.2070</td>
+<td style="text-align: right;">n/a</td>
+<td style="text-align: left;">Overlap (ongoing)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">avg.sq1</td>
+<td style="text-align: left;">PC2</td>
+<td style="text-align: right;">0.4673</td>
+<td style="text-align: right;">n/a</td>
+<td style="text-align: left;">Overlap (ongoing)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">avg.sq2</td>
+<td style="text-align: left;">PC3</td>
+<td style="text-align: right;">0.3360</td>
+<td style="text-align: right;">n/a</td>
+<td style="text-align: left;">Overlap (ongoing)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>quartz_off_screen 
+                2 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wrote: /Users/michaelalfaro/Dropbox/git/EEB187-ecology-evolution-color-2026/labs/project-recipes-instructor-chaetodontidae/figures/dtt-pca-hero.pdf</code></pre>
+</div>
+</div>
+<p><a href="../../figures/dtt-pca-hero.pdf">Download PhyloPCA DTT hero PDF: <code>dtt-pca-hero.pdf</code></a></p>
+</section>
 <section id="output-files-for-the-poster" class="level1">
 <h1>Output files for the poster</h1>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 76%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>File</th>
@@ -10048,11 +10190,15 @@ for — (U+2014)</code></pre>
 <tbody>
 <tr class="odd">
 <td><code>figures/dtt-hero.pdf</code></td>
-<td>DTT curve for poster main results</td>
+<td>DTT curve (6 pavo metrics) for poster main results</td>
 </tr>
 <tr class="even">
-<td>MDI value above</td>
-<td>Key statistic for the methods sidebar</td>
+<td><code>figures/dtt-pca-hero.pdf</code></td>
+<td>DTT curves for PC1–PC3 (3-panel row)</td>
+</tr>
+<tr class="odd">
+<td>MDI values above</td>
+<td>Key statistics for the methods sidebar</td>
 </tr>
 </tbody>
 </table>
