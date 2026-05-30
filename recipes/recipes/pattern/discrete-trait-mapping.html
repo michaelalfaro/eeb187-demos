@@ -486,6 +486,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Recipe 14: Schooling and Conspicuousness</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../recipes/life-history/sexual-dichromatism.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recipe: Sexual Dichromatism</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -802,27 +808,51 @@ Natural fits for this recipe
 <span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  Mean transitions (0 -&gt; 1):"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(map_summary<span class="sc">$</span>count[, <span class="st">"0,1"</span>]), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"  Mean transitions (1 -&gt; 0):"</span>, <span class="fu">round</span>(<span class="fu">mean</span>(map_summary<span class="sc">$</span>count[, <span class="st">"1,0"</span>]), <span class="dv">1</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the summary map</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"fig-simmap.png"</span>, <span class="at">width =</span> <span class="dv">2400</span>, <span class="at">height =</span> <span class="dv">2000</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(map_summary,</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>     <span class="at">type   =</span> <span class="st">"fan"</span>,</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>     <span class="at">fsize  =</span> <span class="fl">0.40</span>,</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>     <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"#2a9d8f"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#e76f51"</span>),</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd    =</span> <span class="dv">2</span>)</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">add.simmap.legend</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"#2a9d8f"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#e76f51"</span>),</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>                  <span class="at">x      =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>,</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>                  <span class="at">prompt =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fsize  =</span> <span class="fl">1.0</span>)</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Stochastic character mapping: bars"</span>)</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="co"># Dwell times: proportion of total tree time in each state</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>dwell <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(map_summary<span class="sc">$</span>times) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">colMeans</span>(map_summary<span class="sc">$</span>times))</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Dwell times (proportion of tree history in each state):</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(dwell)) {</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"  State %s: %.1f%%</span><span class="sc">\n</span><span class="st">"</span>, nm, <span class="dv">100</span> <span class="sc">*</span> dwell[nm]))</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of number of gains (0 → 1 transitions)</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>n_gains <span class="ot">&lt;-</span> map_summary<span class="sc">$</span>count[, <span class="st">"0,1"</span>]</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"fig-simmap-origins-histogram.pdf"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(n_gains, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(n_gains) <span class="sc">-</span> <span class="fl">0.5</span>, <span class="fu">max</span>(n_gains) <span class="sc">+</span> <span class="fl">0.5</span>, <span class="at">by =</span> <span class="dv">1</span>),</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"#e76f51"</span>, <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribution of trait origins across 100 simmap replicates"</span>,</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Number of independent origins (0 → 1 transitions)"</span>,</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Frequency"</span>, <span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(n_gains), <span class="at">col =</span> <span class="st">"#264653"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">mean</span>(n_gains), <span class="fu">par</span>(<span class="st">"usr"</span>)[<span class="dv">4</span>] <span class="sc">*</span> <span class="fl">0.9</span>,</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>     <span class="fu">sprintf</span>(<span class="st">"mean = %.1f"</span>, <span class="fu">mean</span>(n_gains)),</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>     <span class="at">adj =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="fl">1.1</span>, <span class="at">col =</span> <span class="st">"#264653"</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Histogram saved: fig-simmap-origins-histogram.pdf</span><span class="sc">\n</span><span class="st">"</span>))</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Number of origins: mean = %.1f, range = %d -- %d</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mean</span>(n_gains), <span class="fu">min</span>(n_gains), <span class="fu">max</span>(n_gains)))</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the summary map</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="st">"fig-simmap.png"</span>, <span class="at">width =</span> <span class="dv">2400</span>, <span class="at">height =</span> <span class="dv">2000</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(map_summary,</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>     <span class="at">type   =</span> <span class="st">"fan"</span>,</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>     <span class="at">fsize  =</span> <span class="fl">0.40</span>,</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>     <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"#2a9d8f"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#e76f51"</span>),</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>     <span class="at">lwd    =</span> <span class="dv">2</span>)</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="fu">add.simmap.legend</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"#2a9d8f"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#e76f51"</span>),</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>                  <span class="at">x      =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>                  <span class="at">prompt =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fsize  =</span> <span class="fl">1.0</span>)</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Stochastic character mapping: bars"</span>)</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>What to report on your poster:</strong></p>
 <ul>
-<li>The tip-colored tree (fast visual check for clustering)</li>
-<li>The pie-chart reconstruction (your main result)</li>
-<li>The root-state probabilities (P(absent) vs.&nbsp;P(bars))</li>
-<li>The estimated number of transitions from the stochastic mapping</li>
-<li>A one-sentence interpretation: “Bars appear to have evolved [once / twice / multiple times] in this family, with [high / low] probability that the ancestor was [barred / unbarred].”</li>
+<li>The <strong>pie-chart tree</strong> (simmap summary — your main visual result)</li>
+<li>The <strong>root-state probabilities</strong> (P(absent) vs.&nbsp;P(present))</li>
+<li>The <strong>dwell times</strong> — proportion of evolutionary history spent in each state (e.g., “the clade spent 72% of its history without eyespots”)</li>
+<li>The <strong>histogram of origins</strong> — how many times the trait evolved independently across 100 simmap replicates. This is your strongest quantitative result (e.g., “eyespots arose 4–6 times independently”)</li>
+<li>A one-sentence interpretation: “Eyespots appear to have evolved [N] times independently in this family, with [high / low] probability that the ancestor was [present / absent]. The clade has spent [X]% of its evolutionary history in the [state] condition.”</li>
 </ul>
 </section>
 <section id="from-the-literature" class="level2">
