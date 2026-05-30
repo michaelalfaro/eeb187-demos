@@ -486,6 +486,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Recipe 14: Schooling and Conspicuousness</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../recipes/life-history/sexual-dichromatism.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recipe: Sexual Dichromatism</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -585,6 +591,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#save-as-pdf" id="toc-save-as-pdf" class="nav-link" data-scroll-target="#save-as-pdf">Save as PDF</a></li>
   </ul></li>
   <li><a href="#worked-example-chaetodontidae" id="toc-worked-example-chaetodontidae" class="nav-link" data-scroll-target="#worked-example-chaetodontidae">Worked Example: Chaetodontidae</a></li>
+  <li><a href="#option-stochastic-character-mapping-simmap" id="toc-option-stochastic-character-mapping-simmap" class="nav-link" data-scroll-target="#option-stochastic-character-mapping-simmap">Option: Stochastic Character Mapping (simmap)</a>
+  <ul class="collapse">
+  <li><a href="#how-to-code-your-discrete-trait" id="toc-how-to-code-your-discrete-trait" class="nav-link" data-scroll-target="#how-to-code-your-discrete-trait">How to code your discrete trait</a></li>
+  <li><a href="#run-the-stochastic-character-mapping" id="toc-run-the-stochastic-character-mapping" class="nav-link" data-scroll-target="#run-the-stochastic-character-mapping">Run the stochastic character mapping</a></li>
+  </ul></li>
   <li><a href="#from-the-literature" id="toc-from-the-literature" class="nav-link" data-scroll-target="#from-the-literature">From the Literature</a></li>
   </ul>
 </nav>
@@ -811,33 +822,43 @@ Parrotfish and wrasse groups
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Image sizing</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>img_h <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fl">0.85</span>, <span class="fl">0.9</span> <span class="sc">*</span> <span class="fu">max</span>(<span class="dv">1</span>, <span class="dv">3</span> <span class="sc">/</span> n_tips))   <span class="co"># height in tip-row units</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>img_w <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> tree_depth                       <span class="co"># width in tree-depth units</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>x_left <span class="ot">&lt;-</span> tree_depth <span class="sc">+</span> <span class="fl">0.04</span> <span class="sc">*</span> tree_depth         <span class="co"># small gap past branch tips</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>x_right <span class="ot">&lt;-</span> x_left <span class="sc">+</span> img_w</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay images and labels</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>(tip <span class="sc">%in%</span> <span class="fu">names</span>(img_paths))) <span class="cf">next</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(img_paths[tip])</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>dy     <span class="ot">&lt;-</span> <span class="cf">if</span> (n_tips <span class="sc">&gt;</span> <span class="dv">1</span>) (n_tips <span class="sc">-</span> <span class="fl">0.5</span>) <span class="sc">/</span> (n_tips <span class="sc">-</span> <span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>img_w_data <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> tree_depth                  <span class="co"># width in tree-depth units</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>x_left  <span class="ot">&lt;-</span> tree_depth <span class="sc">+</span> <span class="fl">0.04</span> <span class="sc">*</span> tree_depth        <span class="co"># small gap past branch tips</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay images and labels</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>(tip <span class="sc">%in%</span> <span class="fu">names</span>(img_paths))) <span class="cf">next</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  png_path <span class="ot">&lt;-</span> img_paths[tip]</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(png_path)</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  tip_y <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[i]</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img,</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>              <span class="at">xleft =</span> x_left,</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>              <span class="at">ybottom =</span> tip_y <span class="sc">-</span> img_h <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>              <span class="at">xright =</span> x_right,</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>              <span class="at">ytop =</span> tip_y <span class="sc">+</span> img_h <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Italic species name below the image</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip)</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="at">x =</span> (x_left <span class="sc">+</span> x_right) <span class="sc">/</span> <span class="dv">2</span>,</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> tip_y <span class="sc">-</span> img_h <span class="sc">/</span> <span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.08</span>,</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>       <span class="at">labels =</span> label,</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>       <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.7</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read actual image dimensions for correct aspect ratio</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  aspect <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">dim</span>(img)[<span class="dv">1</span>]   <span class="co"># width / height</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  actual_img_w <span class="ot">&lt;-</span> img_w_data</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  actual_img_h <span class="ot">&lt;-</span> img_w_data <span class="sc">/</span> aspect</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Clamp height to row spacing</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (actual_img_h <span class="sc">&gt;</span> dy <span class="sc">*</span> <span class="fl">0.92</span>) {</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    actual_img_h <span class="ot">&lt;-</span> dy <span class="sc">*</span> <span class="fl">0.92</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    actual_img_w <span class="ot">&lt;-</span> actual_img_h <span class="sc">*</span> aspect</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>              <span class="at">xleft =</span> x_left,</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>              <span class="at">ybottom =</span> tip_y <span class="sc">-</span> actual_img_h <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>              <span class="at">xright =</span> x_left <span class="sc">+</span> actual_img_w,</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>              <span class="at">ytop =</span> tip_y <span class="sc">+</span> actual_img_h <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Italic species name to the right of the image</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="at">x =</span> x_left,</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> tip_y <span class="sc">-</span> actual_img_h <span class="sc">/</span> <span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.08</span>,</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>       <span class="at">labels =</span> label,</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>       <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.45</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="fan-circle-tree-with-images" class="level3">
@@ -906,7 +927,7 @@ Parrotfish and wrasse groups
 <span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) angle_deg <span class="ot">&lt;-</span> angle_deg <span class="sc">+</span> <span class="dv">180</span></span>
 <span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(lx, ly, <span class="at">labels =</span> label,</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>       <span class="at">srt =</span> angle_deg, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">adj =</span> adj)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>       <span class="at">srt =</span> angle_deg, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.45</span>, <span class="at">adj =</span> adj)</span>
 <span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -1012,55 +1033,144 @@ Poster tip
 <span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width =</span> <span class="fl">2.5</span>, <span class="at">edge.color =</span> <span class="st">"#333333"</span>)</span>
 <span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Chaetodontidae — rectangular tree with images"</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
 <span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>img_h <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fl">0.85</span>, <span class="fl">0.9</span> <span class="sc">*</span> <span class="fu">max</span>(<span class="dv">1</span>, <span class="dv">3</span> <span class="sc">/</span> n_tips))</span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>img_w <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> tree_depth</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>dy <span class="ot">&lt;-</span> <span class="cf">if</span> (n_tips <span class="sc">&gt;</span> <span class="dv">1</span>) (<span class="fu">max</span>(pp<span class="sc">$</span>yy[<span class="fu">seq_len</span>(n_tips)]) <span class="sc">-</span> <span class="fu">min</span>(pp<span class="sc">$</span>yy[<span class="fu">seq_len</span>(n_tips)])) <span class="sc">/</span> (n_tips <span class="sc">-</span> <span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>img_w_data <span class="ot">&lt;-</span> <span class="fl">0.35</span> <span class="sc">*</span> tree_depth</span>
 <span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>x_left <span class="ot">&lt;-</span> tree_depth <span class="sc">+</span> <span class="fl">0.04</span> <span class="sc">*</span> tree_depth</span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>x_right <span class="ot">&lt;-</span> x_left <span class="sc">+</span> img_w</span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(img_paths[tip])</span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  tip_y <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[i]</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img, x_left, tip_y <span class="sc">-</span> img_h<span class="sc">/</span><span class="dv">2</span>, x_right, tip_y <span class="sc">+</span> img_h<span class="sc">/</span><span class="dv">2</span>,</span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>((x_left <span class="sc">+</span> x_right)<span class="sc">/</span><span class="dv">2</span>, tip_y <span class="sc">-</span> img_h<span class="sc">/</span><span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.08</span>,</span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>       <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip), <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.7</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>))</span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Saved: chaet-tree-rectangular.pdf</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Fan PDF ──</span></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"chaet-tree-fan.pdf"</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">14</span>)</span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="at">xpd =</span> <span class="cn">NA</span>)</span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_img, <span class="at">type =</span> <span class="st">"fan"</span>, <span class="at">show.tip.label =</span> <span class="cn">FALSE</span>, <span class="at">no.margin =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width =</span> <span class="fl">2.5</span>, <span class="at">edge.color =</span> <span class="st">"#333333"</span>, <span class="at">open.angle =</span> <span class="dv">10</span>)</span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Chaetodontidae — fan tree with images"</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>tree_radius <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">sqrt</span>(pp<span class="sc">$</span>xx<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> pp<span class="sc">$</span>yy<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>img_size <span class="ot">&lt;-</span> tree_radius <span class="sc">*</span> <span class="fl">0.12</span></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
-<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(img_paths[tip])</span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>  tx <span class="ot">&lt;-</span> pp<span class="sc">$</span>xx[i]; ty <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[i]</span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>  angle <span class="ot">&lt;-</span> <span class="fu">atan2</span>(ty, tx)</span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>  offset <span class="ot">&lt;-</span> tree_radius <span class="sc">*</span> <span class="fl">0.08</span></span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>  cx <span class="ot">&lt;-</span> tx <span class="sc">+</span> <span class="fu">cos</span>(angle) <span class="sc">*</span> offset</span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>  cy <span class="ot">&lt;-</span> ty <span class="sc">+</span> <span class="fu">sin</span>(angle) <span class="sc">*</span> offset</span>
-<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>  asp <span class="ot">&lt;-</span> <span class="fu">ncol</span>(img) <span class="sc">/</span> <span class="fu">nrow</span>(img)</span>
-<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>  half_w <span class="ot">&lt;-</span> img_size <span class="sc">*</span> asp <span class="sc">/</span> <span class="dv">2</span>; half_h <span class="ot">&lt;-</span> img_size <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img, cx <span class="sc">-</span> half_w, cy <span class="sc">-</span> half_h, cx <span class="sc">+</span> half_w, cy <span class="sc">+</span> half_h,</span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>  label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip)</span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>  label_r <span class="ot">&lt;-</span> offset <span class="sc">+</span> img_size <span class="sc">*</span> <span class="fl">1.1</span></span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>  lx <span class="ot">&lt;-</span> tx <span class="sc">+</span> <span class="fu">cos</span>(angle) <span class="sc">*</span> label_r</span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>  ly <span class="ot">&lt;-</span> ty <span class="sc">+</span> <span class="fu">sin</span>(angle) <span class="sc">*</span> label_r</span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>  angle_deg <span class="ot">&lt;-</span> angle <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi</span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>  adj <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>) <span class="cf">else</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>)</span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) angle_deg <span class="ot">&lt;-</span> angle_deg <span class="sc">+</span> <span class="dv">180</span></span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(lx, ly, label, <span class="at">srt =</span> angle_deg, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.55</span>, <span class="at">adj =</span> adj)</span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Saved: chaet-tree-fan.pdf</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(img_paths[tip])</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>  tip_y <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[i]</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preserve aspect ratio</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  aspect <span class="ot">&lt;-</span> <span class="fu">dim</span>(img)[<span class="dv">2</span>] <span class="sc">/</span> <span class="fu">dim</span>(img)[<span class="dv">1</span>]</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  actual_img_w <span class="ot">&lt;-</span> img_w_data</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  actual_img_h <span class="ot">&lt;-</span> img_w_data <span class="sc">/</span> aspect</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (actual_img_h <span class="sc">&gt;</span> dy <span class="sc">*</span> <span class="fl">0.92</span>) {</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>    actual_img_h <span class="ot">&lt;-</span> dy <span class="sc">*</span> <span class="fl">0.92</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>    actual_img_w <span class="ot">&lt;-</span> actual_img_h <span class="sc">*</span> aspect</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img, x_left, tip_y <span class="sc">-</span> actual_img_h<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>              x_left <span class="sc">+</span> actual_img_w, tip_y <span class="sc">+</span> actual_img_h<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(x_left, tip_y <span class="sc">-</span> actual_img_h<span class="sc">/</span><span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.08</span>,</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>       <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip), <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.45</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Saved: chaet-tree-rectangular.pdf</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Fan PDF ──</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"chaet-tree-fan.pdf"</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">14</span>)</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="at">xpd =</span> <span class="cn">NA</span>)</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tree_img, <span class="at">type =</span> <span class="st">"fan"</span>, <span class="at">show.tip.label =</span> <span class="cn">FALSE</span>, <span class="at">no.margin =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>     <span class="at">edge.width =</span> <span class="fl">2.5</span>, <span class="at">edge.color =</span> <span class="st">"#333333"</span>, <span class="at">open.angle =</span> <span class="dv">10</span>)</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Chaetodontidae — fan tree with images"</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>)</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">get</span>(<span class="st">"last_plot.phylo"</span>, <span class="at">envir =</span> .PlotPhyloEnv)</span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>tree_radius <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">sqrt</span>(pp<span class="sc">$</span>xx<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> pp<span class="sc">$</span>yy<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>img_size <span class="ot">&lt;-</span> tree_radius <span class="sc">*</span> <span class="fl">0.12</span></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(tree_img<span class="sc">$</span>tip.label)) {</span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>  tip <span class="ot">&lt;-</span> tree_img<span class="sc">$</span>tip.label[i]</span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>  img <span class="ot">&lt;-</span> <span class="fu">read_fish_png</span>(img_paths[tip])</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>  tx <span class="ot">&lt;-</span> pp<span class="sc">$</span>xx[i]; ty <span class="ot">&lt;-</span> pp<span class="sc">$</span>yy[i]</span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>  angle <span class="ot">&lt;-</span> <span class="fu">atan2</span>(ty, tx)</span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>  offset <span class="ot">&lt;-</span> tree_radius <span class="sc">*</span> <span class="fl">0.08</span></span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>  cx <span class="ot">&lt;-</span> tx <span class="sc">+</span> <span class="fu">cos</span>(angle) <span class="sc">*</span> offset</span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>  cy <span class="ot">&lt;-</span> ty <span class="sc">+</span> <span class="fu">sin</span>(angle) <span class="sc">*</span> offset</span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>  asp <span class="ot">&lt;-</span> <span class="fu">ncol</span>(img) <span class="sc">/</span> <span class="fu">nrow</span>(img)</span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>  half_w <span class="ot">&lt;-</span> img_size <span class="sc">*</span> asp <span class="sc">/</span> <span class="dv">2</span>; half_h <span class="ot">&lt;-</span> img_size <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rasterImage</span>(img, cx <span class="sc">-</span> half_w, cy <span class="sc">-</span> half_h, cx <span class="sc">+</span> half_w, cy <span class="sc">+</span> half_h,</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>              <span class="at">interpolate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>  label <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"_"</span>, <span class="st">" "</span>, tip)</span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>  label_r <span class="ot">&lt;-</span> offset <span class="sc">+</span> img_size <span class="sc">*</span> <span class="fl">1.1</span></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>  lx <span class="ot">&lt;-</span> tx <span class="sc">+</span> <span class="fu">cos</span>(angle) <span class="sc">*</span> label_r</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>  ly <span class="ot">&lt;-</span> ty <span class="sc">+</span> <span class="fu">sin</span>(angle) <span class="sc">*</span> label_r</span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>  angle_deg <span class="ot">&lt;-</span> angle <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi</span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>  adj <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>) <span class="cf">else</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(angle_deg) <span class="sc">&gt;</span> <span class="dv">90</span>) angle_deg <span class="ot">&lt;-</span> angle_deg <span class="sc">+</span> <span class="dv">180</span></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(lx, ly, label, <span class="at">srt =</span> angle_deg, <span class="at">font =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.45</span>, <span class="at">adj =</span> adj)</span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Saved: chaet-tree-fan.pdf</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="option-stochastic-character-mapping-simmap" class="level2">
+<h2 class="anchored" data-anchor-id="option-stochastic-character-mapping-simmap">Option: Stochastic Character Mapping (simmap)</h2>
+<p>If your project involves a <strong>discrete trait</strong> (feeding mode, habitat type, color pattern category), you can map it onto the phylogeny using stochastic character mapping. This shows the posterior probability of each state along branches and at internal nodes.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="When to use simmap vs contMap">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+When to use simmap vs contMap
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>contMap</strong> maps a continuous trait (like PC1 or body size) — branch colors show reconstructed values along a gradient.</p>
+<p><strong>simmap</strong> maps a discrete trait (like feeding mode, habitat type, or color pattern category) — branch colors show the posterior probability of being in each state, and pie charts at nodes show uncertainty in the ancestral state.</p>
+<p>Use simmap when your trait naturally has categories. Use contMap when your trait is a number.</p>
+</div>
+</div>
+<section id="how-to-code-your-discrete-trait" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-code-your-discrete-trait">How to code your discrete trait</h3>
+<p>Your trait variable should be a named character vector matching the tree tip labels:</p>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From your FishBase traits or manual coding:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>trait <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"herbivore"</span>, <span class="st">"omnivore"</span>, <span class="st">"corallivore"</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Scarus_vetula"</span>, <span class="st">"Chlorurus_sordidus"</span>, <span class="st">"Chaetodon_trifascialis"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Or from a CSV column:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>trait <span class="ot">&lt;-</span> <span class="fu">setNames</span>(traits_df<span class="sc">$</span>feeding_mode, traits_df<span class="sc">$</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="run-the-stochastic-character-mapping" class="level3">
+<h3 class="anchored" data-anchor-id="run-the-stochastic-character-mapping">Run the stochastic character mapping</h3>
+<div class="cell" data-code-copy="true">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Stochastic Character Mapping (simmap) ──────────────────</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Maps a discrete trait onto the phylogeny using phytools::make.simmap()</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Shows the posterior probability of each state along branches</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(phytools)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: map a discrete trait (e.g., feeding mode, habitat type)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Your trait should be a named vector: trait &lt;- setNames(data$trait, data$species)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Values should be categories like "herbivore", "omnivore", "corallivore"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model (equal rates by default; try "ARD" for complex traits)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>simmap_trees <span class="ot">&lt;-</span> <span class="fu">make.simmap</span>(tree, trait, <span class="at">model =</span> <span class="st">"ER"</span>, <span class="at">nsim =</span> <span class="dv">100</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary: posterior probabilities at each node</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>simmap_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(simmap_trees)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot with posterior probabilities as pie charts at nodes</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"#264653"</span>, <span class="st">"#2a9d8f"</span>, <span class="st">"#e9c46a"</span>, <span class="st">"#f4a261"</span>, <span class="st">"#e76f51"</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">levels</span>(<span class="fu">factor</span>(trait)))  <span class="co"># adjust colors to your categories</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(simmap_summary, <span class="at">colors =</span> cols, <span class="at">fsize =</span> <span class="fl">0.5</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.15</span>))  <span class="co"># node pie size, tip label size</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">add.simmap.legend</span>(<span class="at">colors =</span> cols, <span class="at">prompt =</span> <span class="cn">FALSE</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">1</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Hero PDF</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"results/simmap-hero.pdf"</span>, <span class="at">width =</span> <span class="dv">12</span>, <span class="at">height =</span> <span class="dv">20</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(simmap_summary, <span class="at">colors =</span> cols, <span class="at">fsize =</span> <span class="fl">0.6</span>, <span class="at">lwd =</span> <span class="dv">3</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.2</span>))</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">add.simmap.legend</span>(<span class="at">colors =</span> cols, <span class="at">prompt =</span> <span class="cn">FALSE</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">1</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Model choice: ER vs ARD">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Model choice: ER vs ARD
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>model = "ER"</code> assumes all transitions between states happen at equal rates (e.g., herbivore-to-omnivore is as likely as omnivore-to-herbivore). <code>model = "ARD"</code> allows every pair of states to have its own rate. Start with ER — it is more robust with small sample sizes. Switch to ARD only if you have 40+ tips and biological reason to expect asymmetric transitions.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="from-the-literature" class="level2">
 <h2 class="anchored" data-anchor-id="from-the-literature">From the Literature</h2>
