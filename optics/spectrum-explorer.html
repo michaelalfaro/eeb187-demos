@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spectrum Explorer — EEB 187</title>
+<style>
+  :root{
+    --bg:#1a1d2e; --panel:#22263c; --ink:#e8e8e8; --label:#c8c8d0; --muted:#8888a0;
+    --line:#555566; --blue:#6fa8dc; --gold:#d4a853; --teal:#81b29a; --coral:#e07a5f;
+    --purple:#9b59b6;
+  }
+  body.light{
+    --bg:#ffffff; --panel:#f2f3f7; --ink:#0b0b0b; --label:#2b2b33; --muted:#5a5a66;
+    --line:#999999; --blue:#3f7fc0; --gold:#a2761f; --teal:#3f7d5f; --coral:#bf4f2e;
+    --purple:#7b3f96;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.45 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+  header{padding:14px 20px 6px}
+  h1{margin:0;font-size:22px;font-weight:700}
+  header p{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:70ch}
+  main{display:flex;flex-wrap:wrap;gap:18px;padding:12px 20px 28px;align-items:flex-start}
+  #wrap{flex:1 1 720px;min-width:340px}
+  canvas{width:100%;height:auto;display:block;background:var(--bg);
+    border:1px solid var(--line);border-radius:6px}
+  aside{flex:0 0 280px;min-width:250px;background:var(--panel);border:1px solid var(--line);
+    border-radius:6px;padding:14px 16px}
+  fieldset{border:0;padding:0;margin:0 0 16px}
+  legend{font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--muted);padding:0 0 6px}
+  label{display:block;margin:6px 0;color:var(--label)}
+  input[type=range]{width:100%;accent-color:var(--blue)}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .kval{font-weight:700;color:var(--gold);font-size:20px;font-variant-numeric:tabular-nums}
+  .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  button{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);
+    border-radius:5px;padding:4px 9px;cursor:pointer}
+  button:hover{border-color:var(--blue);color:var(--blue)}
+  button.wide{width:100%;margin-top:6px;padding:8px}
+  .seg{display:flex;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+  .seg button{border:0;border-radius:0;flex:1;padding:7px 4px}
+  .seg button[aria-pressed=true]{background:var(--blue);color:var(--bg);font-weight:700}
+  .note{color:var(--muted);font-size:12.5px;margin:10px 0 0}
+  footer{padding:0 20px 24px;color:var(--muted);font-size:12.5px;max-width:95ch}
+  code{color:var(--teal)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Spectrum Explorer</h1>
+  <p>EEB 187 · Ecology and Evolution of Color. A hot object glows; how hot it is decides
+     the shape of the curve, and the curve decides what an eye can catch.</p>
+</header>
+
+<main>
+  <div id="wrap"><canvas id="cv" width="1100" height="640"
+      role="img" aria-label="Blackbody spectrum on wavelength axes with cone sensitivity
+      overlays, a perceived-color swatch and cone-response bars"></canvas></div>
+
+  <aside>
+    <fieldset>
+      <legend>Temperature</legend>
+      <div class="row"><span>blackbody</span><span class="kval"><span id="tval">5800</span> K</span></div>
+      <input id="temp" type="range" min="1000" max="10000" step="50" value="5800"
+             aria-label="Blackbody temperature in kelvin">
+      <div class="presets">
+        <button data-t="1900">candle</button>
+        <button data-t="2800">bulb</button>
+        <button data-t="5800">sun</button>
+        <button data-t="9500">blue star</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>y-axis units</legend>
+      <div class="seg" id="units">
+        <button data-u="photon" aria-pressed="true">photons / nm</button>
+        <button data-u="energy" aria-pressed="false">watts / nm</button>
+      </div>
+      <p class="note">Biology counts photons. Instruments read watts.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Overlays</legend>
+      <label><input type="checkbox" id="human"> human cones (S, M, L)</label>
+      <label><input type="checkbox" id="bird"> a bird's UV cone</label>
+      <label><input type="checkbox" id="atmos"> after the atmosphere</label>
+      <button class="wide" id="theme">light / dark</button>
+      <button class="wide" id="copy">copy this figure (PNG)</button>
+      <p class="note" id="copynote"></p>
+    </fieldset>
+  </aside>
+</main>
+
+<footer>
+  Curves are Planck's law, drawn on the course spectrum axes (300–750&nbsp;nm, UV shaded,
+  wavelength&rarr;color strip under the axis); the inset shows the whole curve so you can see
+  where the peak really is. The atmosphere toggle applies a <em>simplified</em> transmittance
+  template (ozone cut-off, Rayleigh loss, two water/oxygen bands) — it is a teaching template,
+  not a radiative-transfer model. The swatch is an <em>approximate</em> perceived color
+  (CIE&nbsp;1931 matching functions, analytic fit, sRGB). Cone curves are schematic Gaussians
+  and cone responses are always computed from <em>photon</em> counts.
+</footer>
+
+<script>
+"use strict";
+// ─── constants ────────────────────────────────────────────────────────────
+var WL0 = 300, WL1 = 750;              // the course spectrum window
+var CTX0 = 200, CTX1 = 3000;           // context inset: the whole curve
+var H = 6.62607015e-34, C = 2.99792458e8, KB = 1.380649e-23;
+
+var CONES = [
+  {tag:"S",  mu:424, sig:30, key:"human", col:"--blue"},
+  {tag:"M",  mu:530, sig:42, key:"human", col:"--teal"},
+  {tag:"L",  mu:563, sig:52, key:"human", col:"--coral"},
+  {tag:"UV", mu:372, sig:22, key:"bird",  col:"--purple"}
+];
+
+var state = {T:5800, units:"photon", human:false, bird:false, atmos:false};
+
+// ─── physics ──────────────────────────────────────────────────────────────
+function planck(nm, T, photons){
+  var lam = nm * 1e-9;
+  var b = (2*H*C*C) / (Math.pow(lam,5) * (Math.exp(H*C/(lam*KB*T)) - 1));
+  return photons ? b * lam / (H*C) : b;
+}
+// simplified atmospheric transmittance (teaching template, not a model)
+function atmos(nm){
+  var t = 1;
+  t *= 1 / (1 + Math.exp(-(nm - 318) / 7));          // ozone cut-off in the UV
+  t *= Math.exp(-0.115 * Math.pow(550/nm, 4));        // Rayleigh loss, 1/λ⁴
+  t *= 1 - 0.28*Math.exp(-0.5*Math.pow((nm-687)/5,2)); // O₂ B band
+  t *= 1 - 0.45*Math.exp(-0.5*Math.pow((nm-723)/9,2)); // H₂O band
+  t *= 1 - 0.30*Math.exp(-0.5*Math.pow((nm-940)/25,2));
+  t *= 1 - 0.55*Math.exp(-0.5*Math.pow((nm-1380)/45,2));
+  return t;
+}
+function spec(nm, photons){
+  return planck(nm, state.T, photons) * (state.atmos ? atmos(nm) : 1);
+}
+function gauss(x, mu, sig){ return Math.exp(-0.5*Math.pow((x-mu)/sig,2)); }
+
+// CIE 1931 colour-matching functions, analytic multi-lobe fit
+// (Wyman, Sloan & Shirley 2013, J. Computer Graphics Techniques 2(2))
+function lobe(x, mu, s1, s2){
+  var t = (x - mu) * (x < mu ? 1/s1 : 1/s2);
+  return Math.exp(-0.5*t*t);
+}
+function cieX(l){ return 1.056*lobe(l,599.8,37.9,31.0) + 0.362*lobe(l,442.0,16.0,26.7)
+                       - 0.065*lobe(l,501.1,20.4,26.2); }
+function cieY(l){ return 0.821*lobe(l,568.8,46.9,40.5) + 0.286*lobe(l,530.9,16.3,31.1); }
+function cieZ(l){ return 1.217*lobe(l,437.0,11.8,36.0) + 0.681*lobe(l,459.0,26.0,13.8); }
+
+function srgb(r,g,b){
+  function enc(v){ v = Math.max(0, Math.min(1, v));
+    return Math.round(255*(v <= 0.0031308 ? 12.92*v : 1.055*Math.pow(v,1/2.4) - 0.055)); }
+  return "rgb(" + enc(r) + "," + enc(g) + "," + enc(b) + ")";
+}
+// wavelength → approximate display colour, for the axis strip only
+function wlColor(nm){
+  // Bruton's piecewise approximation — the same mapping the course figures use.
+  // Below 380 nm the eye's matching functions are ~0, so the UV end is drawn as a
+  // desaturated violet-grey: "not a color you see".
+  var r, g, b, f;
+  if (nm < 380){ f = 0.25 + 0.35*Math.max(0,(nm-300)/80);
+                 return srgb(0.32*f, 0.26*f, 0.42*f); }
+  if (nm < 440){ r = -(nm-440)/60; g = 0; b = 1; }
+  else if (nm < 490){ r = 0; g = (nm-440)/50; b = 1; }
+  else if (nm < 510){ r = 0; g = 1; b = -(nm-510)/20; }
+  else if (nm < 580){ r = (nm-510)/70; g = 1; b = 0; }
+  else if (nm < 645){ r = 1; g = -(nm-645)/65; b = 0; }
+  else { r = 1; g = 0; b = 0; }
+  f = nm < 420 ? 0.30 + 0.70*(nm-380)/40
+    : (nm > 700 ? 0.30 + 0.70*(750-nm)/50 : 1);
+  return srgb(Math.pow(r*f,0.85), Math.pow(g*f,0.85), Math.pow(b*f,0.85));
+}
+function perceivedColor(){
+  var X=0, Y=0, Z=0;
+  for (var l = 360; l <= 750; l += 2){ var e = spec(l,false)*2;
+    X += e*cieX(l); Y += e*cieY(l); Z += e*cieZ(l); }
+  var s = X+Y+Z || 1e-30; X/=s; Y/=s; Z/=s;
+  var r =  3.2406*X - 1.5372*Y - 0.4986*Z;
+  var g = -0.9689*X + 1.8758*Y + 0.0415*Z;
+  var b =  0.0557*X - 0.2040*Y + 1.0570*Z;
+  var mn = Math.min(r,g,b); if (mn < 0){ r-=mn; g-=mn; b-=mn; }   // desaturate into gamut
+  var mx = Math.max(r,g,b) || 1;
+  return srgb(r/mx, g/mx, b/mx);
+}
+function coneResponses(){
+  var out = [], max = 0;
+  CONES.forEach(function(c){
+    if (!state[c.key]) return;
+    var sum = 0;
+    for (var l = WL0; l <= WL1; l += 1) sum += spec(l,true)*gauss(l,c.mu,c.sig);
+    if (sum > max) max = sum;
+    out.push({tag:c.tag, v:sum, col:c.col});
+  });
+  out.forEach(function(o){ o.v = max ? o.v/max : 0; });
+  return out;
+}
+
+// ─── drawing ──────────────────────────────────────────────────────────────
+var cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+var W = 1100, HT = 640;
+function css(v){ return getComputedStyle(document.body).getPropertyValue(v).trim(); }
+
+function setupCanvas(){
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = W*dpr; cv.height = HT*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function line(x1,y1,x2,y2,col,w){
+  ctx.strokeStyle=col; ctx.lineWidth=w||1; ctx.beginPath();
+  ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+}
+function text(s,x,y,col,size,align,weight){
+  ctx.fillStyle=col; ctx.textAlign=align||"left"; ctx.textBaseline="alphabetic";
+  ctx.font=(weight||400)+" "+(size||14)+'px "Source Sans Pro",Helvetica,Arial,sans-serif';
+  ctx.fillText(s,x,y);
+}
+
+var P = {l:80, r:735, t:44, b:430};                 // main plot box
+function X(nm){ return P.l + (nm-WL0)/(WL1-WL0)*(P.r-P.l); }
+function Y(v){ return P.b - v*(P.b-P.t); }
+
+function drawStrip(x0,x1,y,h){
+  for (var px = x0; px < x1; px++){
+    var nm = WL0 + (px-x0)/(x1-x0)*(WL1-WL0);
+    ctx.fillStyle = wlColor(nm);
+    ctx.fillRect(px, y, 1.5, h);
+  }
+}
+
+function draw(){
+  var ink=css("--ink"), lab=css("--label"), mut=css("--muted"), ln=css("--line"),
+      blue=css("--blue"), gold=css("--gold"), bg=css("--bg"), panel=css("--panel");
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,HT);
+
+  // UV band
+  ctx.fillStyle = mut; ctx.globalAlpha = 0.13;
+  ctx.fillRect(P.l, P.t, X(400)-P.l, P.b-P.t); ctx.globalAlpha = 1;
+  text("UV", (P.l+X(400))/2, P.t+24, mut, 15, "center", 700);
+
+  // axes
+  line(P.l,P.b,P.r,P.b,ln,1.2); line(P.l,P.t,P.l,P.b,ln,1.2);
+  for (var nm = 300; nm <= 700; nm += 100){
+    line(X(nm),P.b,X(nm),P.b+5,ln,1.2);
+    text(String(nm), X(nm), P.b+24, ink, 15, "center");
+  }
+  drawStrip(P.l, P.r, P.b+34, 16);
+  text("Wavelength (nm)", (P.l+P.r)/2, P.b+74, ink, 16, "center");
+  ctx.save(); ctx.translate(26,(P.t+P.b)/2); ctx.rotate(-Math.PI/2);
+  var yl = state.units === "photon"
+    ? "Relative photon flux (photons s⁻¹ nm⁻¹)" : "Relative spectral irradiance (W nm⁻¹)";
+  text(yl, 0, 0, ink, 16, "center"); ctx.restore();
+  text("each curve scaled to its own peak in this window", P.l+8, P.t-26, mut, 13);
+
+  // blackbody curve, normalised inside the window
+  var photons = state.units === "photon", vals = [], max = 0;
+  for (var l = WL0; l <= WL1; l += 1){
+    var v = spec(l, photons); vals.push(v); if (v > max) max = v;
+  }
+  ctx.beginPath();
+  for (var i = 0; i < vals.length; i++){
+    var x = X(WL0+i), y = Y(max ? vals[i]/max : 0);
+    i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+  }
+  ctx.strokeStyle = blue; ctx.lineWidth = 2.6; ctx.stroke();
+  ctx.lineTo(P.r,P.b); ctx.lineTo(P.l,P.b); ctx.closePath();
+  ctx.fillStyle = blue; ctx.globalAlpha = 0.14; ctx.fill(); ctx.globalAlpha = 1;
+
+  // cone overlays, direct-labelled
+  CONES.forEach(function(c){
+    if (!state[c.key]) return;
+    var col = css(c.col);
+    ctx.beginPath();
+    for (var l = WL0; l <= WL1; l += 2){
+      var x = X(l), y = Y(gauss(l,c.mu,c.sig));
+      l === WL0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = col; ctx.lineWidth = 2;
+    ctx.setLineDash(c.key === "bird" ? [7,5] : []); ctx.stroke(); ctx.setLineDash([]);
+    text(c.tag, X(c.mu), Y(1)-10, col, 16, "center", 700);
+  });
+
+  // context inset: the whole curve, with the teaching window highlighted
+  var I = {l:P.l, r:P.l+250, t:P.b+108, b:HT-34};
+  function ix(nm){ return I.l + (Math.log(nm)-Math.log(CTX0))/(Math.log(CTX1)-Math.log(CTX0))*(I.r-I.l); }
+  var cmax = 0, cv2 = [];
+  for (var k = 0; k < 240; k++){
+    var nm2 = CTX0*Math.pow(CTX1/CTX0, k/239);
+    var v2 = planck(nm2, state.T, photons)*(state.atmos ? atmos(nm2) : 1);
+    cv2.push([nm2,v2]); if (v2 > cmax) cmax = v2;
+  }
+  ctx.fillStyle = panel; ctx.fillRect(I.l,I.t,I.r-I.l,I.b-I.t);
+  ctx.fillStyle = blue; ctx.globalAlpha = 0.20;
+  ctx.fillRect(ix(WL0), I.t, ix(WL1)-ix(WL0), I.b-I.t); ctx.globalAlpha = 1;
+  ctx.beginPath();
+  cv2.forEach(function(p,j){
+    var x = ix(p[0]), y = I.b - (cmax ? p[1]/cmax : 0)*(I.b-I.t-6);
+    j ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+  });
+  ctx.strokeStyle = blue; ctx.lineWidth = 1.8; ctx.stroke();
+  text("the whole curve, 200 nm – 3 µm (log scale)", I.l, I.t-10, mut, 13);
+  text("visible window", (ix(WL0)+ix(WL1))/2, I.b+16, mut, 12, "center");
+  text("infrared", I.r-4, I.b+16, mut, 12, "right");
+
+  // ── right column ──
+  var RX = 775, RW = 300;
+  text("Approximate perceived color", RX, 34, ink, 16, "left", 700);
+  ctx.fillStyle = perceivedColor();
+  ctx.fillRect(RX, 48, RW, 96);
+  ctx.strokeStyle = ln; ctx.lineWidth = 1; ctx.strokeRect(RX, 48, RW, 96);
+  text("what this glow would look like, roughly", RX, 164, mut, 13);
+  text(state.T.toLocaleString() + " K" + (state.atmos ? " · after atmosphere" : ""),
+       RX, 184, gold, 15, "left", 700);
+
+  var bars = coneResponses();
+  text("Cone responses", RX, 236, ink, 16, "left", 700);
+  text("photons caught, relative to the strongest cone", RX, 256, mut, 13);
+  if (!bars.length){
+    text("turn on a cone overlay to see this", RX, 292, mut, 14);
+  } else {
+    var by0 = 276, bh = 26, gap = 14;
+    bars.forEach(function(b,i){
+      var y = by0 + i*(bh+gap);
+      ctx.fillStyle = css(b.col);
+      ctx.fillRect(RX+40, y, Math.max(2, b.v*(RW-90)), bh);
+      text(b.tag, RX+32, y+bh-7, ink, 15, "right", 700);
+      text(b.v.toFixed(2), RX+46+Math.max(2,b.v*(RW-90)), y+bh-7, lab, 14);
+    });
+  }
+  text("EEB 187 · Spectrum Explorer", RX, HT-34, mut, 12);
+  text("schematic cone curves; swatch approximate", RX, HT-18, mut, 12);
+}
+
+// ─── wiring ───────────────────────────────────────────────────────────────
+function render(){ setupCanvas(); draw(); }
+
+var temp = document.getElementById("temp"), tval = document.getElementById("tval");
+temp.addEventListener("input", function(){
+  state.T = +temp.value; tval.textContent = state.T.toLocaleString(); render();
+});
+Array.prototype.forEach.call(document.querySelectorAll(".presets button"), function(b){
+  b.addEventListener("click", function(){
+    temp.value = b.dataset.t; state.T = +b.dataset.t;
+    tval.textContent = state.T.toLocaleString(); render();
+  });
+});
+Array.prototype.forEach.call(document.querySelectorAll("#units button"), function(b){
+  b.addEventListener("click", function(){
+    state.units = b.dataset.u;
+    Array.prototype.forEach.call(document.querySelectorAll("#units button"), function(o){
+      o.setAttribute("aria-pressed", String(o === b));
+    });
+    render();
+  });
+});
+["human","bird","atmos"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(e){
+    state[id] = e.target.checked; render();
+  });
+});
+document.getElementById("theme").addEventListener("click", function(){
+  document.body.classList.toggle("light"); render();
+});
+var copynote = document.getElementById("copynote");
+document.getElementById("copy").addEventListener("click", function(){
+  function fallback(){
+    var a = document.createElement("a");
+    a.download = "spectrum-explorer-" + state.T + "K.png";
+    a.href = cv.toDataURL("image/png"); a.click();
+    copynote.textContent = "Clipboard unavailable here — saved a PNG instead.";
+  }
+  try {
+    if (!navigator.clipboard || !window.ClipboardItem) return fallback();
+    cv.toBlob(function(blob){
+      navigator.clipboard.write([new ClipboardItem({"image/png": blob})])
+        .then(function(){ copynote.textContent = "Copied to the clipboard."; })
+        .catch(fallback);
+    });
+  } catch (err) { fallback(); }
+});
+window.addEventListener("resize", render);
+render();
+</script>
+</body>
+</html>
