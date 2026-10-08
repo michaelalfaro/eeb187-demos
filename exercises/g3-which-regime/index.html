@@ -130,7 +130,7 @@ textarea.sum{width:100%;min-height:200px;font:14px/1.4 ui-monospace,SFMono-Regul
   <div class="rules">
     <div class="rule"><b>Rayleigh</b> — particle <b>≪ λ</b> (a tenth or less). Scattering ∝ 1/λ⁴, so 400 nm scatters (700/400)⁴ ≈ <b>9×</b> more than 700 nm → <b class="blue">blue</b>.</div>
     <div class="rule mie"><b>Mie</b> — particle <b>≈ λ</b> or a bit bigger. Every wavelength scatters about the same → <b>white</b>. <span class="nm">Unless the scatterers sit at one repeated spacing — then one wavelength is reinforced (the jay).</span></div>
-    <div class="rule geo"><b>Geometric</b> — particle <b>≫ λ</b> (ten times or more). Rays, mirrors, lenses; every wavelength alike → <b>white</b>.</div>
+    <div class="rule geo"><b>Geometric</b> — particle <b>≫ λ</b> (ten times or more). Now the particle has a <em>surface</em>: light reflects and refracts as <b>rays</b>, each leaving at a definite angle, so a beam stays a beam (mirrors, lenses, a raindrop's rainbow). Still every wavelength alike in total → <b>white</b> — but <b>organised</b>, not diffuse. Mie white is a haze that goes everywhere; geometric white can carry an image.</div>
   </div>
   <p class="note" style="margin-top:10px">Units first, always: <span class="unit">1 µm = 1,000 nm</span> Put size and wavelength in the same unit before you divide.</p>
 </section>
@@ -322,7 +322,7 @@ var ROWS=[
     smoke:'Droplets are all above 1; they do not straddle.'},
   ex:'cloud, fog',kw:['cloud','fog','mist','steam','breath','contrail'],kwClose:[['snow','Snow works too: ice crystals, much bigger than λ, white. The sheet says cloud or fog.'],['rain','Raindrops are bigger still and mostly transparent one at a time; it is the suspended droplets, the cloud, that look white.']],kwWrong:[],
   exHint:'Billions of these droplets hanging in the air, seen from below or walked through on a damp morning.',
-  why:['10,000 ÷ 400 = 25: far above 1 — geometric. The droplet reflects and refracts like a tiny lens, every wavelength alike.','Clouds and fog are white; so are steam and sea spray.']}
+  why:['10,000 ÷ 400 = 25: far above 1 — geometric. The droplet has a surface: light reflects and refracts as rays, like a tiny lens, every wavelength alike.','A cloud is white because millions of droplets at random angles send those rays everywhere. One big raindrop on its own sends them to a definite angle, split by colour — the rainbow. Fog droplets (~10 µm) are big enough for rays but still small enough that diffraction smears the colours: a fogbow is white.']}
 ];
 
 var WARM=[
