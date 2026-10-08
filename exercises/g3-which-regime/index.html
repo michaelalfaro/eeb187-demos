@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which regime? One ratio, six particles</title>
+<meta name="description" content="EE BIOL 138 scaffolded practice: particle size over wavelength, scattering regime, colour of scattered light, natural example.">
+<style>
+:root{
+  --bg:#1a1d2e; --bg2:#2c3e50; --panel:#222638; --panel2:#2a3045;
+  --ink:#f2f3f7; --muted:#aab1c5; --line:rgba(255,255,255,.14);
+  --gold:#d4a853; --teal:#81b29a; --coral:#e07a5f; --blue:#6fa8dc;
+  --focus:#ffd979;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.2;margin:0 0 .4em}
+h1{font-size:1.7rem;color:var(--gold)}
+h2{font-size:1.35rem;color:var(--gold);margin-top:0}
+h3{font-size:1.1rem;color:var(--ink)}
+p{margin:.4em 0}
+a{color:var(--blue)}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 60px}
+header{padding:8px 0 4px}
+.sub{color:var(--muted);font-size:.95rem}
+.progress{margin:12px 0 4px}
+.progress .bar{height:10px;background:var(--panel2);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.progress .fill{height:100%;width:0;background:var(--teal);transition:width .3s}
+.progress .lbl{font-size:.9rem;color:var(--muted);margin-top:4px}
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin:18px 0}
+section.card.alt{background:var(--bg2)}
+.rules{display:grid;gap:8px;margin:8px 0 0}
+.rule{padding:10px 12px;border-radius:8px;background:rgba(0,0,0,.18);border-left:4px solid var(--blue)}
+.rule.mie{border-left-color:var(--teal)}
+.rule.geo{border-left-color:var(--gold)}
+.rule b{color:var(--ink)}
+.rule .nm{color:var(--muted);font-size:.92rem}
+.gold{color:var(--gold)} .teal{color:var(--teal)} .coral{color:var(--coral)} .blue{color:var(--blue)} .muted{color:var(--muted)}
+.unit{display:inline-block;background:rgba(111,168,220,.15);border:1px solid rgba(111,168,220,.4);border-radius:8px;padding:6px 12px;font-size:1.1rem;color:var(--ink);margin:6px 0}
+.step{display:grid;grid-template-columns:1fr;gap:6px;padding:12px 0;border-top:1px solid var(--line)}
+.step:first-of-type{border-top:none}
+.step .q{font-weight:600}
+.step .q .n{display:inline-block;min-width:1.6em;color:var(--gold);font-family:Georgia,serif}
+.step.locked .q{color:var(--muted)}
+.step.locked .q .n{color:var(--muted)}
+.row-in{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=text],input[type=number]{font:inherit;font-size:1.05rem;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:#141627;color:var(--ink);min-width:0;width:11em;max-width:100%}
+input.wide{width:100%;max-width:26em}
+input:disabled{opacity:.7}
+input::placeholder{color:#6f768a}
+button{font:inherit;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer}
+button.primary{background:var(--gold);color:#1a1d2e}
+button.ghost{border-color:var(--line);color:var(--muted)}
+button.small{padding:5px 10px;font-size:.9rem}
+button:disabled{opacity:.45;cursor:default}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+input:focus-visible{outline:3px solid var(--focus);outline-offset:1px;border-color:var(--focus)}
+fieldset{border:none;margin:0;padding:0;min-width:0}
+legend{padding:0;font-weight:600;margin-bottom:6px}
+.opts{display:grid;gap:6px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:rgba(0,0,0,.15);cursor:pointer}
+.opt:hover{border-color:rgba(255,255,255,.35)}
+.opt input{margin:4px 0 0;flex:none;width:18px;height:18px;accent-color:var(--gold)}
+.opt.sel{border-color:var(--gold)}
+.opt.ok{border-color:var(--teal)}
+.opt.bad{border-color:var(--coral)}
+.opt.dim{opacity:.6}
+.fb{padding:8px 12px;border-radius:8px;font-size:.98rem;line-height:1.45}
+.fb.ok{background:rgba(129,178,154,.14);border-left:4px solid var(--teal)}
+.fb.bad{background:rgba(224,122,95,.14);border-left:4px solid var(--coral)}
+.fb.near{background:rgba(212,168,83,.14);border-left:4px solid var(--gold)}
+.fb .mark{font-weight:700;margin-right:.35em}
+.hint{color:var(--muted);font-size:.95rem;padding-left:4px}
+.lockmsg{color:var(--muted);font-style:italic}
+.rowhead{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.rowhead .size{color:var(--blue);font-weight:600}
+.status{font-size:.9rem;color:var(--muted)}
+.status.done{color:var(--teal)}
+.done-line{color:var(--muted);font-size:.95rem;margin:4px 0 0}
+details{margin-top:10px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:rgba(0,0,0,.15)}
+summary{cursor:pointer;color:var(--gold);font-weight:600}
+summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+details p{margin:.4em 0}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:.92rem}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.03em;border-bottom:2px solid rgba(255,255,255,.3)}
+td.val{color:var(--blue)}
+td.blank{color:#5f677d}
+td:first-child{font-weight:600;white-space:nowrap}
+.worked .step{grid-template-columns:1fr}
+.worked .ans{color:var(--blue);font-weight:600}
+.worked .why{color:var(--muted);font-size:.95rem}
+.score{font-size:1.15rem;margin:8px 0}
+.score b{color:var(--gold)}
+textarea.sum{width:100%;min-height:200px;font:14px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#141627;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.note{font-size:.9rem;color:var(--muted)}
+.sr{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.badge{display:inline-block;font-size:.8rem;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-left:6px}
+.badge.done{border-color:var(--teal);color:var(--teal)}
+.chip{display:inline-block;padding:2px 8px;border-radius:6px;background:rgba(0,0,0,.2);color:var(--blue);font-weight:600}
+@media (min-width:640px){
+  .step{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:480px){
+  body{font-size:16px}
+  h1{font-size:1.45rem}
+  section.card{padding:13px}
+  input[type=text],input[type=number]{width:9em}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<noscript><p style="background:#e07a5f;color:#1a1d2e;padding:10px 14px;border-radius:8px;font-weight:600">This exercise needs JavaScript, which is switched off here. Open the file directly in a new browser tab instead of in this preview.</p></noscript>
+<header>
+  <h1>Which regime? One ratio, six particles</h1>
+  <p class="sub">EE BIOL 138 · scaffolded practice. One number, particle size ÷ wavelength, decides how light scatters. Work the six particles below; the page checks each step and keeps your work on this device.</p>
+  <div class="progress" aria-label="Progress">
+    <div class="bar"><div class="fill" id="pfill"></div></div>
+    <div class="lbl" id="plbl">0 of 47 steps done</div>
+  </div>
+</header>
+
+<section class="card alt" aria-labelledby="h-rules">
+  <h2 id="h-rules">The three rules</h2>
+  <p>Compare the particle size to the wavelength of light. Blue is <b class="blue">400 nm</b>, red is <b class="coral">700 nm</b>: the two ends of what you can see.</p>
+  <div class="rules">
+    <div class="rule"><b>Rayleigh</b> — particle <b>≪ λ</b> (a tenth or less). Scattering ∝ 1/λ⁴, so 400 nm scatters (700/400)⁴ ≈ <b>9×</b> more than 700 nm → <b class="blue">blue</b>.</div>
+    <div class="rule mie"><b>Mie</b> — particle <b>≈ λ</b> or a bit bigger. Every wavelength scatters about the same → <b>white</b>. <span class="nm">Unless the scatterers sit at one repeated spacing — then one wavelength is reinforced (the jay).</span></div>
+    <div class="rule geo"><b>Geometric</b> — particle <b>≫ λ</b> (ten times or more). Rays, mirrors, lenses; every wavelength alike → <b>white</b>.</div>
+  </div>
+  <p class="note" style="margin-top:10px">Units first, always: <span class="unit">1 µm = 1,000 nm</span> Put size and wavelength in the same unit before you divide.</p>
+</section>
+
+<section class="card" aria-labelledby="h-warm" id="sec-warm">
+  <h2 id="h-warm">1 · Warm-up: units <span class="badge" id="warm-badge">3 conversions</span></h2>
+  <p class="muted">The wavelengths are in nanometres, so every size has to be in nanometres too. Type a number and press Check (or Enter).</p>
+  <div id="warm"></div>
+</section>
+
+<section class="card alt worked" aria-labelledby="h-worked">
+  <h2 id="h-worked">2 · Worked example: the keratin air pocket (200 nm)</h2>
+  <p class="muted">Every row below follows these seven steps. Here they are filled in for one particle.</p>
+  <div class="step"><div class="q"><span class="n">a</span> Size in nm</div><div><span class="ans">200 nm</span> <span class="why">— already in nm, so nothing to convert. (If it had said 0.2 µm: 0.2 × 1,000 = 200 nm.)</span></div></div>
+  <div class="step"><div class="q"><span class="n">b</span> Size ÷ 400 nm (blue)</div><div><span class="ans">200 ÷ 400 = 0.50</span> <span class="why">— same unit top and bottom, so the ratio is a plain number with no unit.</span></div></div>
+  <div class="step"><div class="q"><span class="n">c</span> Size ÷ 700 nm (red)</div><div><span class="ans">200 ÷ 700 = 0.29</span> <span class="why">— the same pocket looks smaller to a longer wave.</span></div></div>
+  <div class="step"><div class="q"><span class="n">d</span> Compare the ratio to 1</div><div><span class="ans">≈ 1 (about half)</span> <span class="why">— not a hundredth like a molecule, not ten times like a droplet: the same order of size as the wave.</span></div></div>
+  <div class="step"><div class="q"><span class="n">e</span> Regime</div><div><span class="ans">Rayleigh → Mie edge (~λ/2)</span> <span class="why">— by size alone, only a weak preference for blue would be expected.</span></div></div>
+  <div class="step"><div class="q"><span class="n">f</span> Colour of the scattered light</div><div><span class="ans">blue (over melanin)</span> <span class="why">— the pockets sit at one repeated spacing, so the returned waves add in step at one wavelength ≈ 2 × spacing × ~1.3. Coherent scattering: size gets you to the edge, spacing picks the colour.</span></div></div>
+  <div class="step"><div class="q"><span class="n">g</span> Natural example</div><div><span class="ans">blue-jay feather</span> <span class="why">— ordered in distance, disordered in direction, so it is the same blue from every angle.</span></div></div>
+</section>
+
+<section class="card" aria-labelledby="h-rows">
+  <h2 id="h-rows">3 · The six particles</h2>
+  <p class="muted">One row at a time. Each step unlocks the next; a wrong try gives you a hint instead of the answer.</p>
+  <div id="rows"></div>
+</section>
+
+<section class="card alt" aria-labelledby="h-table">
+  <h2 id="h-table">Your table so far</h2>
+  <div class="tablewrap" id="tablewrap"></div>
+</section>
+
+<section class="card" aria-labelledby="h-cp">
+  <h2 id="h-cp">4 · Two checkpoints</h2>
+  <div id="cps"></div>
+</section>
+
+<section class="card alt" aria-labelledby="h-finish">
+  <h2 id="h-finish">5 · Finish</h2>
+  <div class="score" id="scoreline"></div>
+  <p class="note">Copy the summary below and paste it into the BruinLearn quiz box (or your notes). It records your entries and your first-try score.</p>
+  <label for="sumtext" class="sr">Summary text</label>
+  <textarea id="sumtext" class="sum" readonly></textarea>
+  <div class="btnrow">
+    <button type="button" class="primary" id="copybtn">Copy summary</button>
+    <span id="copymsg" class="note" role="status" aria-live="polite"></span>
+  </div>
+  <div class="btnrow" style="margin-top:18px">
+    <button type="button" class="ghost small" id="resetbtn">Reset all answers</button>
+    <span class="note">Clears your saved work on this device.</span>
+  </div>
+</section>
+</div>
+
+<script>
+(function(){
+'use strict';
+var KEY='g3-which-regime-v1';
+var LAM={b:400,r:700};
+
+/* ---------- content ---------- */
+var CMP_OPTS=[
+  {k:'ll',l:'≪ 1 — much smaller (a tenth or less)'},
+  {k:'ap',l:'≈ 1 — about the same (within a factor of a few)'},
+  {k:'gg',l:'≫ 1 — much bigger (ten times or more)'}];
+var REG_OPTS=[
+  {k:'ray',l:'Rayleigh (particle ≪ λ)'},
+  {k:'edge',l:'Rayleigh → Mie edge'},
+  {k:'mie',l:'Mie (particle ≈ λ or a bit bigger)'},
+  {k:'geo',l:'Geometric (particle ≫ λ)'}];
+var COL_OPTS=[
+  {k:'blue',l:'blue'},
+  {k:'tint',l:'bluish tint'},
+  {k:'white',l:'white'},
+  {k:'smoke',l:'blue when thin, white when thick, red sun through it'}];
+var SHORT={ll:'≪ 1',ap:'≈ 1',gg:'≫ 1',ray:'Rayleigh',edge:'Rayleigh→Mie edge',mie:'Mie',geo:'geometric',blue:'blue',tint:'bluish tint',white:'white',smoke:'blue thin / white thick / red sun'};
+
+var ROWS=[
+ {id:'n2',name:'N₂ molecule',size:'0.3 nm',nm:0.3,
+  cmp:'ll',cmpClose:[],cmpFb:{
+    ll:'0.00075 is about a thousandth of 1. Deep in ≪ territory.',
+    ap:'0.00075 is not "about 1" — it is over a thousand times smaller. Compare the number with 1, not with 0.',
+    gg:'0.00075 is far below 1, not above it. Bigger than 1 would mean the particle is larger than the wavelength.'},
+  reg:'ray',regClose:[],regFb:{
+    ray:'Ratio ≪ 1 → Rayleigh. Scattering ∝ 1/λ⁴, so 400 nm scatters about 9× more than 700 nm.',
+    edge:'The edge is for ratios around 0.1–0.5 (casein, keratin). 0.00075 is a hundred times below that: pure Rayleigh.',
+    mie:'Mie needs the particle about the size of the wave. 0.3 nm against 400 nm is a thousandfold gap.',
+    geo:'Geometric is for particles much bigger than λ — droplets, not molecules.'},
+  col:'blue',colClose:[],colFb:{
+    blue:'Rayleigh: 1/λ⁴ means 400 nm wins about 9 to 1 over 700 nm. The scattered light is blue.',
+    tint:'Molecules are so far into Rayleigh that the 1/λ⁴ preference is at full strength: a saturated blue, not a tint. (A tint is what you get at the edge, like casein.)',
+    white:'White means every wavelength scatters alike — that is Mie, for particles ≈ λ. At 0.00075, blue wins 9 to 1.',
+    smoke:'That is the smoke story: particles that span two regimes. A molecule sits in one regime, Rayleigh.'},
+  ex:'the sky',kw:['sky','atmosphere','air'],kwClose:[['sunset','Sunset is the sun seen through the air after the blue has been scattered out; the sky itself is that scattered blue. The sheet says "the sky".']],kwWrong:[['ocean','Ocean blue is mostly absorption of red by water (next week). Think about what you look at when you look up.']],
+  exHint:'Air is made of these. What colour is the light scattered out of sunlight by air, when you look up on a clear day?',
+  why:['0.3 nm ÷ 400 nm = 0.0008 — far below 1, so Rayleigh: scattering ∝ 1/λ⁴ and blue wins 9 to 1.','Air molecules scattering sunlight sideways are the daytime sky.']},
+
+ {id:'casein',name:'casein micelle',size:'~100 nm',nm:100,
+  cmp:'ll',cmpClose:['ap'],cmpFb:{
+    ll:'0.25 (a quarter) and 0.14 (a seventh) are both well under 1 — though not tiny like the molecule\'s 0.0008. Keep that in mind for the regime step.',
+    ap:'A quarter is under, not "about equal". But you have spotted something real: 0.25 is past the ~0.1 Rayleigh rule-of-thumb, so this row sits on the edge. Call it ≪ 1, barely.',
+    gg:'0.25 is below 1. A 100 nm micelle is smaller than a 400 nm wave.'},
+  reg:'edge',regClose:['ray'],regFb:{
+    edge:'Pure Rayleigh wants size ≲ λ/10 (about 40 nm at 400 nm). At 100 nm casein is past that line but still well under λ: mostly Rayleigh-like, with the blue preference weakening. The edge.',
+    ray:'Mostly right — the 1/λ⁴ preference still dominates. But 0.25 is above the ~0.1 cutoff for pure Rayleigh, so the answer sheet calls it Rayleigh → Mie edge: a weaker, bluish effect.',
+    mie:'At 0.25 the particle is still a quarter the size of the wave, not "about the same". Blue still wins, just less decisively than for a molecule.',
+    geo:'Geometric needs the particle much bigger than λ. 100 nm is a quarter of 400 nm.'},
+  col:'tint',colClose:['blue'],colFb:{
+    tint:'At the edge the 1/λ⁴ preference is weakened: a faint blue — the tint of skim milk lit from the side.',
+    blue:'Right direction, but the effect is weak at the edge, so it is a tint rather than the sky\'s saturated blue.',
+    white:'White is what the fat globules add (whole milk, two rows down). Casein alone, at ratio 0.25, still favours blue.',
+    smoke:'Casein sits in one place, the edge; it does not straddle two regimes.'},
+  ex:'skim milk',kw:['skim','skimmed','nonfat','non-fat','fat-free','fat free'],kwClose:[['milk','Which milk? Skim. Whole milk\'s fat globules wash the blue out to white (two rows down).']],kwWrong:[],
+  exHint:'Casein is the protein in milk. Which kind of milk shows a bluish tint when lit from the side: the one with fat, or the one without?',
+  why:['100 ÷ 400 = 0.25: under 1 but past the λ/10 line — Rayleigh → Mie edge, a weakened blue preference.','Skim milk lit from the side shows a bluish tint; add fat globules and it goes white.']},
+
+ {id:'keratin',name:'keratin air pocket',size:'200 nm',nm:200,
+  cmp:'ap',cmpClose:['ll'],cmpFb:{
+    ap:'0.50 is half — the same order as the wavelength, not a hundredth of it. (At 700 nm it is 0.29, sliding toward ≪.) That is the edge, and "about half a wavelength" is going to matter.',
+    ll:'0.29 at the red end, fair. But 0.50 at the blue end is "about half", not "much smaller". The Rayleigh rule of thumb wants a tenth or less.',
+    gg:'0.5 is below 1: a 200 nm pocket is half a 400 nm wave.'},
+  reg:'edge',regClose:['mie'],regFb:{
+    edge:'By ratio alone: Rayleigh → Mie edge, which would predict only a weak colour preference. The jay is a saturated blue anyway, because the pockets are ordered at one spacing. Next step.',
+    mie:'At 0.5 you are on the doorstep of Mie; the sheet calls it ~λ/2, the edge. Either way the ratio alone predicts only weak selectivity. What makes the jay blue is the next step.',
+    ray:'0.5 is five times above the ~0.1 Rayleigh cutoff. Half a wavelength is not "much smaller".',
+    geo:'Half a wavelength is smaller than λ, not much bigger.'},
+  col:'blue',colClose:[],colFb:{
+    blue:'The ratio says "weakly selective", but the pockets sit at one repeated spacing, so the returned waves add in step at one wavelength ≈ 2 × spacing × ~1.3: coherent scattering. Over melanin, that peak is the jay\'s blue.',
+    tint:'The jay\'s blue is saturated and specific, not faint — because the pockets are ordered at one spacing (coherent scattering), not scattered at random like casein.',
+    white:'That is what the ratio alone would say (Mie-ish → white). But the pockets are ordered at one spacing ~λ/2, so one wavelength is reinforced: blue. Ordering, not size, picks the colour.',
+    smoke:'A feather does not change thickness. One spacing, one colour.'},
+  ex:'blue-jay feather',kw:['jay','feather','bird','plumage','bluebird','cotinga','kingfisher','parrot','blue tit','bunting','barb'],kwClose:[['morpho','A morpho butterfly\'s blue is also structural, but from flat stacked layers (iridescent, shifts with angle). The sponge of keratin pockets is the bird\'s version — think feather.'],['butterfly','A butterfly\'s blue is also structural, but from flat stacked layers (iridescent). Keratin is the bird material — think feather.']],kwWrong:[],
+  exHint:'Keratin is what feathers are made of. Which bird\'s blue did the lecture use?',
+  why:['200 ÷ 400 = 0.50 — about half a wavelength. Size alone says Mie edge; the pockets\' single repeated spacing makes the scattering coherent: a peak at ≈ 2 × spacing × 1.3.','Ordered in distance, disordered in direction, so the jay is the same blue from every angle, with melanin underneath absorbing what is not scattered.']},
+
+ {id:'smoke',name:'smoke particle',size:'0.1–1 µm',nm:[100,1000],
+  cmp:'ap',cmpClose:['ll'],cmpFb:{
+    ap:'The range 0.25–2.5 brackets 1: the small particles lean ≪, the big ones sit at or just over 1. Smoke straddles — that is the whole story of this row.',
+    ll:'True for fresh, small smoke (0.25 at the bottom of the range). But the top of the range is 2.5, above 1. The range straddles 1, which is the point.',
+    gg:'2.5 at the top is only "a bit bigger", and the bottom of the range is a quarter. Nothing here is ten times λ.'},
+  reg:'edge',regClose:[],regFb:{
+    edge:'0.1 µm particles are Rayleigh-ish; 1 µm particles are Mie. Smoke spans both: fresh smoke is small, aged smoke coagulates and grows.',
+    ray:'Half right. Fresh 0.1 µm smoke is Rayleigh-ish, but aged 1 µm smoke (ratio 2.5) is Mie. Pick the option that covers both.',
+    mie:'Half right. At 1 µm (ratio 2.5), yes — but at 0.1 µm (ratio 0.25) you are at the Rayleigh edge. The range spans both.',
+    geo:'Even 1 µm is only 2.5× λ, not "much bigger".'},
+  col:'smoke',colClose:[],colFb:{
+    smoke:'Thin, fresh smoke (Rayleigh-ish) scatters blue sideways: blue against dark hills. Thick or aged smoke: more Mie and more multiple scattering → a white plume. And the sun seen through it has lost its blue → red-orange.',
+    blue:'Only for thin smoke against a dark background. Thick plumes go white (Mie plus multiple scattering) and the sun through them goes red. Pick the answer that says all three.',
+    tint:'Thin smoke can look faintly blue, but that is only one of smoke\'s three faces.',
+    white:'Thick plumes, yes. But thin smoke is blue and the sun through it is red: one row, three colours.'},
+  ex:'wildfire sky',kw:['wildfire','fire','smoke','smoky','haze','hazy','palisades','campfire','bonfire','cigarette'],kwClose:[['sunset','A smoky sunset, yes. The sheet says "wildfire sky": red sun, grey-white plume.']],kwWrong:[],
+  exHint:'Los Angeles, January 2025. What filled the sky?',
+  why:['100–1,000 nm ÷ 400 = 0.25–2.5: the range straddles 1, so smoke runs from Rayleigh (fresh, small) to Mie (aged, grown).','Blue when thin and against dark hills; white when thick; red sun through it — the Palisades sky.']},
+
+ {id:'fat',name:'milk fat globule',size:'1–5 µm',nm:[1000,5000],
+  cmp:'gg',cmpClose:['ap'],cmpFb:{
+    gg:'2.5 at the small end is "a bit bigger"; 12.5 at the big end is much bigger. Above 1 throughout: no blue preference anywhere in this range.',
+    ap:'2.5 at the small end, fair. But 12.5 at the big end is well past "about the same". The answer sheet calls it Mie → geometric.',
+    ll:'1–5 µm is 1,000–5,000 nm, bigger than a 400 nm wave, not smaller. Check the unit step.'},
+  reg:'mie',regClose:['geo'],regFb:{
+    mie:'Bigger than λ, from a bit (2.5×) to a lot (12.5×): Mie sliding into geometric. Either way, every wavelength scatters alike.',
+    geo:'At 5 µm (12.5× λ) you are heading there; the sheet says Mie → geometric. Both give white.',
+    ray:'Rayleigh needs the particle much smaller than λ. A fat globule is bigger than the wave.',
+    edge:'The edge is ratio ~0.1–0.5. 2.5–12.5 is on the other side of 1.'},
+  col:'white',colClose:[],colFb:{
+    white:'Mie / geometric: all wavelengths scatter alike → white. This is why whole milk is white and hides casein\'s blue tint.',
+    blue:'That is casein\'s job, and the fat globules drown it out. Above ratio 1 there is no wavelength preference: white.',
+    tint:'That is casein\'s job, and the fat globules drown it out. Above ratio 1 there is no wavelength preference: white.',
+    smoke:'Fat globules do not straddle; they are above 1 throughout.'},
+  ex:'whole milk',kw:['whole','milk','cream','dairy','latte','half and half','half-and-half'],kwClose:[],kwWrong:[['skim','Skim milk has had the fat removed, and this row is the fat. Which milk keeps it?'],['nonfat','Nonfat milk has had the fat removed, and this row is the fat. Which milk keeps it?']],
+  exHint:'The fat is what makes one kind of milk opaque white. Which kind?',
+  why:['1,000–5,000 nm ÷ 400 = 2.5–12.5: above 1 throughout — Mie → geometric, no wavelength preference.','Fat globules scatter every colour alike: whole milk is white, and casein\'s blue tint is buried.']},
+
+ {id:'cloud',name:'cloud droplet',size:'10 µm',nm:10000,
+  cmp:'gg',cmpClose:[],cmpFb:{
+    gg:'25 and 14: ten to twenty-five times the wavelength. ≫ 1.',
+    ap:'25 is not about 1 — a droplet is 25 wavelengths across.',
+    ll:'10 µm = 10,000 nm. That is bigger than 400 nm, not smaller. Check the unit step (1 µm = 1,000 nm).'},
+  reg:'geo',regClose:['mie'],regFb:{
+    geo:'At 25× λ the droplet is a tiny lens and mirror: rays reflect and refract at its surface, every wavelength alike. (Rainbows and glories live here.)',
+    mie:'Mie theory technically covers this size too, but at 25× λ the simpler picture — rays, reflection, refraction — already works. The sheet says geometric. White either way.',
+    ray:'A 10,000 nm droplet is 25× a 400 nm wave. Nowhere near "much smaller".',
+    edge:'The edge is ratio ~0.1–0.5. A droplet is at 25.'},
+  col:'white',colClose:[],colFb:{
+    white:'No wavelength preference → white. Clouds, fog, mist, steam.',
+    blue:'Blue needs the particle smaller than the wave. A droplet is 25× bigger.',
+    tint:'Blue needs the particle smaller than the wave. A droplet is 25× bigger.',
+    smoke:'Droplets are all above 1; they do not straddle.'},
+  ex:'cloud, fog',kw:['cloud','fog','mist','steam','breath','contrail'],kwClose:[['snow','Snow works too: ice crystals, much bigger than λ, white. The sheet says cloud or fog.'],['rain','Raindrops are bigger still and mostly transparent one at a time; it is the suspended droplets, the cloud, that look white.']],kwWrong:[],
+  exHint:'Billions of these droplets hanging in the air, seen from below or walked through on a damp morning.',
+  why:['10,000 ÷ 400 = 25: far above 1 — geometric. The droplet reflects and refracts like a tiny lens, every wavelength alike.','Clouds and fog are white; so are steam and sea spray.']}
+];
+
+var WARM=[
+ {id:'w1',q:'10 µm = ? nm',from:'10 µm',unit:'nm',ans:10000,
+  hints:function(v){ if(near(v,10)) return 'That is the number in µm. Going from µm to nm multiplies by 1,000 (nanometres are smaller, so there are more of them).';
+    if(near(v,0.01)) return 'You divided by 1,000. µm → nm goes the other way: multiply.';
+    if(near(v,1000)) return '1,000 nm is 1 µm. You have 10 of them.';
+    return '1 µm = 1,000 nm, so 10 µm = 10 × 1,000.';}},
+ {id:'w2',q:'0.1 µm = ? nm',from:'0.1 µm',unit:'nm',ans:100,
+  hints:function(v){ if(near(v,0.1)) return 'That is still µm. Multiply by 1,000 to get nm.';
+    if(near(v,1000)) return '1,000 nm is 1 µm; you want a tenth of that.';
+    if(near(v,10)) return 'Off by a factor of ten: 0.1 × 1,000 = ?';
+    return '0.1 × 1,000 = ?';}},
+ {id:'w3',q:'450 nm = ? µm',from:'450 nm',unit:'µm',ans:0.45,
+  hints:function(v){ if(near(v,450000)) return 'That is nm × 1,000. Going from nm to µm divides by 1,000.';
+    if(near(v,450)) return 'That is still nm. Divide by 1,000 to get µm.';
+    if(near(v,4.5)||near(v,45)) return 'Off by a factor of ten or a hundred: 450 ÷ 1,000 = ?';
+    return '450 ÷ 1,000 = ?';}}
+];
+
+var CPS=[
+ {id:'c1',q:'The keratin pocket and the casein micelle both sit near the Rayleigh → Mie edge (ratios 0.5 and 0.25). Why does the pocket give the jay a specific, saturated blue while casein gives only the sky-like broad tint?',
+  opts:[
+   {k:'a',l:'Keratin is a blue pigment, casein is not.'},
+   {k:'b',l:'The pockets sit at one repeated spacing, so the waves they send back add in step at one wavelength (≈ 2 × spacing × 1.3) and cancel elsewhere. Casein micelles are placed at random, so only their intensities add: the broad 1/λ⁴ blue.'},
+   {k:'c',l:'At ratio 0.5 the 1/λ⁴ rule is at its strongest.'},
+   {k:'d',l:'The melanin under the pockets is blue and shows through.'}],
+  ans:'b',fb:{
+   b:'Coherent versus incoherent. Random, far-apart scatterers: random timing, intensities add, broad blue. One repeated spacing: the extra round trip of 2d puts the returned waves in step at one wavelength, amplitudes add there and cancel elsewhere. Change the spacing, change the colour.',
+   a:'Keratin is colourless; the jay\'s blue vanishes if you crush the barb, which no pigment would do. The colour comes from how the pockets are arranged.',
+   c:'1/λ⁴ is a Rayleigh rule for particles much smaller than λ, and at 0.5 it is already weakening. It also can only ever give a broad blue, never a peak at one wavelength.',
+   d:'Melanin is dark brown-black. It absorbs the light that is not scattered back, which makes the blue look cleaner, but it is not the source of the blue.'}},
+ {id:'c2',q:'The same wildfire smoke looks blue against dark hills but white where the plume is thick. Which rule explains the change?',
+  opts:[
+   {k:'a',l:'Thick smoke absorbs blue light.'},
+   {k:'b',l:'Smoke straddles Rayleigh and Mie: fresh, small (~0.1 µm) particles in a thin plume scatter blue sideways; in a thick, aged plume the particles have grown toward 1 µm (Mie, all wavelengths alike) and light is scattered many times, so the plume goes white.'},
+   {k:'c',l:'The dark hills reflect blue onto the smoke.'},
+   {k:'d',l:'Thin and thick smoke are made of different chemicals.'}],
+  ans:'b',fb:{
+   b:'The straddle is the answer: 0.25–2.5 spans both regimes. Thin and fresh → Rayleigh-ish blue; thick and aged → Mie plus multiple scattering → white. And the sun seen through it, stripped of blue, is red-orange.',
+   a:'Smoke scatters rather than absorbs; if it absorbed blue the plume would look yellow-brown from every side, and the thin plume would not look blue.',
+   c:'Dark hills do not add light; they just give a dark background so the faint blue scattered light is visible against them.',
+   d:'Same soot and tar, different particle size and thickness. Size ÷ λ is what changed.'}}
+];
+
+/* ---------- helpers ---------- */
+function near(v,t,tol){ tol=tol||0.2; return isFinite(v)&&Math.abs(v-t)<=tol*Math.abs(t); }
+function parseNum(s){
+  s=String(s==null?'':s).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'').replace(/µm|um|nm/g,'');
+  if(!s) return NaN;
+  var f=s.match(/^(-?\d*\.?\d+)\/(\d*\.?\d+)$/);
+  if(f){ return parseFloat(f[1])/parseFloat(f[2]); }
+  s=s.replace(/[×x]10\^?/,'e');
+  var v=Number(s); return isFinite(v)?v:NaN;
+}
+function isRange(r){ return Array.isArray(r.nm); }
+function expectedRatio(r,lam){ return isRange(r)?[r.nm[0]/lam,r.nm[1]/lam]:r.nm/lam; }
+function fmt(x){
+  if(x>=100) return String(Math.round(x));
+  if(x>=10) return (Math.round(x*10)/10).toString();
+  if(x>=1) return (Math.round(x*100)/100).toString();
+  if(x>=0.01) return (Math.round(x*1000)/1000).toString();
+  return x.toPrecision(2).replace(/e-(\d)$/,'e-0$1');
+}
+function fmtRatio(r,lam){ var e=expectedRatio(r,lam); return Array.isArray(e)?fmt(e[0])+'–'+fmt(e[1]):fmt(e); }
+function fmtNm(r){ return isRange(r)?r.nm[0].toLocaleString('en-US')+'–'+r.nm[1].toLocaleString('en-US'):r.nm.toLocaleString('en-US'); }
+function ratioOK(v,r,lam){
+  var e=expectedRatio(r,lam);
+  if(!isFinite(v)||v<=0) return false;
+  var eps=1e-9;
+  if(Array.isArray(e)) return v>=e[0]*(0.8-eps)&&v<=e[1]*(1.2+eps);
+  return Math.abs(v-e)<=(0.2+eps)*e;
+}
+function ratioHint(v,r,lam){
+  var other=lam===400?700:400;
+  var e=expectedRatio(r,lam);
+  var test=function(x){ if(!isFinite(x)) return false; if(Array.isArray(e)) return x>=e[0]*0.75&&x<=e[1]*1.25; return Math.abs(x-e)<=0.25*e; };
+  var sz=fmtNm(r);
+  if(!isFinite(v)) return 'Type a number (decimals like 0.25 or 2.5 are fine).';
+  if(test(v/1000)) return 'That is 1,000 times too big: a unit slip. Put the size in nm first (1 µm = 1,000 nm), then divide by '+lam+'.';
+  if(test(v*1000)) return 'That is 1,000 times too small: a unit slip. The size in nm is '+sz+'; divide that by '+lam+'.';
+  if(test(1/v)) return 'That is λ ÷ size, upside down. We want size ÷ λ: '+sz+' ÷ '+lam+'.';
+  if(test(v*other/lam)) return 'That looks like size ÷ '+other+'. This step is ÷ '+lam+'.';
+  if(!isRange(r)&&near(v,r.nm,0.05)) return 'That is the size in nm. Now divide it by '+lam+'.';
+  if(isRange(r)&&v>=r.nm[0]*0.95&&v<=r.nm[1]*1.05) return 'That is a size in nm. Now divide it by '+lam+'.';
+  return 'Not quite. Take the size in nm from step (a) and divide by '+lam+': '+sz+' ÷ '+lam+' = ?';
+}
+function sizeHint(v,target,sizeText){
+  if(!isFinite(v)) return 'Type a number.';
+  if(near(v,target/1000,0.05)) return 'That is 1,000 times too small. '+sizeText+': µm → nm multiplies by 1,000.';
+  if(near(v,target*1000,0.05)) return 'That is 1,000 times too big. 1 µm = 1,000 nm, not 1,000,000.';
+  if(near(v,target/10,0.05)||near(v,target*10,0.05)) return 'Off by a factor of ten. 1 µm = 1,000 nm; count the zeros.';
+  return 'Not quite. 1 µm = 1,000 nm. Convert '+sizeText+' to nm.';
+}
+function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9 \-]/g,' ').replace(/\s+/g,' ').trim(); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function el(id){ return document.getElementById(id); }
+
+/* ---------- state ---------- */
+var STEPS=['a','b','c','d','e','f','g'];
+function blankStep(){ return {done:false,tries:0,first:false,val:null,revealed:false,close:false}; }
+function blankState(){
+  var s={warm:{},rows:{},cps:{},v:1};
+  WARM.forEach(function(w){ s.warm[w.id]=blankStep(); });
+  ROWS.forEach(function(r){ s.rows[r.id]={}; STEPS.forEach(function(k){ s.rows[r.id][k]=blankStep(); }); });
+  CPS.forEach(function(c){ s.cps[c.id]=blankStep(); });
+  return s;
+}
+var S=blankState();
+function load(){
+  try{ var raw=localStorage.getItem(KEY); if(!raw) return; var o=JSON.parse(raw); if(!o||o.v!==1) return;
+    var b=blankState();
+    Object.keys(b.warm).forEach(function(k){ if(o.warm&&o.warm[k]) b.warm[k]=o.warm[k]; });
+    Object.keys(b.rows).forEach(function(r){ STEPS.forEach(function(k){ if(o.rows&&o.rows[r]&&o.rows[r][k]) b.rows[r][k]=o.rows[r][k]; }); });
+    Object.keys(b.cps).forEach(function(k){ if(o.cps&&o.cps[k]) b.cps[k]=o.cps[k]; });
+    S=b;
+  }catch(e){}
+}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+function rowDone(r){ return STEPS.every(function(k){ return S.rows[r.id][k].done; }); }
+function rowStepIndex(r){ for(var i=0;i<STEPS.length;i++){ if(!S.rows[r.id][STEPS[i]].done) return i; } return STEPS.length; }
+function allItems(){
+  var a=[]; WARM.forEach(function(w){ a.push(S.warm[w.id]); });
+  ROWS.forEach(function(r){ STEPS.forEach(function(k){ a.push(S.rows[r.id][k]); }); });
+  CPS.forEach(function(c){ a.push(S.cps[c.id]); }); return a;
+}
+function counts(){ var it=allItems(); var d=0,f=0; it.forEach(function(x){ if(x.done) d++; if(x.done&&x.first) f++; }); return {done:d,first:f,total:it.length}; }
+
+/* ---------- rendering: warm-up ---------- */
+function fbHtml(kind,text,mark){
+  mark=mark||(kind==='ok'?'✓ Correct.':kind==='near'?'✓ Close enough.':'✗ Not yet.');
+  return '<div class="fb '+kind+'" role="status" aria-live="polite"><span class="mark">'+mark+'</span>'+text+'</div>';
+}
+function renderWarm(){
+  var h='';
+  WARM.forEach(function(w,i){
+    var st=S.warm[w.id];
+    var iid='in-'+w.id;
+    h+='<div class="step"><div class="q"><span class="n">'+(i+1)+'</span><label for="'+iid+'">'+esc(w.q)+'</label></div>';
+    h+='<div class="row-in"><input type="text" inputmode="decimal" id="'+iid+'" data-warm="'+w.id+'" '+(st.done?'disabled value="'+esc(st.val)+'"':'')+' placeholder="number"> <span class="muted">'+w.unit+'</span> ';
+    if(!st.done) h+='<button type="button" data-check-warm="'+w.id+'">Check</button>';
+    h+='</div>';
+    if(st.done) h+=fbHtml(st.first?'ok':'near', esc(w.from)+' = <b>'+w.ans.toLocaleString('en-US')+' '+w.unit+'</b>'+(st.first?'':' (after '+st.tries+' tries)'));
+    else if(st.hint) h+='<div class="fb bad" role="status" aria-live="polite"><span class="mark">✗ Not yet.</span>'+esc(st.hint)+'</div>';
+    h+='</div>';
+  });
+  el('warm').innerHTML=h;
+  var dn=WARM.filter(function(w){ return S.warm[w.id].done; }).length;
+  var b=el('warm-badge'); b.textContent=dn+' / 3 done'; b.className='badge'+(dn===3?' done':'');
+}
+function checkWarm(id){
+  var w=WARM.filter(function(x){ return x.id===id; })[0]; var st=S.warm[id];
+  var inp=el('in-'+id); var v=parseNum(inp.value);
+  st.tries++;
+  if(near(v,w.ans,0.02)){ st.done=true; st.first=(st.tries===1); st.val=inp.value.trim(); st.hint=null; save(); renderWarm(); focusNext('warm',id); }
+  else { st.hint=w.hints(v); save(); renderWarm(); el('in-'+id).focus(); }
+  updateProgress();
+}
+
+/* ---------- rendering: rows ---------- */
+function optList(name,opts,st,correct,closeKeys){
+  var h='<div class="opts">';
+  opts.forEach(function(o){
+    var cls='opt'; var dis='';
+    if(st.done){ dis=' disabled'; if(o.k===st.val) cls+=(o.k===correct?' ok':(closeKeys.indexOf(o.k)>=0?' ok':' bad')); else cls+=' dim'; }
+    else if(st.val===o.k&&st.lastWrong) cls+=' bad';
+    h+='<label class="'+cls+'"><input type="radio" name="'+name+'" value="'+o.k+'"'+dis+(st.done&&st.val===o.k?' checked':'')+'><span>'+esc(o.l)+'</span></label>';
+  });
+  return h+'</div>';
+}
+function stepTitle(k,r){
+  switch(k){
+    case 'a': return 'Size in nm';
+    case 'b': return 'Size ÷ 400 nm (blue)';
+    case 'c': return 'Size ÷ 700 nm (red)';
+    case 'd': return 'Compare the ratio with 1';
+    case 'e': return 'Regime';
+    case 'f': return 'Colour of the scattered light';
+    case 'g': return 'Natural example';
+  }
+}
+function stepAnswerText(k,r){
+  switch(k){
+    case 'a': return fmtNm(r)+' nm';
+    case 'b': return fmtNm(r)+' ÷ 400 = '+fmtRatio(r,400);
+    case 'c': return fmtNm(r)+' ÷ 700 = '+fmtRatio(r,700);
+    case 'd': return SHORT[r.cmp];
+    case 'e': return REG_OPTS.filter(function(o){return o.k===r.reg;})[0].l;
+    case 'f': return COL_OPTS.filter(function(o){return o.k===r.col;})[0].l;
+    case 'g': return r.ex;
+  }
+}
+function renderRows(){
+  var h='';
+  ROWS.forEach(function(r,i){
+    var done=rowDone(r);
+    var locked=i>0&&!rowDone(ROWS[i-1]);
+    var cur=rowStepIndex(r);
+    h+='<section class="card'+(i%2?' alt':'')+'" id="row-'+r.id+'" aria-labelledby="rh-'+r.id+'">';
+    h+='<div class="rowhead"><h3 id="rh-'+r.id+'">Row '+(i+1)+' · '+esc(r.name)+' <span class="size">'+esc(r.size)+'</span></h3>';
+    h+='<span class="status'+(done?' done':'')+'">'+(done?'✓ complete':locked?'locked':(cur+' / 7 steps'))+'</span></div>';
+    if(locked){ h+='<p class="lockmsg">Finish row '+i+' first.</p></section>'; return; }
+    var open=!done||S.rows[r.id]._open;
+    if(done){
+      h+='<p class="done-line">'+esc(r.size)+' → '+fmtNm(r)+' nm · ÷400 = '+fmtRatio(r,400)+' · ÷700 = '+fmtRatio(r,700)+' · '+SHORT[r.cmp]+' · '+SHORT[r.reg]+' · '+SHORT[r.col]+' · '+esc(r.ex)+'</p>';
+      h+='<details class="why"><summary>Why?</summary><p>'+esc(r.why[0])+'</p><p>'+esc(r.why[1])+'</p></details>';
+      h+='<div class="btnrow"><button type="button" class="ghost small" data-toggle-row="'+r.id+'">'+(open?'Hide my steps':'Show my steps')+'</button></div>';
+      if(!open){ h+='</section>'; return; }
+    }
+    STEPS.forEach(function(k,si){
+      var st=S.rows[r.id][k];
+      var stLocked=si>cur;
+      h+='<div class="step'+(stLocked?' locked':'')+'" id="st-'+r.id+'-'+k+'"><div class="q"><span class="n">'+k+'</span>'+stepTitle(k,r)+'</div>';
+      if(stLocked){ h+='</div>'; return; }
+      var base=r.id+'-'+k;
+      if(k==='a'){
+        if(isRange(r)){
+          h+='<div class="row-in"><label for="in-'+base+'-lo">'+esc(String(r.nm[0]/1000))+' µm =</label><input type="text" inputmode="decimal" id="in-'+base+'-lo" data-row="'+r.id+'" data-step="a" '+(st.done?'disabled ':'')+(st.val?'value="'+esc(st.val[0])+'"':'')+' placeholder="nm"> <span class="muted">nm</span></div>';
+          h+='<div class="row-in"><label for="in-'+base+'-hi">'+esc(String(r.nm[1]/1000))+' µm =</label><input type="text" inputmode="decimal" id="in-'+base+'-hi" data-row="'+r.id+'" data-step="a" '+(st.done?'disabled ':'')+(st.val?'value="'+esc(st.val[1])+'"':'')+' placeholder="nm"> <span class="muted">nm</span> '+(st.done?'':'<button type="button" data-check="'+base+'">Check</button>')+'</div>';
+        } else {
+          h+='<div class="row-in"><label for="in-'+base+'">'+esc(r.size)+' =</label><input type="text" inputmode="decimal" id="in-'+base+'" data-row="'+r.id+'" data-step="a" '+(st.done?'disabled ':'')+(st.val?'value="'+esc(st.val)+'"':'')+' placeholder="nm"> <span class="muted">nm</span> '+(st.done?'':'<button type="button" data-check="'+base+'">Check</button>')+'</div>';
+        }
+      } else if(k==='b'||k==='c'){
+        var lam=k==='b'?400:700;
+        h+='<div class="row-in"><label for="in-'+base+'">'+fmtNm(r)+' ÷ '+lam+' =</label><input type="text" inputmode="decimal" id="in-'+base+'" data-row="'+r.id+'" data-step="'+k+'" '+(st.done?'disabled ':'')+(st.val?'value="'+esc(st.val)+'"':'')+' placeholder="ratio"> '+(st.done?'':'<button type="button" data-check="'+base+'">Check</button>')+'</div>';
+        if(isRange(r)&&!st.done) h+='<div class="hint">A range of sizes gives a range of ratios. Work out either end (or anything between) and type one number.</div>';
+      } else if(k==='d'){
+        h+='<fieldset><legend class="sr">Ratio compared with 1</legend>'+optList('cmp-'+r.id,CMP_OPTS,st,r.cmp,r.cmpClose)+'</fieldset>';
+        if(!st.done) h+='<div class="row-in"><button type="button" data-check="'+base+'">Check</button></div>';
+      } else if(k==='e'){
+        h+='<fieldset><legend class="sr">Regime</legend>'+optList('reg-'+r.id,REG_OPTS,st,r.reg,r.regClose)+'</fieldset>';
+        if(!st.done) h+='<div class="row-in"><button type="button" data-check="'+base+'">Check</button></div>';
+      } else if(k==='f'){
+        h+='<fieldset><legend class="sr">Colour of the scattered light</legend>'+optList('col-'+r.id,COL_OPTS,st,r.col,r.colClose)+'</fieldset>';
+        if(!st.done) h+='<div class="row-in"><button type="button" data-check="'+base+'">Check</button></div>';
+      } else if(k==='g'){
+        h+='<div class="row-in"><label for="in-'+base+'" class="sr">Natural example</label><input type="text" class="wide" id="in-'+base+'" data-row="'+r.id+'" data-step="g" '+(st.done?'disabled ':'')+(st.val?'value="'+esc(st.val)+'"':'')+' placeholder="what in nature does this explain?"> '+(st.done?'':'<button type="button" data-check="'+base+'">Check</button>')+'</div>';
+      }
+      if(st.done){
+        var txt=stepAnswerText(k,r);
+        if(st.revealed) h+=fbHtml('near','<b>'+esc(txt)+'</b> (shown after '+st.tries+' tries)','Answer:');
+        else if(st.close) h+=fbHtml('near',(st.msg?esc(st.msg)+' ':'')+'Answer sheet: <b>'+esc(txt)+'</b>');
+        else h+=fbHtml('ok',(st.msg?esc(st.msg)+' ':'')+(k==='a'||k==='b'||k==='c'||k==='g'?'<b>'+esc(txt)+'</b>':''));
+      } else if(st.hint){
+        h+='<div class="fb bad" role="status" aria-live="polite"><span class="mark">✗ Not yet.</span>'+esc(st.hint)+'</div>';
+        var limit=(k==='d'||k==='e'||k==='f')?99:(k==='g'?2:3);
+        if(st.tries>=limit) h+='<div class="row-in"><button type="button" class="ghost small" data-reveal="'+base+'">Show the answer</button></div>';
+      }
+      h+='</div>';
+    });
+    h+='</section>';
+  });
+  el('rows').innerHTML=h;
+}
+function checkRow(rid,k){
+  var r=ROWS.filter(function(x){return x.id===rid;})[0]; var st=S.rows[rid][k]; var base=rid+'-'+k;
+  var ok=false,close=false,msg='',hint='',val=null,focusId=null;
+  if(k==='a'){
+    if(isRange(r)){
+      var lo=parseNum(el('in-'+base+'-lo').value), hi=parseNum(el('in-'+base+'-hi').value);
+      var okLo=near(lo,r.nm[0],0.05), okHi=near(hi,r.nm[1],0.05);
+      ok=okLo&&okHi; val=[el('in-'+base+'-lo').value.trim(),el('in-'+base+'-hi').value.trim()];
+      if(!ok){ hint=!okLo?('First box: '+sizeHint(lo,r.nm[0],String(r.nm[0]/1000)+' µm')):('Second box: '+sizeHint(hi,r.nm[1],String(r.nm[1]/1000)+' µm')); focusId='in-'+base+(okLo?'-hi':'-lo'); }
+      else msg='Both ends converted.';
+    } else {
+      var v=parseNum(el('in-'+base).value); val=el('in-'+base).value.trim();
+      ok=near(v,r.nm,0.05);
+      if(!ok){ hint=r.size.indexOf('µm')>=0?sizeHint(v,r.nm,r.size):('The size is already given in nm: '+r.size+'. Type that number.'); focusId='in-'+base; }
+      else msg=r.size.indexOf('µm')>=0?'Converted.':'Already in nm.';
+    }
+  } else if(k==='b'||k==='c'){
+    var lam=k==='b'?400:700; var vv=parseNum(el('in-'+base).value); val=el('in-'+base).value.trim();
+    ok=ratioOK(vv,r,lam);
+    if(!ok){ hint=ratioHint(vv,r,lam); focusId='in-'+base; }
+    else msg=isRange(r)?'Within the range.':'';
+  } else if(k==='d'||k==='e'||k==='f'){
+    var name=(k==='d'?'cmp-':k==='e'?'reg-':'col-')+rid;
+    var sel=document.querySelector('input[name="'+name+'"]:checked');
+    if(!sel){ st.hint='Pick one option first.'; st.lastWrong=false; renderRows(); return; }
+    val=sel.value;
+    var correct=k==='d'?r.cmp:k==='e'?r.reg:r.col;
+    var closeKeys=k==='d'?r.cmpClose:k==='e'?r.regClose:r.colClose;
+    var fbs=k==='d'?r.cmpFb:k==='e'?r.regFb:r.colFb;
+    if(val===correct){ ok=true; msg=fbs[val]; }
+    else if(closeKeys.indexOf(val)>=0){ ok=true; close=true; msg=fbs[val]; }
+    else { hint=fbs[val]; }
+  } else if(k==='g'){
+    var t=norm(el('in-'+base).value); val=el('in-'+base).value.trim();
+    if(!t){ st.hint='Type an example first.'; renderRows(); el('in-'+base).focus(); return; }
+    var wrong=r.kwWrong.filter(function(p){ return t.indexOf(p[0])>=0; })[0];
+    var hit=r.kw.filter(function(kw){ return t.indexOf(kw)>=0; })[0];
+    var cl=r.kwClose.filter(function(p){ return t.indexOf(p[0])>=0; })[0];
+    if(wrong){ hint=wrong[1]; }
+    else if(hit){ ok=true; msg=''; }
+    else if(cl){ ok=true; close=true; msg=cl[1]; }
+    else { hint=(st.tries>=1?'Hint: '+r.exHint:'Not the example from the sheet. Think about where this particle shows up in everyday life.'); }
+    focusId='in-'+base;
+  }
+  st.tries++;
+  if(ok){ st.done=true; st.first=(st.tries===1); st.close=close; st.msg=msg; st.val=val; st.hint=null; st.lastWrong=false; afterStep(rid,k); save(); renderAll(); focusNext('row',rid,k); }
+  else { st.hint=hint; st.val=val; st.lastWrong=true; save(); renderRows(); if(focusId&&el(focusId)) el(focusId).focus(); else { var b=document.querySelector('[data-check="'+base+'"]'); if(b) b.focus(); } }
+  updateProgress();
+}
+function revealRow(rid,k){
+  var r=ROWS.filter(function(x){return x.id===rid;})[0]; var st=S.rows[rid][k];
+  st.done=true; st.first=false; st.revealed=true; st.hint=null;
+  if(k==='a') st.val=isRange(r)?[String(r.nm[0]),String(r.nm[1])]:String(r.nm);
+  else if(k==='b') st.val=fmtRatio(r,400); else if(k==='c') st.val=fmtRatio(r,700); else st.val=r.ex;
+  afterStep(rid,k); save(); renderAll(); focusNext('row',rid,k); updateProgress();
+}
+function afterStep(rid,k){
+  var ri=ROWS.findIndex(function(x){return x.id===rid;});
+  if(k==='g') S.rows[rid]._open=true;
+  for(var i=0;i<ri;i++) S.rows[ROWS[i].id]._open=false;
+}
+function focusNext(kind,id,k){
+  var target=null;
+  if(kind==='warm'){
+    var idx=WARM.findIndex(function(w){return w.id===id;});
+    for(var i=idx+1;i<WARM.length;i++){ if(!S.warm[WARM[i].id].done){ target=el('in-'+WARM[i].id); break; } }
+    if(!target){ var f=document.querySelector('#rows input:not([disabled])'); target=f; }
+  } else {
+    var ri=ROWS.findIndex(function(x){return x.id===id;}); var r=ROWS[ri];
+    var ci=rowStepIndex(r);
+    if(ci<STEPS.length){ var nk=STEPS[ci]; var sec=el('st-'+id+'-'+nk); if(sec) target=sec.querySelector('input:not([disabled])'); }
+    else if(ri+1<ROWS.length){ var sec2=el('row-'+ROWS[ri+1].id); if(sec2) target=sec2.querySelector('input:not([disabled])'); if(!target&&sec2) target=sec2.querySelector('h3'); }
+    else { target=el('h-cp'); }
+  }
+  if(target){ if(target.tagName==='H3'||target.tagName==='H2') target.setAttribute('tabindex','-1'); target.focus({preventScroll:false}); }
+}
+
+/* ---------- table ---------- */
+function cell(v,blank){ return '<td class="'+(v?'val':'blank')+'">'+(v?esc(v):(blank||'·'))+'</td>'; }
+function tableHtml(){
+  var h='<table><thead><tr><th>particle</th><th>size</th><th>nm</th><th>÷ 400</th><th>÷ 700</th><th>vs 1</th><th>regime</th><th>scattered light</th><th>example</th></tr></thead><tbody>';
+  ROWS.forEach(function(r){
+    var s=S.rows[r.id];
+    h+='<tr><td>'+esc(r.name)+'</td><td>'+esc(r.size)+'</td>';
+    h+=cell(s.a.done?(Array.isArray(s.a.val)?s.a.val.join('–'):s.a.val):'');
+    h+=cell(s.b.done?s.b.val:''); h+=cell(s.c.done?s.c.val:'');
+    h+=cell(s.d.done?SHORT[s.d.val]:''); h+=cell(s.e.done?SHORT[s.e.val]:''); h+=cell(s.f.done?SHORT[s.f.val]:''); h+=cell(s.g.done?s.g.val:'');
+    h+='</tr>';
+  });
+  return h+'</tbody></table>';
+}
+function renderTable(){ el('tablewrap').innerHTML=tableHtml(); }
+
+/* ---------- checkpoints ---------- */
+function renderCps(){
+  var h='';
+  CPS.forEach(function(c,i){
+    var st=S.cps[c.id];
+    h+='<div class="step" id="cp-'+c.id+'"><div class="q"><span class="n">'+(i+1)+'</span>'+esc(c.q)+'</div>';
+    h+='<fieldset><legend class="sr">Checkpoint '+(i+1)+'</legend>'+optList('cp-'+c.id,c.opts,st,c.ans,[])+'</fieldset>';
+    if(!st.done) h+='<div class="row-in"><button type="button" data-check-cp="'+c.id+'">Check</button></div>';
+    if(st.done) h+=fbHtml('ok',esc(c.fb[c.ans])+(st.first?'':' (after '+st.tries+' tries)'));
+    else if(st.hint) h+='<div class="fb bad" role="status" aria-live="polite"><span class="mark">✗ Not yet.</span>'+esc(st.hint)+'</div>';
+    h+='</div>';
+  });
+  el('cps').innerHTML=h;
+}
+function checkCp(id){
+  var c=CPS.filter(function(x){return x.id===id;})[0]; var st=S.cps[id];
+  var sel=document.querySelector('input[name="cp-'+id+'"]:checked');
+  if(!sel){ st.hint='Pick one option first.'; renderCps(); return; }
+  st.tries++; st.val=sel.value;
+  if(sel.value===c.ans){ st.done=true; st.first=(st.tries===1); st.hint=null; st.lastWrong=false; }
+  else { st.hint=c.fb[sel.value]; st.lastWrong=true; }
+  save(); renderCps(); renderFinish(); updateProgress();
+  if(st.done){ var idx=CPS.findIndex(function(x){return x.id===id;}); var nx=CPS[idx+1]; var t=nx?el('cp-'+nx.id):el('h-finish'); if(t){ t.setAttribute('tabindex','-1'); t.focus(); } }
+}
+
+/* ---------- finish ---------- */
+function summaryText(){
+  var c=counts();
+  var L=[];
+  L.push('G3 — Which regime? One ratio, six particles (EE BIOL 138)');
+  L.push('Date: '+new Date().toISOString().slice(0,10));
+  L.push('Score: '+c.first+' / '+c.total+' first-try · '+c.done+' / '+c.total+' completed');
+  L.push('');
+  L.push('Warm-up: '+WARM.map(function(w){ var s=S.warm[w.id]; return w.from+' = '+(s.done?s.val+' '+w.unit+(s.first?' ✓':' ✓ ('+s.tries+' tries)'):'—'); }).join(' | '));
+  L.push('');
+  L.push('particle | size | nm | ÷400 | ÷700 | vs 1 | regime | scattered light | example');
+  ROWS.forEach(function(r){
+    var s=S.rows[r.id];
+    var m=function(k,v){ var st=s[k]; if(!st.done) return '—'; return v+(st.first?'':st.revealed?' (shown)':' ('+st.tries+' tries)'); };
+    L.push([r.name,r.size,m('a',Array.isArray(s.a.val)?s.a.val.join('–'):(s.a.val||'')),m('b',s.b.val||''),m('c',s.c.val||''),m('d',SHORT[s.d.val]||''),m('e',SHORT[s.e.val]||''),m('f',SHORT[s.f.val]||''),m('g',s.g.val||'')].join(' | '));
+  });
+  L.push('');
+  CPS.forEach(function(cp,i){ var st=S.cps[cp.id]; L.push('Checkpoint '+(i+1)+': '+(st.done?(st.val.toUpperCase()+' ✓'+(st.first?'':' ('+st.tries+' tries)')):'—')); });
+  return L.join('\n');
+}
+function renderFinish(){
+  var c=counts();
+  el('scoreline').innerHTML='<b>'+c.first+' / '+c.total+'</b> right on the first try · <b>'+c.done+' / '+c.total+'</b> completed'+(c.done<c.total?' <span class="note">(you can copy a partial summary now and come back)</span>':'');
+  el('sumtext').value=summaryText();
+}
+function copySummary(){
+  var ta=el('sumtext'); ta.value=summaryText();
+  var msg=el('copymsg');
+  var fallback=function(){
+    try{ ta.removeAttribute('readonly'); ta.focus(); ta.select(); ta.setSelectionRange(0,ta.value.length); var okc=document.execCommand&&document.execCommand('copy'); ta.setAttribute('readonly',''); msg.textContent=okc?'✓ Copied.':'Text selected — press Ctrl/Cmd + C to copy.'; }
+    catch(e){ msg.textContent='Select the text above and copy it.'; }
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(ta.value).then(function(){ msg.textContent='✓ Copied to clipboard.'; },fallback); }
+  else fallback();
+}
+function resetAll(){
+  if(!window.confirm('Clear all your answers on this device?')) return;
+  S=blankState(); try{ localStorage.removeItem(KEY); }catch(e){}
+  renderAll(); updateProgress(); el('copymsg').textContent='';
+  var f=el('in-w1'); if(f) f.focus();
+}
+function updateProgress(){
+  var c=counts(); var pct=Math.round(100*c.done/c.total);
+  el('pfill').style.width=pct+'%';
+  el('plbl').textContent=c.done+' of '+c.total+' steps done'+(c.done===c.total?' — all done. Copy your summary below.':'');
+  renderFinish();
+}
+function renderAll(){ renderWarm(); renderRows(); renderTable(); renderCps(); renderFinish(); }
+
+/* ---------- events ---------- */
+document.addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.checkWarm) checkWarm(b.dataset.checkWarm);
+  else if(b.dataset.check){ var p=b.dataset.check.split('-'); checkRow(p[0],p[1]); }
+  else if(b.dataset.reveal){ var q=b.dataset.reveal.split('-'); revealRow(q[0],q[1]); }
+  else if(b.dataset.checkCp) checkCp(b.dataset.checkCp);
+  else if(b.dataset.toggleRow){ S.rows[b.dataset.toggleRow]._open=!S.rows[b.dataset.toggleRow]._open; renderRows(); var s=el('row-'+b.dataset.toggleRow); var bb=s&&s.querySelector('[data-toggle-row]'); if(bb) bb.focus(); }
+  else if(b.id==='copybtn') copySummary();
+  else if(b.id==='resetbtn') resetAll();
+});
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter') return;
+  var t=e.target; if(!t||t.tagName!=='INPUT') return;
+  if(t.dataset.warm){ e.preventDefault(); checkWarm(t.dataset.warm); }
+  else if(t.dataset.row){ e.preventDefault(); checkRow(t.dataset.row,t.dataset.step); }
+  else if(t.type==='radio'){ var lab=t.closest('fieldset'); var btn=lab&&lab.parentElement.querySelector('button[data-check],button[data-check-cp]'); if(btn){ e.preventDefault(); btn.click(); } }
+});
+document.addEventListener('change',function(e){
+  var t=e.target; if(t&&t.type==='radio'){ var fs=t.closest('fieldset'); if(fs){ fs.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('sel','bad'); }); t.closest('.opt').classList.add('sel'); } }
+});
+
+load(); renderAll(); updateProgress();
+window.G3={state:function(){return S;},rows:ROWS,warm:WARM,cps:CPS,parseNum:parseNum,ratioOK:ratioOK,ratioHint:ratioHint,near:near,summary:summaryText};
+})();
+</script>
+</body>
+</html>
